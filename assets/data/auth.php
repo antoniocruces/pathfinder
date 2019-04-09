@@ -13,7 +13,7 @@ if(isset($_REQUEST['q']) && isset($_REQUEST['f']) && isset($_REQUEST['c']) && is
 	$selector	= $_REQUEST['x'];
 	$credential = $_REQUEST['u']; 
 	
-	$ch  = curl_init("http://expofinder.uma.es/wp-admin/admin-ajax.php?q=$query&action=csl_generic_ajax_call&f=$filter&x=$selector&u=$credential");
+	$ch  = curl_init("http://expofinder.uma.es/wp-admin/admin-ajax.php?q=$query&action=xxx&f=$filter&x=$selector&u=$credential");
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
 	curl_setopt($ch, CURLOPT_USERAGENT, "PATHFINDER");
