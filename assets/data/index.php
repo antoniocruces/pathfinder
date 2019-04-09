@@ -85,7 +85,7 @@ if (isset($headers['CsrfToken']) || isset($headers['csrftoken']) || isset($heade
 		  $uid		= $_REQUEST['u']; // csrf_uid === user name
 		  $credential	= $uid . '@' . encrypt_decrypt('d', $runout, $token, $digest);
 		  $compress	= $_REQUEST['c'] == 'c';
-		  $ch  = curl_init("http://expofinder.uma.es/wp-admin/admin-ajax.php?q=$query&action=csl_generic_ajax_call&f=$filter&x=$selector&u=$credential");
+		  $ch  = curl_init("http://expofinder.uma.es/wp-admin/admin-ajax.php?q=$query&action=xxx&f=$filter&x=$selector&u=$credential");
 		  
 		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		  curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
