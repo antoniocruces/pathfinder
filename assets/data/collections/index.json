@@ -1,0 +1,838 @@
+{
+	"es": [
+		{
+			"title": "Picasso en España. Actores y entidades",
+			"name": "20180910000",
+			"date": "2018-07-14",
+			"description": "Exposiciones de Picasso en España, con actores y entidades organizadoras",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_supporter_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso en España. Actores y catálogos",
+			"name": "20180910001",
+			"date": "2018-07-14",
+			"description": "Exposiciones de Picasso en España, con actores y catálogos",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_catalog",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "book",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso fuera de España. Actores y entidades",
+			"name": "20180910002",
+			"date": "2018-07-14",
+			"description": "Exposiciones de Picasso en otros países, con actores y entidades organizadoras",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "nl",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_supporter_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso fuera de España. Actores y catálogos",
+			"name": "20180910003",
+			"date": "2018-07-14",
+			"description": "Exposiciones de Picasso en otros países, con actores y catálogos",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "nl",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_catalog",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "book",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso en Andalucía. Actores y entidades",
+			"name": "20180910004",
+			"date": "2018-07-14",
+			"description": "Exposiciones de Picasso en Andalucía, con actores y entidades organizadoras",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_supporter_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso en Andalucía. Actores y catálogos",
+			"name": "20180910005",
+			"date": "2018-07-14",
+			"description": "Exposiciones de Picasso en Andalucía, con actores y catálogos",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_catalog",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "book",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Andalucía 2010-2017. Actores y entidades",
+			"name": "20180714006",
+			"date": "2018-07-14",
+			"description": "Exposiciones en Andalucía 2010-2017, con actores y entidades organizadoras",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "2010/2017",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_supporter_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Andalucía 2010-2017. Actores y catálogos",
+			"name": "20180714007",
+			"date": "2018-07-14",
+			"description": "Exposiciones en Andalucía 2010-2017, con actores y catálogos",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "2010/2017",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_catalog",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "book",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		}
+	],
+	"en": [
+		{
+			"title": "Picasso at Spain. Actors and entities",
+			"name": "20180910100",
+			"date": "2018-07-14",
+			"description": "Picasso exhibitions in Spain, actors and organizing entities included",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_supporter_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso at Spain. Actors and catalogs",
+			"name": "20180910101",
+			"date": "2018-07-14",
+			"description": "Picasso exhibitions in Spain, actors and catalogs included",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_catalog",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "book",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso abroad. Actors and entities",
+			"name": "20180910102",
+			"date": "2018-07-14",
+			"description": "Picasso exhibitions abroad, actors and organizing entities included",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "nl",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_supporter_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso abroad. Actors and catalogs",
+			"name": "20180910103",
+			"date": "2018-07-14",
+			"description": "Picasso exhibitions abroad, actors and catalogs included",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "nl",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_catalog",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "book",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso at Andalucía. Actors and entities",
+			"name": "20180910004",
+			"date": "2018-07-14",
+			"description": "Picasso exhibitions in Andalucía, actors and organizing entities included",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_supporter_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso at Andalucía. Actors and catalogs",
+			"name": "20180910005",
+			"date": "2018-07-14",
+			"description": "Picasso exhibitions abroad, actors and catalogs included",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_catalog",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "book",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Andalucía 2010-2017. Actors and entities",
+			"name": "20180714006",
+			"date": "2018-07-14",
+			"description": "Exhibitions in Andalucía 2010-2017, actors and organizing entities included",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "2010/2017",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_supporter_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Andalucía 2010-2017. Actors and catalogs",
+			"name": "20180714007",
+			"date": "2018-07-14",
+			"description": "Exhibitions in Andalucía 2010-2017, actors and catalogs included",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "2010/2017",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_catalog",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "person",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "book",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		}
+	]
+}

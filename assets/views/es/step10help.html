@@ -1,0 +1,176 @@
+<style>
+.fakeactive {
+	border-left: .25em solid #6a81a2;
+	padding-left: .75em;
+	padding-right: .75em;
+	background-color: #d9dbe0;
+	font-weight: 800;
+}
+</style>
+<div class="margin-bottom-l">
+	<h4 class="margin-vertical" id="titlestep100">ZONA A: MEN&Uacute; PRINCIPAL.</h4>
+	
+	<dl>
+		<dt class="color-primary">
+			Datos
+		</dt>
+		<dd>
+			Agrupa las operaciones principales de PF. Gestiona:
+			<ul>
+				<li>
+					La descarga de un archivo de datos en formato 
+					<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a> 
+					desde el servidor de datos 
+					<a rel="noopener" href="http://expofinder.uma.es" target="_blank">ExpoFinder</a>.
+				</li>
+				<li>
+					La carga de la base de datos de trabajo usando un archivo local en formato 
+					<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a> 
+					descargado desde el servidor de datos 
+					<a rel="noopener" href="http://expofinder.uma.es" target="_blank">ExpoFinder</a>.
+				</li>
+				<li>
+					La exportación de los datos cargados y filtrados.
+				</li>
+				<li>
+					El establecimiento de filtros predefinidos o <em>colecciones</em>, que generan 
+					un subconjunto de la base de datos cargada que cumplen determinadas condiciones.
+				</li>
+				<li>
+					La generación de informes para cada tipo de registro primario, de acuerdo 
+					con el filtro establecido e incluyendo &mdash;o no&mdash; otros registros relacionados, 
+					además de las correspondientes taxonomías y metainformaciones.
+				</li>
+			</ul>
+		</dd>
+		<dt class="color-primary">
+			Opciones
+		</dt>
+		<dd>
+			Permite regular el comportamiento de PF y ajustar ciertos parámetros de su funcionamiento.
+		</dd>
+		<dt class="color-primary">
+			Documentos
+		</dt>
+		<dd>
+			Acceso a textos que detallan la estructura y los principios funcionales de PF, las institucioness 
+			involucradas en su desarrollo, los proyectos que hacen uso de su funcionalidad y el manual de 
+			operatoria.
+		</dd>
+		<dt class="color-primary">
+			Ayuda
+		</dt>
+		<dd>
+			Ventana emergente con información relevante para el manejo de PF:
+			<ul>
+				<li>
+					Árbol de menús: representación jerárquica de la estructura de operaciones del sistema.
+				</li>
+				<li>
+					Preguntas frecuentes: trata de hacer frente a las dudas más habituales de los usuarios de PF 
+					mostrando sus respuestas.
+				</li>
+				<li>
+					Operatoria: diagrama de flujo que representa la estructura de la gestión habitual en 
+					el trabajo con PF.
+				</li>
+				<li>
+					¿Cómo&hellip;?: apartado similar al de las <em>preguntas frecuentes</em> pero centrado 
+					en los objetivos finales del usuario ("qué debo hacer para...") y no en el trabajo con PF.
+				</li>
+			</ul>
+		</dd>		
+	</dl>
+	
+	<h4 class="margin-vertical" id="titlestep101">ZONA B: ESTADO DEL FILTRO.</h4>
+	
+	<p>
+		Mientras no se haya cargado una base de datos (archivo 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a>) 
+		se muestra el mensaje 
+		<mark class="background-error-50">Sin datos</mark>. Tras la carga, el filtro se inicializa y queda 
+		establecido a la totalidad del conjunto principal de datos (es decir, no se establece ningún subconjunto). 
+		A partir de ese momento, mostrará los tamaños de conjunto y subconjunto de la siguiente forma: 
+		<mark class="background-success-50">
+		<span class="color-success">[subconjunto]</span> / 
+		<span class="color-error">[conjunto]</span> ([porcentaje])</mark>. También se muestra un 
+		<em>micrográfico</em> de tarta que expresa el tanto por ciento.
+	</p>
+	<p>
+		Al pulsar sobre esta zona se abre una ventana emergente que muestra el estado del filtro por 
+		tipo de registro primario (o un mensaje de advertencia si no se ha cargado una base de datos).
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep102">ZONA C: SUBMENÚ.</h4>
+	
+	<p>
+		Cuando se pulsa cualquier elemento del menú principal (ZONA A) se muestran 
+		el título del elemento 
+		<span class="fakeactive">resaltado</span> y, en caso necesario, las 
+		<mark class="background-light-100">opciones correspondientes</mark>.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep102">ZONA D: OPERACIONES.</h4>
+	
+	<p>
+		Es la zona más importante del sistema. 
+		Cualquier operación que sea posible realizar con PF dispondrá en el área central de la pantalla 
+		(esta zona) los elementos necesarios para llevarla a cabo y configurarla.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep102">ZONA E: PIE DE PÁGINA.</h4>
+	
+	<p>
+		Agrupa información sobre el estado de PATHFINDER. De arriba abajo se muestran:
+		<ul>
+			<li>
+				Línea superior.
+				<ul>
+					<li>
+						Nombre de la aplicación, versión y fecha. Al pulsar sobre ella se despliega una ventana 
+						emergente que amplía los datos.
+					</li>
+					<li>
+						Enlaces de referencia (HD+, DOI, Github, iArtHis_LAB) y copyright.
+					</li>
+				</ul>
+			</li>
+			<li>
+				Línea inferior.
+				<ul>
+					<li>
+						Cambio de idioma.
+					</li>
+					<li>
+						Página de <a href="#legal">información legal y de contacto</a>.
+					</li>
+					<li>
+						Colores empleados como referencia y símbolo en PF y sus equivalencias.
+					</li>
+					<li>
+						Bibliotecas (<em>code libraries</em>) usadas en PF y el estado de carga de cada una.
+					</li>
+					<li>
+						Recargar la página e imprimirla.
+					</li>
+					<li>
+						Tiempo empleado en la operación de base de datos más reciente y memoria usada 
+						por la aplicación con respecto a la máxima disponible a usar por el navegador.
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</p>
+
+	<h4 class="margin-vertical" id="titlestep102">ZONA F: BÚSQUEDA.</h4>
+	
+	<p>
+		Cuando se encuentra cargada una base de datos a partir de un archivo local en formato 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a>, 
+		PF permite buscar desde esta zona <em>cualquier <a href="#documents">registro primario</a></em> 
+		utilizando todo o parte de su título. La operación ignora el "case" (mayúsculas o minúsculas) 
+		y los diacríticos (tildes). Muestra una lista con los resultados obtenidos. Pulsando sobre 
+		cualquiera de ellos se despliega la correspondiente pantalla de registro individual.
+	</p>
+
+</div>

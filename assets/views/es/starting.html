@@ -1,0 +1,1199 @@
+<style>
+/* Customized selects */
+select.xtabs {
+	width: 400px;
+	padding: 5px 35px 5px 5px;
+	/* font-size: 16px; */
+	border: 1px solid #ccc;
+	height: 34px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background: url(./assets/img/svg/eye.svg) 96% / 5% no-repeat #eee;
+}
+
+select.xtabs::-ms-expand { 
+	display: none; 
+}
+
+@media screen and (min-width:0\0) {
+	select.xtabs {
+		background:none\9;
+		padding: 5px\9;
+	} 
+}
+
+/* Hotspots */
+.module-container {
+	position: relative;
+	width: 100%;
+}
+
+.spots-map {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+.spots-map img {
+  display: block;
+  width: 100%;
+}
+
+.pulse {
+	padding: 0;
+	position: absolute;
+	width: 28px;
+	height: 28px;
+	border: none;
+	box-shadow: 0 0 0 0 rgba(255, 4, 0, 0.7);
+	border-radius: 50%;
+	background-color: rgba(255, 4, 0, 0.1);
+	-webkit-animation: pulse 5s linear infinite;
+	-moz-animation: pulse 5s linear infinite;
+	-ms-animation: pulse 5s linear infinite);
+	animation: pulse 5s linear infinite;
+	text-align: center;
+}
+
+.pulse-medium {
+	-webkit-animation: pulsemedium 5s linear infinite;
+	-moz-animation: pulsemedium 5s linear infinite;
+	-ms-animation: pulsemedium 5s linear infinite);
+	animation: pulsemedium 5s linear infinite;
+}
+
+.pulse-wide {
+	-webkit-animation: pulsewide 5s linear infinite;
+	-moz-animation: pulsewide 5s linear infinite;
+	-ms-animation: pulsewide 5s linear infinite);
+	animation: pulsewide 5s linear infinite;
+}
+
+@-webkit-keyframes pulse {to {box-shadow: 0 0 0 20px rgba(255, 4, 0, 0);}}
+@-moz-keyframes pulse {to {box-shadow: 0 0 0 20px rgba(255, 4, 0, 0);}}
+@-ms-keyframes pulse {to {box-shadow: 0 0 0 20px rgba(255, 4, 0, 0);}}
+@keyframes pulse {to {box-shadow: 0 0 0 20px rgba(255, 4, 0, 0);}}
+
+@-webkit-keyframes pulsemedium {to {box-shadow: 0 0 0 110px rgba(255, 4, 0, 0);}}
+@-moz-keyframes pulsemedium {to {box-shadow: 0 0 0 110px rgba(255, 4, 0, 0);}}
+@-ms-keyframes pulsemedium {to {box-shadow: 0 0 0 110px rgba(255, 4, 0, 0);}}
+@keyframes pulsemedium {to {box-shadow: 0 0 0 110px rgba(255, 4, 0, 0);}}
+
+@-webkit-keyframes pulsewide {to {box-shadow: 0 0 0 200px rgba(255, 4, 0, 0);}}
+@-moz-keyframes pulsewide {to {box-shadow: 0 0 0 200px rgba(255, 4, 0, 0);}}
+@-ms-keyframes pulsewide {to {box-shadow: 0 0 0 200px rgba(255, 4, 0, 0);}}
+@keyframes pulsewide {to {box-shadow: 0 0 0 200px rgba(255, 4, 0, 0);}}
+
+.masked {
+	-webkit-clip-path: inset(11% 0 11% 0);
+	-webkit-clip-path: inset(11% 0 11% 0);
+	-moz-clip-path: inset(11% 0 11% 0);
+	-ms-clip-path: inset(11% 0 11% 0);
+	clip-path: inset(11% 0 11% 0);
+}
+
+.tree {
+	list-style: none;
+}
+.tree, .tree * {
+	margin: 0;
+	padding: 0;
+}
+.tree li {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-top: .5vh;
+	padding-bottom: .5vh;
+	position: relative;
+	padding-left: 2vw;
+}
+.tree li p select {
+	border: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	background: #dfdfdf;
+	padding: 0.35em;
+	outline: none;
+	margin-bottom: .5em;
+	font-size: 1em;
+	font-family: inherit;
+	line-height: 1.2;
+	color: #404040;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	flex: 2;	
+}
+.tree li::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	border-top: 1px solid;
+	width: 2vw;
+}
+.tree li::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	border-left: 1px solid;
+}
+.tree li:last-of-type::after {
+	height: 50%;
+	top: 0;
+}
+.tree li:first-of-type::after {
+	height: 50%;
+	bottom: 0;
+}
+.tree li:not(:first-of-type):not(:last-of-type)::after {
+	height: 100%;
+}
+.tree ul, .tree ol {
+	padding-left: 2vw;
+	position: relative;
+}
+.tree ul::before, .tree ol::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	border-top: 1px solid;
+	width: 2vw;
+}
+.tree p {
+	border: 1px solid;
+	text-align: left;
+	padding: 0.33em 0.66em;
+}
+.tree > li {
+	padding-left: 0;
+}
+.tree p.levelzero {
+	border: 0;
+	text-align: right;
+	padding: 0;
+}
+.tree > li::before, .tree > li::after {
+	display: none;
+}
+
+dd {
+	margin-left: 3em !important;
+}
+</style>
+
+<header class="margin-bottom-l">
+	<div class="container">
+	    	<img class="margin-right-s" src="./assets/img/logos/IMGLOGOPF.svg" alt="PATHFINDER" 
+	    		style="height:100px;width:100px;float:left" />
+		<h1 class="display-title display-title-xxl margin-top-s">
+			<span class="margin-vertical-auto">Tutorial</span>
+		</h1>
+		<p class="lead lead-s margin-vertical-m">
+			Aquí podrá encontrar un completo tutorial incluyendo vídeos y 
+			<em>screencasts</em> que le guiarán y le permitirán familiarizarse con el uso y los principios básicos del 
+			funcionamiento de PATHFINDER.
+		</p>
+	</div>
+</header>
+
+<main>
+	<section>
+		<div class="container">
+			<div class="content margin-bottom-l logo-background">
+				<div class="group group-xs margin-bottom-l">
+					<ul>
+						<li>
+							<button id="stab0" 
+								class="stablinks button button-s button-light button-border" 
+								onclick="javascript:toolkit.generictab('stab0', 'step0', 'stabcontent', 'stablinks');">
+							De un vistazo</button>
+						</li>
+						<li>
+							<button id="stab1" 
+								class="stablinks button button-s button-light button-border" 
+								onclick="javascript:toolkit.generictab('stab1', 'step1', 'stabcontent', 'stablinks');">
+							Utilidad</button>
+						</li>
+						<li>
+							<button id="stab2" 
+								class="stablinks button button-s button-light button-border" 
+								onclick="javascript:toolkit.generictab('stab2', 'step2', 'stabcontent', 'stablinks');">
+							Funcionamiento</button>
+						</li>
+						<li>
+							<button id="stab3" 
+								class="stablinks button button-s button-light button-border" 
+								onclick="javascript:toolkit.generictab('stab3', 'step3', 'stabcontent', 'stablinks');">
+							¿Cómo&hellip;?</button>
+						</li>
+						<li>
+							<button id="stab4" 
+								class="stablinks button button-s button-light button-border" 
+								onclick="javascript:toolkit.generictab('stab4', 'step4', 'stabcontent', 'stablinks');">
+							Screencasts</button>
+						</li>
+					</ul>
+				</div>
+				<div id="step0" class="stabcontent visible">
+					<h2 id="title-ataglance">De un vistazo</h2>
+					<div class="group group-xs margin-bottom-l">
+						<ul>
+							<li>
+								<select class="xtabs font-size-xl" id="splashselector">
+									<option value="10">Interfaz</option>
+									<option value="11">Panel</option>
+									<option value="12">Listado</option>
+									<option value="13">Registro individual</option>
+									<option value="14">Filtro</option>
+								</select>
+							</li>
+						</ul>
+					</div>
+					<div id="step10" class="sxtabcontent visible">
+						<div class="module-continer">
+							<div class="spots-map">
+								<img class="border border-primary padding-xs" 
+									src="./assets/img/starting/es/PF_INTERFACE.png" />
+								<div id="spots0">
+									<a data-tooltip="ZONA A: MENÚ PRINCIPAL"
+										class="pulse color-error" 
+										href="javascript:info.help('step10', 'Tutorial. Interfaz');" 
+										style="top:0.7%;left:19%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowleftcircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="ZONA B: ESTADO DEL FILTRO"
+										class="pulse color-error" 
+										href="javascript:info.help('step10', 'Tutorial. Interfaz');" 
+										style="top:6.3%;left:19%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowleftcircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="ZONA C: SUBMENÚ"
+										class="pulse color-error" 
+										href="javascript:info.help('step10', 'Tutorial. Interfaz');" 
+										style="top:30.1%;left:19%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowleftcircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="ZONA D: OPERACIONES"
+										class="pulse pulse-wide color-error" 
+										href="javascript:info.help('step10', 'Tutorial. Interfaz');" 
+										style="top:50.1%;left:55.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="maximize" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="ZONA E: PIE DE PÁGINA"
+										class="pulse color-error" 
+										href="javascript:info.help('step10', 'Tutorial. Interfaz');" 
+										style="top:86.4%;left:55.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowdowncircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="ZONA F: BÚSQUEDA"
+										class="pulse color-error" 
+										href="javascript:info.help('step10', 'Tutorial. Interfaz');" 
+										style="top:64.4%;left:19%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowleftcircle" d=""></path>
+										</svg>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="step11" class="sxtabcontent hide">
+						<div class="module-continer">
+							<div class="spots-map">
+								<img class="border border-primary padding-xs" 
+									src="./assets/img/starting/es/PF_INTERFACE.png" />
+								<div id="spots1">
+									<a data-tooltip="1. ACTUALIZAR DATOS"
+										class="pulse color-info" 
+										href="javascript:info.help('step20');" 
+										style="top:27.6%;left:30.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowdowncircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="2. CARGAR ARCHIVO"
+										class="pulse color-info" 
+										href="javascript:info.help('step20');" 
+										style="top:27.6%;left:47.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowdowncircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="3. INFORMACIÓN"
+										class="pulse color-info" 
+										href="javascript:info.help('step20');" 
+										style="top:27.6%;left:63.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowdowncircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="4. EXPORTAR DATOS"
+										class="pulse color-info" 
+										href="javascript:info.help('step20');" 
+										style="top:27.6%;left:79.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowdowncircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="5. COLECCIONES"
+										class="pulse color-info" 
+										href="javascript:info.help('step20');" 
+										style="top:54.6%;left:30.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowdowncircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="6. INFORMES"
+										class="pulse color-info" 
+										href="javascript:info.help('step20');" 
+										style="top:71.8%;left:34.4%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowdowncircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="7. FILTRO"
+										class="pulse color-success" 
+										href="javascript:info.help('step20');" 
+										style="top:20%;left:19%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowleftcircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="8. LISTADO"
+										class="pulse color-success" 
+										href="javascript:info.help('step20');" 
+										style="top:24.4%;left:19%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowleftcircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="9. ANÁLISIS"
+										class="pulse pulse-medium color-success" 
+										href="javascript:info.help('step20');" 
+										style="top:36%;left:10%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="maximize" d=""></path>
+										</svg>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="step12" class="sxtabcontent hide">
+						<div class="module-continer">
+							<div class="spots-map">
+								<img  class="border border-primary padding-xs" 
+									src="./assets/img/starting/es/PF_LISTING.png" />
+								<div id="spots2">
+									<a data-tooltip="1. BÚSQUEDA Y NAVEGACIÓN"
+										class="pulse color-info" 
+										href="javascript:info.help('step30');" 
+										style="top:26.5%;left:58.1%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowdowncircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="2. TABLA"
+										class="pulse pulse-wide color-info" 
+										href="javascript:info.help('step30');" 
+										style="top:61.4%;left:55.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="maximize" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="3. REGISTRO INDIVIDUAL"
+										class="pulse color-success" 
+										href="javascript:info.help('step30');" 
+										style="top:81.5%;left:45.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowleftcircle" d=""></path>
+										</svg>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="step13" class="sxtabcontent hide">
+						<div class="module-continer">
+							<div class="spots-map">
+								<img class="border border-primary padding-xs" 
+									src="./assets/img/starting/es/PF_SINGLE_RECORD.png" />
+								<div id="spots2">
+									<a data-tooltip="1. ANÁLISIS RELACIONAL"
+										class="pulse color-info" 
+										href="javascript:info.help('step40');" 
+										style="top:7.5%;left:13%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowdowncircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="2. DATOS DEL REGISTRO"
+										class="pulse pulse-wide color-info" 
+										href="javascript:info.help('step40');" 
+										style="top:55%;left:54%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="maximize" d=""></path>
+										</svg>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+		
+					<div id="step14" class="sxtabcontent hide">
+						<div class="module-continer">
+							<div class="spots-map">
+								<img class="border border-primary padding-xs" 
+									src="./assets/img/starting/es/PF_FILTER.png" />
+								<div id="spots2">
+									<a data-tooltip="1. INCLUSIONES Y RESTRICCIONES"
+										class="pulse color-info" 
+										href="javascript:info.help('step50');" 
+										style="top:20.1%;left:40.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowleftcircle" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="2. PANEL DE FILTRADO"
+										class="pulse pulse-wide color-success" 
+										href="javascript:info.help('step50');" 
+										style="top:50%;left:50.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="maximize" d=""></path>
+										</svg>
+									</a>
+									<a data-tooltip="3. OPERACIONES"
+										class="pulse color-info" 
+										href="javascript:info.help('step50');" 
+										style="top:84.8%;left:65.5%;">
+										<svg width="28" height="28" viewBox="0 0 24 24" class="svgicon">
+											<path class="arrowdowncircle" d=""></path>
+										</svg>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>	
+				<div id="step1" class="stabcontent hide">
+					<h2 id="title-utility">Utilidad</h2>
+					<dl>
+						<dt>
+							En realidad ¿qué es PATHFINDER y para qué sirve?
+						</dt>
+						<dd>
+							Es una aplicación informática que permite obtener nuevo conocimiento a partir del análisis de los 
+							datos recogidos en 
+							<a rel="noopener" target="_blank" href="http://expofinder.uma.es">ExpoFinder</a>.
+						</dd>
+						<dt>
+							¿Qué es eso de "obtener nuevo conocimiento"?
+						</dt>
+						<dd>
+							Como afirman Bernhard Rieder y Theo Röhle en su reciente texto 					
+							<a rel="noopener" target="_blank" href="https://doi.org/10.1057/9780230371934_4">Digital Methods: Five Challenges</a> 
+							(2012), mientras que términos como "humanidades digitales" o "análisis cultural" están de moda hay muchos indicadores
+							de que es necesario un "giro computacional", más profundo que un simple aumento cuantitativo de los recursos para 
+							estudiar disciplinas como la Historia del Arte. Ambos autores se cuestionan que, si estos nuevos métodos digitales no 
+							son más que solo otro conjunto de herramientas en el arsenal del investigador, 
+							¿cómo se puede lidiar con las transformaciones más fundamentales, necesarias para desafiar los paradigmas epistemológicos 
+							establecidos? PATHFINDER trata de ayudar en esto. No se trata de utilizar el ordenador como ayuda para 
+							almacenar datos y organizarlos, sino como <em>herramienta</em> que releve de la penosa tarea 
+							de realizar cálculos y aproximaciones para que, a partir de lo que se conoce, sea posible <em>deducir</em> información 
+							no perceptible a simple vista. No se trata de "inventar" nada, sino de extraer lo que ya está presente en el 
+							conjunto de información que hayamos recopilado. Por eso se habla de "generar nuevo conocimiento".
+						</dd>
+						<dt>
+							De acuerdo, pero ¿necesito alguna habilidad especial para manejar PATHFINDER? Es decir, ¿me hace 
+							falta formación específica en estadística, matemática o ciencia de la computación?
+						</dt>
+						<dd>
+							En absoluto. Precisamente se trata de eso, de que PATHFINDER (o PF, para abreviar) realice los cálculos necesarios 
+							solicitando al usuario únicamente pautas sobre la dirección que tales cálculos han de adoptar. PF no "hace nuestro 
+							trabajo", sino que nos pregunta (en sentido figurado) qué queremos averiguar y actúa en consecuencia.
+						</dd>
+						<dt>
+							¿Solamente puede trabajar con los datos de 
+							<a rel="noopener" target="_blank" href="http://expofinder.uma.es">ExpoFinder</a>?
+						</dt>
+						<dd>
+							Aunque su diseño funcional y su concepción es flexible y está pensado para adaptarse a las necesidades que la 
+							fuente de datos plantee, como idea PF nació y se desarrolló para trabajar con ellos. Así que, hasta la fecha, 
+							la respuesta es afirmativa: sólo usa datos EF.
+						</dd>
+						<dt>
+							¿Y qué voy a necesitar para trabajar con PF?
+						</dt>
+						<dd>
+							Para obtener los datos  
+							debe disponer de un juego de credenciales válido (es decir, un nombre de usuario y una contraseña) para acceder a 
+							<a href="http://www.expofinder.es" rel="noopener" target="_blank">ExpoFinder</a>. Si no dispone de uno, 
+							solicítelo <a href="#legal">aquí</a>.
+						</dd>
+						<dt>
+							¿Tengo que estar conectado a Internet?
+						</dt>
+						<dd>
+							En realidad la inmensa mayoría del trabajo lo hace su ordenador y su navegador 
+							(<a rel="noopener" target="_blank" href="https://www.google.com/chrome/">Chrome</a>, 
+							<a rel="noopener" target="_blank" href="https://www.mozilla.org/es-ES/firefox/">Firefox</a>, 
+							<a rel="noopener" target="_blank" href="https://www.opera.com/es">Opera</a> o 
+							<a rel="noopener" target="_blank" href="https://www.apple.com/es/safari/">Safari</a>) 
+							y no un servidor de datos remoto, por lo que parecería que no es preciso. 
+							Sin embargo, algunas tareas lo requieren. Por ejemplo, la descarga del archivo de datos de 
+							<a href="http://www.expofinder.es" rel="noopener" target="_blank">ExpoFinder</a> o el trazado de mapas en pantalla. 
+							Por eso sí es imprescindible estar conectado.
+						</dd>
+					</dl>			
+				</div>	
+				<div id="step2" class="stabcontent hide">
+					<h2 id="title-running">Funcionamiento</h2>
+					<dl>
+						<dt>
+							¿Debo tener alguna precaución antes de empezar a trabajar con PF?
+						</dt>
+						<dd>
+							Alguna. 						 
+							<mark class="color-error background-error-50">Refrescar o recargar la página implica 
+							perder la sesión de trabajo (habría que reiniciarla)</mark>. 
+							Si ha realizado alguna operación o ha "tocado" la pantalla (por ejemplo, pulsando 
+							un enlace) el navegador le preguntará 
+							si desea seguir con la operación o prefiere cancelarla, así que sea cuidadoso al respecto.
+							<br /><br />
+							Tampoco funciona la "flecha de retroceso" [
+							<img src="./assets/img/svg/arrow-left.svg" style="width:18px;vertical-align:middle;">							
+							 o algo 
+							parecido] de su navegador como podría esperarlo. Al pulsarla se abandona habitualmente la página 
+							en la que se está navegando, pero PF no utiliza ese concepto, por lo que podrá encontrarse 
+							con comportamientos inesperados.
+						</dd>
+						<dt>
+							¿PF solo está en español?
+						</dt>
+						<dd>
+							No, también está en inglés. PF detecta el lenguaje predefinido del navegador que se 
+							esté usando y es el que emplea por defecto. Pero si se desea cambiar el idioma, 
+							en el <a href="javascript:toolkit.markdemo('lang');">pie de página</a> (ver más abajo) 							se muestra 
+							la abreviatura internacional del idioma alternativo en color <span class="color-error">rojo</span>; 
+							es decir, si el interfaz está en español aparecerá <span class="color-error">EN</span> (por 
+							<em>English</em>), y <span class="color-error">ES</span> si está en inglés. Si quiere probarlo, 
+							puede <a href="javascript:i18n.changelang('en');">pulsar aquí</a>. También se puede seleccionar 
+							desde el menú de <a href="javascript:toolkit.markdemo('settings');">opciones</a>.
+						</dd>
+						<dt>
+							¿Qué elementos se usan en las pantallas de PF? Es decir ¿cómo se emplea el interfaz de usuario?
+						</dt>
+						<dd>
+							Pues en realidad es muy sencillo. Aquí se muestran los elementos más importantes 
+							de uso común. Siempre hacen las mismas cosas y significan lo mismo. Siga leyendo para averiguar para 
+							qué sirve cada uno.
+						</dd>
+						<dt>
+							¿Cuál es el menú principal?
+						</dt>
+						<dd>
+							Está <a href="javascript:toolkit.markdemo('menu');">a la izquierda</a>. 
+							Desde él se accede a las diversas pantallas, 
+							aunque no controla <em>todas</em> las actividades: para eso está cada <em>submenú</em>. 
+							El menú <em>Ayuda</em> abre una ventana emergente con la información global más relevante 
+							al respecto, pero cada pantalla tiene su propia ayuda.
+						</dd>
+						<dt>
+							¿Qué es esa información situada sobre las opciones de menú?
+						</dt>
+						<dd>
+							La <a href="javascript:toolkit.markdemo('filtermenu');">información sobre el filtro</a>. 
+							El fondo aparece en color <mark class="background-error-50">rojo</mark> si aún no se 
+							ha cargado un archivo de datos. En caso contrario muestra el estado del filtro (consulte 
+							<a href="javascript:toolkit.generictab('stab3', 'step3', 'stabcontent', 'stablinks');">aquí</a> 
+							si no sabe qué es); incluye un 
+							micrográfico de tarta explicando qué porcentaje del total de registros primarios 
+							está filtrado.
+						</dd>
+						<dt>
+							¿Qué es el "submenú"?
+						</dt>
+						<dd>
+							Se puede ver en la 
+							<a href="javascript:toolkit.markdemo('submenu');">zona del menú que esté activa en cada página</a>, 
+							y ofrece las posibles tareas que se pueden realizar en ella. 
+						</dd>
+						<dt>
+							¿Para qué sirven los interrogantes entre corchetes?
+						</dt>
+						<dd>
+							Los 
+							<a href="javascript:toolkit.markdemo('questionmark');">pequeños signos de interrogación entre corchetes</a> 
+							(<span data-demo="questionmark">[?]</span>), si son enlaces abren una ventana emergente de ayuda, 
+							y en caso 
+							contrario indican un <em>punto singular de información</em>; estos últimos despliegan un 
+							"bocadillo" que complementa lo dicho en un texto determinado. En terminología técnica suelen 
+							conocerse como <em>tooltips</em>.
+						</dd>
+						<dt>
+							¿Qué al final de cada página?
+						</dt>
+						<dd>
+							El <a href="javascript:toolkit.markdemo('footer');">pie de página</a> 
+							tiene enlaces referentes a las instituciones y las referencias externas de PF. Pero 
+							justo al comienzo, donde figura el nombre y la versión de la aplicación, hay uno algo especial: 
+							al pulsar sobre él abre una ventana emergente que muestra, además de la información 
+							propia de un "Acerca de&hellip;", datos sobre la velocidad de respuesta del navegador y de los 
+							servidores de aplicación y de datos (si desea más información sobre ellos, pulse 
+							<a href="#settings">aquí</a> para consultarlo en <em>Fundamentos</em>).
+							<br>
+							Hay 
+							<a href="javascript:toolkit.markdemo('footerright');">varios enlaces interesantes</a>. 
+							<em>Colores</em> informa sobre los códigos cromáticos utilizados en PF para determinar 
+							los <a href="#documents">tipos de registro primario</a> involucrados en una operación, y 
+							en los efectos que determinadas acciones tienen en el funcionamiento del sistema. 
+							<em>Legal</em> muestra 
+							noticias sobre forma de contacto con el equipo desarrollador y su institución de respaldo, 
+							el grupo de investigación <a rel="nofollow" target="_blank" href="http://iarthislab.es">iArtHis_LAB</a>, 
+							sobre la normativa legal aplicable al uso de PF y sobre las licencias, tanto la propia como las 
+							de terceros cuyo código se ha empleado. 
+							<em data-tooltip="conjunto de instrucciones de programa con un propósito definido que ayuda al funcionamiento de PF">Bibliotecas</em> muestra las diferentes "librerías" (un anglicismo usado con 
+							frecuencia en el mundo del desarrollo de aplicaciones) y su estado de carga. 
+							<em>Imprimir</em> y <em>Recargar</em> hacen lo que sus respectivos nombres indican. 
+						</dd>
+					</dl>
+				</div>	
+				<div id="step3" class="stabcontent hide">
+					<h2 id="title-howto">¿Cómo&hellip;?</h2>
+					<dl>
+						<dt>
+							Antes de empezar: llama la atención el uso de algunas abreviaturas (ms, s, B, GiB,&hellip;). 
+							¿A qué se debe?
+						</dt>
+						<dd>
+							PF utiliza distintos tipos de nomenclaturas, dependiendo de a lo que aluda, pero siempre 
+							con el respaldo de los estándares transnacionales más ampliamente aceptados. En el caso de las medidas de 
+							información (<em>bytes</em>, símbolo B, no "b") emplea tanto el Sistema Métrico Internacional, que utiliza 
+							múltiplos de 10, como el ISO/IEC 80000-13, basado en un recuento binario. En el primero, un 
+							kilobyte, abreviado "kB", equivale a 1.000 bytes (10<sup>3</sup>), mientras que en el segundo 
+							un kilobyte, abreviado "KiB", equivale a 1.024 bytes (2<sup>10</sup>).
+						</dd>
+						<dt>
+							¿Qué es lo primero que se debe hacer para trabajar con PF?
+						</dt>
+						<dd>
+							Lo primero de todo es acceder a <a href="#data">Datos</a>. Y después, depende:
+							<ol type="a">
+								<li>Si no se dispone de un archivo de datos de EF&hellip;
+									<ol type="1">
+										<li>
+											Asegúrese de que dispone de un <strong>juego de credenciales</strong> legítimo para acceder a 
+											<a href="http://www.expofinder.es" rel="noopener" target="_blank">ExpoFinder</a>. Si no dispone de uno, 
+											solicítelo <a href="#legal">aquí</a>.
+										</li>
+										<li>
+											Desde la página <a href="#legal"><em>Datos</em></a>, seleccione <em>Panel</em> &rarr; 
+											<em>Actualización</em>. Cuando salga la ventana emergente, utilice sus credenciales y 
+											pulse <em>Validación</em>.
+										</li>
+										<li>
+											Tras un periodo de duración variable (por lo general entre 30 y 60 segundos), PF habrá descargado 
+											un paquete de información en formato 
+											<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a> 
+											codificado e indicará un número 
+											<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/N%C3%BAmero_de_identificaci%C3%B3n_personal">PIN</a>, 
+											que se deberá conservar para poder acceder a los datos en un futuro.
+										</li>
+										<li>
+											PF solicitará una ubicación y un nombre para el archivo. Suminístreselo y guárdelo. 
+											Por razones organizativas, 
+											y puesto que cada archivo descargado es una "fotografía" de los datos de EF en un momento dado, 
+											es una buena práctica nombrarlo siguiendo pautas cronológicas, y si el nombre se asigna 
+											según el patrón <em>AAAA-MM-DD</em> 
+											(año con cuatro dígitos, mes con dos dígitos, día con dos dígitos; 
+											por ejemplo, "2018-07-20" identificará a un archivo descargado el veinte de julio de 2018)  
+											resultará más fácil de localizar en el equipo, ordenando los archivos alfabéticamente por 
+											el nombre.
+										</li>
+									</ol>
+								</li>
+								<li>Si se dispone de un archivo de datos de EF&hellip;
+									<ol type="1">
+										<li>
+											Desde la página <a href="#data"><em>Datos</em></a>, seleccione <em>Panel</em> &rarr; 
+											<em>Cargar archivo</em>. Cuando se muestre el cuadro de diálogo, seleccione el archivo 
+											que desee utilizar y PF lo cargará. 
+											Aunque estas cifras dependen del microprocesador de su ordenador, 
+											PF procesará entre 37.000 y 45.000 registros por segundo, por lo que para un volumen de 
+											500.000 tardará entre 11 y 13,5 segundos, aproximadamente. En realidad suele tardar menos.
+										</li>
+										<li>
+											Antes de cargarlo, y como medida de seguridad, PF le pedirá el 
+											<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/N%C3%BAmero_de_identificaci%C3%B3n_personal">PIN</a> que debió conservar cuando lo descargó. Escríbalo y pulse <em>Aceptar</em>. 
+											Si se equivoca, PF emitirá un error.
+										</li>
+										<li>
+											Cuando termine el procesado, PF presentará una ventana emergente con información 
+											sobre velocidad de tratamiento y la pantalla de <a href="#data"><em>Datos</em></a> cambiará 
+											para mostrar las nuevas operaciones que se pueden realizar.
+										</li>
+									</ol>
+								</li>
+							</ol>
+						</dd>
+						<dt>
+							¿Puedo verlo de manera más gráfica?
+						</dt>
+						<dd>
+							Pues sí. Resumiendo en un <em>árbol de decisiones</em> sería más o menos así&hellip;
+							<ul class="tree">
+								<li>
+									<p class="levelzero">
+										¿Dispongo de archivo de datos?
+									</p>
+									<ul>
+										<li>
+											<p>
+												No
+											</p>
+											<ul>
+												<li>
+													<p>Obtengo credenciales EF</p>
+												</li>
+												<li>
+													<p>Desde Panel elijo Acceder</p>
+												</li>
+												<li>
+													<p>Escribo mis credenciales y pulso Validar</p>
+												</li>
+												<li>
+													<p>Espero entre 30s y 60s</p>
+												</li>
+												<li>
+													<p>PF me indica el PIN de seguridad. Lo conservo</p>
+												</li>
+												<li>
+													<p>Guardo el archivo con nombre en formato AAAA-MM-DD</p>
+												</li>
+											</ul>
+										</li>									
+										<li>
+											<p>
+												Sí
+											</p>
+											<ul>
+												<li>
+													<p>Selecciono el archivo descargado y lo cargo</p>
+												</li>
+												<li>
+													<p>Cuando PF me solicite el PIN, lo especifico</p>
+												</li>
+												<li>
+													<p>Espero entre 20s y 40s</p>
+												</li>
+												<li>
+													<p>PF ya está listo para trabajar</p>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>							
+						</dd>
+						<dt>
+							Ya dispongo de un archivo de datos y lo he cargado en PF. ¿Qué puedo hacer?
+						</dt>
+						<dd>
+							La pantalla que concentra todas las operaciones previstas es el <a href="#data">Panel</a>. 
+							Está concebido de manera secuencial, y según se actúe y se seleccione una u otra opción 
+							solo muestra lo que está disponible en cada momento y alguna información 
+							adicional. Por ejemplo, en <em>Actualizar desde servidor Expofinder</em> figura el estado del ordenador remoto 
+							que enviará los datos y el resultado de un sondeo de tiempo de respuesta en milisegundos (ms), y en 
+							<em>Cargar archivo</em> se muestra el nombre del que se haya cargado, su tamaño en bytes, la fecha y la 
+							hora en la que se descargó y el número de registros primarios 
+							<span class="informative" data-tooltip="autor, catálogo, empresa, entidad, exposición u obra de arte">[?]</span> 
+							(que ni mucho menos es el total, puesto que no se incluye la metainformación 
+							<span class="informative" data-tooltip="datos asociados a un registro principal: fechas, ubicación,...">[?]</span>
+							o las taxonomías 
+							<span class="informative" data-tooltip="clasificaciones que pueden afectar a más de un tipo de registro principal">[?]</span>) 
+							contenidos en el mismo, además de el enlace <em>Más información&hellip;</em> &mdash;que abre una 
+							ventana emergente en la que se muestran las cifras totales y relativas de registros, metadatos y 
+							taxonomías&mdash; y de otros para exportar el conjunto de datos filtrado en formatos 
+							<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Tab-separated_values">TSV</a>, 
+							<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Valores_separados_por_comas">CSV</a> o 
+							<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Extensible_Markup_Language">XML</a>.
+						</dd>
+						<dt>
+							¿Y en pocas palabras?
+						</dt>
+						<dd>
+							Pues así:
+							<ul class="tree">
+								<li>
+									<p class="levelzero">
+										Estoy en el Panel y quiero&hellip;
+									</p>
+									<ul>
+										<li>
+											<p>
+												Poner al día los datos EF
+											</p>
+											<ul>
+												<li>
+													<p>
+														Pulso Actualizar
+													</p>
+												</li>
+												<li>
+													<p>
+														Realizo el proceso de descarga desde EF
+													</p>
+												</li>
+											</ul>
+										</li>
+										<li>
+											<p>
+												Saber cuántos registros tiene el archivo de base de datos descargado desde EF
+											</p>
+											<ul>
+												<li>
+													<p>
+														Cargo el archivo
+													</p>
+												</li>
+												<li>
+													<p>
+														Pulso Más información&hellip;
+													</p>
+												</li>
+											</ul>
+										</li>
+										<li>
+											<p>
+												Exportar los datos de PF
+											</p>
+											<ul>
+												<li>
+													<p>
+														Me aseguro de que he establecido el filtro correcto
+													</p>
+												</li>
+												<li>
+													<p>
+														Selecciono el formato de exportación adecuado: 
+														<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Tab-separated_values">TSV</a>, 
+														<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Valores_separados_por_comas">CSV</a> o 
+														<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Extensible_Markup_Language">XML</a>.
+													</p>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</dd>
+						<dt>
+							Aparece con frecuencia el tema del <em>filtro</em>. ¿Qué es eso?
+						</dt>
+						<dd>
+							Trabajar con un conjunto excesivamente grande de datos suele ser poco práctico y ofrecer resultados 
+							no demasiado relevantes cuando se trata de generar nuevo conocimiento sobre un tema determinado. 
+							Por ejemplo, si en PF se pretende indagar sobre exposiciones en España en un periodo concreto, 
+							la presencia de un grupo de registros que versen sobre Francia puede distorsionar más que ayudar a nuestro 
+							propósito. Por ello se insta a que el usuario realice siempre un filtro previo. Si bien el concepto 
+							tiene origen 
+							<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Filtro_(matem%C3%A1ticas)">matemático</a>, 
+							en realidad es fácil de entender: funciona como un "colador", de manera que, del total de 
+							registros primarios únicamente se trabajará con los que cumplan ciertas condiciones. En el ejemplo 
+							citado, aquellas exposiciones celebradas en España; el resto no intervendrá en ninguna operación.
+						</dd>
+						<dt>
+							¿A qué ámbitos afecta el filtro?
+						</dt>
+						<dd>
+							Cuando se establece un filtro su alcance es global; es decir, solamente se exportarán datos, se 
+							elaborarán informes, se calcularán estadísticas o se trazarán redes y gráficos sobre los registros 
+							primarios que cumplan las condiciones del filtro.
+						</dd>
+						<dt>
+							Es interesante, pero ¿cómo funciona el filtro?
+						</dt>
+						<dd>
+							Funciona como un "embudo" por el que solamente "colarán" los registros que cumplan las condiciones 
+							especificadas. Dichas condiciones se aplican independientemente del orden en que se escriban 
+							(no son <em>jerárquicas</em>) y actuarán según el vínculo entre ellas.
+						</dd>
+						<dt>
+							Pero ¿qué es eso del "vínculo" entre condiciones?
+						</dt>
+						<dd>
+							La manera en que se unen; y está tomada de la vida real. Veamos, si yo quiero comprar un 
+							ordenador que sea bueno <em>Y</em> que sea barato para satisfacer mis deseos deberá cumplir 
+							<em>simultaneamente</em> ambas condiciones, no solamente una de ellas; pero si quiero 
+							que sea bueno <em>O</em> barato bastará con que no valga muy caro o con que funcione estupendamente 
+							para que mi petición sea correctamente atendida.
+							<br /><br />
+							Yendo a lo práctico, podemos verlo como en una tabla en la que se especifica cuál es el 
+							vínculo entre tres condiciones (A, B y C) y qué sucede en cada caso. Sería más o menos así:
+							<br /><br />
+							<table class="mq-table pure-table-bordered pure-table table-smaller">
+								<thead>
+									<tr>
+										<th>Cumplimiento</th>
+										<th>Comportamiento</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th>Estricto</th>
+										<td>
+											Sólo los registros que comparten los conjuntos obtenidos a partir de las condiciones 
+											A, B y C; es decir, que X sea parte de A, sea parte de B y sea parte de C
+										</td>
+									</tr>
+									<tr>
+										<th><em>Todas</em> las condiciones</th>
+										<td>
+											Cualquier cosa que compartan A, B y C; es decir, si X pertenece a A y B pero no a C, 
+											se incluirá; igualmente si pertenece a C y B pero no a A. 
+											No se incluirá si no pertenece a la vez a una pareja de condiciones al menos
+										</td>
+									</tr>
+									<tr>
+										<th><em>Cualquier</em> condición</th>
+										<td>
+											Cualquier cosa que pertenezca a cualquiera de las condiciones A, B o C, 
+											tanto si está compartido como si no
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</dd>
+						<dt>
+							Mucha teoría y poca práctica: pónganme ejemplos&hellip;
+						</dt>
+						<dd>
+							Pues ahí van. Pero no olvide que <em>el filtro arrojará resultados erróneos o no arrojará 
+							ninguno</em> si no respeta las reglas lógicas en su construcción.
+							<br /><br />
+							Si para saber en cuántas exposiciones Picasso participó como autor en Málaga  
+							se utiliza el siguiente juego de condiciones y se emplea el vínculo <em>Estricto</em> o 
+							<em>Todo</em> para calcular el resultado el conjunto obtenido sería incorrecto 
+							(en realidad no obtendría ningún registro).
+							<ol>
+								<li>Que la localidad del lugar de celebración de la exposición contenga "málaga”</li>
+								<li>Que el nombre del actor contenga "ruiz picasso"</li>
+							</ol>
+							¿Por qué? Porque PF dice lo siguiente:
+							<br>
+							<p class="aside background-secondary-50">
+								"A ver, este usuario quiere saber cuántas exposiciones 
+								se han celebrado en Málaga y cuántos actores se llaman ‘ruiz picasso’; pero ¿qué tienen que ver 
+								las exposiciones con los actores? Como no lo sé porque no me lo ha dicho, no puedo obtener nada".
+							</p>
+							Y no deja de ser lógico. Sin embargo, si se realiza la consulta con los siguientes parámetros, 
+							la cosa cambia:
+							<ol>
+								<li>Que la localidad del lugar de celebración de la exposición contenga "málaga”</li>
+								<li>Que el nombre del actor contenga "ruiz picasso"</li>
+								<li>Que en la exposición, el campo "actor que participa como autor" no sea nulo</li>
+							</ol>
+							Ahora PF ya sabe en calidad de qué queremos conocer la participación del universal 
+							pintor en exposiciones malagueñas.
+						</dd>
+						<dt>
+							Pero dice un viejo adagio que "con una rueda no anda un carro". ¿Hay un límite 
+							en el número de condiciones que puedo utilizar?
+						</dt>
+						<dd>
+							Absolutamente ninguno. Puede poner tantas cuantas desee. Pero tenga en cuenta lo siguiente:
+							<ol>
+								<li>Cada condición <em>debe ser calculada individualmente</em> (usando el enlace que figura) 
+								antes de realizar el cálculo de todas ellas vinculadas. En realidad cada condición es singular 
+								(¿cuántos autores se llamas "Picasso"? ¿cuántas exposiciones se han celebrado en Málaga?), 
+								y solo adquieren sentido como filtro al vincularlas entre si.</li>
+								<li>Si se desconocen los posibles valores que una condición puede adoptar (por ejemplo, 
+								si no se sabe si existe un autor llamado "Picasso") se puede pulsar el enlace <em>valores</em> 
+								en la fila de la condición; de acuerdo a lo especificado en su operador y modificador, 
+								PF mostrará una lista de posibilidades. Y eso es importante, porque si como operador 
+								se emplea "sea igual que" o como modificador se selecciona "localidad", si en el campo 
+								de búsqueda se escribe "picasso" no se mostrará ningún elemento, en el primer caso 
+								porque no hay ningún autor cuyo nombre sea <em>exactamente igual</em> a "picasso" (así, 
+								sin mayúsculas ni nada&hellip;), y en el segundo porque no hay una <em>localidad</em> 
+								en el nombre de un actor.</li>
+								<li>Ya se habrá dado cuenta de que el operador "contenga" no toma en cuenta mayúsculas, 
+								minúsculas ni tildes o acentos. El sistema empleado, como todo en PF, trata de respetar 
+								al máximo posible la funcionalidad ofrecida por el navegador que se esté utilizando y, por 
+								tanto, la implementación de Javascript (el lenguaje con que PF está construido) puede 
+								diferir entre navegadores distintos. Experimentalmente se ha comprobado que tanto 
+								<a rel="noopener" target="_blank" href="https://www.google.com/chrome/">Chrome</a> como 
+								<a rel="noopener" target="_blank" href="https://www.mozilla.org/es-ES/firefox/">Firefox</a>,  
+								<a rel="noopener" target="_blank" href="https://www.opera.com/es">Opera</a> y 
+								<a rel="noopener" target="_blank" href="https://www.apple.com/es/safari/">Safari</a> realizan 
+								correctamente la comparación de caracteres diacríticos. 
+								Esa característica se da solamente en los operadores <em>contenga</em> y <em>no 
+								contenga</em>. En los demás, la comparación es estricta.</li>
+								<li>PF, según el tipo de vínculo entre condiciones, seleccionará registros de distintos 
+								tipos; en nuestro ejemplo, seleccionará actores (Picasso) y exposiciones; si solo deseo 
+								ver unos u otros, justo debajo de la línea para vincular condiciones aparecen unos 
+								selectores y, en este caso, desmarcaría todos menos "exposición".</li>
+							</ol>
+						</dd>
+						<dt>
+							No vayan tan rápido ¿Qué es eso de "operador"?
+						</dt>
+						<dd>
+							Muy simple. Por <em>operador</em> se entiende el concepto matemático: una aplicación entre dos 
+							espacios vectoriales. Pero como eso es algo complicado lo pondremos más simple: un "comparador" 
+							entre dos términos. La vida diaria los usa abundantemente; por ejemplo ¿cuántos alumnos 
+							han suspendido un examen? O dicho con otras palabras: cuántos alumnos tienen una nota 
+							<em>menor que</em> 5. PF emplea los siguientes operadores:
+							<ol>
+								<li>contenga o no contenga; que el término que se compara forme 
+								parte del campo sobre el que se realiza la búsqueda; indiferente a mayúsculas y tildes; 
+								no funciona bien con valores puramente numéricos (no encontraría "1" en el 
+								número "111", aunque sí encontraría "1" en la fecha "2018-08-21", que es tratada 
+								como un texto).</li>
+								<li>sea mayor que, sea menor que, sea mayor o igual que, sea menor o igual que; 
+								lo que su enunciado indica; funcionamiento estricto (tiene en cuenta mayúsculas y 
+								tildes); en el valor textual de meses (enero, febrero,&hellip;) la comparación es 
+								alfabética, así que "diciembre" es anterior a "junio".</li>
+								<li>sea igual que, no sea igual que; ídem que el tratamiento anterior, también en 
+								cuanto se refiere a ignorar mayúsculas y tildes; es un comparador exacto (no es 
+								exactamente igual "pablo Ruiz PIcasso" que "Pablo Ruiz Picasso").</li>
+								<li>entre; es un caso especial; si se escriben dos valores separados por una 
+								barra inclinada (/) buscará los registros que <em>estén comprendidos</em> entre 
+								el valor a la izquierda de la barra y el valor a la derecha; se usa mucho en fechas 
+								(entre 2010 y 2015, "2010/2015"); funciona contexto también, y la comparación es 
+								estricta.</li>
+								<li>sea nulo, no sea nulo; es un caso especial; indica si el campo ha de contener un 
+								valor o estar vacío; se emplea, como ya se ha visto, en las combinaciones de condiciones.</li>
+							</ol>
+						</dd>
+						<dt>
+							¿Y lo de "modificador?
+						</dt>
+						<dd>
+							En PF también se le llama <em>faceta</em>. Alude a una parte predefinida de un campo. Por ejemplo, 
+							en EF el campo "exposición: lugar donde se celebra" está compuesto de tres partes, separadas 
+							por punto y coma (;) y por este orden: localidad, región y país; pues cada una de ellas es una 
+							"faceta"; así, si trato de buscar las exposiciones celebradas en la ciudad de Madrid (la región 
+							se llama igual) utilizaría el modificador <em>localidad</em>. Algunos de ellos son muy interesantes, 
+							como <em>década</em> o <em>siglo</em> para las fechas, <em>dominio</em> para las 
+							<a target="_blank" rel="nofollow" 
+								href="https://es.wikipedia.org/wiki/Identificador_de_recursos_uniforme">URIs</a> 
+							<a href="https://es.wikipedia.org/wiki/HTML" rel="nofollow" target="_blank">HTML</a> o 
+							<a href="https://es.wikipedia.org/wiki/RSS" rel="nofollow" target="_blank">RSS</a>.
+						</dd>
+						<dt>
+							Parece potente eso del filtro. Pero puede ser un poco largo "reconstruir" las condiciones 
+							de uno que uso con frecuencia. ¿Puedo conservarlas?
+						</dt>
+						<dd>
+							Por supuesto. Fíjese que hay un apartado en ls zona superior que pone "Colección". Una vez 
+							diseñado un filtro puede guardarlo en su ordenador cliente y llevarlo a donde desee (es un 
+							simple archivo de texto en formato 
+							<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a>). Luego 
+							podrá cargarlo.
+							<br /><br />
+							PF ofrece también unos filtros "prediseñados" descargables desde el servidor. Puede acceder 
+							a ellos desde el <em>Panel</em> en el menú <em>Datos</em> en el apartado <em>Colecciones</em>.
+						</dd>
+						<dt>
+							Y una vez he filtrado lo que deseo&hellip; ¿qué?
+						</dt>
+						<dd>
+							Pues depende de usted. Si desea ver qué ha seleccionado utilice el submenú <em>Listado</em> 
+							del menú <em>Datos</em>. PF le mostrará una tabla paginada con toda la información imprescindible 
+							para acceder a cada registro filtrado. Sin embargo, si lo que quiere es obtener un informe 
+							acuda a la opción correspondiente del submenú <em>Panel</em>. Más adelante explicamos en qué 
+							consisten los informes. También puede en dicho submenú (o en sus especificaciones individuales 
+							de la zona superior de la pantalla) realizar tareas de análisis: <em>esquema</em>, <em>relaciones</em>, 
+							<em>gráficos</em>, <em>redes</em> o <em>mapas</em>.
+						</dd>
+						<dt>
+							Me ha quedado la duda de la <em>búsqueda</em>. ¿Qué es eso
+						</dt>
+						<dd>
+							Pues sencillamente un filtro <em>genérico</em> de una única condición que permite buscar 
+							en un campo concreto o 
+							en cualquier campo utilizando el operador "contenga". Así, si se busca "picasso" aparecerán 
+							actores que se llamen así, exposiciones cuyo título sea ese o en las que un "picasso" participe 
+							como autor, o como comisario,&hellip; Puede ser muy útil en ciertas circunstancias. Una 
+							vez calculado el resultado, se debe activar el filtro para utilizarlo.
+						</dd>
+						<dt>
+							¡Vaya lío&hellip;! Estoy hecho un mar de dudas. ¿Cómo puedo aclararme?
+						</dt>
+						<dd>
+							No se apure. Dispone de varias opciones:
+							<ol>
+								<li>En el menú <em>Ayuda</em> se despliega una ventana emergente con opciones de información 
+								general de la aplicación; la ayuda específica se muestra con cada menú y/o submenú, pero la 
+								general permanece invariable. Tiene las siguientes posibilidades:
+								<ol>
+									<li>Árbol de menús. Despliega de manera jerárquica las diferentes alternativas y 
+									operaciones de menús y submenús.</li>
+									<li>Preguntas frecuentes y sus correspondientes respuestas. En constante ampliación y 
+									ajuste de acuerdo a las necesidades de los usuarios.</li>
+									<li>Operatoria. Un diagrama de flujo muy sencillo de entender con los principios básicos 
+									de funcionamiento.</li>
+									<li>¿Cómo...? Una sección dedicada a aquello de "si deseo realizar X los pasos 
+									a seguir son&hellip;</li>
+								</ol></li>
+								<li>En el menú <em>Documentación</em> dispone de un completo <em>manual</em>.</li>
+								<li>Como se ha dicho, en cada operación individual hay una ayuda específica.</li>
+							</ol>
+							En general, no creemos que haya de sentirse desasistido. Pero si así fuera, tiene a su 
+							disposición la página de <a href="#legal">contacto</a>, desde la que puede comunicarse 
+							como prefiera con el equipo de desarrollo de PF. Para eso estamos.
+						</dd>
+					</dl>
+				</div>	
+				<div id="step4" class="stabcontent hide">
+					<h2 id="title-screencasts">Screencasts</h2>					
+					<div class="group group-xs margin-bottom-l">
+						<ul>
+							<li>
+								<select class="xtabs font-size-xl" id="videoselector">
+									<option value="PFV100ES_000_INTERFACE.mp4">Interfaz de trabajo</option>
+									<option value="PFV100ES_001_UPDATE_LOAD.mp4">Actualización y carga de datos</option>
+									<option value="PFV100ES_002_FILTER_LISTING.mp4">Filtro y listado</option>
+									<option value="PFV100ES_003_SINGLE_RECORD.mp4">Registro individual</option>
+									<option value="PFV100ES_004_SIEVE.mp4">Esquema</option>
+									<option value="PFV100ES_005_RELATIONS.mp4">Relaciones</option>
+								</select>
+								<p class="form-message">NOTA: los vídeos no disponen de sonido.</p>
+							</li>
+						</ul>
+					</div>
+					
+					<video id="videoplayer" width="100%" height="auto" controls 
+						poster="https://hdplus.es/video/pathfinder/es/scposter.svg">
+						<source 
+						src="https://hdplus.es/video/pathfinder/es/PFV100ES_000_INTERFACE.mp4" 
+						type="video/mp4">
+						<source 
+						src="https://hdplus.es/video/pathfinder/es/PFV100ES_000_INTERFACE.webm" 
+						type="video/webm">
+						<source 
+						src="https://hdplus.es/video/pathfinder/es/PFV100ES_000_INTERFACE.obv" 
+						type="video/ogg">
+					</video>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>

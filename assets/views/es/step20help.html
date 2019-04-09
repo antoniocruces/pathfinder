@@ -1,0 +1,139 @@
+<div class="margin-bottom-l">
+	<h4 class="margin-vertical" id="titlestep100">1. ACTUALIZAR DATOS.</h4>
+	
+	<p>
+		Descarga de archivo 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a> 
+		desde el servidor de datos. Cada archivo es una "foto fija" del estado de 
+		<a rel="nofollow" target="_blank" href="http://expofinder.uma.es">ExpoFinder</a> 
+		en un momento dado.
+	</p>
+	<p>
+		El archivo se almacena codificado en el disco del ordenador cliente usando un 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/N%C3%BAmero_de_identificaci%C3%B3n_personal">PIN</a> 
+		que es suministrado por PF y no puede ser cambiado. Se aconseja vivamente conservarlo, pues en caso 
+		de olvido o pérdida el archivo no podrá ser decodificado.
+	</p>	
+	<p>
+		Este sistema permite guardar sucesivos "estados" de los datos de 
+		<a rel="nofollow" target="_blank" href="http://expofinder.uma.es">ExpoFinder</a> y 
+		efectuar comparaciones.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep101">2. CARGAR ARCHIVO.</h4>
+	
+	<p>
+		PATHFINDER carga en memoria el archivo 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a> 
+		conservado en disco que el usuario determine. PF solicitará el 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/N%C3%BAmero_de_identificaci%C3%B3n_personal">PIN</a> 
+		para poder decodificarlo antes de cargarlo.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep102">3. INFORMACIÓN.</h4>
+	
+	<p class="aside background-warning-50">
+		Se muestra solamente cuando se haya cargado un archivo 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a> en memoria.
+	</p>
+
+	<p>
+		PF muestra una ventana emergente con datos característicos del archivo cargado, incluyendo 
+		el desglose (en cifras absolutas y porcentaje) de cada <a href="#documents">registro primario</a>, 
+		así como de las <a href="#documents">taxonomías</a> y <a href="#documents">metadatos</a>.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep103">4. EXPORTAR DATOS.</h4>
+	
+	<p class="aside background-warning-50">
+		Se muestra solamente cuando se haya cargado un archivo 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a> en memoria.
+	</p>
+
+	<p>
+		PF genera un archivo que puede ser descargado en el disco local del ordenador cliente en formatos 
+		que pueden ser leídos por otras aplicaciones: 
+		<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Tab-separated_values">TSV</a>, 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Valores_separados_por_comas">CSV</a> o 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Extensible_Markup_Language">XML</a>. 
+		Los datos se exportan en grupos separados: <a href="#documents">registro primario</a>, 
+		<a href="#documents">taxonomías</a> y <a href="#documents">metadatos</a>.
+	</p>
+	<p>
+		<mark class="background-info-100">IMPORTANTE</mark>: solamente se exportarán los datos 
+		<a href="#documents">filtrados</a>.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep104">5. COLECCIONES.</h4>
+	
+	<p class="aside background-warning-50">
+		Se muestra solamente cuando se haya cargado un archivo 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a> en memoria.
+	</p>
+
+	<p>
+		Permite utilizar <em>filtros predefinidos</em>, conservados en el servidor de aplicación, 
+		que acotan el conjunto principal de datos de acuerdo a ciertos parámetros. Cuando una colección 
+		está activa, su nombre se muestra en la cabecera de las páginas de datos.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep105">6. INFORMES.</h4>
+	
+	<p class="aside background-warning-50">
+		Se muestra solamente cuando se haya cargado un archivo 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a> en memoria.
+	</p>
+
+	<p>
+		Exporta el subconjunto de datos filtrados correspondiente a un tipo de registro primario 
+		(incluyendo o no un determinado tipo de registros relacionados) en formatos 
+		<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Tab-separated_values">TSV</a> o 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Rich_Text_Format">RTF</a>. 
+		En este último caso, y dada la naturaleza compleja de tales archivos, la operación puede 
+		llevar un tiempo considerable.
+	</p>
+
+	<h4 class="margin-vertical" id="titlestep106">7. FILTRO.</h4>
+	
+	<p>
+		Siguiendo el paradigma matemático de 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Filtro_(matemáticas)">filtro</a>, 
+		PF permite seleccionar un <em>subconjunto</em> del conjunto principal de datos cargados. Todas las operaciones 
+		que se realicen a partir de entonces afectarán <em>únicamente</em> a dicho subconjunto. Consulte la 
+		<a href="#documents">documentación</a> para conocer más sobre los filtros y la forma de construirlos.
+	</p>
+	
+	<p class="color-info">
+		IMPORTANTE: en caso de no haber ningún filtro establecido, el subconjunto es igual al conjunto 
+		completo de datos.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep107">8. LISTADO.</h4>
+	
+	<p>
+		PF muestra todos los registros filtrados en una única tabla paginada que puede ser 
+		exportada, impresa, ordenada y buscada por cualquier dato presente en ella. Mostrando a razón de 
+		un <a href="#documents">registro primario</a> por fila, permite acceder a la ficha de registro individual 
+		de cada uno.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep108">9. ANÁLISIS.</h4>
+	
+	<p>
+		El núcleo funcional y operativo de PATHFINDER. Controla todas las operaciones de generación de nuevo 
+		conocimiento y descubrimiento de pautas y patrones a partir de un procedimiento analítico de triple enfoque: 
+		<ul>
+			<li>
+				Estadístico: aplica métodos de estadística descriptiva e identificación de anomalías a partir de 
+				la cuantificación de los datos cualitativos.
+			</li>
+			<li>
+				Gráfico: traza diagramas, histogramas y grafos partiendo de los datos cuantificados.
+			</li>
+			<li>
+				Geográfico: muestra la dispersión o concentración en mapas globales y realiza operaciones 
+				booleanas sobre trazados geométricos.
+			</li>
+		</ul>
+	</p>
+</div>

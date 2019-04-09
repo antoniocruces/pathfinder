@@ -1,0 +1,404 @@
+{
+	"es": [
+		{
+			"title": "Picasso en España",
+			"name": "20180714001",
+			"date": "2018-07-14",
+			"description": "Exposiciones de Picasso en España",
+			"active": 0,
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso en Andalucía",
+			"name": "20180714002",
+			"date": "2018-07-14",
+			"description": "Exposiciones de Picasso en Andalucía",
+			"active": 0,
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso fuera de España",
+			"name": "20180714003",
+			"date": "2018-07-14",
+			"description": "Exposiciones de Picasso fuera de España",
+			"active": 0,
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "nl",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Andalucía 2010-2017. Exposiciones",
+			"name": "20180714004",
+			"date": "2018-07-14",
+			"description": "Andalucía 2010-2017. Solo exposiciones",
+			"active": 0,
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "2010/2017",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Andalucía 2010-2017. Relaciones",
+			"name": "20180714004",
+			"date": "2018-07-14",
+			"description": "Andalucía 2010-2017. Exposiciones y relaciones",
+			"active": 0,
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "2010/2017",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_art_collector",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_catalog",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_curator",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_funding_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_info_source",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_museography",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_parent_exhibition",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_source_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		}
+	],
+	"en": [
+		{
+			"title": "Picasso in Spain",
+			"name": "20180714001",
+			"date": "2018-07-14",
+			"description": "Picasso exhibitions in Spain",
+			"active": 0,
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso in Andalusia",
+			"name": "20180714002",
+			"date": "2018-07-14",
+			"description": "Picasso exhibitions in Andalusia",
+			"active": 0,
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Picasso out of Spain",
+			"name": "20180714003",
+			"date": "2018-07-14",
+			"description": "Picasso exhibitions out of Spain",
+			"active": 0,
+			"query": [
+				{
+					"value": "ruiz picasso",
+					"rkey": "person",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "nl",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Andalusia 2010-2017. Exhibitions",
+			"name": "20180714004",
+			"date": "2018-07-14",
+			"description": "Andalusia 2010-2017. Exhibitions only",
+			"active": 0,
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "2010/2017",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				}
+			]
+		},
+		{
+			"title": "Andalucía 2010-2017. Relations",
+			"name": "20180714004",
+			"date": "2018-07-14",
+			"description": "Andalucía 2010-2017. Exhibitions & relations",
+			"active": 0,
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "2010/2017",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_art_collector",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_catalog",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_curator",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_funding_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_info_source",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_museography",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_parent_exhibition",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "",
+					"rkey": "_cp__exh_source_entity",
+					"operator": "nn",
+					"modifier": "",
+					"results": []
+				}
+			]
+		}
+	]
+}

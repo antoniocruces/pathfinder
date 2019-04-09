@@ -1,0 +1,303 @@
+<header class="margin-bottom-l">
+	<div class="container">
+	    	<img class="margin-right-s" src="./assets/img/logos/IMGLOGOPF.svg" alt="PATHFINDER" 
+	    		style="height:100px;width:100px;float:left" />
+		<h1 class="display-title display-title-xxl margin-top-s">
+			<span class="margin-vertical-auto">Datos</span>
+		</h1>
+		<p class="lead lead-s margin-vertical-m">
+			El núcleo del sistema. Permite realizar análisis estadístico, gráfico y geográfico de los datos, así 
+			como filtrarlos, exportarlos, agruparlos&hellip;
+		</p>
+		<h2 id="data-collection" class="hide color-secondary"></h2>
+	</div>
+</header>
+
+<main>
+	<section>
+		<div class="container logo-background">
+			<div id="c-tab-zero">
+				<div id="panel" class="no-margin no-padding">
+					<div id="data-s-db-div" class="content">
+						<h2 id="title-db">Base de datos.</h2>
+						<p>
+							<span id="dx-desc">El servidor está <span id="data-s-server"></span></span>.  
+							<span id="data-s-datastatus">El archivo JSON deberá tener el formato adecuado.</span>
+						</p>
+						<input class="hide" id="data-file-loader" type="file" 
+						onchange="file.load(this);this.value = null;" />
+						<div class="group group-xs">
+							<ul>
+	 							<li>
+	       							<a id="data-a-server" class="button button-error button-block button-icon" 
+	       								onclick="ajax.auth();">
+										<span>Actualizar datos</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="downloadcloud" d=""></path>
+										</svg>
+									</a>
+								</li>
+	 							<li>
+	       							<a class="button button-warning button-block button-icon" 
+	       								href="javascript:byId('data-file-loader').click();">
+										<span>Cargar archivo</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="database" d=""></path>
+										</svg>
+									</a>
+								</li>
+	 							<li id="data-s-db-info" class="hide">
+	       							<a class="button button-primary button-block button-icon" 
+	       								href="javascript:info.database();">
+										<span>Información</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="info" d=""></path>
+										</svg>
+									</a>
+								</li>
+	 							<li id="data-s-db-export" class="hide">
+	       							<a class="button button-tertiary button-block button-icon" 
+	       								href="javascript:info.export();">
+										<span>Exportar datos</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="download" d=""></path>
+										</svg>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div id="data-size" class="hide margin-top-s" style="min-height:94px;">
+							<p class="form-message light"><span class="loading">Trabajando</span></p>
+						</div>										
+					</div>
+					<div class="content panelelement hide padding-vertical-s">
+						<h2 id="title-collections">Colecciones.</h2>
+						<div class="group group-xs">
+							<ul>
+	 							<li>
+									<a id="dc-button" class="button button-secondary button-block button-icon" 
+										href="">
+										<span>Cargar colección</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="archive" d=""></path>
+										</svg>
+									</a>
+								</li>
+								<li>
+									<div id="data-s-collections"></div>
+								</li>
+							</ul>
+						</div>
+						<p id="dc-desc" class="form-message light"><span class="loading">Espere un momento</span></p>
+					</div>
+					<div class="content panelelement hide padding-bottom-s">
+						<h2 id="title-reports">Informes.</h2>
+						<div class="group group-xs">
+							<ul>
+	 							<li>
+									<a data-tooltip="formato TAB" 
+										id="dr-ana" class="button button-tertiary button-block button-icon" href="">
+										<span>Analítico</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="file" d=""></path>
+										</svg>
+									</a>
+								</li>
+	 							<li>
+									<a data-tooltip="formato RTF" 
+										id="dr-tex" class="button button-tertiary button-block button-icon" href="">
+										<span>Textual</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="filetext" d=""></path>
+										</svg>
+									</a>
+								</li>
+								<li>
+									<div id="data-s-reports-0"></div>
+								</li>
+								<li>
+									<div id="data-s-reports-1"></div>
+								</li>
+							</ul>
+						</div>
+						<p id="dr-desc" class="form-message light"><span class="loading">Trabajando</span></p>
+					</div>
+				</div>
+			</div>
+			
+			<div id="c-tab-one" class="tabcontent hide">
+				<div class="content">
+					<h2 id="title-listing">Listado</h2>
+					<div class="no-print" id="data-selectors"></div>
+					<div id="data-listing" class="margin-vertical-l min-height-50vh">
+						<p class="color-error text-align-center margin-vertical-auto">
+							Sin datos
+						</p>
+					</div>
+				</div>
+			</div>
+			<div id="c-tab-two" class="tabcontent hide">
+				<div class="content">
+					<h2 id="title-stats" class="margin-top">Estadísticas</h2>
+					<div class="group group-xs margin-bottom-s no-print">
+						<ul>
+							<li>
+								<button id="stab0" 
+									class="stablinks button button-s button-light button-border" 
+									onclick="javascript:toolkit.generictab('stab0', 'step0', 'stabcontent', 'stablinks');">
+								Información</button>
+							</li>
+							<li>
+								<button id="stab1" 
+									class="stablinks button button-s button-light button-border" 
+									onclick="javascript:toolkit.generictab('stab1', 'step1', 'stabcontent', 'stablinks');stats.schema();">
+								Grupos</button>
+							</li>
+							<li>
+								<button id="stab2" 
+									class="stablinks button button-s button-light button-border" 
+									onclick="javascript:toolkit.generictab('stab2', 'step2', 'stabcontent', 'stablinks');stats.relations();">
+								Relaciones</button>
+							</li>
+							<li>
+								<button id="stab3" 
+									class="stablinks button button-s button-light button-border" 
+									onclick="javascript:toolkit.generictab('stab3', 'step3', 'stabcontent', 'stablinks');stats.cooccurrences();">
+								Correlaciones</button>
+							</li>
+						</ul>
+					</div>
+					<div id="step0" class="stabcontent visible">
+						<div class="no-print" id="info-selectors"></div>
+						<div id="info-listing" class="margin-bottom-s visible min-height-50vh">
+							<p class="margin-top">
+								Para el correcto funcionamiento de PATHFINDER como herramienta para obtener 
+								nuevo conocimiento es necesario, en primer lugar, <em>cuantificar</em> los registros 
+								de la base de datos. Es decir, hay que transformar información 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=BRXlHCN">
+									<mark class="background-info-50">cualitativa</mark></a>, 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=AVqx1Ac">
+									<mark class="background-info-50">continua</mark></a> 
+								<span data-tooltip="ver cuarta acepción"><i class="far fa-question-circle"></i></span>	
+									e 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=LIJKfze">
+									<mark class="background-info-50">inconmensurable</mark></a> en valores 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=BSFLCp9">
+									<mark class="background-info-50">cuantitativos</mark></a>, 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=Dt8QXrV">
+									<mark class="background-info-50">discretos</mark></a> 
+								<span data-tooltip="ver cuarta acepción"><i class="far fa-question-circle"></i></span>	
+									y 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=Ovvw32B">
+									<mark class="background-info-50">mensurables</mark></a>. 
+							</p>
+							<h4>Grupos</h4>
+							<p>
+								Las funciones de agregación realizan análisis estadísticos sobre números. 
+								Una función de agregación calcula un solo valor de resultado a partir de un 
+								conjunto de valores o registros, fijándose en las características o 
+								<em>metainformaciones</em> que se repiten, evaluando su frecuencia y distribución. 
+								Utilice esta opción para conocer la incidencia de ciertos parámetros en la muestra 
+								completa de valores seleccionados. IMPORTANTE: todos los cálculos se realizan 
+								<em>únicamente</em> sobre los valores <em>filtrados</em>.
+							</p>
+							<h4>Relaciones</h4>
+							<p>
+								Utilizando un mecanismo de agrupamiento o agregación, PATHFINDER calcula la 
+								importancia de las relaciones entre los diversos tipos de registros. Utilice esta 
+								opción para determinar la "intensidad" o importancia de las mismas.
+							</p>
+							<h4>Correlaciones</h4>
+							<p>
+								Es preciso ser cuidadoso con este apartado y <em>comprender</em> qué 
+								información puede extraer. Es una potentísima opción para descubrir relaciones 
+								<em>ocultas</em> entre subconjuntos de registros primarios, pero es preciso saber 
+								extraer la significación de sus resultados.
+							</p>
+							<p>
+								PATHFINDER calcula aquí las <em>coincidencias entre dos grupos de registros 
+								primarios relacionados entre sí a partir de un tercer grupo</em>. Es decir la "vecindad" de 
+								dos elementos. Por ejemplo, si determinado conjunto de actores, caracterizado por compartir 
+								un tipo de metadatos, participa como autores de obras de arte en una exposición sería "vecino" 
+								de otro grupo de actores que coincidieran en ella participando como comisarios.
+							</p>
+							<p>
+								Sin embargo, puede determinar que existen relaciones, por ejemplo, entre entidades que 
+								comparten una entidad matriz, cuya importancia puede no ser relevante (o tal vez sí). A modo de ejemplo, 
+								PATHFINDER puede encontrar vínculos entre entidades gestionadas por un organismo de rango elevado, 
+								como en el caso de un ministerio o dirección general, y tratarse en este caso de un 
+								"conocimiento inútil"; sin embargo, si dicho organismo es de un rango menor cabe la posibilidad 
+								de que el descubrimiento de tales enlaces sea muy útil.
+							</p>
+						</div>
+					</div>
+					<div id="step1" class="stabcontent hide">
+						<div class="no-print" id="schema-selectors"></div>
+						<div id="schema-listing" class="margin-vertical-l visible min-height-50vh">
+							<div class="color-error text-align-center margin-vertical-auto">
+								Sin datos
+							</div>
+						</div>
+					</div>
+					<div id="step2" class="stabcontent hide">
+						<div class="no-print" id="relations-selectors"></div>
+						<div id="relations-listing" class="margin-vertical-l visible min-height-50vh">
+							<p class="color-error text-align-center margin-vertical-auto">
+								Sin datos
+							</p>
+						</div>
+					</div>
+					<div id="step3" class="stabcontent hide">
+						<div class="no-print" id="cooccurrences-selectors"></div>
+						<div id="cooccurrences-listing" class="margin-vertical-l visible min-height-50vh">
+							<p class="color-error text-align-center margin-vertical-auto">
+								Sin datos
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="c-tab-three" class="tabcontent hide">
+				<div class="content">
+					<h2 id="title-charts">Gráficos</h2>
+					<div class="no-print" id="charts-selectors"></div>
+					<div id="stats-charts" class="margin-vertical-l visible min-height-50vh">
+						<p class="color-error text-align-center margin-vertical-auto">
+							Sin datos
+						</p>
+					</div>
+				</div>
+			</div>
+			
+			<div id="c-tab-four" class="tabcontent hide">
+				<div class="content">
+					<h2 id="title-networks">Redes</h2>
+					<div class="no-print" id="network-selectors"></div>
+					<div id="stats-network" class="margin-vertical-l min-height-50vh">
+						<p class="color-error text-align-center margin-vertical-auto">
+							Sin datos
+						</p>
+					</div>
+				</div>
+			</div>
+			
+			<div id="c-tab-five" class="tabcontent hide">
+				<div class="content margin-bottom-l">
+					<h2 id="title-maps">Mapas</h2>
+					<div class="no-print" id="map-selectors"></div>
+					<div id="stats-map" class="full-width page-map">
+						<p class="color-error text-center margin-vertical-auto min-height-50vh">
+							Sin datos
+						</p>
+					</div>
+					<p class="form-message">
+						<span id="map-currentcoords" class="color-primary"></span>
+						&nbsp;
+						<span id="map-currentaddress"></span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>

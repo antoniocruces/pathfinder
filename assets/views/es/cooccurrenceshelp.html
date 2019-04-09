@@ -1,0 +1,88 @@
+<h4 class="margin-top margin-bottom" id="help-subtitle">Coocurrencias</h4>
+
+<p>
+	En PATHFINDER, se entiende por 
+	<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Correlaci%C3%B3n"><em>correlación</em></a> 
+	la frecuencia con que dos metainformaciones de diferentes tipos 
+	de registro primario coinciden en un conjunto de registro. Permite, por ejemplo, averiguar cuántas veces determinado 
+	actor comisaria exposiciones que incluyen una obra de arte concreta. Emplea medidas de 
+	<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Informaci%C3%B3n_mutua">transinformación</a>.
+</p>
+
+<p class="margin-top">
+	Haciendo honor a su nombre, PATHFINDER "traza" la ruta de relaciones que vinculan a tipos de registro primario dispares, 
+	utilizando un 
+	<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Grafo_dirigido">digrafo</a>. Partiendo de él y 
+	de las distintas metainformaciones localizadas, se crea un "camino" compuesto por los sucesivos pasos forman 
+	el vínculo. Para construirlo solo hay que especificar el origen y el destino de la ruta. En la siguiente tabla 
+	se detallan los elementos a considerar.
+</p>
+
+<div class="table-responsive">
+	<table class="mq-table pure-table-bordered pure-table">
+		<tbody>
+			<tr>
+				<td class="highlight is-text-center">
+					Origen
+				</td>
+				<td>
+					Comienzo de la ruta. Por ejemplo, <em>actor &rarr; autoría de la obra &rarr; obra</em>. Indica 
+					los tipos de registro primario vinculados a la metainformación que los relaciona entre sí.
+				</td>
+			</tr>
+			<tr>
+				<td class="highlight is-text-center">
+					Destino
+				</td>
+				<td>
+					Fin de la ruta. Por ejemplo, <em>exposición &rarr; actor comisario &rarr; actor</em>. Indica 
+					los tipos de registro primario vinculados a la metainformación que los relaciona entre sí.
+				</td>
+			</tr>
+			<tr>
+				<td class="highlight is-text-center">
+					Recalcular
+				</td>
+				<td>
+					Trazado de la ruta. Si se han eliminado uno o más pasos reconstruye la ruta original.
+				</td>
+			</tr>
+			<tr>
+				<td class="highlight is-text-center">
+					Grafo de ruta
+				</td>
+				<td>
+					Diagrama de la ruta. Muestra una ventana de información con la representación de la 
+					ruta en un 
+					<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Grafo_dirigido">digrafo</a>.
+				</td>
+			</tr>
+			<tr>
+				<td class="highlight is-text-center">
+					Pasos de la ruta
+				</td>
+				<td>
+					Al pulsar uno de ellos, se elimina y no será tenido en cuenta en el cálculo 
+					final de correlaciones. Los colores de los elementos se corresponden con la siguiente leyenda: 
+					<br>
+					<span class="short-padding-left short-padding-right bg-person" 
+						style="color:#fff">P</span> actor, 
+					<span class="short-padding-left short-padding-right bg-book" 
+						style="color:#fff">B</span> catálogo, 
+					<span class="short-padding-left short-padding-right bg-company" 
+						style="color:#fff">C</span> empresa, 
+					<span class="short-padding-left short-padding-right bg-entity" 
+						style="color:#fff">E</span> entidad, 
+					<span class="short-padding-left short-padding-right bg-exhibition" 
+						style="color:#fff">X</span> exposición, 
+					<span class="short-padding-left short-padding-right bg-artwork" 
+						style="color:#fff">A</span> obra de arte,
+					<span class="short-padding-left short-padding-right" 
+						style="background:#e6e6e6;color:#777">?</span> relación entre registros. 
+					Los campos que relacionan dos pasos entre sí aparecen en color gris y no pueden ser 
+					eliminados.
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

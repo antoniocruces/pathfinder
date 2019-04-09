@@ -1,0 +1,184 @@
+<div class="header">
+	<h1>
+		<img class="logo" src="./assets/img/logos/IMGLOGOPF.svg" alt="PATHFINDER" height="50">Opciones
+	</h1>
+	<h2>
+		Realice los ajustes y verifique si se cumplen los requisitos necesarios 
+		para el correcto funcionamiento de PATHFINDER.
+	</h2>
+</div>
+<div class="pagecontent pagecontent-customize">
+	<div id="c-tab-zero" class="tabcontent tab-zero content">
+		<h3 class="pagecontent-header">Requisitos.</h3>
+		<ul>
+			<li>8 MB ó más de memoria RAM. Microprocesador igual o posterior a Intel Core i3.</li>
+			<li>El tamaño del disco no es relevante, si bien se sugiere disponer de 250 MB libres.</li>
+			<li>Sistema operativo MS Windows v &ge; 10, Linux con kernel v &ge; 4, macOS v &ge;10.</li>
+			<li>Navegador Firefox v &ge; 50, Safari v &ge; 10 (no recomendado), Chrome v &ge; 51 (recomendado), Opera v &ge; 40.</li>
+		</ul>
+		<h4>Navegador detectado</h4>
+		<p id="settings-detected"></p>
+		<h4>Características detectadas</h4>
+		<ul>
+			<li>Acepta <em>cookies</em>: <span id="br-cookies"></span></li>
+			<li>Tipo de dispositivo: <span id="br-device"></span></li>
+			<li>Idiomas aceptados: <span id="br-languages"></span></li>
+			<li>Conectado: <span id="br-online"></span></li>
+			<li>Acceso procedente de: <span id="br-referrer"></span></li>
+			<li>Resolución de pantalla (píxeles): <span id="br-screenresolution"></span></li>
+			<li>Zona horaria: <span id="br-timezone"></span></li>
+			<li>Agente de usuario detectado: <span id="br-useragent"></span></li>
+		</ul>
+		<h4>Uso de memoria y velocidad</h4>
+		<ul>
+			<li>Almacenamiento. Tamaño original: <span id="br-storeoriginal"></span></li>
+			<li>Almacenamiento. Tamaño actual: <span id="br-storecurrent"></span></li>
+			<li>Procesamiento. Velocidad: <span id="br-opsspeed"></span></li>
+		</ul>
+		<h4>Observaciones</h4>
+		<p>
+			PATHFINDER no está pensado para uso en dispositivos móviles o tabletas. 
+		</p>
+		<p>
+			Algunas versiones de <em>Safari</em>, en especial las primeras 
+			<em>releases</em> de la número 10, pueden plantear problemas en la descarga de datos del servidor y emitir advertencias 
+			poco realistas sobre consumo excesivo de memoria.
+		</p>
+	</div>
+	<div id="c-tab-one" class="tabcontent tab-one content is-hidden">
+		<h3 class="pagecontent-header">
+			Ajustes.
+		</h3>
+		<p class="margin-top">
+			<a class="pure-button" data-tooltip="Restaurar ajustes por defecto de la aplicación" 
+				href="javascript:info.settingsreset();location.reload();" style="font-size:1em;">
+				&#x21bb; Ajustes originales</a>
+		</p>
+		<h3>
+			Control de errores 
+		</h3>
+		<ul>
+			<li>
+				Captura de errores: 
+				<a data-errorcatching="1" href="javascript:info.settings('errorcatching', 1);">sí</a>, 
+				<a data-errorcatching="0" href="javascript:info.settings('errorcatching', 0);">no</a>. 
+			</li>
+			<li>
+				Mensajes de error detallados: 
+				<a data-verboseerror="1" href="javascript:info.settings('verboseerror', 1);">sí</a>, 
+				<a data-verboseerror="0" href="javascript:info.settings('verboseerror', 0);">no</a>. 
+			</li>
+			<li>
+				Mostrar error en consola de desarrollo: 
+				<a data-debugconsole="1" href="javascript:info.settings('debugconsole', 1);">sí</a>, 
+				<a data-debugconsole="0" href="javascript:info.settings('debugconsole', 0);">no</a>.
+			</li>
+			<li>
+				Aviso antes de recargar la página: 
+				<a data-reloadwarning="1" href="javascript:info.settings('reloadwarning', 1);">sí</a>, 
+				<a data-reloadwarning="0" href="javascript:info.settings('reloadwarning', 0);">no</a>.
+			</li>
+		</ul>
+		<h3>Funcionamiento</h3>
+		<ul>
+			<li>
+				<span data-tooltip="aumenta el tiempo de arranque y la memoria utilizada pero agiliza la respuesta">
+				Precarga de consultas
+				</span>: 
+				<a data-queriespreload="0" href="javascript:info.settings('queriespreload', 0);">no</a>, 
+				<a data-queriespreload="1" href="javascript:info.settings('queriespreload', 1);">sí</a>. 
+			</li>
+			<li>
+				<span data-tooltip="utilizados en listados">
+				Mapas estáticos generados por:</span> 
+				<a data-staticmap="0" href="javascript:info.settings('staticmap', 0);">MapQuest</a>, 
+				<a data-staticmap="1" href="javascript:info.settings('staticmap', 1);">OpenStreetMap</a>. 
+			</li>
+			<li>
+				Formato 				 
+				<a target="_blank" rel="nofollow" href="https://es.wikipedia.org/wiki/Unidad_tipificada" 
+					data-tooltip="unidades tipificadas">
+					<em>z-score</em>
+					</a>: 
+				<a data-zscoreassstars="0" href="javascript:info.settings('zscoreassstars', 0);">
+					numérico (valores del 1 al 5)</a>, 
+				<a data-zscoreassstars="1" href="javascript:info.settings('zscoreassstars', 1);">gráfico (de 1 a 
+					5 asteriscos &#10033;)</a>. 
+			</li>
+		</ul>
+		<h3>Límites</h3>
+		<ul>
+			<li>
+				Tiempo máximo de carga de bibliotecas (para conexiones lentas; en s): 
+				<a data-timeout="1000" href="javascript:info.settings('timeout', 1000);">1</a>, 
+				<a data-timeout="2000" href="javascript:info.settings('timeout', 2000);">2</a>, 
+				<a data-timeout="3000" href="javascript:info.settings('timeout', 3000);">3</a>, 
+				<a data-timeout="4000" href="javascript:info.settings('timeout', 4000);">4</a>, 
+				<a data-timeout="5000" href="javascript:info.settings('timeout', 5000);">5</a>, 
+				<a data-timeout="10000" href="javascript:info.settings('timeout', 10000);">10</a>, 
+				<a data-timeout="15000" href="javascript:info.settings('timeout', 15000);">15</a>
+			</li>
+			<li>
+				Valores máximos a mostrar en estadística descriptiva: 
+				<a data-statstopvalues="5" href="javascript:info.settings('statstopvalues', 5);">5</a>, 
+				<a data-statstopvalues="10" href="javascript:info.settings('statstopvalues', 10);">10</a>, 
+				<a data-statstopvalues="20" href="javascript:info.settings('statstopvalues', 20);">20</a>, 
+				<a data-statstopvalues="30" href="javascript:info.settings('statstopvalues', 30);">30</a>, 
+				<a data-statstopvalues="40" href="javascript:info.settings('statstopvalues', 40);">40</a>, 
+				<a data-statstopvalues="50" href="javascript:info.settings('statstopvalues', 50);">50</a>, 
+				<a data-statstopvalues="100" href="javascript:info.settings('statstopvalues', 100);">100</a>.
+			</li>
+			<li>
+				<span data-tooltip="seleccionar según la cantidad de memoria disponible">
+				Límite máximo de <em>filas</em> en una tabla
+				</span>: 
+				<a data-querylengthlimit="20000" href="javascript:info.settings('querylengthlimit', 20000);">20.000</a>, 
+				<a data-querylengthlimit="30000" href="javascript:info.settings('querylengthlimit', 30000);">30.000</a>, 
+				<a data-querylengthlimit="40000" href="javascript:info.settings('querylengthlimit', 40000);">40.000</a>, 
+				<a data-querylengthlimit="50000" href="javascript:info.settings('querylengthlimit', 50000);">50.000</a>, 
+				<a data-querylengthlimit="100000" href="javascript:info.settings('querylengthlimit', 100000);">100.000</a>, 
+				<a data-querylengthlimit="500000" href="javascript:info.settings('querylengthlimit', 500000);">500.000</a>, 
+			</li>
+			<li>
+				Límite máximo de 
+				<a href="javascript:info.help('settingsgraph');">
+				<em>vértices</em></a> para trazar un grafo: 
+				<a data-graphnodemax="1000" href="javascript:info.settings('graphnodemax', 1000);">1.000</a>, 
+				<a data-graphnodemax="2000" href="javascript:info.settings('graphnodemax', 2000);">2.000</a>, 
+				<a data-graphnodemax="3000" href="javascript:info.settings('graphnodemax', 3000);">3.000</a>, 
+				<a data-graphnodemax="5000" href="javascript:info.settings('graphnodemax', 5000);">5.000</a>, 
+				<a data-graphnodemax="10000" href="javascript:info.settings('graphnodemax', 10000);">10.000</a>, 
+				<a data-graphnodemax="25000" href="javascript:info.settings('graphnodemax', 25000);">25.000</a>, 
+				<a data-graphnodemax="50000" href="javascript:info.settings('graphnodemax', 50000);">50.000</a>, 
+				<a data-graphnodemax="100000" href="javascript:info.settings('graphnodemax', 100000);">100.000</a>.
+			</li>
+			<li>
+				Límite máximo de  
+				<a href="javascript:info.help('settingsgraph');">
+				<em>aristas</em></a> para trazar un grafo: 
+				<a data-graphedgemax="1000" href="javascript:info.settings('graphedgemax', 1000);">1.000</a>, 
+				<a data-graphedgemax="2000" href="javascript:info.settings('graphedgemax', 2000);">2.000</a>, 
+				<a data-graphedgemax="3000" href="javascript:info.settings('graphedgemax', 3000);">3.000</a>, 
+				<a data-graphedgemax="5000" href="javascript:info.settings('graphedgemax', 5000);">5.000</a>, 
+				<a data-graphedgemax="10000" href="javascript:info.settings('graphedgemax', 10000);">10.000</a>, 
+				<a data-graphedgemax="25000" href="javascript:info.settings('graphedgemax', 25000);">25.000</a>, 
+				<a data-graphedgemax="50000" href="javascript:info.settings('graphedgemax', 50000);">50.000</a>, 
+				<a data-graphedgemax="100000" href="javascript:info.settings('graphedgemax', 100000);">100.000</a>.
+			</li>
+		</ul>
+		<h3>Listados y tablas</h3>
+		<ul>
+			<li>
+				Registros por página: 
+				<a data-listrowsperpage="10" href="javascript:info.settings('listrowsperpage', 10);">10</a>, 
+				<a data-listrowsperpage="20" href="javascript:info.settings('listrowsperpage', 20);">20</a>, 
+				<a data-listrowsperpage="30" href="javascript:info.settings('listrowsperpage', 30);">30</a>, 
+				<a data-listrowsperpage="40" href="javascript:info.settings('listrowsperpage', 40);">40</a>, 
+				<a data-listrowsperpage="50" href="javascript:info.settings('listrowsperpage', 50);">50</a>, 
+				<a data-listrowsperpage="100" href="javascript:info.settings('listrowsperpage', 100);">100</a>.
+			</li>
+		</ul>
+		<h3>Escala cromática</h3>
+		<div id="colorscales" style="width: 100%; display: table;"></div>
+	</div>
+</div>

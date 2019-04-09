@@ -1,0 +1,111 @@
+<div class="row">
+	<div class="col">	
+
+		<h3>Análisis</h3>
+		<p class="desc">
+			<svg version="1.1" id="PF_start" xmlns="http://www.w3.org/2000/svg" 
+			xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+			width="50" height="50"
+			viewBox="0 0 512 512" 
+			style="enable-background:new 0 0 512 512;float:left; margin-right:15px;margin-bottom:15px;fill:#777" 
+			xml:space="preserve">
+			<path d="M507.62,456.39l-29.999-29.999c-5.857-5.858-15.355-5.858-21.213,0c-5.858,5.858-5.858,15.355,0,21.213l4.394,4.394
+				h-39.788V165.993c0-8.284-6.716-15-15-15h-60.001c-8.284,0-15,6.716-15,15v286.006h-30.001V104.992c0-8.284-6.716-15-15-15H226.01
+				c-8.284,0-15,6.716-15,15v347.007h-31.001V225.994c0-8.284-6.716-15-15-15h-60.001c-8.284,0-15,6.716-15,15v226.005H60.006V51.203
+				l4.394,4.394c5.857,5.858,15.355,5.859,21.213,0c5.858-5.858,5.858-15.355,0-21.213l-30-29.999c-5.788-5.792-15.32-5.902-21.218,0
+				L4.398,34.384c-5.858,5.858-5.858,15.355,0,21.213c5.857,5.858,15.355,5.858,21.214,0l4.394-4.394v69.788h-15
+				c-8.284,0-15,6.716-15,15c0,8.284,6.716,15,15,15h15v30.001h-15c-8.284,0-15,6.716-15,15s6.716,15,15,15h15v30.001h-15
+				c-8.284,0-15,6.716-15,15c0,8.284,6.716,15,15,15h15v30.001h-15c-8.284,0-15,6.716-15,15s6.716,15,15,15h15v30.001h-15
+				c-8.284,0-15,6.716-15,15s6.716,15,15,15h15v31.001h-15c-8.284,0-15,6.716-15,15s6.716,15,15,15h15v15c0,8.284,6.716,15,15,15h15
+				v15c0,8.284,6.716,15,15,15s15-6.716,15-15v-15c10.492,0,19.508,0,30.001,0v15c0,8.284,6.716,15,15,15c8.284,0,15-6.716,15-15v-15
+				c10.93,0,20.122,0,31.001,0v15c0,8.284,6.716,15,15,15s15-6.716,15-15v-15c10.492,0,19.508,0,30.001,0v15c0,8.284,6.716,15,15,15
+				s15-6.716,15-15v-15c10.492,0,19.508,0,30.001,0v15c0,8.284,6.716,15,15,15s15-6.716,15-15v-15c10.492,0,19.508,0,30.001,0v15
+				c0,8.284,6.716,15,15,15s15-6.716,15-15v-15c23.584,0,54.919,0,69.789,0l-4.394,4.394c-5.858,5.858-5.858,15.355,0,21.214
+				c5.857,5.858,15.355,5.859,21.213,0l29.999-29.999C513.351,471.886,513.561,462.323,507.62,456.39z M150.007,451.999h-30.001
+				v-61.001h30.001V451.999z M150.007,360.997h-30.001V240.995h30.001V360.997z M271.01,451.999h-30.001V210.994h30.001V451.999z
+				 M271.01,180.993h-30.001v-61.001h30.001V180.993z M391.012,451.999h-30.001V300.996h30.001V451.999z M391.012,270.995h-30.001
+				v-90.002h30.001V270.995z"/>
+			</svg>
+			Utilice esta página para obtener nuevo conocimiento de los datos gestionados por PATHFINDER mediante 
+			técnicas de <em>análisis cuantitativo</em> de sus valores cualitativos. Los datos que obtenga al realizar los procesos analíticos 
+			estadísticos se verán inmediatamente reflejados en las visualizaciones gráficas, las relaciones y el geoanálisis.
+		</p>
+		<p class="no-print no-margin-bottom">
+			<select class="no-print" onchange="toolkit.selecttab('tab', this.value)">
+				<option value="zero">Recuento estadístico</option>
+				<option value="one">Tendencias centrales</option>
+				<option value="two">Estadística inferencial</option>
+				<option value="three">Visualización gráfica</option>
+				<option value="four">Vínculos y redes</option>
+				<option value="five">Geoanálisis</option>
+			</select>
+			<a class="no-print float-right" href="javascript:info.statshelp();" style="padding-top: 0.35em">Ayuda</a>
+		</p>
+		
+		<article id="c-tab-zero" class="tabcontent margin-bottom is-visible">
+			<div class="row">
+				<div class="col">
+					<p class="no-print no-margin-bottom" id="account-selectors"></p>
+					<div id="account-listing" style="width: 100%; overflow-y: auto;" class="margin-bottom">
+						<span class="no-data">Sin datos</span>
+					</div>
+				</div>
+			</div>
+		</article>
+		
+		<article id="c-tab-one" class="tabcontent margin-bottom is-hidden">
+			<div class="row">
+				<div class="col">
+					<p class="no-print no-margin-bottom" id="descrip-selectors"></p>
+					<div id="descrip-listing" style="width: 100%; overflow-y: auto;" class="margin-bottom">
+						<span class="no-data">Sin datos</span>
+					</div>
+				</div>
+			</div>
+		</article>
+		
+		<article id="c-tab-two" class="tabcontent margin-bottom is-hidden">
+			<div class="row">
+				<div class="col">
+					<p class="no-print no-margin-bottom" id="inferential-selectors"></p>
+					<div id="inferential-listing" style="width: 100%; overflow-y: auto;" class="margin-bottom">
+						<span class="no-data">Sin datos</span>
+					</div>
+				</div>
+			</div>
+		</article>
+		
+		<article id="c-tab-three" class="tabcontent margin-bottom is-hidden">
+			<div class="row">
+				<div class="col">
+					<p class="no-print no-margin-bottom" id="charts-selectors"></p>
+					<div id="stats-charts" style="width: 100%; overflow-y: auto;" class="margin-bottom">
+						<span class="no-data">Sin datos</span>
+					</div>
+				</div>
+			</div>
+		</article>
+
+		<article id="c-tab-four" class="tabcontent margin-bottom is-hidden">
+			<div class="row">
+				<div class="col">
+					<p class="no-print no-margin-bottom" id="network-selectors"></p>
+					<div id="stats-network" style="width: 100%; overflow-y: auto;" class="margin-bottom">
+						<span class="no-data">Sin datos</span>
+					</div>
+				</div>
+			</div>
+		</article>
+
+		<article id="c-tab-five" class="tabcontent margin-bottom is-hidden">
+			<div class="row">
+				<div class="col">
+					<p class="no-print no-margin-bottom" id="map-selectors"></p>
+					<div id="stats-map" style="width: 100%; overflow-y: auto;" class="margin-bottom">
+						<span class="no-data">Sin datos</span>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+</div>		

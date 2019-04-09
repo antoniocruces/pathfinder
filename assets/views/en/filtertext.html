@@ -1,0 +1,240 @@
+<div class="pure-menu pure-menu-horizontal margin-top">
+	<ul class="pure-menu-list">
+		<li class="pure-menu-item pure-menu-active">
+			<a id="s-atab-zero" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'zero')">Advanced</a>
+		</li>
+		<li class="pure-menu-item">
+			<a id="s-atab-one" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'one')">Search</a>
+		</li>
+		<li class="pure-menu-item">
+			<a id="s-atab-two" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'two')">Count</a>
+		</li>
+		<li class="pure-menu-item">
+			<a id="s-atab-three" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'three')">Terminology</a>
+		</li>
+		<li class="pure-menu-item">
+			<a id="s-atab-four" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'four')">Instructions</a>
+		</li>
+	</ul>
+</div>
+
+<div id="c-atab-zero" class="tabcontent is-visible active">
+
+<div id="flt-incsubf" class="is-marginless"></div>
+
+<p class="margin-top">
+	Conditions: <strong id="flt-filterlength">1</strong>
+	<a href="javascript:ui.addcondition();" class="pure-button bg-teal margin-left">
+		<i class="far fa-plus-square"></i>
+		<span>Add condition</span>
+	</a>
+</p>
+
+<div id="flt-main"></div>
+</div>
+
+<div id="c-atab-one" class="tabcontent is-hidden">
+<p class="margin-top">
+	<a class="pull-right no-print" href="javascript:info.filterdescription();">[?]</a>
+</p>
+<h4 class="margin-bottom">Terms:</h4>
+
+<form id="search-main" class="pure-form margin-bottom"></form>
+</div>
+
+
+<div id="c-atab-two" class="tabcontent is-hidden">
+<div class="margin-top" id="filter-info-stats" style="width: 100%; min-height: 4em;">Working&hellip;</div>
+</div>
+
+
+<div id="c-atab-three" class="tabcontent is-hidden">
+<div id="flt-terms"></div>
+</div>
+
+<div id="c-atab-four" class="tabcontent is-hidden">
+<h4 class="margin-top margin-bottom">Instructions</h4>
+<p>
+	PATHFINDER uses 
+	<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Filter_(mathematics)"><strong>filter</strong></a>, 
+	paradigm as in 
+	<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Set_theory">set theory</a>. In short, it tries to select, 
+	including or excluding some particular features, a subset of the database records.
+</p>
+<p>
+	Note that, <em>once a filter is applied to the data, it will remain active as long as there is no order against</em>, 
+	and its presence <em>affects ALL operations</em> to be carried out by PATHFINDER.
+</p>
+
+<h4 class="margin-top margin-bottom">Advanced filter</h4>
+<p>
+	It allows to set successive and concurrent <em>conditions</em> in order to <em>limit</em> the scope of work. So:
+</p>
+	<ol>
+		<li>
+			Set the <em>restrictors</em> for a condition. Note that only <em>operator</em> and <em>value</em> are rerquired.
+			<ol>
+				<li>
+					<em>modifier</em>: extract a particular element of some metainfos; for example, 
+					<em>year</em> or <em>day of week</em> of a date.
+				</li>
+				<li>
+					<em>metainfo</em>: también denominado <em>faceta</em> en ciertos sistemas; determina sobre 
+					qué tipo de información se realizará la búsqueda; por ejemplo, <em>lugar donde se celebra</em> una exposición.
+				</li>
+				<li>
+					<em>operator</em>: 
+					determines how a condition must be met; for example, that a record contains or does not equal a given value; 
+					keep in mind that such compliance, if no modifier or meta information is specified, 
+					will be verified on all records.					
+				</li>
+				<li>
+					<em>value</em>: to search (it can be a number, a date,&hellip;). <span class="no-data">BE CAREFUL: 
+					if you use <em>between</em> operator separate the values with the symbol "/" (bar)</span>.  
+					That is, if you want to search for a value between 2010 and 2011 write "2010/2011". Be conscious about
+					a blue button (<i class="fas fa-search"></i>) to the left of text input field to launch a particular 
+					search in order to get 
+					the more similar terms present in database matching the valueyou are trying to use. This kind of 
+					search is carried out on no taking account about letter case or accented chars basis.
+				</li>
+			</ol>
+		</li>		 
+		<li>
+			Click on the red button to the right to make PATHFINDER calculate the subsequent data subset. Note than 
+			button color will change to green when calculation is done.
+		</li>
+		<li>
+			Add, if you want, new conditions to limit result as you need.
+		</li>
+		<li>
+			At footer there is a purple-coloured button (<i class="fas fa-calculator"></i>) designed to sequentially 
+			perform calculation for each single condition.
+		</li>
+		<li>
+			When you think all the conditions are OK, press <em>Set filter</em> (<i class="fas fa-filter"></i>) blue button 
+			at footer. In a few seconds filter will be set.
+		</li>
+		<li>
+			Above the first condition there are two dropdown selectors. Use them at will.
+			<ol>
+				<li>Include. You can decide what primary record types must PATHFINDER include in the final result. By default 
+				only the records matching some of the set conditions will be included, but it is possible to force 
+				PATHFINDER to search for "concomitants" record types.</li>
+				<li>Restrictions. Only the records matching the relational fields selected in this section will be 
+				included in final result.</li>
+			</ol>
+		</li>
+		<li>
+			Next to it, PATHFINDER will show the figure of final result count and a tiny pie chart with 
+			the selected records percent. You can, too, get a table with result broken down by 
+			primary record types by <a href="javascript:toolkit.selecttab('atab', 'two')">clicking here</a>.
+		</li>
+	</ol>
+	<p>
+		NOTE: There is a list of valid metainfos, modifiers and operators available in 
+		in <a href="javascript:toolkit.selecttab('atab', 'three')"><em>Terminology</em></a> section.
+	</p>
+	<p>
+		Next image can help to better filtering process understanding. 
+	</p>
+
+	<div class="margin-top margin-bottom pure-g">
+		<div class="pure-u-1-2">
+			<p>
+				<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
+				<g fill="#FFF">
+				<circle cx="200" cy="137.5" r="137.5"/>
+				<circle cx="137.5" cy="262.5" r="137.5"/>
+				<circle cx="262.5" cy="262.5" r="137.5"/>
+				</g><g stroke-width="10" stroke="#606060" fill="none">
+				<circle cx="200" cy="137.5" r="132.5"/>
+				<circle cx="137.5" cy="262.5" r="132.5"/>
+				<circle cx="262.5" cy="262.5" r="132.5"/>
+				</g>
+				<g font-weight="bold" fill="#888" font-family="Roboto Mono">
+				<text font-size="72px">
+				<tspan x="176" y="100">A</tspan>
+				<tspan x="46" y="300">B</tspan>
+				<tspan x="300">C</tspan></text>
+				<text font-size="48px">
+				<tspan x="148" y="241">ABC</tspan>
+				<tspan x="168" y="333">BC</tspan>
+				<tspan x="83" y="185">AB</tspan>
+				<tspan x="250">AC</tspan></text>
+				</g></svg>
+			</p>
+		</div>
+		<div class="pure-u-1-2">
+			<table class="mq-table pure-table-bordered pure-table">
+				<caption>
+					Combinations
+				</caption>
+				<thead>
+					<tr>
+						<th class="highlight">&nbsp;</th>
+						<th class="highlight">All</th>
+						<th class="highlight">Any</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>A, B, C</td>
+						<td>ABC</td>
+						<td>A B C AB BC AC ABC</td>
+					</tr>
+					<tr>
+						<td>A, B</td>
+						<td>AB</td>
+						<td>A B AB</td>
+					</tr>
+					<tr>
+						<td>B, A</td>
+						<td>AB</td>
+						<td>A B AB</td>
+					</tr>
+					<tr>
+						<td>A, C</td>
+						<td>AC</td>
+						<td>A C AC</td>
+					</tr>
+					<tr>
+						<td>C, A</td>
+						<td>AC</td>
+						<td>A C AC</td>
+					</tr>
+					<tr>
+						<td>B, C</td>
+						<td>BC</td>
+						<td>B C BC</td>
+					</tr>
+					<tr>
+						<td>C, B</td>
+						<td>BC</td>
+						<td>B C BC</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<h4 class="margin-top margin-bottom">Search</h4>
+	<p>
+		To make your search useful and effective, be sure to follow next advices.
+	</p>
+	<ol>
+		<li> 
+			Write out all or part of text to search on.
+		</li>
+		<li>
+			Select where you need the search will be carried out: a particular metadata kind or any metadata instead.
+		</li>
+		<li>
+			Click the Search (<i class="fas fa-filter"></i>) blue button.
+		</li>
+	</ol>
+	
+	<h4 class="margin-top margin-bottom">Filtering process flowchart</h4>
+	<img src="./assets/img/illustrations/filter_es.png">
+</div>
+
+

@@ -1,0 +1,1503 @@
+<div class="group group-xs no-print">
+	<ul>
+		<li>
+			<button id="stab40" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab40', 'step40', 'shtabcontent', 'shtablinks');">
+			Panel</button>
+		</li>
+		<li>
+			<button id="stab41" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab41', 'step41', 'shtabcontent', 'shtablinks');">
+			Filtro</button>
+		</li>
+		<li>
+			<button id="stab42" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab42', 'step42', 'shtabcontent', 'shtablinks');">
+			Listado</button>
+		</li>
+		<li>
+			<button id="stab43" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab43', 'step43', 'shtabcontent', 'shtablinks');">
+			Estadísticas</button>
+		</li>
+		<li>
+			<button id="stab44" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab44', 'step44', 'shtabcontent', 'shtablinks');">
+			Gráficos</button>
+		</li>
+		<li>
+			<button id="stab45" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab45', 'step45', 'shtabcontent', 'shtablinks');">
+			Redes</button>
+		</li>
+		<li>
+			<button id="stab46" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab46', 'step46', 'shtabcontent', 'shtablinks');">
+			Mapas</button>
+		</li>
+		<li>
+			<button id="stab47" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab47', 'step47', 'shtabcontent', 'shtablinks');">
+			Leyendas</button>
+		</li>
+	</ul>
+</div>
+
+<div id="step40" class="shtabcontent visible">
+	<h3 id="title-helppanel">Panel</h3>
+	<p>
+		Es el núcleo de conectividad de PATHFINDER. Desde aquí se pueden actualizar y cargar los datos procedentes de 
+		<a rel="nofollow" target="_blank" href="http://expofinder.uma.es"><em>ExpoFinder</em></a> y exportarlos 
+		en diferentes formatos y con diversos criterios. Los elementos más destacados figuran a continuación.
+	</p>
+	<ol type="A">
+		<li class="margin-bottom-l">
+			<h5>Conexión</h5>
+			<p>
+				Si dispone de archivo válido pase al punto B.
+				Para poder trabajar PATHFINDER necesita un archivo en formato 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON"><em>JSON</em></a> 
+				que debe ser descargado desde el 
+				<em>servidor de datos</em> de <a rel="nofollow" target="_blank" href="http://expofinder.uma.es"><em>ExpoFinder</em></a>. 
+				Identifíquese mediante sus  
+				<em>credenciales de acceso</em> o <a href="#legal">contacte</a> con el equipo de desarrollo. Antes de guardarlo en 
+				el disco cliente anote el 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/N%C3%BAmero_de_identificaci%C3%B3n_personal">PIN</a> 
+				que PATHFINDER le suministrará. Sin él no podrá 
+				acceder al contenido descargado.
+			</p>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANTE. Por razones ajenas a la propia estructura funcional de PATHFINDER 
+				en ocasiones es posible que la descarga se produzca de forma incorrecta o con algún error e  
+				incluso que no llegue a efectuarse. En ese caso, vuelva a intentar la operación pasados unos minutos y 
+				<a href="#legal">comunique</a> la incidencia al equipo de desarrollo.
+			</p>
+		</li>
+		<li class="margin-bottom-l">
+			<h5>Base de datos</h5>
+			<p>
+				Cargue el archivo 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON"><em>JSON</em></a> guardado localmente y 
+				suministre el 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/N%C3%BAmero_de_identificaci%C3%B3n_personal">PIN</a> 
+				correcto. Tras un breve tiempo de trabajo (habitualmente entre 8 y 15 s) PATHFINDER estará preparado para funcionar.
+			</p>
+		</li>
+		<li class="margin-bottom-l">
+			<h5>Información</h5>
+			<p>
+				Si ha cargado el archivo especificado en el punto B, PATHFINDER mostrará la siguiente información: 
+			</p>
+			<ol type="1" class="force-two-columns">
+				<li>
+					nombre del archivo
+				</li>
+				<li>
+					tamaño del archivo (en bytes)
+				</li>
+				<li>
+					nombre de usuario 
+					<a rel="nofollow" target="_blank" href="http://expofinder.uma.es"><em>ExpoFinder</em></a> 
+					que efectuó la descarga del archivo
+				</li>
+				<li>
+					fecha de descarga del archivo
+				</li>
+				<li>
+					dirección 
+					<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Direcci%C3%B3n_IP">IPv4</a> desde la 
+					que se efectuó la descarga del archivo
+				</li>
+				<li>
+					tamaño del objeto de base de datos en memoria (en bytes)
+				</li>
+				<li>
+					número de registros
+				</li>
+				<li>
+					número de metadatos
+				</li>
+				<li>
+					número de taxonomías
+				</li>
+				<li>
+					número total de elementos (registros + metadatos + taxonomías)
+				</li>
+			</ol>
+			<p>
+				También se mostrará un recuento de <a href="documents">registros primarios</a>, de sus  
+				<a href="documents">metadatos</a> y sus <a href="documents">taxonomías</a>. En estos últimos casos se indica 
+				la cifra absoluta y el porcentaje con respecto al total.
+			</p>
+		</li>
+		<li class="margin-bottom-l">
+			<h5>Exportación</h5>
+			<p>
+				PATHFINDER le permite descargar en formato 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Microsoft_Excel"><em>XLS</em></a>, 
+				<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Tab-separated_values"><em>TAB</em></a>, 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Valores_separados_por_comas"><em>CSV</em></a>, 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Extensible_Markup_Language"><em>XML</em></a> o 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON"><em>JSON</em></a> los datos sin tratar 
+				que utiliza para su funcionamiento. Tenga en cuenta que <em>solamente se exportarán los datos 
+				seleccionados mediante el <a href="javascript:info:filter();">filtro</a> que se encuentre activo</em>.
+			</p>
+		</li>
+		<li class="margin-bottom-l">
+			<h5>Colecciones</h5>
+			<p>
+				PATHFINDER utiliza el concepto de <em>colección</em> como sinónimo de 
+				<em><a href="javascript:toolkit.selecttab('atab', 'two')">filtro</a> predefinido</em>. El equipo de desarrollo 
+				genera dichas colecciones, que pueden cargarse directamente desde el servidor y que, al activarse, 
+				aplican el filtro necesario para delimitar el subconjunto de datos con el que se trabajará. Es necesario 
+				disponer de conexión activa a Internet para poder usar esta característica.
+			</p>
+			<p>
+				Cuando una colección está activa, su título se muestra en la cabecera de las páginas del menú 
+				</em>Datos</em>.
+			</p>
+			<p class="aside background-warning-50">			
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANTE. Tenga en cuenta que, puesto que una colección es simplemente un <em>filtro predefinido</em>, es posible 
+				modificarlo para adaptarlo a las necesidades concretas del usuario. En ese caso, junto a su título 
+				se mostrará la leyenda <mark class="color-error background-error-50">MODIFICADO</mark>.
+			</p>
+		</li>
+		<li class="margin-bottom-l">
+			<h5>Informes</h5>
+			<p>
+				Para tareas específicas en las que se muestren registros relacionados, 
+				PATHFINDER permite extraer los datos <a href="javascript:info:filter();">filtrados</a>. Siga los pasos que 
+				se muestran a continuación: 
+			</p>
+			<ol type="1">
+				<li>
+					Elija: 
+					<ol type="a">
+						<li>
+							El <a href="#documents"><em>tipo de registro principal</em></a> sobre el cuál se generará el informe.
+						</li>
+						<li>
+							El <a href="#documents"><em>campo relacional</em></a> que se utilizará para localizar los vínculos de 
+							cada registro principal.
+						</li>
+					</ol>
+				</li>
+				<li>
+					Seleccione el <em>modelo</em> que se generará: 
+					<ol type="a">
+						<li>
+							<em>Analítico</em>. Hoja de cálculo en formato 
+							<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Valores_separados_por_comas"><em>CSV</em></a>,  
+							compatible con 
+							<a rel="nofollow" target="_blank" href="https://www.microsoft.com/Comprar/Excel">Microsoft Excel&trade;</a> o 
+							<a rel="nofollow" target="_blank" href="https://es.libreoffice.org/‎">LibreOffice</a>).
+						</li>
+						<li>
+							<em>Textual</em>. Documento en formato 
+							<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Rich_Text_Format">RTF</a>, compatible con 
+							<a rel="nofollow" target="_blank" href="https://www.microsoft.com/Comprar/Word‎">Microsoft Word&trade;</a> o 
+							<a rel="nofollow" target="_blank" href="https://es.libreoffice.org/‎">LibreOffice</a>.
+						</li>
+					</ol>
+				</li>
+			</ol>
+		</li>
+	</ol>
+</div>
+
+<div id="step41" class="shtabcontent hide">
+	<h3 id="title-helplisting">Filtro</h3>
+	
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANTE. Gran parte de la potencia de cálculo y descubrimiento de nuevo conocimiento desarrollada por 
+		PATHFINDER depende de la precisión con que se realice el proceso de filtrado. Sea cuidadoso a la hora de 
+		establecer las condiciones para no obtener resultados engañosos, imprecisos o confusos.
+	</p>
+	
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		A TENER EN CUENTA. La pantalla de filtro es una ventana emergente a tamaño completo. Puede ser abierta desde 
+		cualquier otra pantalla de PF. Al cerrarla se mantendrá la pantalla desde la que originalmente se invocó, 
+		aplicando &mdash;si procede&mdash; el filtro establecido. Si la aplicación de dicho filtro afecta 
+		a los datos mostrados en pantalla, éstos se recalcularán.
+	</p>
+
+	<p>
+		PF utiliza el paradigma de 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Filtro_(matem%C3%A1ticas)">filtro</a>, 
+		propio de la 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Teor%C3%ADa_de_conjuntos">teoría de conjuntos</a> y 
+		de la 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Teor%C3%ADa_del_orden">teoría del orden</a>, 
+		para reducir el campo de trabajo sobre el conjunto total de registros recuperados del servidor de datos 
+		<a rel="noopener" target="_blank" href="http://exposinfer.uma.es">ExpoFinder</a> y cargados desde un archivo 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON">JSON</a>. 
+		El sistema excluirá de cualquier cálculo los registros que <em>no cumplan</em> las condiciones 
+		expresadas. Los elementos de la pantalla son los siguientes
+	</p>
+
+	<h5>Inclusiones y restricciones</h5>
+	<p>
+		Afectan a los registros que el filtro seleccionará una vez aplicadas las condiciones de filtrado. 
+		<ul>
+			<li>
+				Incluir. Añade a la lista de registros primarios seleccionados por las condiciones 
+				de filtro aquellos directamente relacionados con ellos que sean de los tipos marcados. 
+				Por ejemplo, si las condiciones solo afectan a exposiciones pero se incluyen actores se 
+				agregaran aquellos que tengan relación con cada exposición filtrada.
+			</li>
+			<li>
+				Restricciones. Limita los registros incluidos <em>solamente</em> a aquellos cuyo 
+				campo relacional esté marcado. Siguiendo con el ejemplo anterior, es posible seleccionar solamente 
+				aqueyos actores que actúen como comisarios de exposición.
+			</li>
+		</ul>
+	</p>
+	
+	<h5>Panel de filtrado</h5>
+	
+	<p>
+		Cada condición está representada por una línea, con las siguientes características. 
+	</p>
+	<ul>
+		<li>
+			Modificador. Selecciona la <em>faceta</em> que se usará para validar la condición. Por ejemplo, 
+			"año" en el caso de una fecha.
+		</li>
+		<li>
+			Campo sobre el que se realizará la búsqueda.
+		</li>
+		<li>
+			Operador. Los habituales para comparar valores numéricos o textuales, considerando o no 
+			(en el caso de los operadores <em>contiene</em> y <em>no contiene</em>) mayúsculas y 
+			diacríticos, más el operador <em>entre</em>, pensado para operar con dos valores numéricos 
+			en secuencia ("entre 2010 y 2015" seleccionará los registros cuyo año, si se aplicó esa faceta, 
+			esté comprendido en ese rango), aunque también funciona con valores textuales.
+		</li>
+		<li>
+			Valor buscado. Es posible realizar una lista de valores coincidentes pulsando sobre 
+			el icono de la lupa 
+			<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+				<path class="search" d=""></path>
+			</svg>.
+		</li>
+		<li>
+			Botones de búsqueda de condición (en color <span class="color-error">rojo</span> si no se han 
+			obtenido resultados) y de eliminación.
+		</li>
+	</ul>
+	<p>
+		No hay límite en el número de condiciones aplicables.
+	</p>
+	
+	<h5>Operaciones</h5>
+	
+	<p>
+		Panel de botones al pie de la ventana de filtro que permiten: 
+	</p>
+	<ul>
+		<li>
+			<p>
+				Guardar o cargar "colecciones", que son definiciones de filtro, usadas con frecuencia, que el 
+				usuario puede guardar en archivos de su disco local.
+			</p>
+		</li>
+		<li>
+			<p>
+				Calcular. Es decir, realizar el cálculo individual para cada una de las condiciones.
+			</p>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANTE: PF no realizará la operación de filtrado si no se han calculado todas las condiciones presentes.
+			</p>
+		</li>
+		<li>
+			Filtro. Evaluación de las condiciones y generación del subconjunto filtrado. Cuando se realiza se 
+			muestra un botón adicional que presenta un grafo con la visualización de las condiciones y su aplicación.
+		</li>
+		<li>
+			Limpiar. Inicializar el filtro borrando el subconjunto.
+		</li>
+	</ul>
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		A TENER EN CUENTA: Cuando se ha establecido un filtro, PF muestra un botón adicional: <em>Vínculos del filtro</em>, que 
+		abre una ventana emergente presentando un grafo que dibuja las relaciones entre los diferentes 
+		tipos de <a href="#documents"><em>registros primarios</em></a> establecidas por el filtro.
+	</p>	
+</div>
+
+<div id="step42" class="shtabcontent hide">
+	<h3 id="title-helplisting">Listado</h3>
+	<p>
+		PATHFINDER muestra una tabla con los registros <a href="javascript:info:filter();">filtrados</a>. 
+		Aparecen ordenados por <em>tipo de registro</em> &rarr; <em>título del registro</em> &rarr; 
+		<em>taxonomías asociadas a cada registro</em>. Al pulsar sobre el título, se mostrará la 
+		<em>pantalla individual</em> del correspondiente <a href="#documents">registro</a>.
+	</p>
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANTE. En el listado, PATHFINDER siempre muestra los <a href="#documents">registros primarios</a> 
+		seleccionados por el filtro activo. Téngalo en cuenta si no aparecen los datos deseados y rectifique 
+		el filtro en consecuencia.
+	</p>
+
+	<ol type="A">
+		<li class="margin-bottom-l">
+			<h5>Búsqueda y navegación</h5>
+			<p>
+				Zona superior de la tabla que permite desplazarse por el conjunto de datos mediante un control deslizante 
+				o página a página. También permite exportar los datos en formato 
+				<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Valores_separados_por_comas">CSV</a>, 
+				imprimir la tabla y realizar búsquedas filtradas sobre ella.
+			</p>
+			<p class="aside background-info-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="info" d=""></path>
+				</svg>
+				A TENER EN CUENTA. El modelo de tabla de presentación de resultados es el mismo en cualquier operación realizada 
+				por PF. Cuando se muestra el resultado de una operación analítica, sobre esta zona se presentan 
+				los datos elementales de estadística descriptiva, además de información sobre 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Valor_at%C3%ADpico">valores atípicos</a> 
+				(<em>outliers</em>), muy importantes en el proceso de descubrimiento de nuevo conocimiento de PF. También 
+				aparecen dos enlaces para abrir una ventana emergente que muestra un gráfico de líneas 
+				<em>ordenado</em> o <em>normalizado</em> (sigiendo una 
+				<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Distribuci%C3%B3n_normal">distribución normal</a>).
+			</p>
+		</li>
+		<li class="margin-bottom-l">
+			<h5>Tabla</h5>
+			<p>
+				Lista ordenada de datos filtrados. Puede alterar el orden de presentación pulsando alternativamente 
+				sobre el encabezamiento de cada columna (cambiará de menor a mayor, A &rarr; Z, y viceversa).
+			</p>
+		</li>
+		<li class="margin-bottom-l">
+			<h5>Filas</h5>
+			<p>
+				Al pulsar sobre el <em>título</em> de un <a href="#documents">registro primario</a> se mostrará la 
+				correspondiente ficha de registro individual.
+			</p>
+		</li>
+	</ol>
+</div>
+
+<div id="step43" class="shtabcontent hide">
+	<h3 id="title-helpstats">Estadísticas</h3>
+	
+	<p>
+		Estas operaciones constituyen el núcleo funcional de PF y permiten obtener <em>nuevo conocimiento</em> 
+		a partir del análisis de los datos cualitativos una vez cuantificados.
+	</p>
+
+	<h4 id="title-helpstats-groups">Grupos</h4>	
+
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANTE. Todos los cálculos se realizan únicamente sobre el subconjunto de valores filtrados.
+	</p>
+
+	<p>
+		Calcula datos cuantitativos a partir de una función de agregación a partir de las características o metainformaciones 
+		que se repiten en los distintos registros, evaluando su frecuencia y distribución. 
+		Utilice esta opción para conocer la incidencia de ciertos parámetros en la muestra completa de valores seleccionados. 
+		Los elementos más destacados de la pantalla son los siguientes.
+	</p>
+
+	<ol>
+		<li>
+			<p>
+				Filtro. Determina si se mostrarán todos los registros del subconjunto o únicamente aquellos 
+				<em>significativos</em> (si desea más información sobre <em>outliers</em> consulte la 
+				<a href="#documents">documentación</a>). Es posible excluir también aquellos registros cuyos 
+				valores de agrupamiento (no de recuento) sean nulos o no contengan información.
+			</p>
+		</li>
+		<li>
+			<p>
+				Selector de campos por los que se agrupará la consulta. Al escribir parte del nombre de un 
+				campo se muestra la lista de los coincidentes. Pulsando sobre el botón con el símbolo 
+				<mark class="background-info-50">
+				<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+				<path class="pluscircle" d=""></path></svg>
+				</mark> se añade a la lista de agrupadores.
+			</p>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANTE. En la lista de agrupadores el <em>orden</em> es muy importante porque determina 
+				qué campo se utilizara primero para realizar el recuento. Por ejemplo, no es lo mismo 
+				agrupar por año de nacimiento de actor y género del mismo que viceversa. En cada campo 
+				figura el símbolo 
+				<mark class="background-dark-50">
+				<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+				<path class="trash" d=""></path></svg></mark>, que al pulsarlo lo elimina de la lista.
+			</p>
+		</li>
+	</ol>
+	
+	<h4 id="title-helpstats-relations">Relaciones</h4>	
+	
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANTE. Cualquier dato <em>cronológico</em> se entiende referido siempre a la 
+		<em>fecha inicial</em>. Por ejemplo, en el caso de exposiciones, siempre será la de apertura.
+	</p>
+
+	<p>
+		Emplea el mismo mecanismo (agrupamiento) que en el caso de <em>Grupos</em> para calcular la fortaleza 
+		de los vínculos entre <a href="#documents"><em>metadatos</em></a>, 
+		<a href="#documents"><em>taxonomías</em></a> y <a href="#documents"><em>registros primarios</em></a>. 
+		Los elementos de la pantalla son los siguientes.
+	</p>	
+
+	<ol>
+		<li>
+			<p>
+				Filtro. Determina si se mostrarán todos los registros del subconjunto o únicamente aquellos 
+				<em>significativos</em> (si desea más información sobre <em>outliers</em> consulte la 
+				<a href="#documents">documentación</a>). Es posible excluir también aquellos registros cuyos 
+				valores de agrupamiento (no de recuento) sean nulos o no contengan información.
+			</p>
+		</li>
+		<li>
+			<p>
+				Campos de agrupamiento y vínculo de acuerdo al siguiente esquema:
+			</p>
+			<pre>[Origen] [aparece citado por / cita a] [Destino]</pre>
+			<p>
+				PF calculará <em>cuántas veces <code>origen</code> 
+				aparece citado por o cita a <code>destino</code></em>.
+			</p>
+		</li>
+	</ol>
+	
+	<h4 id="title-helpstats-cooccurrences">Correlaciones</h4>	
+	
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANTE. Esta es, probablemente, &mdash;junto con la aplicación de ciertas técnicas en 
+		<a href="javascript:toolkit.generictab('stab44', 'step44', 'shtabcontent', 'shtablinks');"><em>Gráficos</em></a>, 
+		<a href="javascript:toolkit.generictab('stab45', 'step45', 'shtabcontent', 'shtablinks');"><em>Redes</em></a> y 
+		<a href="javascript:toolkit.generictab('stab46', 'step46', 'shtabcontent', 'shtablinks');"><em>Mapas</em></a>&mdash; 	
+		la opción más potente de PATHFINDER para localizar vínculos y relaciones entre los datos 
+		del subconjunto filtrado. Tenga en cuenta que PF suministra la herramienta, pero la 
+		<em>interpretación</em> de los resultados depende exclusivamente del usuario. Se recomienda 
+		consultar la <a href="#documents">documentación</a> al respecto.
+	</p>
+
+	<p>
+		Los elementos de la pantalla son los siguientes.
+	</p>
+	
+	<ol>
+		<li>
+			<p>
+				Filtro. Determina si se mostrarán todos los registros del subconjunto o únicamente aquellos 
+				<em>significativos</em> (si desea más información sobre <em>outliers</em> consulte la 
+				<a href="#documents">documentación</a>).
+			</p>
+		</li>
+		<li>
+			<p>
+				Campos relacionados de acuerdo al siguiente esquema:
+			</p>
+			<pre>[Origen] [Destino]</pre>
+			<p>
+				PF construye una <em>cadena</em> de relación entre los elementos seleccionados, de forma 
+				que <code>origen</code> esté de alguna manera vinculado a <code>destino</code>, y 
+				la expresa, permitiendo manipularla. Por ejemplo, si se selecciona 
+				<code>origen: actor &rarr; autoría de la obra &rarr; obra de arte</code> y 
+				<code>destino: exposición &rarr; coleccionista prestatario &rarr; actor</code> 
+				PF calculará todos los vínculos entre ambos extremos.
+			</p>
+
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANTE. La relación se calcula cuando ambos elementos, <code>origen</code> y 
+				<code>destino</code>, contienen valores válidos. Mientras no sea así, aparecerán 
+				<mark class="background-white border border-color-error">marcados como erróneos</mark>. 
+				Además, la relación calculada contiene únicamente <em>campos y registros que estén 
+				presentes en el subconjunto de datos filtrados</em>.
+			</p>
+
+		</li>
+		<li>
+			<p>
+				Resultado del cálculo. Se mostrarán los siguientes elementos.
+			</p>
+			<ol type="a">
+				<li>
+					Botones de <em>recálculo</em> y <em>grafo de ruta</em>. Éste último abre una ventana 
+					emergente que muestra cómo se relacionan entre sí los distintos tipos de 
+					<a href="#documents">registros primarios</a> en la ruta calculada.
+				</li>
+				<li>
+					Descripción textual de la ruta.
+				</li>
+				<li>
+					Ruta. Se muestra siguiendo el esquema 
+					<pre>[registro primario 1] [campo relacional 1-n] [registro primario n] [campo relacional n-n']...</pre>
+					Al pulsar sobre el indicador de cualquier <a href="#documents">registro primario</a> 
+					éste se borrará y se efectuará un recálculo.
+				</li>
+			</ol>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANTE. Al eliminar <a href="#documents">registros primarios</a> la <em>cadena</em> 
+				calculada se va haciendo cada vez más relevante. En el ejemplo citado anteriormente, 
+				la cadena sería 
+				<code>
+					<mark class="background-success color-white">P</mark> 
+					<mark class="background-light">autoría de la obra</mark> 
+					<mark class="background-info color-white">A</mark> 
+					<mark class="background-light">obra de arte incluida</mark> 
+					<mark class="background-tertiary color-white">B</mark>  
+					<mark class="background-light">catálogo</mark> 
+					<mark class="background-warning color-white">X</mark> 
+					<mark class="background-light">coleccionista prestatario</mark> 
+					<mark class="background-success color-white">P</mark>
+				</code> 
+				(ver equivalencias de siglas consultando 
+				<a href="javascript:toolkit.generictab('stab47', 'step47', 'shtabcontent', 'shtablinks');"><em>Leyendas</em></a>). 
+				Si eliminan el primer tipo de registro primario <mark class="background-success color-white">P</mark> y 
+				los tipos <mark class="background-tertiary color-white">B</mark> y 
+				<mark class="background-warning color-white">X</mark> se obtendrá cuántas veces la obra de arte 
+				[<mark class="background-info color-white">A</mark>] aparece vinculada al actor 
+				[<mark class="background-success color-white">P</mark>] que actúa en calidad de 
+				<mark class="background-light">coleccionista prestatario</mark> en diferentes exposiciones.
+			</p>
+		</li>
+	</ol>
+	
+	<h4 id="title-helpstats-descriptive">Estadística descriptiva</h4>	
+	<p>
+		En cualquiera de las operaciones es posible utilizar, además de la vista de <em>tabla</em>, 
+		la de <em>estadística</em>.
+	</p>
+	<p class="margin-bottom">
+		En PATHFINDER, dicho apartado muestra una selección 
+		de valores estadísticos que pueden ayudar a comprender mejor las condiciones de distribución de la muestra 
+		analizada. Las abreviaturas de las tablas empleadas se corresponden con los siguientes elementos.
+	</p>
+	<div class="table-responsive">
+		<table class="mq-table pure-table-bordered pure-table table-smaller">
+			<tbody>
+				<tr>
+					<th class="text-align-center"><strong>FLD</strong></th>
+					<td>
+						Campo al que se refieren los datos.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>TYP</strong></th>
+					<td>
+						Tipo de contenido del campo: numérico, cadena de texto, fecha,&hellip;
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>FRQ</strong></th>
+					<td>
+						Indicadores referentes a la frecuencia de los datos.
+						<ul>
+							<li><strong>VAL</strong>: valores totales (número de filas totales recuperadas).</li>
+							<li><strong>DST</strong>: valores distintos (número de filas con valores no repetidos).</li>
+							<li><strong>MIS</strong>: valores ausentes (número de filas que no contienen un valor).</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>RNG</strong></th>
+					<td>
+						Indicadores referentes al rango de valores abarcado por los datos.
+						<ul>
+							<li><strong>MIN</strong>: valor mínimo.</li>
+							<li><strong>DST</strong>: valor máximo.</li>
+							<li><strong>(N)</strong>: rango total comprendido entre el valor mínimo y máximo.</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>AVG</strong></th>
+					<td>
+						Indicadores referentes los valores que indican tendencia central en el conjunto de datos.
+						<ul>
+							<li><strong>MEA</strong>: media aritmética.</li>
+							<li><strong>MED</strong>: mediana.</li>
+							<li><strong>STD</strong>: desviación típica.</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>QRT</strong></th>
+					<td>
+						Indicadores referentes a los extremos que determinan la presencia de valores significativos.
+						<ul>
+							<li><strong>Q1</strong>: límite de primer cuartil.</li>
+							<li><strong>Q3</strong>: límite del tercer cuartil.</li>
+							<li><strong>MSK</strong>: asimetría de moda.</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>Entropía</strong></th>
+					<td>
+						Referente de interés a la hora de juzgar la importancia y significación de los datos contenidos en 
+						un campo. Consulte al respecto la <a href="#documents">documentación</a>.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>D</strong> y <strong>J</strong></th>
+					<td>
+						Distancia mutua e índice Jaccard. Miden el grado de afinidad o semejanza entre las 
+						frecuencias para un campo determinado. Consulte la <a href="#documents">documentación</a> 
+						al respecto.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>	
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANTE. Si desea más información sobre los parámetros contemplados en el análisis estadístico, consulte la 
+		<a href="#documents">documentación</a>.
+	</p>
+</div>
+
+<div id="step44" class="shtabcontent hide">
+	<h3 id="title-helpcharts">Gráficos</h3>
+	<p>
+		Muestran representaciones visuales de los datos cuantificados procedentes del subconjunto filtrado. 
+		En el artículo "Graphs in Statistical Analysis", publicado en <em>American Statistician</em> en 
+		febrero de 1973, 
+		<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Frank_Anscombe">Frank Anscombe</a> 
+		&mdash;y más adelante, en 1983, 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Edward_Tufte">Edward Tufte</a> 
+		así lo confirmó en su libro <em>The Visual Display of Quantitative Information</em>&mdash;
+		demostró la importancia de <em>ver</em> o "visualizar" los datos antes, o paralelamente, del 
+		proceso de análisis. PF trata de ayudar en este sentido ofreciendo una panoplia de graficaciones 
+		de los registros activos y filtrados.
+	</p>
+	<p>
+		Los elementos de la pantalla son los siguientes.
+	</p>
+	<ol>
+		<li>
+			<p>
+				Barra de selección. Permite elegir las características del gráfico que se mostrará.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Tabla. Datos a graficar. Puede ser de dos tipos:
+					</p>
+					<ul>
+						<li>
+							<p>
+								Consulta. Selección de datos filtrados predefinida en función de sus características 
+								(fecha, lugar, taxonomía&hellip;).
+							</p>
+						</li>
+						<li>
+							<p>
+								Estadística. Cada una de las variedades analíticas empleadas en 
+								<a href="javascript:toolkit.generictab('stab43', 'step43', 'shtabcontent', 'shtablinks');"><em>Estadísticas</em></a>.
+							</p>
+							<p class="aside background-warning-50">
+								<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+									<path class="bell" d=""></path>
+								</svg>
+								IMPORTANTE. Una estadística solo será graficada si previamente se ha calculado la correspondiente 
+								modalidad (<em>Grupos</em>, <em>Relaciones</em> o <em>Correlaciones</em>).
+							</p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p>
+						Filtro. Cada una de las <em>series</em> o grupo de datos graficados. En cada una de ellas 
+						los datos se agrupan por una característica común. Pueden mostrarse todas las series o 
+						elegirlas individualmente.
+					</p>
+				</li>
+				<li>
+					<p>
+						<a href="#documents">Faceta</a>. Caracterización del dato que se mostrará.
+					</p>
+				</li>
+			</ol>
+		</li>
+		<li>
+			<p>
+				Resultado (gráfico). Los tipos de gráfico son los siguientes.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Línea / área. Para tablas de tipo <em>consulta</em>. Pueden mostrar:
+					</p>
+					<ul>
+						<li>
+							<p>
+								Líneas que indican el promedio para cada serie.
+							</p>
+						</li>
+						<li>
+							<p>
+								Marcas de valor máximo para cada serie.
+							</p>
+						</li>
+						<li>
+							<p>
+								Leyenda de series. Pulsando cada una puede activarse o no su visualización.
+							</p>
+						</li>
+						<li>
+							<p>
+								Ordenación normalizada 
+								<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Distribuci%C3%B3n_normal">distribución normal</a>).
+							</p>
+						</li>
+						<li>
+							<p>
+								<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Regresi%C3%B3n_lineal">Regresión lineal</a>). 
+								Muestra relaciones de dependencia entre las variables. Al activar la opción se 
+								presentan los valores atípicos (<em>outliers</em>) con un símbolo diferente.
+							</p>
+						</li>
+						<li>
+							<p>
+								Exclusión o no de valores nulos.
+							</p>
+						</li>
+					</ul>
+				</li>
+			</ol>
+		</li>
+	</ol>
+	
+	<h4>Tipos especiales de gráficos</h4>
+	<p>
+		Si en la <em>barra de selección</em>, apartado <em>tabla</em>, se selecciona la opción 
+		<em>estadística; correlaciones</em>, PF ofrece graficar las diferentes series generadas a partir del 
+		correspondiente proceso en 6 modalidades diferentes.
+	</p>
+	<ol type="i">
+		<li>
+			<p>
+				Dispersión. Utiliza las coordenadas cartesianas para mostrar los valores de las parejas 
+				de variables de cada serie.
+			</p>
+		</li>
+		<li>
+			<p>
+				Jerarquía. Muestra un árbol jerárquico (expresando dependencia) en formato ortogonal.
+			</p>
+		</li>
+		<li>
+			<p>
+				Jerarquía radial. Muestra un árbol jerárquico (expresando dependencia) en formato circular 
+				cuyo origen es el centro del círculo.
+			</p>
+		</li>
+		<li>
+			<p>
+				Mapa de árbol. Alternativa para visualizar la estructura jerárquica que también muestra las cantidades 
+				para cada categoría a través del tamaño del área.
+			</p>
+		</li>
+		<li>
+			<p>
+				Proyección solar. También conocida como <em>sunburst</em>. Presenta la jerarquía a través de una serie de 
+				anillos, que se dividen para cada nodo de categoría. Cada anillo corresponde a un nivel en la jerarquía, 
+				con el círculo central representando el nodo raíz y la jerarquía moviéndose hacia afuera desde él.
+			</p>
+		</li>
+		<li>
+			<p>
+				Wordcloud. "Nube" formada por los títulos de cada registro primario representado en el 
+				gráfico el tamaño de cuya letra es directamente proporcional a su "peso" total.
+			</p>
+		</li>
+	</ol>
+</div>
+
+<div id="step45" class="shtabcontent hide">
+	<h3 id="title-helpnetworks">Redes</h3>
+	<p>
+		Representación en grafo de las diferentes relaciones entre diversos tipos de elementos tomados en pareja. 
+		Los diferentes elementos de la pantalla son los siguientes.
+	</p>
+	<ol type="1">
+		<li>
+			<p>
+				Barra selectora. Permite elegir tanto el formato de presentación como la pareja de datos 
+				a presentar. Las opciones son las siguientes.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Tipo. Modalidad de presentación de grafo dirigido (
+						<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Grafo_dirigido"><em>digrafo</em></a>). 
+						Puede seleccionarse cualquiera de los siguientes valores.
+					</p>
+					<ol type="i">
+						<li>
+							<p>
+								Diseño simple. Diagrama de árbol sin restricciones, donde cada elemento 
+								aparece vinculado mediante una línea a aquellos con los que se relaciona.
+							</p>
+						</li>
+						<li>
+							<p>
+								Diseño de fuerza. Igual que el anterior, pero los registros primarios se representan 
+								sometidos a "fuerzas gravitatorias", que los aproximan o separan acomodándolos 
+								al tamaño final.
+							</p>
+						</li>
+						<li>
+							<p>
+								Diseño circular. Con el mismo principio de los dos modelos anteriores, los 
+								registros primarios se disponen en círculo entrecruzando, si es necesario, 
+								las líneas que los vinculan.
+							</p>
+						</li>
+						<li>
+							<p>
+								Diseño sankey. Tipo específico de diagrama de flujo, en el que la anchura de las líneas de unión es 
+								proporcional a la cantidad de flujo entre dos registros primarios.
+							</p>
+						</li>
+						<li>
+							<p>
+								Diseño en tabla. Se grafica en forma de tabla de datos.
+							</p>
+						</li>
+						<li>
+							<p>
+								Diseño en árbol. Se grafica en forma de lista ordenada no numerada con indentación.
+							</p>
+						</li>
+					</ol>
+				</li>
+				<li>
+					Registros primarios vinculados, tipo de vinculación y campo relacional. Seleccionables.
+				</li>
+				<li>
+					Filtro. Una vez realizado el cálculo inicial, es posible recalcular los resultados 
+					filtrando sólo los que cumplen la condición expresada.
+				</li>
+			</ol>
+		</li>
+		<li>
+			Resultado. Presentado de forma similar a los 
+			<a href="javascript:toolkit.generictab('stab44', 'step44', 'shtabcontent', 'shtablinks');"><em>Gráficos</em></a>.
+		</li>
+	</ol>
+</div>
+
+<div id="step46" class="shtabcontent hide">
+	<h3 id="title-helpmaps">Mapas</h3>
+	<p>
+		PF utiliza los mapas para mostrar la acumulación, dispersión y distribución de los datos en un 
+		contexto geográfico. La importancia de este tipo de presentación 
+		<a rel="nofollow" target="_blank" href="http://www.digitalhumanities.org/dhq/vol/3/1/000031/000031.html">
+		está sobradamente acreditada</a> en el contexto de las Humanidades Digitales, y está en el espíritu de 
+		PATHFINDER normalizar su empleo en el ámbito de la Historia del Arte Digital.
+	</p>
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		A TENER EN CUENTA: Todos los cálculos de PF en las pantallas de </em>Mapas</em> se realizan exclusivamente 
+		sobre los datos <a href="javascript:toolkit.generictab('stab41', 'step41', 'shtabcontent', 'shtablinks');">
+		filtrados</a>.
+	</p>
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		A TENER EN CUENTA: Evidentemente, sólo pueden ser representados en un mapa los datos que pueden ser 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Geolocalizaci%C3%B3n">
+		geolocalizados</a>.
+	</p>
+	</p>
+		Los diferentes elementos de la pantalla son los siguientes.
+	</p>
+	<ol type="A">
+		<li>
+			<h6>Mapas base</h6>
+			<p>
+				Constituyen el "fondo" de los mapas y aportan información geográfica. PF permite señeccionar 
+				cuál de ellos está activo en un momento dado. Cada uno aporta información personalizada en la 
+				que se resaltan u ocultan determinadas características. Por ejemplo, en aquellos en los que figura  
+				"<em>no labels</em>" deliberadamente no se muestran los textos identificadores (mapa mudo), 
+				lo que puede contribuir a aclarar las vistas.
+			</p>
+		</li>
+		<li>
+			<h6>Capas</h6>
+			<p>
+				Son polígonos o líneas que se superponen al mapa base activo y delimitan determinadas zonas o áreas 
+				aportando información adicional. Es posible activar más de una a la vez, y la informaciópn visible 
+				que se obtiene al pulsar sobre ellas corresponderá a la última que se añada.
+			</p>
+			<p>
+				La lista de capas disponibles es la siguiente.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Países. Perfil fronterizo de los diferentes países del mundo.
+					</p>
+				</li>
+				<li>
+					<p>
+						Unión Europea. Perfil fronterizo de los diferentes países de la Unión Europea.
+					</p>
+				</li>
+				<li>
+					<p>
+						España. Comunidades Autónomas. Perfil fronterizo de las diferentes Comunidades Autónomas españolas.
+					</p>
+				</li>
+				<li>
+					<p>
+						España. Provincias. Perfil fronterizo de las diferentes provincias españolas.
+					</p>
+				</li>
+				<li>
+					<p>
+						España. Municipios. Perfil fronterizo de los diferentes municipios españoles.
+					</p>
+				</li>
+				<li>
+					<p>
+						Retícula. Meridianos y paralelos geográficos representados en intervalos de 20 grados sexagesimales.
+					</p>
+				</li>
+			</ol>
+			<p>
+				Cuando se ha cargado un 
+				<a href="javascript:toolkit.generictab('stab40', 'step40', 'shtabcontent', 'shtablinks');">archivo de datos</a> 
+				se muestran dos opciones adicionales.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Agrupamientos. Se representan todos los registros filtrados en forma de 
+						<em>clusters</em> o agrupamientos, representados por pequeños círculos de colores 
+						(más oscuros cuanto más numeroso es el <em>cluster</em>). Al pulsar sobre ellos 
+						o aproximar el mapa se "desagregan" dichos círculos y se muestran, progresivamente, 
+						los elementos individualizados.
+					</p>
+				</li>
+				<li>
+					<p>
+						Mapa de calor. Se representan todos los registros filtrados en forma de superficie 
+						continua de color graduado mediante escala, indicando mayor o menor concentración de 
+						elementos en una zona concreta.
+					</p>
+					<p style="padding-left:5px;padding-right:5px;background-color:red;height:23px;background-image:linear-gradient(to right,blue,lime,red);">
+						<span class="color-white">0%</span><span class="color-white pull-right">100%</span>
+					</p>
+				</li>
+			</ol>
+		</li>
+		<li>
+			<h6>Búsqueda</h6>
+			<p>
+				Un campo de texto permite escribir todo o parte del título de un 
+				<a href="#documents">registro primario</a> que se encuentre entre los elementos incluidos en el 
+				mapa. PF mostrará una lista de los elementos coincidentes.
+			</p>
+			<p>
+				Al seleccionar uno se representará en el mapa con un punto de color según el 
+				<a href="javascript:info.help('colorscode');">código</a> utilizado en PF: 
+				<span class="empty-circle" style="background:#08c"></span> para obras de arte, 
+				<span class="empty-circle" style="background:#e619a1"></span> para catálogos, 
+				<span class="empty-circle" style="background:#7f19e6"></span> para empresas, 
+				<span class="empty-circle" style="background:#c00"></span> para entidades, 
+				<span class="empty-circle" style="background:#f50"></span> para exposiciones y  
+				<span class="empty-circle" style="background:#00b300"></span> para actores.  
+			</p>
+		</li>
+		<li>
+			<h6>Incluir</h6>
+			<p>
+				Cuando se busca un <a href="#documents">registro primario</a>, PF puede mostrar, además 
+				del mismo, información adicional que permite situarlo en su contexto correspondiente. 
+				Para ello necesita establecer un <em>buffer</em> o "ámbito de búsqueda" en forma de 
+				radio de un círculo a partir de la posición del registro localizado. Los elementos 
+				que se muestran en una lista desplegable son los siguientes.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Proximidad en m. Cuánto debe medir el radio del <em>buffer</em> empleado en el cálculo. 
+						Note que el campo acepta únicamente datos numéricos enteros positivos, sin comas decimales, 
+						signos ni puntos de millares.
+					</p>
+					<p>
+						PF dibujará el punto correspondiente al <a href="#documents">registro primario</a> 
+						localizado según el 
+						<a href="javascript:info.help('colorscode');">código cromático</a> 
+						como un círculo de color sólido, y los incluídos en el <em>buffer</em> como círculos 
+						con el interior semitransparente según el mismo sistema de codificación: 
+						<span class="empty-circle" style="background:#08c;opacity:.3"></span> para obras de arte,
+						<span class="empty-circle" style="background:#e619a1;opacity:.3"></span> para catálogos, 
+						<span class="empty-circle" style="background:#7f19e6;opacity:.3"></span> para empresas, 
+						<span class="empty-circle" style="background:#c00;opacity:.3"></span> para entidades, 
+						<span class="empty-circle" style="background:#f50;opacity:.3"></span> para exposiciones y  
+						<span class="empty-circle" style="background:#00b300;opacity:.3"></span> para actores.  
+					</p>
+					<p>
+						También trazará un círculo de color gris semitransparente bordeado por 
+						línea de puntos que representa el ámbito cubierto por el <em>buffer</em>.
+					</p>
+				</li>
+				<li>
+					<p>
+						Relaciones directas. Muestra líneas que unen los puntos que representan el 
+						<a href="#documents">registro primario</a> localizado y aquellos que se 
+						relacionan con él. Esta opción está activa independientemente de si se ha 
+						especificado o no un radio de proximidad en metros.
+					</p>
+				</li>
+				<li>
+					<p>
+						<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Red_irregular_de_tri%C3%A1ngulos">
+						Red irregular de triángulos</a>. 
+						Dibuja una malla de polígonos de tres lados que unen el  
+						<a href="#documents">registro primario</a> localizado y aquellos que se 
+						relacionan con él. Suele abreviarse como TIN por su nomenclatura en inglés 
+						(Triangulated irregular network). La intensidad del color semitransparente interior 
+						de cada triángulo indica la importancia relativa de la conexión entre 
+						los diversos elementos. 
+						Esta opción solo está activa si se ha especificado un radio de proximidad en metros.
+					</p>
+				</li>
+				<li>
+					<p>
+						<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Envolvente_convexa">
+						Envolvente convexa</a>. 
+						Dibuja el perfil que conecta a los elementos más "exteriores" del conjunto del   
+						<a href="#documents">registro primario</a> localizado y aquellos que se 
+						relacionan con él. 
+						Esta opción solo está activa si se ha especificado un radio de proximidad en metros.
+					</p>
+				</li>
+				<li>
+					<p>
+						Envoltura. 
+						Dibuja el rectángulo que conecta a los elementos más "exteriores" del conjunto del   
+						<a href="#documents">registro primario</a> localizado y aquellos que se 
+						relacionan con él en sus puntos NW-NE-SE-SW. No confundir con 
+						<em>envolvente</em> de una familia de curvas. 
+						Esta opción solo está activa si se ha especificado un radio de proximidad en metros.
+					</p>
+				</li>
+				<li>
+					<p>
+						<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Pol%C3%ADgonos_de_Thiessen">
+						Diagrama Voronoi</a>. 
+						También conocidos como <em>polígonos de Thiessen</em>, 
+						trazan una retícula triangular que usa la 
+						<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Pol%C3%ADgonos_de_Thiessen">
+						distancia euclidiana </a> para calcular la interpolación del 
+						<a href="#documents">registro primario</a> localizado y aquellos que se 
+						relacionan con él, basada en la posición media entre cada pareja de puntos.   
+						Esta opción solo está activa si se ha especificado un radio de proximidad en metros.
+					</p>
+				</li>
+			</ol>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANTE. En los casos de <em>Red irregular de triángulos</em> y <em>Diagrama Voronoi</em>, solo 
+				se unen los puntos que sean del mismo tipo de <a href="#documents">registro primario</a> 
+				que el localizado.
+			</p>
+		</li>
+		<li>
+			<h6>Consultas</h6>
+			<p>
+				Se muestra cuando se ha realizado al menos la búsqueda de un 
+				<a href="#documents">registro primario</a>. Sus resultados constituyen una 
+				"consulta". Pueden activarse o no de manera simultánea, como 
+				sucede con las <em>Capas</em>. Ofrece las siguientes opciones.
+			<p>
+			<ol type="a">
+				<li>
+					<p>
+						Un selector para cada consulta generada. La búsqueda por proximidad en 
+						metros incluye tres capas: la del <a href="#documents">registro primario</a> localizado, 
+						la de aquellos incluidos en el <em>buffer</em> y la correspondiente al círculo 
+						de proximidad.
+					</p>
+				</li>
+				<li>
+					<p>
+						Limpiar. Borra todas las consultas realizadas.
+					</p>
+				</li>
+				<li>
+					<p>
+						Exportar. Genera un archivo de formato 
+						<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Valores_separados_por_comas">CSV</a> 
+						con los  <a href="#documents">registros primarios</a> incluidos en las 
+						consultas, tanto si se están mostrando como si no.
+					</p>
+				</li>
+			</ol>
+		</li>
+	</ol>	
+</div>
+
+<div id="step47" class="shtabcontent hide">
+	<h3 id="title-helplegends">Leyendas</h3>
+	
+	<h4 id="title-helplegends-specialcols">Columnas especiales</h4>
+	
+	<p>
+		En PF, las tablas que muestran el resultado de operaciones con datos, tales como las 
+		que aparecen en <em>Grupos</em>, <em>Relaciones</em> y <em>Coocurrencias</em>, disponen de unas 
+		columnas añadidas a la información solicitada que la complementan.
+	</p>
+	
+	<div class="table-responsive">
+		<table>
+			<tbody>
+				<tr>
+					<th class="text-align-center"><strong>Z</strong></th>
+					<td>
+						Relevancia de una fila según el <em>valor normalizado</em> o 
+						<em>z-score</em> de su frecuencia. Para más información acerca del valor 
+						normalizado o <em>unidad tipificada</em>, 
+						<a target="_blank" rel="nofollow" 
+						href="https://es.wikipedia.org/wiki/Unidad_tipificada">pulse aquí</a>.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>O</strong></th>
+					<td>
+						La frecuencia de la fila es un <em>valor significativo</em> u <em>outlier</em>. 
+						Para más información acerca de los valores significativos o <em>atípicos</em>, 
+						<a target="_blank" rel="nofollow" 
+						href="https://es.wikipedia.org/wiki/Valor_at%C3%ADpico">pulse aquí</a>.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>L</strong></th>
+					<td>
+						La frecuencia de la fila está <em>por encima</em> [<strong>&uarr;</strong>], 
+						<em>por debajo</em> [<strong>&darr;</strong>] o <em>es igual</em> [<strong>&#8597;</strong>] 
+						a la <em>media aritmética</em> (promedio) del total de frecuencias.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>S</strong></th>
+					<td>
+						La frecuencia de la fila está descrita por un <em>color</em> en la <em>escala cromática</em> 
+						seleccionada en los <a href="#settings">Ajustes</a>.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>Recuento</strong></th>
+					<td>
+						La frecuencia de la fila representa el número de veces que un valor aparece 
+						en una consulta dada. Es la <em>cantidad</em> de valores que 
+						comparten un grupo determinado de características.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<h4 id="title-helplegends-colorscode">Códigos de color</h4>
+	
+	<p>
+		PATHFINDER utiliza un sistema codificado de colores para identificar diferentes tipos de elementos. 
+		Los <a href="#documents">tipos de registro primarios</a> se identifican de acuerdo a la siguiente 
+		tabla.
+	</p>	
+	
+	<div class="table-responsive">
+		<table>
+			<tbody>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-success">P</button>
+					</th>
+					<th>
+						Actor
+					</th>
+					<td>
+						Persona o entidad que interactúa con <em>catálogos</em> o 
+						<em>exposiciones</em> a título de autoría, edición, ilustración, comisariado, 
+						préstamo u otras circunstancias.				
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-tertiary">B</button>
+					</th>
+					<th>
+						Catálogo
+					</th>
+					<td>
+						Cualquier artículo, libro, página web o texto en general que se 
+						emplee para ilustrar al visitante acerca de una determinada exposición. Su uso "natural" 
+						es para almacenar información sobre los "<em>catálogos</em>" de la misma. 
+						Puede tener existencia física o ser <em>virtual</em>, representando, 
+						en ese caso, el grupo de <em>obras de arte</em> que figuran en una 
+						determinada exposición.			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-secondary">C</button>
+					</th>
+					<th>
+						Empresa
+					</th>
+					<td>
+						Cualquier organismo cuya relación con las entidades,las exposiciones, 
+						las publicaciones o las personas pueda definirse EXCLUSIVAMENTE en términos mercantiles, 
+						comerciales o de negocio. La distinción, pues, 
+						no se basa en el <em>carácter</em> público, privado o mixto de la misma ni en el hecho de 
+						que sus fines incluyan o no ánimo de lucro, 
+						sino en que la RELACIÓN sea lucrativa.				
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-error">E</button>
+					</th>
+					<th>
+						Entidad
+					</th>
+					<td>
+						Cualquier organismo con entidad legal que se utiliza en el contexto de 
+						<a rel="noopener" target="_blank" href="http://www.expofinder.es">ExpoFinder</a>
+						bien como un <em>origen de datos RSS/Atom o HTML</em>, 
+						a partir de cuyos resultados el sistema explora la Red en búsqueda de información 
+						sobre exposiciones temporales, bien como cualquier otro organismo que actúe como 
+						soporte organizador o financiero de una exposición, 
+						de su catálogo o al que se vincule una <em>persona</em> de forma laboral, 
+						investigadora o académica.				
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-warning">X</button>
+					</th>
+					<th>
+						Exposición
+					</th>
+					<td>
+						Cualquier evento en el que se exhiba ante el público un conjunto de obras 
+						de carácter artístico o cuya intencionalidad sea la de difundir conocimientos propios 
+						de la disciplina académica de Historia del Arte.				
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-info">A</button>
+					</th>
+					<th>
+						Obra de arte
+					</th>
+					<td>
+						Cualquier manifestación de la actividad humana mediante la cual se 
+						interpreta lo real o se plasma lo imaginado con recursos plásticos, lingüísticos o sonoros. 
+						A efectos de PF, debe figurar vinculada a <em>actor/actores</em> o 
+						<em>catálogo/catálogos</em>.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h4 id="title-helplegends-mapbuttons">Botones de operación en <em>Mapas</em></h4>
+	
+	<p>
+		La opción de <em>Mapas</em> utiliza un grupo de botones, situados en la esquina superior izquierda del 
+		plano, cada uno de los cuales realiza las acciones que se expresan a continuación.
+	</p>	
+	
+	<div class="table-responsive">
+		<table>
+			<tbody>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="plus" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Zoom +
+					</th>
+					<td>
+						Acerca el mapa en pantalla, reduciendo el campo de visión. Se desactiva 
+						cuando se alcanza el valor máximo.				
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="minus" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Zoom -
+					</th>
+					<td>
+						Aleja el mapa en pantalla, aumentando el campo de visión. Se desactiva 
+						cuando se alcanza el valor mínimo.			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="maximize" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Ampliación por selección
+					</th>
+					<td>
+						Permite seleccionar un rectángulo en el mapa que centrará y aumentará 
+						los detalles disminuyendo la escala (acercando el campo de visión).			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="crosshair" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Retículo
+					</th>
+					<td>
+						O "punto de mira". Dibuja un círcula de color en el centro geométrico del mapa.			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="home" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Inicio
+					</th>
+					<td>
+						Acomoda el campo de visión al seleccionado como posición inicial en los 
+						<a href="#settings">ajustes</a> de PF.			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="search" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Buscar
+					</th>
+					<td>
+						Abre un campo de texto que permite localizar una ubicación geográfica en el plano, 
+						empleando los servicios gratuitos de 
+						<a target="_blank" rel="nofollow" 
+						href="https://nominatim.openstreetmap.org/">OpenStreetMap Nominatim</a>. El campo de	
+						visión se ajusta si PF localiza algún resultado.	
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="maximize2" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Ver a pantalla completa
+					</th>
+					<td>
+						Extiende el mapa al tamaño completo de la pantalla del usuario. Es un botón 
+						alternativo, y al volvwer a ser pulsado restaura el tamaño inicial.	
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="printer" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Imrimir
+					</th>
+					<td>
+						Enviar el mapa a la impresora activa.	
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

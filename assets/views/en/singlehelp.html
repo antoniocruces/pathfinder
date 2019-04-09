@@ -1,0 +1,182 @@
+<nav class="nav no-print">
+	<div class="nav-left">
+		<div class="tabs">
+			<a id="s-atab-zero" class="active" href="javascript:toolkit.selecttab('atab', 'zero')">Instrucciones</a>
+			<a id="s-atab-one" href="javascript:toolkit.selecttab('atab', 'one')">Diagramas</a>
+		</div>
+	</div>
+</nav>
+
+<article id="c-atab-zero" class="tabcontent is-visible active">
+<h4>Instrucciones</h4>
+<h5>Consideraciones previas</h5>
+<p>
+En esta pantalla se muestra la <em>ficha individual</em> de un registro. La información se agrupa en <em>campos</em> y 
+<em>grupos de campos</em> de acuerdo a su valor semántico en el contexto general de la aplicación y particular del propio registro. 
+La estructura básica de la pantalla se muestra a continuación.
+</p>
+<svg width="640" height="500" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" style="float: left; margin-right:40px;">
+ <g>
+  <title>PF. SIngle record</title>
+  <g id="svg_2" stroke="null"/>
+  <g id="svg_5"/>
+  <g id="svg_6"/>
+  <g id="svg_7"/>
+  <g id="svg_8"/>
+  <g id="svg_9"/>
+  <g id="svg_10"/>
+  <g id="svg_11"/>
+  <g id="svg_12"/>
+  <g id="svg_13"/>
+  <g id="svg_14"/>
+  <g id="svg_15"/>
+  <g id="svg_16"/>
+  <g id="svg_17"/>
+  <g id="svg_18"/>
+  <g id="svg_19"/>
+  <rect stroke="#000000" fill-opacity="0" id="svg_1" height="476.99997" width="632.99999" y="3" x="3.5" stroke-width="5" fill="#000000"/>
+  <rect stroke="#000000" stroke-opacity="0" id="svg_4" height="37" width="614.00004" y="16" x="13.49998" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="#aad4ff"/>
+  <rect stroke="#000000" id="svg_20" stroke-opacity="0" height="37" width="616.99994" y="58.5" x="11" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="#cccccc"/>
+  <rect stroke="#000000" id="svg_21" stroke-opacity="0" height="37" width="610.99997" y="99.5" x="16" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="#ffffaa"/>
+  <rect stroke="#000000" id="svg_22" stroke-opacity="0" height="37" width="613.00002" y="159.5" x="14" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="#aaffaa"/>
+  <rect stroke="#000000" id="svg_23" stroke-opacity="0" height="59" width="615.00001" y="205.5" x="14" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="#ffaa56"/>
+  <rect stroke="#000000" id="svg_24" stroke-opacity="0" height="84" width="616" y="270.5" x="13" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="#ffaaff"/>
+  <rect stroke="#000000" id="svg_25" stroke-opacity="0" height="109" width="616" y="363" x="13" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="#bfbf00"/>
+  <text xml:space="preserve" text-anchor="middle" font-family="Monospace" font-size="24" id="svg_26" y="44" x="59.5" stroke-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Título</text>
+  <text id="svg_27" xml:space="preserve" text-anchor="middle" font-family="Monospace" font-size="24" y="82" x="47.01563" stroke-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Menú</text>
+  <text id="svg_28" xml:space="preserve" text-anchor="middle" font-family="Monospace" font-size="24" y="127" x="67.01563" stroke-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Leyenda</text>
+  <text style="cursor: move;" id="svg_29" xml:space="preserve" text-anchor="middle" font-family="Monospace" font-size="24" y="187" x="327.01563" stroke-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">ID y tipo de registro</text>
+  <text id="svg_30" xml:space="preserve" text-anchor="middle" font-family="Monospace" font-size="24" y="245" x="324.01563" stroke-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Taxonomías</text>
+  <text id="svg_31" xml:space="preserve" text-anchor="middle" font-family="Monospace" font-size="24" y="324" x="329.01563" stroke-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Metadatos</text>
+  <text id="svg_32" xml:space="preserve" text-anchor="middle" font-family="Monospace" font-size="24" y="408" x="332.01563" stroke-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Relaciones</text>
+  <line stroke="#000000" id="svg_35" y2="148" x2="624.96397" y1="148" x1="15.5" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="none"/>
+ </g>
+ <h5>Descripción de la pantalla</h5>
+<p>
+	De arriba abajo, las zonas presentes en la pantalla son las siguientes:
+	<ol>
+		<li>
+			Título. El correspondiente al registro, "formateado" (es decir, en ausencia del mismo se mostrará "[Sin título]").
+		</li>
+		<li>
+			Menú. Operaciones que se pueden realizar con el registro presente (se abren en una nueva ventana emergente). Son las siguientes:
+			<ul>
+				<li>
+					Imprimir. Obtener copia del presente registro por impresora. Note que la mayoría de navegadores actuales suelen 
+					permitir realizar esta tarea generanto un archivo de tipo PDF (Adobe Acrobat).
+				</li>
+				<li>
+					Cronograma. Diagrama temporal que muestra los vínculos del registro principal con sus relacionados en una línea 
+					cronológica.
+				</li>
+				<li>
+					Red. Diagrama arborescente que muestra el orden jerárquico de las diversas relaciones del registro principal y 
+					la intensidad de las mismas.
+				</li>
+				<li>
+					Relaciones. Tabla indentada descendente que muestra los agrupamientos de los diferentes campos semánticos presentes en 
+					el registro principal y sus relaciones y efectúa un recuento de los mismos.
+				</li>
+				<li>
+					Estadísticas. Tabla dinámica elaborada a partir de los agrupamientos, definidos por el usuario, que pueden realizarse 
+					a partir de los diversos valores almacenados tanto en el registro principal como en sus relaciones.
+				</li>
+				<li>
+					Mapas. Trazado de los vínculos del registro principal con sus relaciones sobre un planisferio, expresando intensidad, 
+					densidad y distribución y enlaces entre elementos.
+				</li>
+			</ul>
+		</li>
+		<li>
+			Leyenda. Muestra los colores asociados a cada tipo de registro.
+			<ul>
+				<li><span class="color-artwork">✱</span>&nbsp;Obra de arte</li>
+				<li><span class="color-book">✱</span>&nbsp;Catálogo</li>
+				<li><span class="color-company">✱</span>&nbsp;Empresa</li>
+				<li><span class="color-entity">✱</span>&nbsp;Entidad</li>
+				<li><span class="color-exhibition">✱</span>&nbsp;Exposición</li>
+				<li><span class="color-person">✱</span>&nbsp;Actor</li>
+				<li><span class="color-taxonomy">✱</span>&nbsp;Taxonomía</li>
+				<li><span class="color-record">✱</span>&nbsp;Registro</li>
+			</ul>
+		</li>
+		<li>
+			ID y tipo de registro. Número de identificación y tipología del registro principal.
+		</li>
+		<li>
+			Taxonomías. Entendidas como <em>clasificación u ordenación en grupos de cosas que tienen unas características comunes</em>, 
+			se aplican a uno <em>o más</em> tipos de registro.
+		</li>
+		<li>
+			Metainformación. Complementan la información del registro principal. Su uso en PATHFINDER viene bien descrito por la definición 
+			"structured and codified data describing characteristics of instances containing information to help identify, discover, assess 
+			and manage them" 
+			(W. R. Durrell. <em>Data Administration. A Practical Guide to Data Administration</em>. McGraw-Hill, 1985).
+		</li>
+		<li>
+			Relaciones. De otros registros con respecto al principal. En ellas se expresan los siguientes conceptos:
+			<ul>
+				<li>
+					Tipo de relación. Puede ser "prestada" (el registro principal figura como indique el siguiente 
+					nivel, la clave, con respecto al registro relacionado; es una relación "saliente") o "recibida" (el 
+					registro relacionado figura como indique el siguiente nivel, la clave, con respecto al registro principal; 
+					es una relación "entrante").
+				</li>
+				<li>
+					Clave. Expresa la forma en que se produce la relación; por ejemplo, "actor que participa como autor" en 
+					una exposición.
+				</li>
+				<li>
+					Valor. El contenido del registro relacionado.
+				</li>
+			</ul>
+			
+		</li>
+	</ol>
+</p>
+<h5>Funcionalidad</h5>
+<p>
+	Determinados tipos de campos ofrecen una funcionalidad adicional.
+	<ol>
+		<li>
+			En taxonomías y metainformación. Al pulsar sobre el contenido de un campo (su "valor"), PATHFINDER interpreta que se 
+			desea <em>establecer una condición de filtro con dicho contenido</em>. Por tanto, abre la ventana de filtrado e inserta 
+			dicha condición a continuación de las existentes.
+		</li>
+		<li>
+			Campos temporales (fechas). Cuando PATHFINDER puede realizar el cálculo (casos en los que existe fecha de comienzo y de 
+			finalización) se muestra, separado por una flecha (&rarr;) la duración pertinente, expresada en unidades adecuadas 
+			al tipo de registro (días para exposiciones, años para duraciones de creación de una obra de arte o fechas vitales de 
+			un actor).
+		</li>
+		<li>
+			Campos geolocalizados. Se muestran sus coordenadas en formato de grados decimales y, al pulsar sobre ellos, 
+			se invoca una ventana emergente que muestra el mapa de posición, la dirección postal, obtenida por geocodificación 
+			inversa, y la posición en grados sexagesimales.
+			<br />
+			IMPORTANTE: PATHFINDER geolocaliza directamente la posición expresada originalmente en 
+			<a href="http://expofinder.uma.es" rel="noopener" target="_blank">ExpoFinder</a>. Pero en el caso de registros que carecen 
+			de ella, como es el caso de los actores o los catálogos, donde, respectivamente, solo figura información descriptiva 
+			(país o localidad), la aplicación <em>asigna las coordenadas de la capital del país</em> expresado en la misma como 
+			geoposición válida y la usa en los subsiguientes cálculos y diagramas.
+		</li>
+		<li>
+			Campos con información complementaria. Cuando, por la naturaleza de la información conservada, es posible, PATHFINDER 
+			añade un víncluo (expresado por un asterisco entre corchetes, [*]) al valor del campo que conduce a la página 
+			pertinente en <a href="https://es.wikipedia.org" rel="noopener" target="_blank">Wikipedia</a>.
+		</li>
+		<li>
+			Relaciones. Cada valor es expresado como un <em>enlace</em> al registro correspondiente, actuando como 
+			hipervínculo. Esto permite una navegación progresiva (del registro A al B, del B al vinculado C,&hellip;). En 
+			todo momento PATHFINDER mostrará un enlace al registro anterior, de manera que es posible reconstruir la trayectoria 
+			"hacia atrás".
+		</li>
+	</ol>	
+</p>
+</article>
+<article id="c-atab-one" class="tabcontent is-hidden">
+<h4>Diagramas</h4>
+<h5>Consideraciones previas</h5>
+<p class="text-error">EN DESARROLLO</p>
+</div>
+</div>

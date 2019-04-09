@@ -1,0 +1,219 @@
+<style>
+.loading span {
+  display: inline-block;
+  vertical-align: middle;
+  width: .6em;
+  height: .6em;
+  margin: .19em;
+  background: #007DB6;
+  border-radius: .6em;
+  animation: loading 1s infinite alternate;
+}
+
+/*
+ * Dots Colors
+ * Smarter targeting vs nth-of-type?
+ */
+.loading span:nth-of-type(2) {
+  background: #008FB2;
+  animation-delay: 0.2s;
+}
+.loading span:nth-of-type(3) {
+  background: #009B9E;
+  animation-delay: 0.4s;
+}
+.loading span:nth-of-type(4) {
+  background: #00A77D;
+  animation-delay: 0.6s;
+}
+.loading span:nth-of-type(5) {
+  background: #00B247;
+  animation-delay: 0.8s;
+}
+.loading span:nth-of-type(6) {
+  background: #5AB027;
+  animation-delay: 1.0s;
+}
+.loading span:nth-of-type(7) {
+  background: #A0B61E;
+  animation-delay: 1.2s;
+}
+
+/*
+ * Animation keyframes
+ * Use transition opacity instead of keyframes?
+ */
+@keyframes loading {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+</style>
+<div class="hero">
+	<div class="hero-titles">
+		<img class="logo" src="./assets/img/logos/LOGOPF.svg" alt="PATHFINDER">
+		<h1 id="app-home-info" class="hero-tagline">PATHFINDER</h1>
+		<h2>Tool for graphical and textual analysis of data from  
+			<a rel="noopener" href="http://expofinder.uma.es" target="_blank">ExpoFinder</a>.</h2>
+	</div>
+	<div class="hero-cta">
+		<p>
+			<a class="button-secondary pure-button" href="#starting">Leart to use it</a>
+			<a class="button-cta pure-button" href="#data">Start working</a>
+			<a class="button-secondary pure-button" href="#documents">Learn more</a>
+		</p>
+	</div>
+</div>
+<div class="pagecontent">
+	<div class="content">
+		<h3 class="pagecontent-header margin-bottom">A tool for Digital Art History.</h3>
+		<div id="home-sizes" class="size-chart pure-g margin-top" style="min-height:60px;">
+			<div class="pure-u-1">Working&hellip;</div>
+		</div>
+		<p id="home-sizes-legend" style="font-size:smaller;">&nbsp;</p>
+
+		<p>
+			PATHFINDER is a software development carried out by  
+			<a href="http://iarthislab.es" rel="noopener" target="_blank">iArtHis_LAB Research Group</a>, of the  
+			<a href="http://www.uma.es/departamento-de-historia-del-arte" rel="noopener" target="_blank">
+			Department od Art History</a> 
+			of the <a href="http://www.uma.es" rel="noopener" target="_blank">University of Málaga</a> 
+			(Spain), as part of the projects  
+			<a rel="noopener" href="http://www.exhibitium.com" target="_blank">Exhibitium FBBVA 2014</a> and 
+			<a rel="noopener" href="https://www.uma.es/media/tinyimages/file/proyectos_vigentes.pdf" target="_blank">
+			ArtCatalogs</a> 
+			(HAR2014-51915-P) to make available to researchers interested in the application of the digital 
+			paradigm to the study of the Humanities (especially Art History) 
+			a versatile tool that allows quantitative analysis of qualitative information specific to the discipline.
+		</p>
+		
+		<aside>
+			<p>
+				In order to use PATHFINDER you must have a data file with a specific format.
+				If you do not have one, <a href="#legal">contact</a> 
+				<a href="http://iarthislab.es" rel="noopener" target="_blank">iArtHis_LAB</a> to 
+				have granted access
+				<a rel="noopener" href="http://expofinder.uma.es" target="_blank">ExpoFinder</a>.
+			</p>
+		</aside>
+	</div>
+</div>
+
+<div class="pagecontent l-wrap pure-g">
+	<div class="content pure-u-1 u-sm-1-2 u-xl-1-2">
+		<h3 class="pagecontent-header">Inside the engine room.</h3>
+		<p>
+			Learn how it works and find out what are the technical foundations lending hardiness and reliability to the system.
+		</p>
+		<p>
+			<a href="#documents" class="pure-button">See documentation</a>
+		</p>
+	</div>
+	<div class="content pure-u-1 u-sm-1-2 u-xl-1-2">
+		<h3 class="pagecontent-header">A knowledge network.</h3>
+		<p>
+			Know which projects are using PATHFINDER as part of its work methodology. 
+		</p>
+		<p>
+			<a href="#projects" class="pure-button">See projects</a>
+		</p>
+	</div>
+</div>
+
+<div class="pagecontent l-wrap pure-g">
+	<div class="pagecontent-diagram content pure-u-1 u-sm-2-3 u-md-1-2">
+		<a rel="noopener" target="_blank" href="https://www.uma.es">
+			<img src="./assets/img/pictures/UMA.jpg" class="pure-img-responsive" 
+			alt="Rectorado. Universidad de Málaga.">
+		</a>
+	</div>
+	<div class="content pure-u-1 u-md-1-2">
+		<h3 class="pagecontent-header">University of Málaga.</h3>
+		<p>
+			Born in 1972, it is currently a worldwide benchmark. Since the end of the 90s, its strong commitment 
+			to new technologies and research stands out. It has become a milestone for innovation and scientific 
+			development in southern Spain. In 2007 he entered the Spanish Supercomputing Network with the Picasso Supercomputer.
+		</p>
+		<p>
+			<a target="_blank" rel="nofollow" href="https://www.uma.es" class="pure-button">Know UMA</a>
+		</p>
+	</div>
+</div>
+
+<div class="pagecontent l-wrap pure-g">
+	<div class="pagecontent-diagram content pure-u-1 u-sm-2-3 u-md-1-2">
+		<a rel="noopener" target="_blank" href="https://www.uma.es/departamento-de-historia-del-arte/">
+			<img src="./assets/img/pictures/UMAFYL.jpg" class="pure-img-responsive" 
+			alt="Facultad de Filosofía y Letras. Universidad de Málaga.">
+		</a>
+	</div>
+	<div class="content pure-u-1 u-md-1-2">
+		<h3 class="pagecontent-header">Department of Art History.</h3>
+		<p>
+			Focusing its main lines of research in Hispanic-Muslim art, Baroque, urbanism, 
+			contemporary art and digital Humanities, the Department of Art History, one of the oldest of the UMA, 
+			has achieved a solid prestige patent not only in the classrooms but becoming one of the most important 
+			discussion and boosting engines in the city.
+		</p>
+		<p>
+			<a target="_blank" rel="nofollow" 
+				href="https://www.uma.es/departamento-de-historia-del-arte/" class="pure-button">
+				Know DAH
+			</a>
+		</p>
+	</div>
+</div>
+
+<div class="pagecontent pagecontent-customize l-wrap pure-g">
+	<div class="content pure-u-1 u-sm-1 u-xl-1">
+		<h3 class="pagecontent-header">With institutional support.</h3>
+		<p>
+			Know who is behind and what is the academic and scientific support of PATHFINDER.
+		</p>
+		<p>
+			<a href="#institutions" class="pure-button">See institutions</a>
+		</p>
+	</div>
+</div>
+
+<div class="pagecontent pagecontent-customize l-wrap pure-g no-print">
+	<div class="content pure-u-1 u-sm-1-6 u-md-1-6" style="text-align:center;">
+		<a rel="noopener" target="_blank" href="https://www.uma.es">
+			<img src="./assets/img/logos/logo-uma-180x180.png" class="logoimg pure-img-responsive" 
+			alt="Universidad de Málaga.">
+		</a>
+	</div>
+	<div class="content pure-u-1 u-sm-1-6 u-md-1-6" style="text-align:center;">
+		<a rel="noopener" target="_blank" href="https://www.uma.es/departamento-de-historia-del-arte/">
+			<img src="./assets/img/logos/logo-dha-180x180.png" class="logoimg pure-img-responsive" 
+			alt="Universidad de Málaga.">
+		</a>
+	</div>
+	<div class="content pure-u-1 u-sm-1-6 u-md-1-6" style="text-align:center;">
+		<a rel="noopener" target="_blank" href="https://iarthislab.es/">
+			<img src="./assets/img/logos/logo-iarthis_lab-180x180.png" class="logoimg pure-img-responsive" 
+			alt="Grupo de investigación iArtHis_LAB.">
+		</a>
+	</div>
+	<div class="content pure-u-1 u-sm-1-6 u-md-1-6" style="text-align:center;">
+		<a rel="noopener" target="_blank" href="http://www.mineco.gob.es/portal/site/mineco/">
+			<img src="./assets/img/logos/logo-mineco-180x180.png" class="logoimg pure-img-responsive" 
+			alt="Ministerio de Economía y Competitividad. Gobierno de España.">
+		</a>
+	</div>
+	<div class="content pure-u-1 u-sm-1-6 u-md-1-6" style="text-align:center;">
+		<a rel="noopener" target="_blank" href="https://www.fbbva.es/">
+			<img src="./assets/img/logos/logo-fbbva-180x180.png" class="logoimg pure-img-responsive" 
+			alt="Fundación BBVA.">
+		</a>
+	</div>
+	<div class="content pure-u-1 u-sm-1-6 u-md-1-6" style="text-align:center;">
+		<a rel="noopener" target="_blank" href="https://www.centrodeestudiosandaluces.es/">
+			<img src="./assets/img/logos/logo-cea-180x180.jpg" class="logoimg pure-img-responsive" 
+			alt="Centro de Estudios Andaluces. Junta de Andalucía.">
+		</a>
+	</div>
+</div>

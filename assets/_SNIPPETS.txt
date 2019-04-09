@@ -1,0 +1,107 @@
+FILTER
+******
+
+			/* VALID SOLUTION START */
+			/*
+			let relations = dbm.relations(false);
+			let results = [];
+			d.filter.forEach(o => {
+				let set = new Set(o.results);
+				let relatives = new Set(relations.filter(f => set.has(f.ID)).map(f => f.RID));
+				results.push([...Array.from(set), ...Array.from(relatives)]);
+				set = relatives = undefined;
+			});
+			let matches = dbx.intersection(results.map(o => new Set(o)));
+			let filtered = dbx.intersection([new Set(d.filter.map(o => o.results).flatten()), matches]);
+			let solution = true;
+			d.filter.forEach(o => {
+				if(!dbx.intersection([new Set(o.results), filtered]).size) solution = false;
+			});
+			let result = solution ? Array.from(filtered) : [];
+			*/
+			/* VALID SOLUTION END */
+
+
+/* MORE */
+var trans = array => array.map(o => d.store.pos[o]);
+var relations = dbm.relations(false);
+var results = [];
+var ancestors = [];
+var result = [];
+d.filter.forEach(o => {
+	var set = new Set(o.results);
+	var relatives = new Set(relations.filter(f => set.has(f.ID)).map(f => f.RID));
+	var parents = new Set(relations.filter(f => relatives.has(f.ID)).map(f => f.RID));
+	var grandparents = new Set(relations.filter(f => parents.has(f.ID)).map(f => f.RID));
+	results.push([...set]);
+	ancestors.push([...relatives, ...parents]);
+	set = relatives = parents = grandparents = undefined;
+});
+
+var tmp = dbx.intersection(ancestors.map(o => new Set(o)))
+results.forEach(o => {
+	console.log(dbx.intersection([new Set(o), tmp]))
+});
+
+IMPORTANT
+*********
+var mutatedlist = (cols, filtered = false, strict = true) => {
+	let prepare = obj => {
+		let rkey = obj.rkey;
+		let blacklist = new Set(['rtype', 'rkey', 'value']);
+		let out = {};
+		Object.keys(obj).filter(o => !blacklist.has(o)).forEach(o => out[o === 'ID' ? o : rkey + '|' + o] = obj[o]);
+		rkey = blacklist = undefined;
+		return out;
+	};
+	let group = (arr, fid) => {
+		return arr.reduce((a, c) => {
+			if(!a.hasOwnProperty(c[fid])) {
+				a[c[fid]] = Object.assign({}, c);
+			} else {
+				a[c[fid]].value = [a[c[fid]].value, c.value].join('. ');
+			}
+			return a;
+		}, {});
+	};
+	let lis = dbm.metadata(false, filtered).filter(o => k.dates.includes(o.rkey) ? dbe._validyear(o.value) : true);
+	let tax = Object.values(group(dbm.taxonomies(false, filtered), 'ID'));
+	let mut = new Set(cols.filter(o => o.includes('|')).map(o => o.split('|')[0]));
+	let nor = new Set(cols.filter(o => !o.includes('|')));
+	let res = [...lis, ...tax].filter(o => mut.has(o.rkey) || nor.has(o.rkey)).map(o => prepare(dbe._mutate(o, false))).flatten();
+	let set = new Set(res.map(o => o.ID));
+	let doc = dbm.documents(false, filtered, toolkit.randomstring()).filter(o => set.has(o.ID)).map(o => ({
+		ID: o.ID,
+		ptype: o.rkey, 
+		color: o.color,
+		title: toolkit.titleformat(o.value)
+	}));
+	let joi = joinobjects(doc, res);
+	prepare = lis = mut = nor = res = doc = undefined;
+	return joi;
+};
+
+var completerecord = (met, obj) => {
+	var metbyid = met[obj.ID] || null;
+	var metbyrid = met[obj.RID] || null;
+	return Object.assign({}, obj, !metbyid ? {} : omit(metbyid, 'ID'), !metbyrid ? {} : omit(metbyrid, 'ID'));
+};
+
+console.time('metadata');
+var metadata = dbe.hashrecord(mutatedlist(['_cp__exh_exhibition_town', 'tax_activity'], false), 'ID');
+var metaids = new Set(Object.keys(metadata).map(o => Number(o)));
+console.timeEnd('metadata');
+
+console.time('relations');
+var relations = dbm.relations(false, true);
+console.timeEnd('relations');
+
+console.time('unfolded');
+var unfolded = relations.map(o => completerecord(metadata, o));
+console.timeEnd('unfolded');
+
+console.time('unfolded_rid');
+var unfolded_rid = relations.filter(o => metaids.has(o.RID)).map(o => Object.assign({}, o, omit(metadata[o.RID], 'ID')));
+console.timeEnd('unfolded_rid');
+
+

@@ -1,0 +1,62 @@
+<div class="content">
+<h3 class="margin-top margin-bottom">Valores estrictos</h3>
+<p>
+	PATHFINDER no recuperará aquellos registros alguno de cuyos campos esté vacío o contenga un valor nulo 
+	(el cero no se considera como tal).
+</p>
+
+<h3 class="margin-top margin-bottom">Valores significativos</h3>
+<p>
+	En estadística, un <strong>valor atípico</strong> (<em>outlier</em>) es un punto de datos que difiere significativamente de los otros 
+	presentes en una muestra. A menudo, los valores atípicos pueden alertar los resultados de un estudio. Sin embargo, en el ámbito con el 
+	que trabaja PATHFINDER, los <em>outliers</em> suelen indicar características destacadas y resaltables en el conjunto de datos analizado. 
+	Por eso se utiliza su referencia como <strong>valores significativos</strong>. Son, por así decirlo (y sin olvidar que los atípicos 
+	tienen un elevado grado de subjetividad), los elementos de un grupo que "se salen de norma" y, por consigueinte, llaman la atención.
+</p>
+<p>
+	El método matematico más generalizado para detectarlos se conoce como 
+	<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Tukey%27s_range_test">test de Tukey</a>, 
+	y utiliza la diferencia entre el primer y el tercer 
+	<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Cuartil">cuartil</a>, 
+	que suele denominarse <em>rango intercuartílico</em> o IQR (</em>interquartile range</em>). 
+	Para calcular estos elementos en primer lugar se localiza la 
+	<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Mediana_(estad%C3%ADstica)">mediana</a> de la muestra, es decir, 
+	el valor de la variable situada en la posición central de un conjunto de datos ordenados. A partir de ahí se ubican los 
+	cuartiles, que son los tres valores que dividen a dicho conjunto en cuatro partes porcentualmente iguales; es decir, que 
+	donde comienza el 25% de los elementos se sitúa el primer cuartil, la mediana en el 50% y el tercer cuartil en el 75%.
+	Suelen considerarse dos categorías de valores atípicos:
+</p>
+<ul>
+	<li>Leve (1.5 * IQR): Si el valor está a 1,5 veces la distancia del rango intercuartílico con respecto a uno de esos cuartiles.</li>
+	<li>Extremo (3 * IQR): Si el valor está a 3 veces la distancia del rango intercuartílico con respecto a uno de esos cuartiles.</li>
+</ul>
+<p>
+	Los valores atípicos, por tanto, son aquellos que se sitúan "por debajo" o "por encima" de la "normalidad". PATHFINDER, por razones de 
+	operatividad, detecta valores atípicos de categoría <em>leve</em> (1.5 * IQR).
+</p>
+<svg xmlns="http://www.w3.org/2000/svg" width="342.9" height="150.5" version="1.1">
+<defs/>
+<path d="M 276.2,84.8 V 0" style="fill:none; stroke:black; stroke-width:1.01;"/>
+<path d="m 276.6,73.2 -8,13.8 -2,3.5 h -19.8 v 59.5 h 59.5 v -59.5 h -19.8 l -2,-3.5 z" style="color:black; overflow:visible; fill:#3efbff; stroke:black; stroke-width:1;"/>
+<path d="M 170,84.8 V 0" style="fill:none; stroke:black; stroke-width:1.01;"/>
+<path d="m 170.1,72.2 -8,13.8 -2.4,4.3 h -49.3 v 59.5 h 119.4 v -59.5 h -49.2 l -2.4,-4.3 z" style="color:black; overflow:visible; fill:#3efbff; stroke:black; stroke-width:1;"/>
+<path d="M 61.8,84.8 V 0" style="fill:none; stroke:black; stroke-width:1.01;"/>
+<path d="m 62.1,73.2 -8,13.8 -2,3.5 h -19.8 v 59.5 h 59.5 v -59.5 h -19.8 l -2,-3.5 z" style="color:black; overflow:visible; fill:#3efbff; stroke:black; stroke-width:1;"/>
+<text x="62" y="105.7" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">Q1</text>
+<text x="169.7" y="105.6" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">Q2</text>
+<text x="275.8" y="105.7" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">Q3</text>
+<text x="52.3" y="45.2" style="font-family:Arial; font-size:37.3px; fill:#ba00ff; stroke-width:0.5;">4,</text>
+<text x="263.8" y="45.2" style="font-family:Arial; font-size:37.3px; fill:#ba00ff; stroke-width:0.5;">7,</text>
+<text x="-1.1" y="45.2" style="font-family:Arial; font-size:37.3px; fill:#ba00ff; stroke-width:0.5;">2,</text>
+<text x="212.6" y="45.2" style="font-family:Arial; font-size:37.3px; fill:#ba00ff; stroke-width:0.5;">6,</text>
+<text x="107" y="45.2" style="font-family:Arial; font-size:37.3px; fill:#ba00ff; stroke-width:0.5;">4,</text>
+<text x="157.8" y="45.2" style="font-family:Arial; font-size:37.3px; fill:#ba00ff; stroke-width:0.5;">5,</text>
+<text x="322.1" y="46" style="font-family:Arial; font-size:37.3px; fill:#ba00ff; stroke-width:0.5;">8</text>
+<text x="60.2" y="125" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">primer</text>
+<text x="169.4" y="124.9" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">cuartil medio</text>
+<text x="275.1" y="125" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">tercer</text>
+<text x="60.9" y="145.2" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">cuartil</text>
+<text x="169.4" y="145.1" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">(mediana)</text>
+<text x="275.8" y="145.2" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">cuartil</text>
+</svg>
+</div>

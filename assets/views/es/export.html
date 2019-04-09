@@ -1,0 +1,61 @@
+<h4>Exportación</h4>
+
+<p>
+	PATHFINDER puede generar archivos que contienen los datos que maneja y pueden ser leídos por otras aplicaciones. El proceso de 
+	<em>exportación</em> es muy simple. Seleccione el formato que desee y pulse el botón correspondiente. 
+	Tenga en cuenta que PATHFINDER solamente exportará los registros que hayan sido filtrados.
+</p>
+
+<div class="boxes no-margin-top">
+	<div class="border-radius background-light-50 color-dark" style="padding:1.5rem">
+		<h3 class="margin-top-m">Formato TSV.</h3>
+		<p class="color-grey">
+			Un registro por línea. Campos separados por un carácter de tabulación.
+		</p>
+		<p class="color-grey">
+			VAr: 
+			<a rel="noopener" target="_blank" 
+				href="http://www.iana.org/assignments/media-types/text/tab-separated-values">IANA Media Types</a>
+		</p>
+		<a href="javascript:file.export('TAB');" class="button button-tertiary button-icon button-block">
+			<span>TSV</span>
+			<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+				<path class="download" d=""></path>
+			</svg>
+		</a>
+	</div>
+
+	<div class="border-radius background-light-50 color-dark" style="padding:1.5rem">
+		<h3 class="margin-top-m">Formato CSV.</h3>
+		<p class="color-grey">
+			Un registro por línea. Campos separados por un carácter coma (,).
+		</p>
+		<p class="color-grey">
+			Ver: 
+			<a rel="noopener" target="_blank" href="https://tools.ietf.org/html/rfc4180">IETF RFC 4180</a>
+		</p>
+		<a href="javascript:file.export('CSV');" class="button button-tertiary button-icon button-block">
+			<span>CSV</span>
+			<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+				<path class="download" d=""></path>
+			</svg>
+		</a>
+	</div>
+
+	<div class="border-radius background-light-50 color-dark" style="padding:1.5rem">
+		<h3 class="margin-top-m">Formato XML.</h3>
+		<p class="color-grey">
+			Lenguaje de Marcado Extensible (<em>eXtensible Markup Language</em>).
+		</p>
+		<p class="color-grey">
+			Ver: 
+			<a rel="noopener" target="_blank" href="http://www.rfc-editor.org/rfc/rfc7303.txt">IETF RFC 7303</a>
+		</p>
+		<a href="javascript:file.export('XML');" class="button button-tertiary button-icon button-block">
+			<span>XML</span>
+			<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+				<path class="download" d=""></path>
+			</svg>
+		</a>
+	</div>
+</div>

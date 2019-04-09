@@ -1,0 +1,88 @@
+<nav class="navigation">
+	<ul>
+		<li class="home-link background-secondary-400">
+			<h1 class="display-title display-title-l margin-top-s">
+				<img src="./assets/img/logos/IMGLOGOPF.svg" alt="PATHFINDER" 
+	    				style="margin:.5rem .5rem .5rem 1rem;height:30px;width:30px;float:left" />
+				<a style="line-height:.7"  href="#home">
+					PATHFINDER <span id="side-app-info" class="font-size-xs font-weight-thin"></span>
+				</a>
+			</h1>
+		</li>
+		<li class="background-error-50">
+			<a href="javascript:info.filter();">
+				<span id="app-microchart"></span>
+				<span id="app-status">Preparado</span>
+			</a>
+		</li>
+		<li>
+			<a href="#data">Datos</a>
+		</li>
+		<li class="active">
+			<a href="#settings">Opciones</a>
+			<ul class="background-light-100">
+				<li>
+					<a id="sel-one" id="sel-zero" href="javascript:toolkit.selecttab('tab', 'zero')">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="checkcircle" d=""></path>
+						</svg> 
+						Requisitos
+					</a>
+				<li>
+					<a id="sel-one" id="sel-one" href="javascript:toolkit.selecttab('tab', 'one')">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="sliders" d=""></path>
+						</svg> 
+						Ajustes
+					</a>
+				</li>
+				<li>
+					<a href="javascript:i18n.changelang(l === 'en' ? 'es' : 'en');">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="flag" d=""></path>
+						</svg> 
+						Idioma
+					</a>
+				</li>
+				<!--
+				<li>
+					<a href="javascript:info.changetheme();">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="layout" d=""></path>
+						</svg> 
+						Tema
+					</a>
+				</li>
+				-->
+				<li>
+					<a href="javascript:info.app();">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="monitor" d=""></path>
+						</svg> 
+						Aplicación
+					</a>
+				</li>
+				<li>
+					<a href="javascript:info.help('settings');">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="helpcircle" d=""></path>
+						</svg> 
+						Más información&hellip;
+					</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a href="#documents">Documentos</a>
+		</li>
+		<li>
+			<a href="javascript:info.help('app');">Ayuda</a>
+		</li>
+	</ul>
+</nav>
+
+<div id="search-container" class="field field-float-label no-margin-bottom">
+	<input id="search-input" class="background-info-50 no-border border-radius-none" type="search" placeholder="buscar...">
+	<label id="search-results-count" for="search-input">buscar...</label>
+	<ul id="search-results" class="search-results"></ul>
+</div>

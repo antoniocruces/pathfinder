@@ -1,0 +1,252 @@
+<div class="group group-xs margin-bottom-l">
+	<ul>
+		<li>
+			<button id="xstab0" 
+				class="xstablinks button button-grey button-border" 
+				onclick="javascript:toolkit.generictab('xstab0', 'xc-atab-zero', 'xstabcontent', 'xstablinks');">
+			Avanzado</button>
+		</li>
+		<li>
+			<button id="xstab1" 
+				class="xstablinks button button-grey button-border" 
+				onclick="javascript:toolkit.generictab('xstab1', 'xc-atab-one', 'xstabcontent', 'xstablinks');">
+			Recuento</button>
+		</li>
+		<li>
+			<button id="xstab2" 
+				class="xstablinks button button-grey button-border" 
+				onclick="javascript:toolkit.generictab('xstab2', 'xc-atab-two', 'xstabcontent', 'xstablinks');">
+			Términos</button>
+		</li>
+		<li>
+			<button id="xstab3" 
+				class="xstablinks button button-grey button-border" 
+				onclick="javascript:toolkit.generictab('xstab3', 'xc-atab-three', 'xstabcontent', 'xstablinks');">
+			Instrucciones</button>
+		</li>
+	</ul>
+</div>
+
+<div id="xc-atab-zero" class="xstabcontent visible active">
+
+<div id="flt-incsubf" class="no-margin"></div>
+
+<p class="margin-top">
+	Condiciones: <strong id="flt-filterlength">1</strong>
+	<button onclick="javascript:ui.addcondition();" 
+		class="button button-square button-info button-s button-border margin-left-s" 
+		data-tooltip="añadir condición">
+		<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+			<path class="plus" d=""></path>
+		</svg>
+	</button>
+</p>
+
+<div id="flt-main"></div>
+</div>
+
+<div id="xc-atab-one" class="xstabcontent hide">
+<div class="margin-top-s" id="filter-info-stats" style="width: 100%; min-height: 4em;">Trabajando&hellip;</div>
+</div>
+
+
+<div id="xc-atab-two" class="xstabcontent hide">
+<div id="flt-terms"></div>
+</div>
+
+<div id="xc-atab-three" class="xstabcontent hide">
+<h4 class="margin-vertical-s">Consideraciones previas</h4>
+<p>
+	PATHFINDER utiliza el paradigma de 
+	<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Filtro_(matemáticas)"><strong>filtro</strong></a>, 
+	propio de la 
+	<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Teor%C3%ADa_de_conjuntos">teoría de conjuntos</a>. Básicamente 
+	trata de seleccionar mediante inclusión o exclusión de determinadas características a un subgrupo de los registros 
+	presentes en el sistema.
+</p>
+<p>
+	Tenga en cuenta que <em>una vez aplicado un filtro a los datos, permanecerá activo</em> hasta que no se exstablezca 
+	lo contrario, y su presencia <em>afecta a TODAS las operaciones</em> que PATHFINDER ejecute.
+</p>
+
+<h4 class="margin-vertical-s">Filtro avanzado</h4>
+<p>
+	Permite exstablecer <em>condiciones</em> sucesivas y concurrentes que <em>acotarán</em> el ámbito de trabajo. Para ello: 
+</p>
+	<ol>
+		<li>
+			Exstablezca los <em>restrictores</em> para una condición. Tenga en cuenta que únicamente son <em>obligatorios</em> 
+			<em>operador</em> y <em>valor</em>.
+			<ol>
+				<li>
+					<em>modificador</em>: extrae un aspecto determinado de ciertas metainformaciones; por ejemplo, 
+					<em>año</em> o <em>día de la semana</em> de una fecha.
+				</li>
+				<li>
+					<em>metainformación</em>: también denominado <em>faceta</em> en ciertos sistemas; determina sobre 
+					qué tipo de información se realizará la búsqueda; por ejemplo, <em>lugar donde se celebra</em> una exposición.
+				</li>
+				<li>
+					<em>operador</em>: determina cómo ha de cumplirse una condición; por ejemplo, que un registro <em>contenga</em> o 
+					<em>no sea igual</em> a un <em>valor</em> dado; tenga en cuenta que dicho cumplimiento, si no se 
+					especifica <em>modificador</em> o <em>metainformación</em>, el cumplimiento de la condición se 
+					verificará sobre <em>todos los registros</em>.
+				</li>
+				<li>
+					<em>valor</em>: texto a buscar (puede ser una cifra, una fecha,&hellip;). <span class="no-data">ATENCIÓN: 
+					si utiliza el operador <em>entre</em> separe los valores con el símbolo "/" (barra)</span>. Es decir, 
+					si desea buscar un valor comprendido entre 2010 y 2011 escriba "2010/2011".
+				</li>
+				<li>
+					<em>relación</em>: inclusión &mdash;o no&mdash; de los registros que se relacionan con cada uno de los 
+					que cumplan la condición. Hay dos tipos de relación: <em>entrante</em> (cualquier registro que se 
+					vincule al seleccionado; por ejemplo, un actor que participa como artista en una exposición) y 
+					<em>saliente</em> (cualquier registro con el que el seleccionado se relacione; por ejemplo, 
+					un catálogo en el que el actor seleccionado participe como autor).
+				</li>
+			</ol>
+		</li>		 
+		<li>
+			Pulse <strong>=</strong> (signo <em>igual</em>) para que PATHFINDER calcule el número de registros o 
+			<em>subconjunto</em> que cumple la condición.
+		</li>
+		<li>
+			Añada, si lo desea, cuantas condiciones precise para acotar el filtro.
+		</li>
+		<li>
+			Una vez haya calculado todas las condiciones implicadas, exstablezca el filtro siguiendo el esquema adecuado a lo que 
+			se pretenda conseguir.
+			<ol>
+				<li>
+					<em>Todas (intersección)</em>: el filtro deberá seleccionar aquellos registros que cumplen simultáneamente 
+					todas las condiciones exstablecidas.
+				</li>
+				<li>
+					<em>Cualquiera (unión)</em>: el filtro deberá seleccionar aquellos registros que cumplen cualquiera de  
+					las condiciones exstablecidas.
+				</li>
+				<li>
+					<em>La primera y no el resto (diferencia)</em>: el filtro deberá seleccionar 
+					aquellos registros que cumplen la primera  
+					condición pero no las subsiguientes. Tenga en cuenta que es más eficaz si solamente se especifican 
+					dos condiciones, puesto que si añade más cada vez será más restrictivo.
+				</li>
+			</ol>
+		</li>
+		<li>
+			Cada vez que añada o quite una condición deberá calcularla individualmente (signo =, <em>igual</em>) o 
+			no se incluirá en el filtro.
+		</li>
+	</ol>
+	<p>
+		Dispone de una lista de <em>modificadores</em>, <em>metainformaciones</em> y <em>operadores</em> válidos 
+		el el apartado de <a href="javascript:toolkit.showpanel('flt-one');"><em>Terminología</em></a>. La ilustración que 
+		se muestra a continuación puede ayudar a comprender mejor el proceso de filtrado. 
+	</p>
+
+	<div class="margin-vertical-s">
+		<div class="pure-u-1-2">
+			<p>
+				<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
+				<g fill="#FFF">
+				<circle cx="200" cy="137.5" r="137.5"/>
+				<circle cx="137.5" cy="262.5" r="137.5"/>
+				<circle cx="262.5" cy="262.5" r="137.5"/>
+				</g><g stroke-width="10" stroke="#606060" fill="none">
+				<circle cx="200" cy="137.5" r="132.5"/>
+				<circle cx="137.5" cy="262.5" r="132.5"/>
+				<circle cx="262.5" cy="262.5" r="132.5"/>
+				</g>
+				<g font-weight="bold" fill="#888" font-family="Roboto Mono">
+				<text font-size="72px">
+				<tspan x="176" y="100">A</tspan>
+				<tspan x="46" y="300">B</tspan>
+				<tspan x="300">C</tspan></text>
+				<text font-size="48px">
+				<tspan x="148" y="241">ABC</tspan>
+				<tspan x="168" y="333">BC</tspan>
+				<tspan x="83" y="185">AB</tspan>
+				<tspan x="250">AC</tspan></text>
+				</g></svg>
+			</p>
+		</div>
+		<div class="table-responsive">
+			<table>
+				<caption>
+					Combinaciones
+				</caption>
+				<thead>
+					<tr>
+						<th>&nbsp;</th>
+						<th>Todas</th>
+						<th>Cualquiera</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>A, B, C</td>
+						<td>ABC</td>
+						<td>A B C AB BC AC ABC</td>
+					</tr>
+					<tr>
+						<td>A, B</td>
+						<td>AB</td>
+						<td>A B AB</td>
+					</tr>
+					<tr>
+						<td>B, A</td>
+						<td>AB</td>
+						<td>A B AB</td>
+					</tr>
+					<tr>
+						<td>A, C</td>
+						<td>AC</td>
+						<td>A C AC</td>
+					</tr>
+					<tr>
+						<td>C, A</td>
+						<td>AC</td>
+						<td>A C AC</td>
+					</tr>
+					<tr>
+						<td>B, C</td>
+						<td>BC</td>
+						<td>B C BC</td>
+					</tr>
+					<tr>
+						<td>C, B</td>
+						<td>BC</td>
+						<td>B C BC</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<h4 class="margin-vertical-s">Búsqueda</h4>
+	<p>
+		Para que la búsqueda sea efectiva deberá seguir las siguientes convenciones.
+	</p>
+	<ol>
+		<li> 
+			Escriba <em>todo</em> o <em>parte</em> del texto que desee buscar.
+		</li>
+		<li>
+			Seleccione dónde se realizará la búsqueda: o en un tipo de metadato 
+			asociado a los registros o en cualquiera de ellos.
+		</li>
+		<li>
+			Pulse <em>calcular</em> para que PATHFINDER evalúe los resultados obtenidos.
+		</li>
+		<li>
+			Pulse <em>filtrar</em> para que PATHFINDER exstablezca el filtro. 
+			Recuerde que <em>pulsar esta opción provocará un error si previamente 
+			no se ha realizado el cálculo</em>.
+		</li>
+	</ol>
+	
+	<h4 class="margin-vertical-s">Diagrama de un proceso de filtrado</h4>
+	<img src="./assets/img/illustrations/filter_es.png">
+</div>
+
+

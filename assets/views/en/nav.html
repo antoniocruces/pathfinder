@@ -1,0 +1,49 @@
+<div class="tflex is-marginless">
+	<div class="tleft" style="width:60%">
+		<span class="h1">PATHFINDER</span>
+	
+		<span data-demo="menu" class="margin-left dropdown">
+			<a class="dropbtn" href="#home">Inicio</a>
+		</span>
+		
+		<span data-demo="menu" class="dropdown">
+			<span class="dropbtn">Opciones</span>
+			<div class="dropdown-content">
+				<a href="javascript:i18n.changelang(l === 'en' ? 'es' : 'en');">Idioma&hellip;</a>
+				<a href="#settings">Ajustes&hellip;</a>
+				<a href="javascript:info.changetheme();">Tema&hellip;</a>
+				<a href="javascript:info.loader();" id="app-loader">Bibliotecas&hellip;</a>
+				<a href="javascript: info.app();">Aplicación&hellip;</a>
+			</div>
+		</span>
+	
+		<span data-demo="menu" class="dropdown">
+			<span class="dropbtn">Documentación</span>
+			<div class="dropdown-content">
+				<a href="#starting">Primeros pasos</a>
+				<a href="#documents">Referencia</a>
+				<a href="#projects">Proyectos</a>
+				<a href="#institutions">Instituciones</a>
+				<a href="#legal">Legal</a>
+			</div>
+		</span>
+	
+		<span data-demo="menu" class="dropdown">
+			<span class="dropbtn">Datos</span>
+			<div class="dropdown-content">
+				<a href="#data">Panel</a>
+			</div>
+		</span>
+	
+		<span data-demo="menu" class="dropdown">
+			<a class="dropbtn" href="javascript:info.help('app');">Ayuda</a>
+		</span>
+	
+	</div>
+	<div class="right padding-fit" style="text-align:right;width:40%">
+		<span id="app-timer"></span>
+		<span id="app-memory"></span>
+		<span id="app-microchart"></span>
+		<a href="javascript:info.filter();" id="app-status">Preparado</a>
+	</div>
+</div>

@@ -1,0 +1,58 @@
+<p class="margin-top">
+	PATHFINDER can generate files with the database content, ready to be read by other applications. 
+	Export process is very simple. Select the format you want and click on the appropriate button.
+</p>
+<p class="margin-top">
+Note that PATHFINDER will only export the records that have been filtered.
+</p>
+<main class="cardgrid">
+	<article>
+		<div class="cardtext">
+			<h3>TSV Format</h3>
+			<a class="pure-button border-left-yellow" href="javascript:file.export('TAB');">
+				<i class="fa fa-file-export"></i>
+				Export in TSV format
+			</a>
+			<p class="margin-top muted">
+			One record per line. Fields separated by a tab character.
+			</p>
+			<p class="margin-top">
+			References: 
+			<a rel="noopener" target="_blank" 
+				href="http://www.iana.org/assignments/media-types/text/tab-separated-values">IANA Media Types</a>
+			</p>
+		</div>
+	</article>
+	<article>
+		<div class="cardtext">
+			<h3>CSV Format</h3>
+			<a class="pure-button border-left-yellow" href="javascript:file.export('CSV');">
+				<i class="fa fa-file-export"></i>
+				Export in CSV format
+			</a>
+			<p class="margin-top muted">
+			One record per line. Fields separated by a comma (,) character.
+			</p>
+			<p class="margin-top">
+			References: 
+			<a rel="noopener" target="_blank" href="https://tools.ietf.org/html/rfc4180">IETF RFC 4180</a>
+			</p>
+		</div>
+	</article>
+	<article>
+		<div class="cardtext">
+			<h3>XML Format</h3>
+			<a class="pure-button border-left-yellow" href="javascript:file.export('XML');">
+				<i class="fa fa-file-export"></i>
+				Export in XML format
+			</a>
+			<p class="margin-top muted">
+			Extensible Markup Language. Predefinited tags.
+			</p>
+			<p class="margin-top">
+			References: 
+			<a rel="noopener" target="_blank" href="http://www.rfc-editor.org/rfc/rfc7303.txt">IETF RFC 7303</a>
+			</p>
+		</div>
+	</article>
+</main>

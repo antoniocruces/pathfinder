@@ -1,0 +1,60 @@
+<h4 class="margin-top margin-bottom" id="help-subtitle">Theme</h4>
+
+<p>
+	PATHFINDER allows certain interface features to be configured for user convenience. 
+	Choose the values you want; the selection will be permanent and stored on the client’s computer. 
+</p>
+
+
+<form class="pure-form">
+	<fieldset>
+		<legend for="theme-color">Colors</legend>
+		<label class="margin-right" for="theme-bgcolor">Close-up
+		<input id="theme-color" type="color" onchange="screen.theme('color', this.value);" value="#777777">
+		</label>
+		<label for="theme-bgcolor">Background
+		<input id="theme-bgcolor" type="color" onchange="screen.theme('background-color', this.value);" value="#ffffff">
+		</label>
+		<br />
+		<small class="text-grey">It affects the main wallpaper. Note that you must choose a color that does not conflict 
+		with the font used in the application.</small>
+	</fieldset>
+	
+	<fieldset>
+		<legend for="theme-color">Fonts</legend>
+		<label>Main</label>
+		<a href="javascript:screen.theme('font-family-main', 'Helvetica,Arial,sans-serif');" 
+			style="font-family:Helvetica,Arial,sans-serif">
+			sans serif</a>, 
+		<a href="javascript:screen.theme('font-family-main', '\'Georgia\',serif');" 
+			style="font-family:Georgia,serif">
+			serif</a> o 
+		<a href="javascript:screen.theme('font-family-main', 'Courier,monospace');" 
+			style="font-family:Courier,monospace">
+			monospaced</a>
+		<br />
+		<label>Alternative</label>
+		<a href="javascript:screen.theme('font-family-alternate', 'Helvetica,Arial,sans-serif');" 
+			style="font-family:Helvetica,Arial,sans-serif">
+			sans serif</a>, 
+		<a href="javascript:screen.theme('font-family-alternate', '\'Georgia\',serif');" 
+			style="font-family:Georgia,serif">
+			serif</a> o 
+		<a href="javascript:screen.theme('font-family-alternate', 'Courier,monospace');" 
+			style="font-family:Courier,monospace">
+			monoespaced</a>
+		<br />
+		<small class="text-grey">The main interface texts will be displayed with the selected font.</small>
+	</fieldset>
+	
+	<fieldset>
+		<legend for="theme-color">Font size</legend>
+		<a href="javascript:screen.theme('font-size', '.8em');" style="font-size:.8em">small</a>, 
+		<a href="javascript:screen.theme('font-size', '1em');" style="font-size:1em">normal</a> o 
+		<a href="javascript:screen.theme('font-size', '1.25em');" style="font-size:1.25em">large</a>
+		<br />
+		<small class="text-grey">All interface texts will be displayed with the selected font size.</small>
+	</fieldset>
+</form>
+
+

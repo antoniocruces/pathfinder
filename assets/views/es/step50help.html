@@ -1,0 +1,80 @@
+<div class="margin-bottom-l">
+	<h4 class="margin-vertical" id="titlestep100">1. INCLUSIONES Y RESTRICCIONES.</h4>
+	<p>
+		Afectan a los registros que el filtro seleccionará una vez aplicadas las condiciones de filtrado. 
+		<ul>
+			<li>
+				Incluir. Añade a la lista de registros primarios seleccionados por las condiciones 
+				de filtro aquellos directamente relacionados con ellos que sean de los tipos marcados. 
+				Por ejemplo, si las condiciones solo afectan a exposiciones pero se incluyen actores se 
+				agregaran aquellos que tengan relación con cada exposición filtrada.
+			</li>
+			<li>
+				Restricciones. Limita los registros incluidos <em>solamente</em> a aquellos cuyo 
+				campo relacional esté marcado. Siguiendo con el ejemplo anterior, es posible seleccionar solamente 
+				aqueyos actores que actúen como comisarios de exposición.
+			</li>
+		</ul>
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep101">2. PANEL DE FILTRADO.</h4>
+	
+	<p>
+		Cada condición está representada por una línea, con las siguientes características. 
+	</p>
+	<ul>
+		<li>
+			Modificador. Selecciona la <em>faceta</em> que se usará para validar la condición. Por ejemplo, 
+			"año" en el caso de una fecha.
+		</li>
+		<li>
+			Campo sobre el que se realizará la búsqueda.
+		</li>
+		<li>
+			Operador. Los habituales para comparar valores numéricos o textuales, considerando o no 
+			(en el caso de los operadores <em>contiene</em> y <em>no contiene</em>) mayúsculas y 
+			diacríticos, más el operador <em>entre</em>, pensado para operar con dos valores numéricos 
+			en secuencia ("entre 2010 y 2015" seleccionará los registros cuyo año, si se aplicó esa faceta, 
+			esté comprendido en ese rango), aunque también funciona con valores textuales.
+		</li>
+		<li>
+			Valor buscado. Es posible realizar una lista de valores coincidentes pulsando sobre 
+			el icono de la lupa 
+			<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+				<path class="search" d=""></path>
+			</svg>.
+		</li>
+		<li>
+			Botones de búsqueda de condición (en color <span class="color-error">rojo</span> si no se han 
+			obtenido resultados) y de eliminación.
+		</li>
+	</ul>
+	<p>
+		No hay límite en el número de condiciones aplicables.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep102">3. OPERACIONES.</h4>
+	
+	<p>
+		Panel de botones al pie de la ventana de filtro que permiten: 
+	</p>
+	<ul>
+		<li>
+			Guardar o cargar "colecciones", que son definiciones de filtro, usadas con frecuencia, que el 
+			usuario puede guardar en archivos de su disco local.
+		</li>
+		<li>
+			Calcular. Es decir, realizar el cálculo individual para cada una de las condiciones.
+			<p class="aside background-warning-50">
+				IMPORTANTE: PF no realizará la operación de filtrado si no se han calculado todas las condiciones presentes.
+			</p>
+		</li>
+		<li>
+			Filtro. Evaluación de las condiciones y generación del subconjunto filtrado. Cuando se realiza se 
+			muestra un botón adicional que presenta un grafo con la visualización de las condiciones y su aplicación.
+		</li>
+		<li>
+			Limpiar. Inicializar el filtro borrando el subconjunto.
+		</li>
+	</ul>	
+</div>

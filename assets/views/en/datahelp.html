@@ -1,0 +1,240 @@
+<div class="pure-menu pure-menu-horizontal">
+	<ul class="pure-menu-list">
+		<li class="pure-menu-item pure-menu-active">
+			<a id="s-atab-zero" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'zero')">Panel</a>
+		</li>
+		<li class="pure-menu-item">
+			<a id="s-atab-one" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'one')">Listing</a>
+		</li>
+		<li class="pure-menu-item">
+			<a id="s-atab-two" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'two')">Filter & search</a>
+		</li>
+		<li class="pure-menu-item">
+			<a id="s-atab-three" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'three')">Stats</a>
+		</li>
+		<li class="pure-menu-item">
+			<a id="s-atab-four" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'four')">Charts</a>
+		</li>
+		<li class="pure-menu-item">
+			<a id="s-atab-five" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'five')">Networks</a>
+		</li>
+		<li class="pure-menu-item">
+			<a id="s-atab-six" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'six')">Maps</a>
+		</li>
+	</ul>
+</div>
+
+<div id="c-atab-zero" class="tabcontent is-visible active">
+	<h4>Panel</h4>
+	<ol type="A">
+		<li>
+			<strong>Data update</strong><br />
+			If you have a valid file proceed to point B. To work PATHFINDER you will need a file in 
+			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/JSON"><em>JSON</em></a> 
+			format which must be downloaded from the data server of 
+			data server of <a rel="nofollow" target="_blank" href="http://expofinder.uma.es"><em>ExpoFinder</em></a>. 
+			Identify yourself with access credentials or
+			<a href="#legal">contact</a> with the development team. Before saving it in the client’s disc take note of the 
+			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Personal_identification_number">PIN</a> 
+			which PATHFINDER will supply. Without it you could not access to the download content.
+			<br />
+			<span style="color:red;">
+			For reasons unrelated to the functional structure itself of PATHFINDER it is possible that 
+			sometimes the download occurs incorrectly or with some error, even that it will does not happen at all. 
+			In that case, try this operation again once a few minutes have passed and 
+			<a href="#legal">comunique</a> the incidence to the development team. 
+			</span>
+		</li>
+		<li>
+			<strong>Database</strong><br />
+			[IMPORTANTE: A REVISAR]
+			Charge the <a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/JSON"><em>JSON</em></a> 
+			file locally saved and provide the correct PIN.
+			After a brief work time (usually between 8 and 15 seconds) PATHFINDER will be ready to work. 
+		</li>
+		<li>
+			<strong>Exportación</strong><br />
+			PATHFINDER allows you to download the data in 
+			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Microsoft_Excel"><em>XLS</em></a>, 
+			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Tab-separated_values"><em>TAB</em></a>, 
+			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Comma-separated_values"><em>CSV</em></a>, 
+			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/XML"><em>XML</em></a> or 
+			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/JSON"><em>JSON</em></a> format  
+			the raw data you use for your operation. Keep in mind that <em>only the selected data will be exported 
+			through the active <a href="javascript:info:filter();">filter</a></em>.
+		</li>
+		<li>
+			<strong>Collections</strong><br />
+			PATHFINDER deals with the concept of collection as a synonym of predefined filter. 
+			Development team generates these collections, which can be loaded directly from the server to  
+			limit the subset of data to be used for working. It is necessary to have an active Internet connection 
+			in order to use this feature.			
+		</li>
+		<li>
+			<strong>Reports</strong><br />
+			For specific tasks in which the selected files are shown, PATHFINDER allows to extract the 
+			<a href="javascript:info:filter();">filtered</a> data. 
+			Follow the steps shown below:
+			<ol type="1">
+				<li>
+					Choose: 
+					<ol type="a">
+						<li>
+							The <a href="#documents"><em>primary record type</em></a> to be used as main in the report.
+						</li>
+						<li>
+							The <a href="#documents"><em>relational metadata field</em></a> to be used as guide to find 
+							records related to main one.
+						</li>
+					</ol>
+				</li>
+				<li>
+					Choose the <em>model</em> [IMPORTANTE] that will be generated / to be generated: 
+					<ol type="a">
+						<li>
+							<em>Analytical</em>. Spreadsheet in 
+							<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Comma-separated_values"><em>CSV</em></a>,  
+							format, compatible with 
+							<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Microsoft_Excel">Microsoft Excel&trade;</a> or 
+							<a rel="nofollow" target="_blank" href="https://en.libreoffice.org/‎">LibreOffice</a>).
+						</li>
+						<li>
+							<em>Textual</em>. Document in  
+							<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Rich_Text_Format">RTF</a> format, 
+							compatible with 
+							<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Microsoft_Word">Microsoft Word&trade;</a> or 
+							<a rel="nofollow" target="_blank" href="https://en.libreoffice.org/‎">LibreOffice</a>.
+						</li>
+					</ol>
+				</li>
+			</ol>
+		</li>
+		<li>
+			<strong>Estado de la base de datos</strong><br />
+			[IMPORTANTE]
+			If you have charge the specified file on point B, PATHFINDER will show the following information: 
+			<br />
+			If the file forementioned at step B has been loaded, PATHFINDER will show next info:
+			<ol type="1">
+				<li>
+					Name of the file / file name
+				</li>
+				<li>
+					Size of the file / file size (in bytes)
+				</li>
+				<li>
+					ExpoFinder username which executed the file download / 					
+					<a rel="nofollow" target="_blank" href="http://expofinder.uma.es"><em>ExpoFinder</em></a> 
+					identity used to download file
+				</li>
+				<li>
+					Date of the file download / file download date
+				</li>
+				<li>
+					IPv4 address from which the file download was made / 
+					<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/IP_address">IPv4</a>
+					address used to download file 
+				</li>
+				<li>
+					Size of the database object in memory (in bytes) / 
+					database object size in memory (in bytes)
+				</li>
+				<li>
+					Number of registers / records number
+				</li>
+				<li>
+					Metadata number / metadata number
+				</li>
+				<li>
+					Taxonomies number / taxonomies number
+				</li>
+				<li>
+					Total number of elements (registers + metadata + taxonomies) / 
+					total number of elements (records + metadata + taxonomies)
+				</li>
+			</ol>
+			The <em>More information&hellip;</em> link will also be shown. 
+			Pressing it, PATHFINDER will open a pop-up window showing the recount of registers by type, 
+			its metadata and its taxonomy. In the latter cases, the absolute figure and the percentage with respect 
+			to the total are indicated.
+			<br />			
+			A <em>More info&hellip;</em> link will also be shown. 
+			By clicking on it, PATHFINDER will open a pop-up window showing a count of 
+			<a href="documents">primary records by type</a>, 
+			<a href="documents">metadata</a> and <a href="documents">taxonomies</a> included; 
+			last ones will show absolute figures and percentyage over total, too.
+		</li>
+	</ol>
+</div>
+
+<div id="c-atab-one" class="tabcontent is-hidden">
+	<h4>Listing</h4>
+	<p>
+		PATHFINDER shows a table with the filtered records. They appear sorted by 
+		type of record -> title of the record -> taxonomies associated with each record. 
+		By clicking on the title, the individual screen of the corresponding record will be shown. 
+		<br />
+		PATHFINDER
+	
+		PATHFINDER muestra una tabla con los registros <a href="javascript:info:filter();">filtrados</a>. 
+		Aparecen ordenados por <em>tipo de registro</em> &rarr; <em>título del registro</em> &rarr; 
+		<em>taxonomías asociadas a cada registro</em>. Al pulsar sobre el título, se mostrará la 
+		<em>pantalla individual</em> del correspondiente <a href="#documents">registro</a>.
+	</p>
+	<p>
+		En la cabecera de la tabla figuran: 
+		<ol>
+			<li>número total de registros mostrados (según el <a href="javascript:info:filter();">filtro</a> activo)</li>
+			<li>página en curso y total de páginas</li>
+			<li>número de registros por página (determinado en <a href="#settings">ajustes</a>)</li>
+			<li>enlace para establecer el <a href="javascript:info.filter();">filtro</a> del sistema</li>
+			<li>enlace para realizar una <a href="javascript:info.search();">búsqueda</a> simple</li>
+			<li>
+				enlace para <a href="javascript:ui.clearfilter(false);">limpiar</a> el filtro y 
+				restablecer la base de datos a su condición original
+			</li>
+		</ol>
+	</p>
+	<p>
+		En el pie de la tabla figuran: 
+		<ol>
+			<li>enlaces a páginas adyacentes a la que está en curso (determinado en <a href="#settings">ajustes</a>)</li>
+			<li>enlace para ir directamente a cualquier página</li>
+		</ol>
+	</p>
+</div>
+
+<div id="c-atab-two" class="tabcontent is-hidden">
+	<h4 class="h1">Consultas</h4>
+	<p>
+		<span class="text-error">DEVELOPING DOCUMENTATION / DOCUMENTATION UNDER DEVELOPMENT</span>. Filter & search
+	</p>
+</div>
+
+<div id="c-atab-three" class="tabcontent is-hidden">
+	<h4 class="h1">Esquema</h4>
+	<p>
+		<span class="text-error">DEVELOPING DOCUMENTATION / DOCUMENTATION UNDER DEVELOPMENT</span>. Stata
+	</p>
+</div>
+
+<div id="c-atab-four" class="tabcontent is-hidden">
+	<h4 class="h1">Gráficos</h4>
+	<p>
+		<span class="text-error">DEVELOPING DOCUMENTATION / DOCUMENTATION UNDER DEVELOPMENT</span>. Charts
+	</p>
+</div>
+
+<div id="c-atab-five" class="tabcontent is-hidden">
+	<h4 class="h1">Redes</h4>
+	<p>
+		<span class="text-error">DEVELOPING DOCUMENTATION / DOCUMENTATION UNDER DEVELOPMENT</span>. Networks
+	</p>
+</div>
+
+<div id="c-atab-six" class="tabcontent is-hidden">
+	<h4 class="h1">Mapas</h4>
+	<p>
+		<span class="text-error">DEVELOPING DOCUMENTATION / DOCUMENTATION UNDER DEVELOPMENT</span>. Maps
+	</p>
+</div>
