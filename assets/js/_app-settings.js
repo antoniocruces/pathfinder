@@ -100,7 +100,7 @@ window.version = {
 		'<img src="./assets/img/logos/GitHub_Logo.png" style="height:1.3em" />',
 		'</a>',
 	].join(''),
-	MapQuestAPIKey: 'nDzv1cZ9jlZvR69bqjG7aW4S5GUSUTUl',
+	MapQuestAPIKey: 'xxx',
 	citation: [
 		'\n\n----------\n\nCruces Rodríguez, Antonio.', 
 		'“PATHFINDER.”', 
