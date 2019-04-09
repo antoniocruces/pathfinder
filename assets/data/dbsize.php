@@ -6,7 +6,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 */
 
-$ch  = curl_init("http://expofinder.uma.es/wp-admin/admin-ajax.php?q=countdat&action=xxx");
+$ch  = curl_init("http://expofinder.uma.es/wp-admin/admin-ajax.php?q=xxx&action=xxx");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
 curl_setopt($ch, CURLOPT_USERAGENT, "PATHFINDER");
