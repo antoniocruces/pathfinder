@@ -1,0 +1,248 @@
+
+---------- Result ------------
+
+            Physical :  24368
+              Source :  22152
+             Comment :  853
+ Single-line comment :  172
+       Block comment :  681
+               Mixed :  44
+ Empty block comment :  49
+               Empty :  1456
+               To Do :  0
+
+Number of files read :  19
+
+---------- Details -----------
+
+
+--- Descargas/js/_app-charts.js
+
+            Physical :  3560
+              Source :  3442
+             Comment :  16
+ Single-line comment :  5
+       Block comment :  11
+               Mixed :  2
+ Empty block comment :  0
+               Empty :  104
+               To Do :  0
+
+--- Descargas/js/_app-classes.js
+
+            Physical :  1547
+              Source :  1325
+             Comment :  50
+ Single-line comment :  27
+       Block comment :  23
+               Mixed :  1
+ Empty block comment :  0
+               Empty :  173
+               To Do :  0
+
+--- Descargas/js/_app-cultures.js
+
+            Physical :  1707
+              Source :  1546
+             Comment :  7
+ Single-line comment :  6
+       Block comment :  1
+               Mixed :  6
+ Empty block comment :  0
+               Empty :  160
+               To Do :  0
+
+--- Descargas/js/_app-database.js
+
+            Physical :  1936
+              Source :  1769
+             Comment :  80
+ Single-line comment :  14
+       Block comment :  66
+               Mixed :  1
+ Empty block comment :  0
+               Empty :  88
+               To Do :  0
+
+--- Descargas/js/_app-effects.js
+
+            Physical :  430
+              Source :  392
+             Comment :  5
+ Single-line comment :  1
+       Block comment :  4
+               Mixed :  0
+ Empty block comment :  0
+               Empty :  33
+               To Do :  0
+
+--- Descargas/js/_app-files.js
+
+            Physical :  894
+              Source :  863
+             Comment :  4
+ Single-line comment :  2
+       Block comment :  2
+               Mixed :  0
+ Empty block comment :  0
+               Empty :  27
+               To Do :  0
+
+--- Descargas/js/_app-info.js
+
+            Physical :  988
+              Source :  949
+             Comment :  5
+ Single-line comment :  3
+       Block comment :  2
+               Mixed :  0
+ Empty block comment :  0
+               Empty :  34
+               To Do :  0
+
+--- Descargas/js/_app-loader.js
+
+            Physical :  47
+              Source :  44
+             Comment :  2
+ Single-line comment :  2
+       Block comment :  0
+               Mixed :  1
+ Empty block comment :  0
+               Empty :  2
+               To Do :  0
+
+--- Descargas/js/_app-i18n.js
+
+            Physical :  261
+              Source :  254
+             Comment :  7
+ Single-line comment :  5
+       Block comment :  2
+               Mixed :  4
+ Empty block comment :  0
+               Empty :  4
+               To Do :  0
+
+--- Descargas/js/_app-main.js
+
+            Physical :  385
+              Source :  348
+             Comment :  8
+ Single-line comment :  7
+       Block comment :  1
+               Mixed :  0
+ Empty block comment :  0
+               Empty :  29
+               To Do :  0
+
+--- Descargas/js/_app-maps.js
+
+            Physical :  3684
+              Source :  3402
+             Comment :  50
+ Single-line comment :  10
+       Block comment :  40
+               Mixed :  5
+ Empty block comment :  0
+               Empty :  237
+               To Do :  0
+
+--- Descargas/js/_app-pagescripts.js
+
+            Physical :  344
+              Source :  321
+             Comment :  3
+ Single-line comment :  1
+       Block comment :  2
+               Mixed :  0
+ Empty block comment :  0
+               Empty :  20
+               To Do :  0
+
+--- Descargas/js/_app-primitives.js
+
+            Physical :  977
+              Source :  834
+             Comment :  42
+ Single-line comment :  40
+       Block comment :  2
+               Mixed :  2
+ Empty block comment :  0
+               Empty :  103
+               To Do :  0
+
+--- Descargas/js/_app-routing.js
+
+            Physical :  140
+              Source :  132
+             Comment :  4
+ Single-line comment :  2
+       Block comment :  2
+               Mixed :  0
+ Empty block comment :  0
+               Empty :  4
+               To Do :  0
+
+--- Descargas/js/_app-settings.js
+
+            Physical :  1284
+              Source :  1239
+             Comment :  31
+ Single-line comment :  15
+       Block comment :  16
+               Mixed :  12
+ Empty block comment :  0
+               Empty :  26
+               To Do :  0
+
+--- Descargas/js/_app-stats.js
+
+            Physical :  2087
+              Source :  1457
+             Comment :  486
+ Single-line comment :  2
+       Block comment :  484
+               Mixed :  0
+ Empty block comment :  49
+               Empty :  193
+               To Do :  0
+
+--- Descargas/js/_app-toolkit.js
+
+            Physical :  1500
+              Source :  1439
+             Comment :  36
+ Single-line comment :  23
+       Block comment :  13
+               Mixed :  9
+ Empty block comment :  0
+               Empty :  34
+               To Do :  0
+
+--- Descargas/js/_app-trade.js
+
+            Physical :  223
+              Source :  213
+             Comment :  3
+ Single-line comment :  1
+       Block comment :  2
+               Mixed :  1
+ Empty block comment :  0
+               Empty :  8
+               To Do :  0
+
+--- Descargas/js/_app-ui.js
+
+            Physical :  2374
+              Source :  2183
+             Comment :  14
+ Single-line comment :  6
+       Block comment :  8
+               Mixed :  0
+ Empty block comment :  0
+               Empty :  177
+               To Do :  0
+
+----------------------------
+
