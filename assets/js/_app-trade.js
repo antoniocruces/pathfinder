@@ -55,15 +55,15 @@ const trade = {
 	},
 	makereport: (xkey = null, ffkey = null, filtered = true) => new Promise(resolve => {
 		let out = [];
-		let doc = dbm.documents(true, filtered);
-		let poi = dbm.points(true, filtered, true);
-		let pla = dbm.places(true, filtered, true);
-		let sdt = dbm.startdates(true, filtered, true);
-		let edt = dbm.enddates(true, filtered, true);
-		let gnd = dbm.genders(true, filtered, true);
-		let age = dbm.ages(true, filtered, true);
-		let rel = dbm.relations(true, filtered);
-		let tax = dbm.taxonomies(true, filtered);
+		let doc = dbe._documents(true, filtered);
+		let poi = dbe._points(true, filtered, true);
+		let pla = dbe._places(true, filtered, true);
+		let sdt = dbe._startdates(true, filtered, true);
+		let edt = dbe._enddates(true, filtered, true);
+		let gnd = dbe._genders(true, filtered, true);
+		let age = dbe._ages(true, filtered, true);
+		let rel = dbe._relations(true, filtered);
+		let tax = dbe._taxonomies(true, filtered);
 		Object.keys(doc).forEach(o => {
 			let rec = doc[o] || null;
 			let pos = d.store.pos[o] || null;
@@ -88,6 +88,8 @@ const trade = {
 				let tty = ztx ? ztx.filter(x => x.rkey === 'tax_typology').map(x => x.value).join(', ') : null;
 				let tow = ztx ? ztx.filter(x => x.rkey === 'tax_ownership').map(x => x.value).join(', ') : null;
 				let tac = ztx ? ztx.filter(x => x.rkey === 'tax_activity').map(x => x.value).join(', ') : null;
+				let tpb = ztx ? ztx.filter(x => x.rkey === 'tax_publisher').map(x => x.value).join(', ') : null;
+				let tct = ztx ? ztx.filter(x => x.rkey === 'tax_catalog_typology').map(x => x.value).join(', ') : null;
 				
 				let isok = !xkey || rec.rkey === xkey;
 				if(isok) {
@@ -116,6 +118,8 @@ const trade = {
 						typologies: tty,
 						ownerships: tow,
 						activities: tac, 
+						publishers: tpb, 
+						catalog_typologies: tct, 
 						relrkey: null,
 						relkey: null,
 						relID: null,
@@ -141,7 +145,9 @@ const trade = {
 						relexhibitiontypes: null,
 						reltypologies: null,
 						relownerships: null,
-						relactivities: null 
+						relactivities: null,
+						relpublishers: null,
+						relcatalog_typologies: null
 					};
 					if(xrl && Array.isArray(xrl)) {
 						xrl.forEach(x => {
@@ -161,6 +167,8 @@ const trade = {
 							let rtty = rpo ? rpo.filter(x => x.rkey === 'tax_typology').map(x => x.value).join(', ') : null;
 							let rtow = rpo ? rpo.filter(x => x.rkey === 'tax_ownership').map(x => x.value).join(', ') : null;
 							let rtac = rpo ? rpo.filter(x => x.rkey === 'tax_activity').map(x => x.value).join(', ') : null;
+							let rtpb = rpo ? rpo.filter(x => x.rkey === 'tax_publisher').map(x => x.value).join(', ') : null;
+							let rtct = rpo ? rpo.filter(x => x.rkey === 'tax_catalog_typology').map(x => x.value).join(', ') : null;
 
 							let isffield = !ffkey || x.rkey === ffkey;
 							if(isffield) {
@@ -190,7 +198,9 @@ const trade = {
 									relexhibitiontypes: rtet,
 									reltypologies: rtty,
 									relownerships: rtow,
-									relactivities: rtac 
+									relactivities: rtac, 
+									relpublishers: rtpb, 
+									relcatalog_typologies: rtct, 
 								}));
 							}
 							rpl = rsd = red = rgn = rag = rpo = undefined;

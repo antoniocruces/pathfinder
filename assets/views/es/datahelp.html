@@ -464,44 +464,6 @@
 		</li>
 	</ol>
 	
-	<h4 id="title-helpstats-relations">Relaciones</h4>	
-	
-	<p class="aside background-warning-50">
-		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
-			<path class="bell" d=""></path>
-		</svg>
-		IMPORTANTE. Cualquier dato <em>cronológico</em> se entiende referido siempre a la 
-		<em>fecha inicial</em>. Por ejemplo, en el caso de exposiciones, siempre será la de apertura.
-	</p>
-
-	<p>
-		Emplea el mismo mecanismo (agrupamiento) que en el caso de <em>Grupos</em> para calcular la fortaleza 
-		de los vínculos entre <a href="#documents"><em>metadatos</em></a>, 
-		<a href="#documents"><em>taxonomías</em></a> y <a href="#documents"><em>registros primarios</em></a>. 
-		Los elementos de la pantalla son los siguientes.
-	</p>	
-
-	<ol>
-		<li>
-			<p>
-				Filtro. Determina si se mostrarán todos los registros del subconjunto o únicamente aquellos 
-				<em>significativos</em> (si desea más información sobre <em>outliers</em> consulte la 
-				<a href="#documents">documentación</a>). Es posible excluir también aquellos registros cuyos 
-				valores de agrupamiento (no de recuento) sean nulos o no contengan información.
-			</p>
-		</li>
-		<li>
-			<p>
-				Campos de agrupamiento y vínculo de acuerdo al siguiente esquema:
-			</p>
-			<pre>[Origen] [aparece citado por / cita a] [Destino]</pre>
-			<p>
-				PF calculará <em>cuántas veces <code>origen</code> 
-				aparece citado por o cita a <code>destino</code></em>.
-			</p>
-		</li>
-	</ol>
-	
 	<h4 id="title-helpstats-cooccurrences">Correlaciones</h4>	
 	
 	<p class="aside background-warning-50">
@@ -746,7 +708,7 @@
 									<path class="bell" d=""></path>
 								</svg>
 								IMPORTANTE. Una estadística solo será graficada si previamente se ha calculado la correspondiente 
-								modalidad (<em>Grupos</em>, <em>Relaciones</em> o <em>Correlaciones</em>).
+								modalidad (<em>Grupos</em> o <em>Correlaciones</em>).
 							</p>
 						</li>
 					</ul>
@@ -1036,8 +998,8 @@
 						continua de color graduado mediante escala, indicando mayor o menor concentración de 
 						elementos en una zona concreta.
 					</p>
-					<p style="padding-left:5px;padding-right:5px;background-color:red;height:23px;background-image:linear-gradient(to right,blue,lime,red);">
-						<span class="color-white">0%</span><span class="color-white pull-right">100%</span>
+					<p style="padding-left:5px;padding-right:5px;background-color:red;height:23px;background-image:linear-gradient(to right,cyan,yellow,red);">
+						<span class="color-black">0%</span><span class="color-white pull-right">100%</span>
 					</p>
 				</li>
 			</ol>
@@ -1141,7 +1103,7 @@
 						Diagrama Voronoi</a>. 
 						También conocidos como <em>polígonos de Thiessen</em>, 
 						trazan una retícula triangular que usa la 
-						<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Pol%C3%ADgonos_de_Thiessen">
+						<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Distancia_euclidiana">
 						distancia euclidiana </a> para calcular la interpolación del 
 						<a href="#documents">registro primario</a> localizado y aquellos que se 
 						relacionan con él, basada en la posición media entre cada pareja de puntos.   
@@ -1200,7 +1162,7 @@
 	
 	<p>
 		En PF, las tablas que muestran el resultado de operaciones con datos, tales como las 
-		que aparecen en <em>Grupos</em>, <em>Relaciones</em> y <em>Coocurrencias</em>, disponen de unas 
+		que aparecen en <em>Grupos</em> y <em>Correlaciones</em>, disponen de unas 
 		columnas añadidas a la información solicitada que la complementan.
 	</p>
 	
@@ -1239,6 +1201,29 @@
 					<td>
 						La frecuencia de la fila está descrita por un <em>color</em> en la <em>escala cromática</em> 
 						seleccionada en los <a href="#settings">Ajustes</a>.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>B</strong></th>
+					<td>
+						El conjunto de valores que definen la relevancia de cada fila (<strong>Z</strong>) 
+						se evalua para obtener "compartimentos" (<em>bins</em>) que proporcionan 
+						un reparto histogramático de dichos valores en 10 posibles grupos o <em>clusters</em>. 
+						Esta celda señala a qué grupo pertenece una fila.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>F</strong></th>
+					<td>
+						El valor menor posible del grupo (<strong>B</strong>) al que pertenece la 
+						relevancia de cada fila (<strong>Z</strong>).
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>T</strong></th>
+					<td>
+						El valor mayor posible del grupo (<strong>B</strong>) al que pertenece la 
+						relevancia de cada fila (<strong>Z</strong>).
 					</td>
 				</tr>
 				<tr>

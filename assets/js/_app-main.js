@@ -3,28 +3,60 @@
 /* global AppError, ajax, c, charts, chartshelper, cultures, d, dbb, dbe, dbm, dbq, dbs, eucookielaw, file, i18n, icons, info, k, l, maps, objectsize, pagescripts, removeAllEventListener, router, stats, times, toolkit, trade, ui, uihelper */
 
 // error catching
+
 window.onerror = function(msg, url, line, col, error) {
 	let title = [
 		window.version.appname, 
 		[window.version.version, window.version.subversion, window.version.release].join('.'),
 		window.version.date.toLocaleDateString(l)
 	].join(' ') + ' ' + l.toUpperCase();
-	let detail;
-	let newline;
+	let oerror = error instanceof AppError || error instanceof AppWarning ? 
+		Object.assign({}, error.toJSON()) : 
+		{name: error.name, message: error.message};
 	if(error) {
-		if(error.name === 'AppWarning') {
+		if(!window.settings || window.settings.errorcatching === 1) {
+			let detail = oerror.error.message;
+			if(!window.settings || window.settings.verboseerror === 1) {
+				detail = ([
+					`<ul>`,
+					`<li>ERRNAME: ${oerror.error.name}</li>`, 
+					`<li>ERRMSG: ${oerror.error.message}</li>`,
+					`<li>ERRURL: ${url}</li>`,
+					`<li>ERRLINE: ${line}</li>`,
+					`<li>ERRCOL: ${col}</li>`,
+					`<li>ERRSTACK: ${oerror.error.stack}</li>`,				
+					`</ul>`,
+				].join('\n'));
+				if(window.settings && window.settings.debugconsole) {
+					console.error([
+						`ERRNAME: ${oerror.error.name}`, 
+						`ERRMSG: ${oerror.error.message}`,
+						`ERRURL: ${url}`,
+						`ERRLINE: ${line}`,
+						`ERRCOL: ${col}`,
+						`ERRSTACK: ${oerror.error.stack}`,				
+					].join('\n'));
+				}
+			}
 			if(screen) {
+				let text = oerror.error.name === c`app-error`.uf() ? 
+					c`error`.toUpperCase() : 
+					c`warning`.toUpperCase();
+				let color = oerror.error.name === c`app-error`.uf() ? 
+					'error' : 
+					'warning';
 				let features = {
 					progress: false,
-					title: `${window.version.appname}.  ${c`warning`.toUpperCase()}`,
-					content: `${error.message}`,
+					title: `${title}`,
 					content: [
-						`<h3 class="margin-vertical-s color-error">`,
-						`<i class="fas fa-exclamation-circle"></i> ${c`warning`.toUpperCase()}`,
-						`</h3>`,
-						`<p class="margin-bottom">`,
-						`${detail.replace('\n', '<br />')}`,
+						`<div class="asset background-${color}-50 margin-bottom-s" style="padding:1em">`,
+						`<h2 class="color-${color}">`,
+						`${text}`,
+						`</h2>`,
+						`<p>`,
+						`${detail}`,
 						`</p>`,
+						`</div>`,
 					].join(''),
 					action: false,
 					cancel: true,
@@ -33,56 +65,18 @@ window.onerror = function(msg, url, line, col, error) {
 				screen.alert = screen.displayalert(features);
 				features = undefined;
 			} else {
-				alert(`${window.version.appname}. ${error.message}`);
-			}
-		} else {
-			if(!window.settings || window.settings.errorcatching === 1) {
-				detail = '';
-				newline = toolkit ? '<br />' : '\n';
-				if(!window.settings || window.settings.verboseerror === 1) {
-					detail = [
-						'ERRNAME: ' + error.name, 
-						newline + 'ERRMSG: ' + error.message,
-						!url ? 'NOURL' : newline + 'URL: ' + url,
-						!line ? 'NOLINE' : newline + 'LIN: ' + line,
-						!col ? 'NOCOL' : newline + 'COL: ' + col,
-						!error ? 'NOSTACK' : newline + 'STC: ' + error.stack				
-					].join('\n');
-				} else {
-					detail = error.message;
-				}
-				if(screen) {
-					let features = {
-						progress: false,
-						title: `${title}`,
-						content: [
-							`<h3 class="margin-vertical-s color-error">`,
-							`<i class="fas fa-exclamation-triangle"></i> ${c`error`.toUpperCase()}`,
-							`</h3>`,
-							`<p class="margin-bottom">`,
-							`${detail.replace('\n', '<br />')}`,
-							`</p>`,
-						].join(''),
-						action: false,
-						cancel: true,
-						canceltitle: c`close`.uf()
-					}
-					screen.alert = screen.displayalert(features);
-					features = undefined;
-				} else {
-					alert([
-						`${title}\n----------\n`,
-						`${error.replace(/(<([^>]+)>)/ig, '')}`,
-						`${detail.replace(/(<([^>]+)>)/ig, '')}`
-					].join(''));
-				}
-				if(!window.settings || window.settings.debugconsole === 1) {
-					console.error(error.stack.replace(/(<([^>]+)>)/ig, ''));
-				}
+				detail = detail
+					.replace('<ul>', '')
+					.replace('</ul>', '')
+					.replace('<li>', '')
+					.replace('</li>', '');
+				alert([
+					`${title}\n----------\n`,
+					`${detail}`,
+				].join(''));
 			}
 		}
 	}
-	detail = newline = title = undefined;
 	return true;
 };
 
@@ -150,37 +144,37 @@ window.onload = function() {
 		routes: {
 			"#home": () => {
 				router.renderpage('footer', '#footer');
-				router.renderpage('home', 'main', ['echarts']);
+				router.renderpage('home', 'main', ['echarts', 'L']);
 				router.renderpage('sidehome', '#side');
 			},
 			"#starting": () => {
 				router.renderpage('footer', '#footer');
-				router.renderpage('starting', 'main');
+				router.renderpage('starting', 'main', ['L']);
 				router.renderpage('sidedocuments', '#side');
 			},
 			"#legal": () => {
 				router.renderpage('footer', '#footer');
-				router.renderpage('legal', 'main');
+				router.renderpage('legal', 'main', ['L']);
 				router.renderpage('sidelegal', '#side');
 			},
 			"#documents": () => {
 				router.renderpage('footer', '#footer');
-				router.renderpage('documents', 'main');
+				router.renderpage('documents', 'main', ['L']);
 				router.renderpage('sidedocuments', '#side');
 			},
 			"#projects": () => {
 				router.renderpage('footer', '#footer');
-				router.renderpage('projects', 'main');
+				router.renderpage('projects', 'main', ['L']);
 				router.renderpage('sidedocuments', '#side');
 			},
 			"#institutions": () => {
 				router.renderpage('footer', '#footer');
-				router.renderpage('institutions', 'main');
+				router.renderpage('institutions', 'main', ['L']);
 				router.renderpage('sidedocuments', '#side');
 			},
 			"#settings": () => {
 				router.renderpage('footer', '#footer');
-				router.renderpage('settings', 'main');
+				router.renderpage('settings', 'main', ['L']);
 				router.renderpage('sidesettings', '#side');
 			},
 			"#data": () => {
@@ -273,7 +267,9 @@ window.addEventListener('unload', function () {
 	Number.prototype.toroman = undefined;
 	Number.prototype.ages = undefined;
 	Number.prototype.clamp = undefined;
+	Number.prototype.between = undefined;
 	Date.prototype.dates = undefined;
+	String.prototype.slugify = undefined;
 	String.prototype.relations = undefined;
 	String.prototype.places = undefined;
 	String.prototype.dateparts = undefined;
@@ -289,6 +285,7 @@ window.addEventListener('unload', function () {
 	String.prototype.getrkeytype = undefined;
 	String.prototype.b64encode = undefined;
 	String.prototype.b64decode = undefined;
+	String.prototype.gettabletype = undefined;
 	Array.prototype.groupBy = undefined;
 	Array.prototype.groupByMultiple = undefined;
 	Array.prototype.countBy = undefined;
@@ -334,6 +331,9 @@ window.addEventListener('unload', function () {
 	Object.entries(icons).forEach(o => { o = undefined; });
 	Object.entries(info).forEach(o => { o = undefined; });
 	Object.entries(maps).forEach(o => { o = undefined; });
+	Object.entries(mapengine).forEach(o => { o = undefined; });
+	Object.entries(mapops).forEach(o => { o = undefined; });
+	Object.entries(maphelpers).forEach(o => { o = undefined; });
 	Object.entries(pagescripts).forEach(o => { o = undefined; });
 	Object.entries(pagescriptshelper).forEach(o => { o = undefined; });
 	
@@ -362,14 +362,22 @@ window.addEventListener('unload', function () {
 		document.removeChild(document.firstChild);
 	}
 	
+	['base', 'single'].forEach(cid => {
+		if(d.maptransformations[cid].timerange.repeater) {
+			window.clearInterval(d.maptransformations[cid].timerange.repeater);
+		}
+	});
+	
 	Record = undefined;
 	Relative = undefined;
 	ExtendableError = undefined;
 	AppError = undefined;
 	AppWarning = undefined;
+	Circular = undefined;
 	Stats = undefined;
 	MapTree = undefined;
 	Graph = undefined;
+	PivotData = undefined;
 	
 	_events = undefined;
 	

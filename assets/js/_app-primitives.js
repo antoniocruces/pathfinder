@@ -19,14 +19,18 @@ Number.prototype.toroman = function() {
 	return result;
 }
 
-Number.prototype.ages = function() {
+Number.prototype.ages = function(key) {
 	return {
 		years: Math.floor(this / 31536000000) || 0,
+		yearsbin: ((Math.floor(this / 315360000000) || 0) * 10) + '-' + (((Math.floor(this / 315360000000) || 0) * 10) + 9),
 		months: Math.floor(this / 2592000000) || 0,
 		weeks: Math.floor(this / 604800000) || 0,
 		days: Math.floor(this / 86400000) || 0,
 		string: String(this),
-		number: this
+		number: this,
+		rkey: key || null,
+		skey: key !== undefined ? c(key) : null,
+		isalive: c`no`,
 	};	
 };
 
@@ -34,26 +38,39 @@ Number.prototype.clamp = function(min, max) {
 	return Math.min(Math.max(this, min), max);
 };
 
-String.prototype.relations = function() {
+Number.prototype.between = function(min, max) {
+	return this >= min && this <= max;
+};
+
+String.prototype.slugify = function() {
+	let sstring = this;
+	return sstring.replace(/[^0-9A-Z]/gi, '_');
+};
+
+String.prototype.relations = function(key) {
 	let arr = this.split(': ').map(e => e.toString().trim());
 	return {
 		rid: Number(arr[0]) || null,
 		rtitle: String(arr[1]) || null,
-		string: this
+		string: this,
+		rkey: key || null,
+		skey: key !== undefined ? c(key) : null
 	};
 };
 
-String.prototype.places = function() {
+String.prototype.places = function(key) {
 	let arr = this.split(';').map(e => e.toString().trim());	
 	return {
 		town: arr.length > 1 ? (arr[0] || null) : null,
 		region: arr[1] || null,
 		country: (arr[2] || arr[0]) || null,
-		string: this
+		string: this,
+		rkey: key || null,
+		skey: key !== undefined ? c(key) : null
 	};
 };
 
-String.prototype.dateparts = function() {
+String.prototype.dateparts = function(key) {
 	let arr = this.split('-').map(e => e.toString().trim());	
 	let decade = y => (Math.floor(y / 10) * 10) + '-' + ((Math.floor(y / 10) * 10) + 9);
 	let century = y => Math.floor(y / 100) + 1;
@@ -67,27 +84,33 @@ String.prototype.dateparts = function() {
 		month: arr.length > 1 ? isNaN(arr[1]) ? null : parseInt(arr[1], 10) : null,
 		monthname: arr.length > 1 ? isNaN(arr[1]) ? null : times[l].month[parseInt(arr[1], 10) - 1] : null,
 		day: arr.length > 2 ? isNaN(arr[2]) ? null : parseInt(arr[2], 10) : null,
-		string: this
+		string: this,
+		rkey: key || null,
+		skey: key !== undefined ? c(key) : null
 	};
 };
 
-String.prototype.hosts = function() {
+String.prototype.hosts = function(key) {
 	let parser = document.createElement('a');
 	parser.href = this;
 	return {
 		href: parser.href || null,
 		hostname: parser.hostname || null,
 		protocol: parser.protocol || null,
-		string: this
+		string: this,
+		rkey: key || null,
+		skey: key !== undefined ? c(key) : null
 	};
 };
 
-String.prototype.points = function() {
+String.prototype.points = function(key) {
 	let arr = this.split(',').map(e => e.toString().trim());
 	return {
 		latitude: parseFloat(arr[0]) || null,
 		longitude: parseFloat(arr[1]) || null,
-		string: this
+		string: this,
+		rkey: key || null,
+		skey: key !== undefined ? c(key) : null
 	};
 };
 
@@ -98,14 +121,22 @@ String.prototype.isvalidyear = function() {
 	return this.length > 3 && isvalid;
 };
 
-String.prototype.gender = function() { 
+String.prototype.gender = function(key) { 
 	return {
 		gender: this,
-		string: this
+		string: this,
+		rkey: key || null,
+		skey: key !== undefined ? c(key) : null
 	}; 
 };
 
-String.prototype.string = function() { return {string: this}; };
+String.prototype.string = function(key) { 
+	return {
+		string: this, 
+		rkey: key || null,
+		skey: key !== undefined ? c(key) : null
+	};
+};
 
 String.prototype.uf = function() { return this.charAt(0).toUpperCase() + this.slice(1); };
 
@@ -124,6 +155,13 @@ String.prototype.getposttype = function() {
 	let pty = [];
 	d.post_types.map(o => o.tip).forEach(o => { if(this.indexOf('__' + o + '_') > -1) pty.push(o); });
 	return pty.join('');
+};
+
+String.prototype.gettabletype = function() {
+	let isrelation = d.relatives.includes(this);
+	let istaxonomy = d.taxonomies.includes(this);
+	let ispost = d.record_types.includes(this);
+	return (isrelation ? 'r' : istaxonomy ? 't' : ispost ? 'p' : 'm');
 };
 
 String.prototype.getrkeytype = function() {
@@ -259,9 +297,6 @@ Array.prototype.uniqueby = function (predicate) {
 	}, new Map()).values()];
 };
 
-/*
-Array.prototype.flatten = function() { return Array.prototype.concat(...this); };
-*/
 Array.prototype.flatten = function() { 
 	return Array.prototype.flat ? this.flat(1) : Array.prototype.concat(...this); 
 };
@@ -387,6 +422,8 @@ Object.defineProperty(Object.prototype, 'filterbyvalue', {
 	writable: true
 });
 
+const getradiusfromsize = y => Math.sqrt(y / Math.PI);
+
 // Set prototypes
 Set.intersection = function*(set1, set2) {
 	for(let value of set1.values()) {
@@ -508,6 +545,17 @@ function equijoin(arr1, arr2, arr1Key, arr2Key, select) {
 	return c;
 }
 
+const leftjoin = (objarr1, objarr2, key1, key2) => {
+	return objarr1.map(
+		anobj1 => ({
+			...objarr2.find(
+				anobj2 => anobj1[key1] === anobj2[key2]
+			),
+			...anobj1
+		})
+	);
+};
+
 // object unique
 const objectunique = tmp => Array.from(new Set(tmp.map(o => JSON.stringify(o)))).map(o => JSON.parse(o));
 
@@ -556,6 +604,7 @@ const isIterable = obj => obj !== null && typeof obj[Symbol.iterator] === 'funct
 const isEmptyData = obj => obj === null || Array.isArray(obj) && obj.length === 0;
 const isFunction = x => x && typeof x === 'function';
 const isNumber = num => !isNaN(String(num).replace(/[.,+-]/g, ''));
+const isNumeric = n => !isNaN(parseFloat(n)) && isFinite(n);
 const isString = str => Object.prototype.toString.call(str) === "[object String]";
 const isJSON = str => {
 	try {
@@ -846,6 +895,8 @@ document.addEventListener('copy', addcitation);
 
 // Memoization
 // as seen at https://github.com/timkendrick/memoize-weak but not so slightly modified
+// TO DELETE AFTER TEST
+
 function memoize(fn) {
 	let argsTree = new MapTree();
 
@@ -908,3 +959,19 @@ function callername() {
 		}
 	}
 }
+
+// Function escape quotes
+function escapeqoutes(text) {
+	return text.replace(/'/g, "\\'").replace(/"/g, '\\"');
+}
+
+// Function unique identifier for filters
+const filteruuid = () => (new Date()).getTime() + Math.trunc(365 * Math.random());
+
+// Remove quotes and other stuff from text
+const cleartext = dat => String(dat)
+	.replace(/""/g,'\"')
+	.replace(/"/g,'\"')
+	.replace(/'/g,"\'")
+	.replace(/\t/, ' ')
+	.replace(/\n/, ' ');

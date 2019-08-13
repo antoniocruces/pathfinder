@@ -17,7 +17,7 @@
 	<section>
 		<div class="container">
 			<div class="content margin-bottom-l logo-background">
-				<div class="group group-xs margin-bottom-l">
+				<div class="group group-xs margin-bottom-l no-print">
 					<ul>
 						<li>
 							<button id="stab0" 
@@ -303,9 +303,19 @@
 					
 					<ul>
 					    <li>Atribución: Usted debe dar el crédito apropiado, proporcionar un enlace a la licencia, e indicar si se han realizado cambios. Puede hacerlo en cualquier forma 
-					    razonable, pero no de cualquier manera que sugiere el licenciante usted o su uso hace suya. Para atribuir este trabajo, emplee la siguiente URL:
-						<pre><code>&lt;div xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/" about="http://pathfinder.hdplus.es/index.php#legal"&gt;&lt;span property="dct:title"&gt;iArtHis_Lab&lt;/span&gt;&lt;/div&gt;</code></pre>
-						<pre><code>(&lt;a rel=”cc:attributionURL” property=”cc:attributionName” href=”http://pathfinder.hdplus.es”&gt;PATHFINDER. Universidad de Málaga&lt;/a&gt;)</code></pre>
+					    razonable, pero no de cualquier manera que sugiere el licenciante usted o su uso hace suya. 
+					    Para atribuir este trabajo, emplee la siguiente URL:
+<pre class="highlight">
+<code id="license-code">
+&lt;div xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/" about="http://pathfinder.hdplus.es/index.php#legal"&gt;
+&lt;span property="dct:title"&gt;iArtHis_Lab&lt;/span&gt;
+&lt;/div&gt;
+(&lt;a rel=”cc:attributionURL” property=”cc:attributionName” href=”http://pathfinder.hdplus.es”&gt;
+PATHFINDER. Universidad de Málaga&lt;/a&gt;)
+</code>
+</pre>						
+						<a id="license-code-copy-link" class="button button-xxs" 
+						href="javascript:toolkit.copytoclipboard('license-code');">Copiar</a>
 					    </li>
 					</ul>
 					
@@ -347,54 +357,23 @@
 					
 					<ul>
 					    <li>
-					        Dead Simple Grid, &copy; 2017, 
-					        <a rel="noopener" target="_blank" href="https://github.com/mourner/dead-simple-grid">Vladimir Agafonkin</a>. 
+					        Turret CSS, &copy; 2019, 
+					        <a rel="noopener" target="_blank" href="https://github.com/turretcss/turretcss">Bigfish.tv</a>. 
 					        Licencia <a href="http://opensource.org/licenses/MIT">MIT</a>. 
-					        Se ha utilizado como base de trabajo únicamente a efectos de "grid" y, por tanto, se ha modificado considerablemente.
+					        Hoja de estilos desarrollada para facilitar el diseño de aplicaciones. Modificada, ampliada 
+					        y adaptada a las necesidades de PATHFINDER.
 					    </li>
 					    <li>
-					        Fuente Roboto, de <a rel="noopener" target="_blank" href="https://fonts.google.com/">Google Fonts</a>, &copy; 2017. 
-					        Licencia sometida a los 
-					        <a rel="noopener" target="_blank" href="https://developers.google.com/terms/">términos de uso del servicio de Google</a>.
-					    </li>
-						    <li>Iconos otenidos en formato SVG de 
-						    <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> bajo licencia 
-						    <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.
+					    		Colección de iconos <em>Feather</em>, de 
+					    		<a rel="noopener" target="_blank" href="http://colebemis.com/">Cole Bemis</a> 
+					    		obtenida en formato SVG de 
+						    <a rel="noopener" target="_blank" href="https://icomoon.io/">icomoon.io</a> 
+						    bajo licencia 
+						    <a rel="noopener" target="_blank" href="http://opensource.org/licenses/MIT">MIT</a>.
 						</li>
-					</ul>
-					
-					<p>
-					    La información disponible online utilizada en esta sede tiene las siguientes procedencias, 
-					    todas ellas amparadas bajo la libre distribución del dominio público.
-					</p>
-					
-					<ul>
-					    <li>
-					        Google Maps. <a rel="noopener" target="_blank" href="https://www.google.com/">Google Inc.</a>
-					    </li>
-					    <li>
-					        OpenStreetMap. <a rel="noopener" target="_blank" href="https://www.openstreetmap.org/">Colaboradores de OpenStreetMap</a>
-					    </li>
-					    <li>
-					        Wikipedia. <a rel="noopener" target="_blank" href="https://www.wikipedia.org/">Colaboradores de Wikipedia</a>
-					    </li>
-					</ul>
-					
-					<p>
-					    Para la construcción de PATHFINDER ha sido utilizado código fuente procedente de los 
-					    titulares que a continuación se relacionan, 
-					    tratándose en todos los casos de orígenes de tipo Open Source y/o Public Domain.
-					</p>
-					
-					<ul>
 						<li>
 							<a rel="noopener" target="_blank" href="http://www.primebox.co.uk/projects/cookie-bar/">CookieBar vN/A 2012</a>. 
 							Licencia(s) <a rel="noopener" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">CC BY-3.0</a>.
-						</li>
-						<li>
-							<a href="https://github.com/d3/d3" target="_blank" rel="noopener">D3 v5.5.0 [d3]</a>. 
-							Licencia(s) 
-							<a href="https://github.com/d3/d3/blob/master/LICENSE"  target="_blank" rel="noopener">BSD 3-Clause "New" or "Revised"</a>			
 						</li>
 						<li>
 							<a href="https://github.com/vega/datalib" target="_blank" rel="noopener">Datalib v1.8.0 [dl]</a>. 
@@ -420,7 +399,32 @@
 							Licencia(s) 
 							<a href="https://github.com/apache/incubator-echarts/blob/master/LICENSE"  target="_blank" rel="noopener">Apache 2.0</a>
 						</li>
-			
+					</ul>
+					
+					<p>
+					    La información disponible online utilizada en esta sede tiene las siguientes procedencias, 
+					    todas ellas amparadas bajo la libre distribución del dominio público.
+					</p>
+					
+					<ul>
+					    <li>
+					        <a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/CARTO">CARTO</a>.
+					    </li>
+					    <li>
+					        <a rel="noopener" target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>.
+					    </li>
+					    <li>
+					        <a rel="noopener" target="_blank" href="https://www.esri.es/">Esri</a>.
+					    </li>
+					    <li>
+					        <a rel="noopener" target="_blank" href="https://stamen.com/">Stamen Design</a>.
+					    </li>
+					    <li>
+					        <a rel="noopener" target="_blank" href="https://foundation.wikimedia.org/wiki/Maps_Terms_of_Use">Wikimedia</a>.
+					    </li>
+					    <li>
+					        <a rel="noopener" target="_blank" href="https://www.wikipedia.org/">Wikipedia</a>.
+					    </li>
 					</ul>
 					<p>
 					    Algunas rutinas y funciones han sido adaptadas a partir del trabajo de ciertas personas, que han expuesto tales procedimientos 
@@ -433,9 +437,85 @@
 					    no absolutamente exhaustiva, por su complejidad, es la siguiente.
 					</p>
 					<ul>
-					    <li>gokertanrisever por Leaflet-Ruler</li>
+						<li>
+							Tim Kendrick. 
+							<a href="https://github.com/timkendrick/memoize-weak" target="_blank" rel="noopener">
+							Memoize Weak 
+							</a>
+					    </li>
+						<li>
+							Denys K. 
+							<a href="https://github.com/kraaden/autocomplete" target="_blank" rel="noopener">
+							Autocomplete
+							</a>
+					    </li>
+						<li>
+							Techslides. 
+							<a href="https://github.com/techslides/FastPivot" target="_blank" rel="noopener">
+							Fast Pivot
+							</a>
+					    </li>
+						<li>
+							MapBBCode. 
+							<a href="http://mapbbcode.org/leaflet.html" target="_blank" rel="noopener">
+							MapBBCode
+							</a>
+					    </li>
+						<li>
+							Conservation Biology Institute. 
+							<a href="https://github.com/consbio/Leaflet.ZoomBox" target="_blank" rel="noopener">
+							ZoomBox
+							</a>
+					    </li>
+						<li>
+							Florian Brucker. 
+							<a href="https://github.com/torfsen/leaflet.zoomhome" target="_blank" rel="noopener">
+							Zoom Home
+							</a>
+					    </li>
+						<li>
+							Andrew Blakey. 
+							<a href="https://github.com/ablakey/Leaflet.SimpleGraticule" target="_blank" rel="noopener">
+							Simple Graticule
+							</a>
+					    </li>
+						<li>
+							Flexberry PLATFORM. 
+							<a href="https://github.com/Flexberry/Leaflet.Export" target="_blank" rel="noopener">
+							Leaflet Export
+							</a>
+					    </li>
+						<li>
+							See the Spark. 
+							<a href="https://seethespark.com/blog/JavaScript-inner-join-and-outer-join/14" target="_blank" rel="noopener">
+							Javascript EquiJoin
+							</a>
+					    </li>
+						<li>
+							Stephen J. J. Brown. 
+							<a href="https://github.com/stephenjjbrown/string-similarity-js" target="_blank" rel="noopener">
+							Javascript Similarity
+							</a>
+					    </li>
+						<li>
+							Stack Overflow. 
+							<a href="https://stackoverflow.com/questions/469357/html-text-input-allow-only-numeric-input" target="_blank" rel="noopener">
+							Javascript Restrict Input
+							</a>
+					    </li>
+						<li>
+							Emil Ahlbäck. 
+							<a href="https://github.com/mull/sequential-promise" target="_blank" rel="noopener">
+							Javascript Sequential Promise
+							</a>
+					    </li>
+						<li>
+							Adam Mertel. 
+							<a href="https://github.com/adammertel/Leaflet.RegularGridCluster" target="_blank" rel="noopener">
+							Regular Grid Cluster
+							</a>
+					    </li>
 					</ul>
-			
 				</div>
 			</div>
 		</div>

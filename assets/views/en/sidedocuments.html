@@ -1,55 +1,71 @@
-<div class="pure-menu">
-	<a class="pure-menu-heading" href="#home">PATHFINDER</a>
-	<ul class="pure-menu-list">
-		<li class="pure-menu-item">
-			<a href="javascript:info.filter();" class="pure-menu-link pure-menu-status">
+<nav data-demo="menu" class="navigation">
+	<ul>
+		<li class="home-link background-secondary-400">
+			<h1 class="display-title display-title-l margin-top-s">
+				<img src="./assets/img/logos/IMGLOGOPF.svg" alt="PATHFINDER" 
+	    				style="margin:.5rem .5rem .5rem 1rem;height:30px;width:30px;float:left" />
+				<a style="line-height:.7"  href="#home">
+					PATHFINDER <span id="side-app-info" class="font-size-xs font-weight-thin"></span>
+				</a>
+			</h1>
+		</li>
+		<li data-demo="filtermenu" class="background-error-50">
+			<a href="javascript:info.filter();">
 				<span id="app-microchart"></span>
 				<span id="app-status">Ready</span>
 			</a>
 		</li>
-		<li class="pure-menu-item menu-item-divided">
-			<a href="#data" class="pure-menu-link">Data</a>
+		<li>
+			<a href="#data">Data</a>
 		</li>
-		<li class="pure-menu-item menu-item-divided">
-			<a href="#settings" class="pure-menu-link">Settings</a>
+		<li data-demo="settings">
+			<a href="#settings">Options</a>
 		</li>
-		<li class="pure-menu-item menu-item-divided">
-			<a href="#documents" class="pure-menu-link pure-menu-selected">Documents</a>
+		<li class="active">
+			<a href="#documents">Documents</a>
+			<ul data-demo="submenu" class="background-light-100">
+				<li>
+					<a id="sel-one" href="#documents">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="book" d=""></path>
+						</svg> 
+						Documents
+					</a>
+				</li>
+				<li>
+					<a id="sel-one" href="#starting">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="bookopen" d=""></path>
+						</svg> 
+						Tutorial
+					</a>
+				</li>
+				<li>
+					<a id="sel-one" href="#projects">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="pentool" d=""></path>
+						</svg> 
+						Projects
+					</a>
+				</li>
+				<li>
+					<a id="sel-two" href="#institutions">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="feather" d=""></path>
+						</svg> 
+						Institutions
+					</a>
+				</li>
+			</ul>
 		</li>
-		
-		<li class="pure-menu-item">
-			<a id="sel-zero" class="pure-menu-link sublink" href="#documents">
-				<i class="fa fa-book"></i>
-				Documents
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a id="sel-zero" class="pure-menu-link sublink" href="#starting">
-				<i class="fa fa-graduation-cap"></i>
-				Tutorial
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a id="sel-zero" class="pure-menu-link sublink" href="#projects">
-				<i class="fa fa-lightbulb"></i>
-				Projects
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a id="sel-zero" class="pure-menu-link sublink" href="#institutions">
-				<i class="fa fa-university"></i>
-				Institutions
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" href="javascript:info.help('documents')">
-				<i class="fa fa-question-circle"></i> 
-				Help
-			</a>
-		</li>
-		
-		<li class="pure-menu-item menu-item-divided menu-item-divided">
-			<a href="javascript:info.help('app');" class="pure-menu-link">Ayuda</a>
+		<li>
+			<a href="javascript:info.help('app');">Help</a>
 		</li>
 	</ul>
+</nav>
+
+<div id="search-container" class="field field-float-label no-margin-bottom">
+	<input id="search-input" class="background-info-50 no-border border-radius-none" type="search" placeholder="search...">
+	<label id="search-results-count" for="search-input">search...</label>
+	<ul id="search-results" class="search-results"></ul>
 </div>

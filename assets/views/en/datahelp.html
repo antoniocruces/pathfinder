@@ -1,240 +1,1404 @@
-<div class="pure-menu pure-menu-horizontal">
-	<ul class="pure-menu-list">
-		<li class="pure-menu-item pure-menu-active">
-			<a id="s-atab-zero" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'zero')">Panel</a>
+<div class="group group-xs no-print">
+	<ul>
+		<li>
+			<button id="stab40" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab40', 'step40', 'shtabcontent', 'shtablinks');">
+			Panel</button>
 		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-one" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'one')">Listing</a>
+		<li>
+			<button id="stab41" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab41', 'step41', 'shtabcontent', 'shtablinks');">
+			Filter</button>
 		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-two" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'two')">Filter & search</a>
+		<li>
+			<button id="stab42" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab42', 'step42', 'shtabcontent', 'shtablinks');">
+			Listing</button>
 		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-three" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'three')">Stats</a>
+		<li>
+			<button id="stab43" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab43', 'step43', 'shtabcontent', 'shtablinks');">
+			Stats</button>
 		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-four" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'four')">Charts</a>
+		<li>
+			<button id="stab44" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab44', 'step44', 'shtabcontent', 'shtablinks');">
+			Charts</button>
 		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-five" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'five')">Networks</a>
+		<li>
+			<button id="stab45" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab45', 'step45', 'shtabcontent', 'shtablinks');">
+			Networks</button>
 		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-six" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'six')">Maps</a>
+		<li>
+			<button id="stab46" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab46', 'step46', 'shtabcontent', 'shtablinks');">
+			Maps</button>
+		</li>
+		<li>
+			<button id="stab47" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab47', 'step47', 'shtabcontent', 'shtablinks');">
+			Legends</button>
 		</li>
 	</ul>
 </div>
 
-<div id="c-atab-zero" class="tabcontent is-visible active">
-	<h4>Panel</h4>
+<div id="step40" class="shtabcontent visible">
+	<h3 id="title-helppanel">Panel</h3>
+	<p>
+		It is the connectivity core of PATHFINDER. It makes possible update and load 
+		<a rel="nofollow" target="_blank" href="http://expofinder.uma.es"><em>ExpoFinder</em></a> data sets,  
+		export them in different formats using various criteria. Is possible, too, generate 
+		reports driven by links between records. Main significant elements are shown below.
+	</p>
 	<ol type="A">
-		<li>
-			<strong>Data update</strong><br />
-			If you have a valid file proceed to point B. To work PATHFINDER you will need a file in 
-			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/JSON"><em>JSON</em></a> 
-			format which must be downloaded from the data server of 
-			data server of <a rel="nofollow" target="_blank" href="http://expofinder.uma.es"><em>ExpoFinder</em></a>. 
-			Identify yourself with access credentials or
-			<a href="#legal">contact</a> with the development team. Before saving it in the client’s disc take note of the 
-			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Personal_identification_number">PIN</a> 
-			which PATHFINDER will supply. Without it you could not access to the download content.
-			<br />
-			<span style="color:red;">
-			For reasons unrelated to the functional structure itself of PATHFINDER it is possible that 
-			sometimes the download occurs incorrectly or with some error, even that it will does not happen at all. 
-			In that case, try this operation again once a few minutes have passed and 
-			<a href="#legal">comunique</a> the incidence to the development team. 
-			</span>
+		<li class="margin-bottom-l">
+			<h5>Update data</h5>
+			<p>
+				If you have a valid file, go to next point.
+				In order to work with PATHFINDER, you need a  
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON"><em>JSON</em></a> 
+				formatted file, which must to be downloaded from the 
+				<a rel="nofollow" target="_blank" href="http://expofinder.uma.es"><em>ExpoFinder</em></a> 
+				data server. 
+				Identify yourself using your   
+				<em>access credentials</em> or <a href="#legal">contact</a> development team to 
+				apply for them. Note you must write out and store in a safe place the supplied 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/N%C3%BAmero_de_identificaci%C3%B3n_personal">PIN</a> 
+				before saving the file in the client computer disc. You can't be able to use it 
+				without this number.
+			</p>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANT. For reasons unrelated to the functional structure of PATHFINDER, 
+				it is sometimes possible that the download occurs incorrectly or carrying some error, 
+				or even it does not happen at all. If it is the case, retry the operation after a 
+				few minutes and <a href="#legal">report</a> the incident to the development team. 
+			</p>
 		</li>
-		<li>
-			<strong>Database</strong><br />
-			[IMPORTANTE: A REVISAR]
-			Charge the <a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/JSON"><em>JSON</em></a> 
-			file locally saved and provide the correct PIN.
-			After a brief work time (usually between 8 and 15 seconds) PATHFINDER will be ready to work. 
+		<li class="margin-bottom-l">
+			<h5>Database</h5>
+			<p>
+				Load the locally stored 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON"><em>JSON</em></a> 
+				file and provide the appropriate  
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/N%C3%BAmero_de_identificaci%C3%B3n_personal">PIN</a>. 
+				After a short lapse (usually 8s -15s) PATHFINDER will be ready to run.
+			</p>
 		</li>
-		<li>
-			<strong>Exportación</strong><br />
-			PATHFINDER allows you to download the data in 
-			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Microsoft_Excel"><em>XLS</em></a>, 
-			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Tab-separated_values"><em>TAB</em></a>, 
-			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Comma-separated_values"><em>CSV</em></a>, 
-			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/XML"><em>XML</em></a> or 
-			<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/JSON"><em>JSON</em></a> format  
-			the raw data you use for your operation. Keep in mind that <em>only the selected data will be exported 
-			through the active <a href="javascript:info:filter();">filter</a></em>.
+		<li class="margin-bottom-l">
+			<h5>Information</h5>
+			<p>
+				If the file aforementioned in point B has been loaded, PATHFINDER will display the following 
+				info: 
+			</p>
+			<ol type="1" class="force-two-columns">
+				<li>
+					file name
+				</li>
+				<li>
+					file size (in bytes)
+				</li>
+				<li>
+					name of the  
+					<a rel="nofollow" target="_blank" href="http://expofinder.uma.es"><em>ExpoFinder</em></a> 
+					user who downloaded the file
+				</li>
+				<li>
+					file download date
+				</li>
+				<li>
+					<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Direcci%C3%B3n_IP">IPv4</a> 
+					address used to download the file
+				</li>
+				<li>
+					database object size in memory (in bytes)
+				</li>
+				<li>
+					number of primary records
+				</li>
+				<li>
+					number of metadata
+				</li>
+				<li>
+					number of taxonomies
+				</li>
+				<li>
+					total items number (primary records + metadata + taxonomies)
+				</li>
+			</ol>
+			<p>
+				It will also show a count of <a href="documents">primary records</a>, 
+				their <a href="documents">metadata</a> and their <a href="documents">taxonomies</a>, 
+				showing, too, absolute frequence and percent. 
+			</p>
 		</li>
-		<li>
-			<strong>Collections</strong><br />
-			PATHFINDER deals with the concept of collection as a synonym of predefined filter. 
-			Development team generates these collections, which can be loaded directly from the server to  
-			limit the subset of data to be used for working. It is necessary to have an active Internet connection 
-			in order to use this feature.			
+		<li class="margin-bottom-l">
+			<h5>Export</h5>
+			<p>
+				PATHFINDER allows download raw data set in 
+				<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Tab-separated_values"><em>TAB</em></a>, 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Valores_separados_por_comas"><em>CSV</em></a>, 
+				<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Extensible_Markup_Language"><em>XML</em></a> formats. 
+				NOTE: Only <a href="javascript:toolkit.selecttab('atab', 'two')">filtered data</a> will be exported.
+			</p>
 		</li>
-		<li>
-			<strong>Reports</strong><br />
-			For specific tasks in which the selected files are shown, PATHFINDER allows to extract the 
-			<a href="javascript:info:filter();">filtered</a> data. 
-			Follow the steps shown below:
+		<li class="margin-bottom-l">
+			<h5>Collections</h5>
+			<p>
+				PATHFINDER uses <em>collection</em> concept as a synonym of predefined 
+				<em><a href="javascript:toolkit.selecttab('atab', 'two')">filter</a></em>. Development team  
+				generate these "collections" that can be downloadef from the application server and activated to  
+				set up a filter. Obviuosly is essential to be connected to Internet in order to be 
+				able to use this feature.
+			</p>
+			<p>
+				When a collection is active, its title will be shown at <em>Data</em> menu pages header. 
+			</p>
+			<p class="aside background-warning-50">			
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANT. Keep in mind that, because a collection is only a <em>predefined filter</em>, 
+				it is possible to modify it ir order to make it suitable for specific user purposes. 
+				If it is done so, the legend 
+				<mark class="color-error background-error-50">MODIFIED</mark> will be shown next to the title.
+			</p>
+		</li>
+		<li class="margin-bottom-l">
+			<h5>Reports</h5>
+			<p>
+				PATHFINDER allows to get <a href="javascript:toolkit.selecttab('atab', 'two')">filtered</a>
+				data gathered in a particular way following its relationship links. Follow next 
+				steps to do so: 
+			</p>
 			<ol type="1">
 				<li>
 					Choose: 
 					<ol type="a">
 						<li>
-							The <a href="#documents"><em>primary record type</em></a> to be used as main in the report.
+							<a href="#documents"><em>Primary record</em></a> type used as main reference.
 						</li>
 						<li>
-							The <a href="#documents"><em>relational metadata field</em></a> to be used as guide to find 
-							records related to main one.
+							<a href="#documents"><em>Relational field</em></a> used as link to find its relationships.
 						</li>
 					</ol>
 				</li>
 				<li>
-					Choose the <em>model</em> [IMPORTANTE] that will be generated / to be generated: 
+					Choose the <em>model</em> to be generated: 
 					<ol type="a">
 						<li>
-							<em>Analytical</em>. Spreadsheet in 
-							<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Comma-separated_values"><em>CSV</em></a>,  
-							format, compatible with 
-							<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Microsoft_Excel">Microsoft Excel&trade;</a> or 
-							<a rel="nofollow" target="_blank" href="https://en.libreoffice.org/‎">LibreOffice</a>).
+							<em>Analitic</em>. Sppreadsheet in  
+							<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Valores_separados_por_comas"><em>CSV</em></a> format,  
+							compatible with 
+							<a rel="nofollow" target="_blank" href="https://www.microsoft.com/Comprar/Excel">Microsoft Excel&trade;</a> or 
+							<a rel="nofollow" target="_blank" href="https://es.libreoffice.org/‎">LibreOffice</a>).
 						</li>
 						<li>
-							<em>Textual</em>. Document in  
-							<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Rich_Text_Format">RTF</a> format, 
-							compatible with 
-							<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Microsoft_Word">Microsoft Word&trade;</a> or 
-							<a rel="nofollow" target="_blank" href="https://en.libreoffice.org/‎">LibreOffice</a>.
+							<em>Textual</em>. Document in 
+							<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Rich_Text_Format">RTF</a>, format, compatible with 
+							<a rel="nofollow" target="_blank" href="https://www.microsoft.com/Comprar/Word‎">Microsoft Word&trade;</a> or 
+							<a rel="nofollow" target="_blank" href="https://es.libreoffice.org/‎">LibreOffice</a>.
 						</li>
 					</ol>
 				</li>
 			</ol>
-		</li>
-		<li>
-			<strong>Estado de la base de datos</strong><br />
-			[IMPORTANTE]
-			If you have charge the specified file on point B, PATHFINDER will show the following information: 
-			<br />
-			If the file forementioned at step B has been loaded, PATHFINDER will show next info:
-			<ol type="1">
-				<li>
-					Name of the file / file name
-				</li>
-				<li>
-					Size of the file / file size (in bytes)
-				</li>
-				<li>
-					ExpoFinder username which executed the file download / 					
-					<a rel="nofollow" target="_blank" href="http://expofinder.uma.es"><em>ExpoFinder</em></a> 
-					identity used to download file
-				</li>
-				<li>
-					Date of the file download / file download date
-				</li>
-				<li>
-					IPv4 address from which the file download was made / 
-					<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/IP_address">IPv4</a>
-					address used to download file 
-				</li>
-				<li>
-					Size of the database object in memory (in bytes) / 
-					database object size in memory (in bytes)
-				</li>
-				<li>
-					Number of registers / records number
-				</li>
-				<li>
-					Metadata number / metadata number
-				</li>
-				<li>
-					Taxonomies number / taxonomies number
-				</li>
-				<li>
-					Total number of elements (registers + metadata + taxonomies) / 
-					total number of elements (records + metadata + taxonomies)
-				</li>
-			</ol>
-			The <em>More information&hellip;</em> link will also be shown. 
-			Pressing it, PATHFINDER will open a pop-up window showing the recount of registers by type, 
-			its metadata and its taxonomy. In the latter cases, the absolute figure and the percentage with respect 
-			to the total are indicated.
-			<br />			
-			A <em>More info&hellip;</em> link will also be shown. 
-			By clicking on it, PATHFINDER will open a pop-up window showing a count of 
-			<a href="documents">primary records by type</a>, 
-			<a href="documents">metadata</a> and <a href="documents">taxonomies</a> included; 
-			last ones will show absolute figures and percentyage over total, too.
 		</li>
 	</ol>
 </div>
 
-<div id="c-atab-one" class="tabcontent is-hidden">
-	<h4>Listing</h4>
-	<p>
-		PATHFINDER shows a table with the filtered records. They appear sorted by 
-		type of record -> title of the record -> taxonomies associated with each record. 
-		By clicking on the title, the individual screen of the corresponding record will be shown. 
-		<br />
-		PATHFINDER
+<div id="step41" class="shtabcontent hide">
+	<h3 id="title-helplisting">Filter</h3>
 	
-		PATHFINDER muestra una tabla con los registros <a href="javascript:info:filter();">filtrados</a>. 
-		Aparecen ordenados por <em>tipo de registro</em> &rarr; <em>título del registro</em> &rarr; 
-		<em>taxonomías asociadas a cada registro</em>. Al pulsar sobre el título, se mostrará la 
-		<em>pantalla individual</em> del correspondiente <a href="#documents">registro</a>.
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANT. Much of the computing power and discovery of new knowledge developed by PATHFINDER 
+		depends on the accuracy of the filtering process. Be careful when setting the conditions for 
+		not getting deceptive, inaccurate or confusing results.
 	</p>
+	
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		BE MIND OF. Filter screen is a full-size pop-up window. It can be opened from any other PF screen. 
+		When closing it, screen from which filter was invoked will be maintained, and recalculated its results.
+	</p>
+
 	<p>
-		En la cabecera de la tabla figuran: 
-		<ol>
-			<li>número total de registros mostrados (según el <a href="javascript:info:filter();">filtro</a> activo)</li>
-			<li>página en curso y total de páginas</li>
-			<li>número de registros por página (determinado en <a href="#settings">ajustes</a>)</li>
-			<li>enlace para establecer el <a href="javascript:info.filter();">filtro</a> del sistema</li>
-			<li>enlace para realizar una <a href="javascript:info.search();">búsqueda</a> simple</li>
+		PF uses  
+		<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Filter_(mathematics)">filer paradigm</a>, 
+		typical of  
+		<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Set_theory">set theory</a> and 
+		<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Order_theory">order theory</a>, 
+		to narrow down the scope of the total set of records retrieved from 
+		<a rel="noopener" target="_blank" href="http://exposinfer.uma.es">ExpoFinder</a> data server. 
+		The system will exclude from any calculation not matching records. The screen elements are as follows.
+	</p>
+
+	<h5>Inclusions & restrictions</h5>
+	<p>
+		They affect the filtered records subset when conditions have been applied. 
+		<ul>
 			<li>
-				enlace para <a href="javascript:ui.clearfilter(false);">limpiar</a> el filtro y 
-				restablecer la base de datos a su condición original
+				Include. It adds to matching records those directly related to them matching checked types. 
+				For example, if conditions only affect exhibitions but actors are included, 
+				those related to each filtered exhibition will be added.
 			</li>
-		</ol>
+			<li>
+				Restrictions. It limits included records to <em>only</em> those whose relational field is marked. 
+				As in the previous example, it is possible to select only actors acting as exhibition curators.
+			</li>
+		</ul>
 	</p>
+	
+	<h5>Filter panel</h5>
+	
 	<p>
-		En el pie de la tabla figuran: 
-		<ol>
-			<li>enlaces a páginas adyacentes a la que está en curso (determinado en <a href="#settings">ajustes</a>)</li>
-			<li>enlace para ir directamente a cualquier página</li>
-		</ol>
+		Each condition goes on a row, with features shown below. 
+	</p>
+	<ul>
+		<li>
+			Modifier. It selects a facet to use to validate conditions, as "year" for a date.
+		</li>
+		<li>
+			Field where search will be done.
+		</li>
+		<li>
+			Operator. The typical ones to compare textual or numeric values, having account, or not 
+			(as in <em>contains</em> and <em>does not contains</em>) uppercase and 
+			diacritics, plus <em>is null</em> and <em>not is null</em>, to find records having or 
+			not any value, and <em>between</em>, conceived to do comparisons for two sequential numeric  
+			values ("between 2010 and 2015" will match records in this range),  
+			although it also works with textual values.
+		</li>
+		<li>
+			Value. It is possible to get a matching value list clicking on  
+			<svg width="14" height="14" viewBox="0 0 24 24" class="svgicon">
+				<path class="search" d=""></path>
+			</svg> icon.
+		</li>
+		<li>
+			Buttons for search (<span class="color-error">red</span> background if not results found) and remove condition.
+		</li>
+	</ul>
+	<p>
+		There is no limit in conditions number.
+	</p>
+	
+	<h5>Operations</h5>
+	
+	<p>
+		Buttons panel at filter window footer allowing: 
+	</p>
+	<ul>
+		<li>
+			<p>
+				To save or to load "collections", or frequently used filter definitions that user can store as a file at local disk.
+			</p>
+		</li>
+		<li>
+			<p>
+				Calculte. To do sequentially single calculation for each condition.
+			</p>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANT: PF needs to have done ALL single conditions calculation in order to set filter.
+			</p>
+		</li>
+		<li>
+			Filter. Evaluation of the conditions and generation of the filtered subset. When done 
+			a new button is visible, to show a graph to visualize links between primary records sat by conditions.
+		</li>
+		<li>
+			Clear. Initialization of the filter deleting the results subset.
+		</li>
+	</ul>
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		BE MIND OF: As said, when a filter is set, PF shows a new button: <em>Filter links</em>, to 
+		open a pot-up window with a graph to visualize relations between 
+		<a href="#documents"><em>primary records</em></a> types.
+	</p>	
+</div>
+
+<div id="step42" class="shtabcontent hide">
+	<h3 id="title-helplisting">Listing</h3>
+	<p>
+		PATHFINDER shows a table containing the <a href="javascript:info:filter();">filterd</a> records,  
+		sorted by <em>primary record type</em> &rarr; <em>record title</em> &rarr; 
+		<em>taxonomies</em>. Clicking on title will show the  
+		<em>primary record single screen</em>.
+	</p>
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANT. Listing ONLY shows FILTERED RECORDS. Be mind of this if you can't find a particular one.
+	</p>
+
+	<ol type="A">
+		<li class="margin-bottom-l">
+			<h5>Search & navigation</h5>
+			<p>
+				Top area of the table allowing you to scroll through the data set using a slider or page by page basis. 
+				It also allows you to export filtered data in 
+				<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a>, 
+				format, print table or search it for a row containing text or number.
+			</p>
+			<p class="aside background-info-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="info" d=""></path>
+				</svg>
+				BE MIND OF. Table of results presentation model is the same in any operation done by PF. 
+				When result of an analytical operation is shown, over this place will appear, too,  
+				a minimal set of descriptive stats figures, including info about  
+				<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Outlier">outliers</a>, 
+				very important in discovering new knowledge process carried out by PF. It will appear too  
+				two links to show a couple of charts with sorted or <em>normalized</em> values (it means, as in a  
+				<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a>).
+			</p>
+		</li>
+		<li class="margin-bottom-l">
+			<h5>Table</h5>
+			<p>
+				Filtered data sorted list. You can change order by clicking  
+				on each column header (ascending or descending one, A &rarr; Z, and vice versa).
+			</p>
+		</li>
+		<li class="margin-bottom-l">
+			<h5>Rows</h5>
+			<p>
+				By clicking on a <a href="#documents">primary record</a> title, appropriate single record screen will be shown. 
+			</p>
+		</li>
+	</ol>
+</div>
+
+<div id="step43" class="shtabcontent hide">
+	<h3 id="title-helpstats">Stats</h3>
+	
+	<p>
+		These operations make up the functional core of PF and allow to obtain <em>new knowledge</em> 
+		from the analysis of the qualitative data once quantified.
+	</p>
+
+	<h4 id="title-helpstats-groups">Groups</h4>	
+
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANT. All calculations will be done ONLY over the FILTERED RECORDS SUBSET.
+	</p>
+
+	<p>
+		Calculates quantitative data through an aggregation function based on features or meta-information repeated 
+		in the different records, evaluating its frequency and distribution. 
+		Use this option to know the incidence of certain parameters in the complete sample of selected values. 
+		The highlights of the screen are as follows.
+	</p>
+
+	<ol>
+		<li>
+			<p>
+				Filter. It sets if all the filtered subset records or only 
+				<em>meaningul</em> ones will be shown (go to  
+				<a href="#documents">Documents</a> to know more about outliers relevance in PF analytical processes). 
+				It is possible, too, to exclude those records having null or empty grouping values (not count ones).
+			</p>
+		</li>
+		<li>
+			<p>
+				Selector to get query grouping fields. Writing part of a field name  
+				a matching list will be shown. Clicking on  
+				<mark class="background-info-50">
+				<svg width="14" height="14" viewBox="0 0 24 24" class="svgicon">
+				<path class="pluscircle" d=""></path></svg>
+				</mark> button, field will be added to groupers.
+			</p>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANT. <em>Order</em> is very important in groupers list, because it establish  
+				how the count will be done. For example, it is not the same thing  
+				group by actor's year of birth and actor's gender than vice versa. Each field has a symbol 
+				<mark class="background-dark-50">
+				<svg width="14" height="14" viewBox="0 0 24 24" class="svgicon">
+				<path class="trash" d=""></path></svg></mark>, and by clicking it field will be removed of the groupers.
+			</p>
+		</li>
+	</ol>
+		
+	<h4 id="title-helpstats-cooccurrences">Correlations</h4>	
+	
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANT. Probably this is, &mdash;with some particular operations with  
+		<a href="javascript:toolkit.generictab('stab44', 'step44', 'shtabcontent', 'shtablinks');"><em>Charts</em></a>, 
+		<a href="javascript:toolkit.generictab('stab45', 'step45', 'shtabcontent', 'shtablinks');"><em>Networks</em></a> and 
+		<a href="javascript:toolkit.generictab('stab46', 'step46', 'shtabcontent', 'shtablinks');"><em>Maps</em></a>&mdash; 	
+		PATHFINDER's most powerful option for locating links and relationships between filtered subset data. 
+		Be mind of PF provides the tool, but the 
+		<em>interpretation</em> of results depends solely on the user. Is strongly recommended to  
+		read <a href="#documents">documentation</a> in this regard.
+	</p>
+
+	<p>
+		Screen items are as follows.
+	</p>
+	
+	<ol>
+		<li>
+			<p>
+				Filter. It sets if all the filtered subset records or only 
+				<em>meaningul</em> ones will be shown (go to  
+				<a href="#documents">Documents</a> to know more about outliers relevance in PF analytical processes). 
+				It is possible, too, to exclude those records having null or empty grouping values (not count ones).
+			</p>
+		</li>
+		<li>
+			<p>
+				Related fields according to the following scheme:
+			</p>
+			<pre>[Origin/Source] [Destination/Target]</pre>
+			<p>
+				PF build a <em>chain</em> using relations between selected items, so that  
+				<code>source</code> be someway linked to <code>target</code>, and  
+				draws it, allowing edit it, too. For example, if 
+				<code>source: actor &rarr; artwork authorship &rarr; artwork</code> and 
+				<code>target: exhibition &rarr; collector &rarr; actor</code> is selected, 
+				PF will calculate all connections between both ends.
+			</p>
+
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANT. Relation is calculated when both items, <code>source</code> and 
+				<code>target</code>, contain valid values. If it is not so, they will be  
+				<mark class="background-white border border-color-error">marked as wrong</mark>. 
+				In addition, the calculated chain contains only filtered records.
+			</p>
+
+		</li>
+		<li>
+			<p>
+				Calc result. Will be shown items below.
+			</p>
+			<ol type="a">
+				<li>
+					<em>Recalc</em> and <em>route graph</em> buttons. The last one opens a  
+					pop-up window plotting how the different  
+					<a href="#documents">primary record</a> tyles are related between in the calculated path.
+				</li>
+				<li>
+					Textual description of route.
+				</li>
+				<li>
+					Route. Is shown following the rules  
+					<pre>[primary record 1] [relational field 1-n] [primary record n] [relational field n-n']...</pre>
+					By clicking on any <a href="#documents">primary record</a> label 
+					it will be deleted from the whole route and a recalc will be done.
+				</li>
+			</ol>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANT. Deleting <a href="#documents">primary records</a> makes calculated chain  
+				more relevant each time. In the previous example, chain be  
+				<code>
+					<mark class="background-success color-white">P</mark> 
+					<mark class="background-light">artwork authorship</mark> 
+					<mark class="background-info color-white">A</mark> 
+					<mark class="background-light">artwork included</mark> 
+					<mark class="background-tertiary color-white">B</mark>  
+					<mark class="background-light">catalog</mark> 
+					<mark class="background-warning color-white">X</mark> 
+					<mark class="background-light">collector</mark> 
+					<mark class="background-success color-white">P</mark>
+				</code> 
+				(see acronym equivalences by opening 
+				<a href="javascript:toolkit.generictab('stab47', 'step47', 'shtabcontent', 'shtablinks');"><em>Legends</em></a>). 
+				If the first one primary record type <mark class="background-success color-white">P</mark> is removed and 
+				<mark class="background-tertiary color-white">B</mark> and 
+				<mark class="background-warning color-white">X</mark> types too, it is possible to get how many times an artwork  
+				[<mark class="background-info color-white">A</mark>] is linked to an  
+				[<mark class="background-success color-white">P</mark>] actor acting a  
+				<mark class="background-light">collector</mark> in different exhibitions.
+			</p>
+		</li>
+	</ol>
+	
+	<h4 id="title-helpstats-descriptive">Descriptive statistic</h4>	
+	<p>
+		In any of the operations it is possible to use, in addition to the table view, the statistics view.
+	</p>
+	<p class="margin-bottom">
+		In PATHFINDER, this section shows a selection  
+		of statistic values maybe helpers to know better analyzed sample distribution conditions.  
+		Acronyms of used tables are shown below.
+	</p>
+	<div class="table-responsive">
+		<table class="mq-table pure-table-bordered pure-table table-smaller">
+			<tbody>
+				<tr>
+					<th class="text-align-center"><strong>FLD</strong></th>
+					<td>
+						Field to which the data refers.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>TYP</strong></th>
+					<td>
+						Field content type: sumeric, text string, date,&hellip;
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>FRQ</strong></th>
+					<td>
+						Data frequency indicators.
+						<ul>
+							<li><strong>VAL</strong>: total values (number of total rows retrieved).</li>
+							<li><strong>DST</strong>: distinct values (number of rows with no repeated value).</li>
+							<li><strong>MIS</strong>: missing values (number of rows with not value or empty).</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>RNG</strong></th>
+					<td>
+						Value range indicators.
+						<ul>
+							<li><strong>MIN</strong>: minimum value.</li>
+							<li><strong>DST</strong>: maximum value.</li>
+							<li><strong>(N)</strong>: total range between minimun and maximum.</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>AVG</strong></th>
+					<td>
+						Central trend of dataset indicators.
+						<ul>
+							<li><strong>MEA</strong>: arithmetic mean.</li>
+							<li><strong>MED</strong>: median.</li>
+							<li><strong>STD</strong>: stardard deviation.</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>QRT</strong></th>
+					<td>
+						Outliers presence limit indicators.
+						<ul>
+							<li><strong>Q1</strong>: first quartile limit.</li>
+							<li><strong>Q3</strong>: third quartile limit.</li>
+							<li><strong>MSK</strong>: mode asymmetry.</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>Entropy</strong></th>
+					<td>
+						Interesting referente to try to judge the importance and signification of values of a particular field.  
+						See <a href="#documents">documents</a> about.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>D</strong> y <strong>J</strong></th>
+					<td>
+						Mutual distance and Jaccard index. They measure the degree of affinity or similarity 
+						between the frequencies for a given field. See <a href="#documents">documentation</a> about.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>	
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANT. For more information on the parameters used in statistical analysis, consulte la 
+		<a href="#documents">documentation</a>.
 	</p>
 </div>
 
-<div id="c-atab-two" class="tabcontent is-hidden">
-	<h4 class="h1">Consultas</h4>
+<div id="step44" class="shtabcontent hide">
+	<h3 id="title-helpcharts">Charts</h3>
 	<p>
-		<span class="text-error">DEVELOPING DOCUMENTATION / DOCUMENTATION UNDER DEVELOPMENT</span>. Filter & search
+		They show visual representations of the quantified data from the filtered subset. 
+		In the paper "Graphs in Statistical Analysis", published in February 1973 by <em>American Statistician</em>, 
+		<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Frank_Anscombe">Frank Anscombe</a> 
+		&mdash;later, in 1983, 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Edward_Tufte">Edward Tufte</a> 
+		so confirmed it in his book <em>The Visual Display of Quantitative Information</em>&mdash;
+		demonstrated the importance of "visualizing" the data before, or in parallel, to the analysis process. 
+		PF tries to help in this regard by offering an overview of charts for the active and filtered records.
 	</p>
+	<p>
+		Screen items are as follows.
+	</p>
+	<ol>
+		<li>
+			<p>
+				Selection bar. Allows to choose the features of te chart to be shown.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Table. Data to be charted. Can be of two kinds:
+					</p>
+					<ul>
+						<li>
+							<p>
+								Query. Predefined selection of filtered data based on its characteristics 
+								(date, place, taxonomy&hellip;).
+							</p>
+						</li>
+						<li>
+							<p>
+								Statistics. Each of the analytical varieties used in 
+								<a href="javascript:toolkit.generictab('stab43', 'step43', 'shtabcontent', 'shtablinks');"><em>Stats</em></a>.
+							</p>
+							<p class="aside background-warning-50">
+								<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+									<path class="bell" d=""></path>
+								</svg>
+								IMPORTANT. A statistic will only be plotted if the corresponding modality has been previously calculated 
+								(<em>Groups</em> or <em>Correlations</em>).
+							</p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p>
+						Filter. Each of the series or group of plotted data. In each of them data 
+						is grouped by a common feature. You can show all the series or choose them individually.
+					</p>
+				</li>
+				<li>
+					<p>
+						<a href="#documents">Facete</a>. Characterization of the data to be displayed.
+					</p>
+				</li>
+			</ol>
+		</li>
+		<li>
+			<p>
+				Result (chart). Chart types are as follows.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Line / area. For <em>queries</em>. They can show:
+					</p>
+					<ul>
+						<li>
+							<p>
+								Lines for the average of each serie.
+							</p>
+						</li>
+						<li>
+							<p>
+								Maximum value mark for each serie.
+							</p>
+						</li>
+						<li>
+							<p>
+								Series legend. By clicking on each serie label it will be or not visible.
+							</p>
+						</li>
+						<li>
+							<p>
+								Normalized sorting 
+								(<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Distribuci%C3%B3n_normal">normal distribution</a>).
+							</p>
+						</li>
+						<li>
+							<p>
+								<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Regresi%C3%B3n_lineal">Linear regression</a>. 
+								I shows dependency relationships between variables. When active,  
+								outliers are shown with a different symbol.
+							</p>
+						</li>
+						<li>
+							<p>
+								Exclusion or inclusion of null values.
+							</p>
+						</li>
+					</ul>
+				</li>
+			</ol>
+		</li>
+	</ol>
+	
+	<h4>Special chart layouts</h4>
+	<p>
+		If in <em>selection bar</em>, <em>table</em> section, option  
+		<em>stats; correlations</em> is choosen, PF offers 6 differents modes.
+	</p>
+	<ol type="i">
+		<li>
+			<p>
+				Scatter. It uses the Cartesian coordinates to show the values of the pairs of variables in each series.
+			</p>
+		</li>
+		<li>
+			<p>
+				Hierarchy. It shows a hierarchic tree (expressing dependence) in orthogonal format.
+			</p>
+		</li>
+		<li>
+			<p>
+				Radial hierarchyl. It shows a hierarchic tree (expressing dependence) in circular format; 
+				the origin is the circle center.
+			</p>
+		</li>
+		<li>
+			<p>
+				Treemap. Alternative to visualize the hierarchical structure showing also the quantities 
+				for each category through the size of its area.
+			</p>
+		</li>
+		<li>
+			<p>
+				Sunburst. It presents the hierarchy through a series of rings, which are divided for each category node. 
+				Each ring corresponds to a level in the hierarchy, with the central circle representing the root node 
+				and the hierarchy moving outward from it.
+			</p>
+		</li>
+		<li>
+			<p>
+				Wordcloud. "Cloud" formed by the titles of each primary record represented in the graph 
+				using a font size directly proportional to its total "weight".
+			</p>
+		</li>
+	</ol>
 </div>
 
-<div id="c-atab-three" class="tabcontent is-hidden">
-	<h4 class="h1">Esquema</h4>
+<div id="step45" class="shtabcontent hide">
+	<h3 id="title-helpnetworks">Networks</h3>
 	<p>
-		<span class="text-error">DEVELOPING DOCUMENTATION / DOCUMENTATION UNDER DEVELOPMENT</span>. Stata
+		Representation in a graph of the different relationships between distinct types of elements taken as a couple. 
+		Screen items are as follows.
 	</p>
+	<ol type="1">
+		<li>
+			<p>
+				Selector bar. Allows you to choose both the presentation format and the data pair to present. 
+				Options are as follows.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Type. Mode of presentation of the directed graph (
+						<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Directed_graph"><em>digraph</em></a>). 
+						Any of the following values can be selected.
+					</p>
+					<ol type="i">
+						<li>
+							<p>
+								Simple design. Unrestricted tree diagram, where each element appears linked 
+								by a line to those with which it relates.
+							</p>
+						</li>
+						<li>
+							<p>
+								Force directed graph. Like the previous one, but the primary records are represented 
+								constrained by "gravitational forces", approximating or separating them, accommodating them too to the final size.
+							</p>
+						</li>
+						<li>
+							<p>
+								Circular design. With the same principle of the two previous models, the primary records 
+								are arranged in a circle intersecting, if necessary, the lines that link them.
+							</p>
+						</li>
+						<li>
+							<p>
+								Sankey design. Specific type of flowchart, in which the width of the joining lines 
+								is proportional to the amount of flow between two primary records.
+							</p>
+						</li>
+						<li>
+							<p>
+								TAble design. Is plotted as a data table.
+							</p>
+						</li>
+						<li>
+							<p>
+								Tree design. It is plotted as an unnumbered ordered list with indentation.
+							</p>
+						</li>
+					</ol>
+				</li>
+				<li>
+					Linked primary records, link type and relational fields. Selectables.
+				</li>
+				<li>
+					Filter. Once the initial calculation is done, it is possible to recalculate the results 
+					by filtering only those matching the condition.
+				</li>
+			</ol>
+		</li>
+		<li>
+			Result. Shown in a similar way to the  
+			<a href="javascript:toolkit.generictab('stab44', 'step44', 'shtabcontent', 'shtablinks');"><em>Charts</em></a> ones.
+		</li>
+	</ol>
 </div>
 
-<div id="c-atab-four" class="tabcontent is-hidden">
-	<h4 class="h1">Gráficos</h4>
+<div id="step46" class="shtabcontent hide">
+	<h3 id="title-helpmaps">Maps</h3>
 	<p>
-		<span class="text-error">DEVELOPING DOCUMENTATION / DOCUMENTATION UNDER DEVELOPMENT</span>. Charts
+		PF uses the maps to show the accumulation, dispersion and distribution of data in a geographical context. 
+		The relevance of this type of presentation 
+		<a rel="nofollow" target="_blank" href="http://www.digitalhumanities.org/dhq/vol/3/1/000031/000031.html">
+		is well accredited</a> in DIgital Humanities context, 
+		and it is in the spirit of PATHFINDER to normalize its use in the field of Digital Art History.
 	</p>
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		BE MIND OF: All PF calculations in </em>Maps</em> screen are done using only 
+		<a href="javascript:toolkit.generictab('stab41', 'step41', 'shtabcontent', 'shtablinks');">
+		filtered data</a>.
+	</p>
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		BE MIND OF: Obviously, only 
+		<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Geolocalizaci%C3%B3n">
+		geolocatable</a> data can be representen in a map.
+	</p>
+	</p>
+		Items in this screen are as follows.
+	</p>
+	<ol type="A">
+		<li>
+			<h6>Base maps</h6>
+			<p>
+				They are the "background" of the maps and provide cartographic information. 
+				PF allows you to select which one of them is active at any given time. 
+				Each one provides customized information highlighting or hiding some features. 
+				For example, those of "<em>no labels</em>" type (silent maps), 
+				which can make the global view clearer.
+			</p>
+		</li>
+		<li>
+			<h6>Layers</h6>
+			<p>
+				They are polygons or lines overlapping the active base map and delimiting some areas providing additional information. 
+				It is possible to activate more than one at a time, and the visible information obtained by clicking on them 
+				will correspond to the last one added.
+			</p>
+			<p>
+				The list of available layers is below.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Countries. Border line of the different countries of the world.
+					</p>
+				</li>
+				<li>
+					<p>
+						European Union. Border profile of the different EU countries.
+					</p>
+				</li>
+				<li>
+					<p>Spain
+						Spain. Regions ("comunidades autónomas"). Border profile of the different Spanish regions.
+					</p>
+				</li>
+				<li>
+					<p>
+						Spain. Provinces (similar to counties). Border profile of the different Spanish provinces.
+					</p>
+				</li>
+				<li>
+					<p>
+						Spain. Municipalities. Border profile of the different Spanish municipalities.
+					</p>
+				</li>
+				<li>
+					<p>
+						Grid. Geographical meridians and parallels represented at gaps of 20 sexagesimal degreess.
+					</p>
+				</li>
+			</ol>
+			<p>
+				When a  
+				<a href="javascript:toolkit.generictab('stab40', 'step40', 'shtabcontent', 'shtablinks');">JSON data file</a> 
+				two additional options will be shown.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Groupes. All the filtered records are represented as clusters, represented by small colored circles 
+						(darker the more numerous the cluster). When you click on them or zoom in on the map, 
+						these circles are "broken down" and the individualized elements are displayed progressively.
+					</p>
+				</li>
+				<li>
+					<p>
+						Heatmap. All the filtered records are represented in the form of continuous surface of graduated color by scale, 
+						showing greater or lesser concentration of elements in a specific area.
+					</p>
+					<p style="padding-left:5px;padding-right:5px;background-color:red;height:23px;background-image:linear-gradient(to right,blue,lime,red);">
+						<span class="color-white">0%</span><span class="color-white pull-right">100%</span>
+					</p>
+				</li>
+			</ol>
+		</li>
+		<li>
+			<h6>Search</h6>
+			<p>
+				An input text field allows to wrile all or part of a  
+				<a href="#documents">primary record</a> title. 
+				PF will show a list of the matching ones.
+			</p>
+			<p>
+				By clicking on one of them, it will ve drawn on map following the PF   
+				<a href="javascript:info.help('colorscode');">color code</a> rules: 
+				<span class="empty-circle" style="background:#08c"></span> for artworks, 
+				<span class="empty-circle" style="background:#e619a1"></span> for catalogs, 
+				<span class="empty-circle" style="background:#7f19e6"></span> for companies, 
+				<span class="empty-circle" style="background:#c00"></span> for entities, 
+				<span class="empty-circle" style="background:#f50"></span> for exhibitions and  
+				<span class="empty-circle" style="background:#00b300"></span> for actors.  
+			</p>
+		</li>
+		<li>
+			<h6>Include</h6>
+			<p>
+				When a search is performed, PF can show, too,  
+				additional info denoting its appropriate context. 
+				To do it, PF needs to know the <em>buffer</em> o "search scope range" as the  
+				radius of a circle from located point. Items shown at a dropdown list are shown below.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Proximity in m. How much should measure the radius of the buffer used in the calculation. 
+						Note that the field accepts only positive integer numerical data, 
+						without decimal points, signs or thousands commas.
+					</p>
+					<p>
+						PF will plot the located point and a semi-transparent gray circle bordered by dotted lines 
+						representing the scope covered by the buffer.
+					</p>
+				</li>
+				<li>
+					<p>
+						Direct relationships. It shows lines joining the points representing the 
+						<a href="#documents">primary record</a> located and those with a direct relation to it. 
+						This option is active regardless of whether a proximity radius in meters has been specified or not.
+					</p>
+				</li>
+				<li>
+					<p>
+						<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Triangulated_irregular_network">
+						Triangulated irregular network</a>. 
+						Draw a mesh of three-sided polygons that link the localized point and those with a direct relation to it. 
+						It is usually abbreviated as TIN . The intensity of the inner semi-transparent color of each triangle 
+						indicates the relative importance of the connection between the various elements. 
+						This option is only active if a proximity radius in meters has been specified.
+					</p>
+				</li>
+				<li>
+					<p>
+						<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Convex_hull">
+						Convex hull</a>. 
+						It draws the a line connecting the more "outer" elements of the set of the found  
+						<a href="#documents">primary record</a> and those with a direct relation to it.
+						This option is only active if a proximity radius in meters has been specified.
+					</p>
+				</li>
+				<li>
+					<p>
+						Envelope. 
+						It draws the rectangle connecting the more "outer" elements of the set of the found  
+						<a href="#documents">primary record</a> and those with a direct relation to it 
+						at their NW-NE-SE-SW points. Do not confuse with <em>envelope</em> of a family of curves.
+						This option is only active if a proximity radius in meters has been specified.
+					</p>
+				</li>
+				<li>
+					<p>
+						<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Voronoi_diagram">
+						Voronoi diagram</a>. 
+						Also known as <em>Thiessen polygons</em>, 
+						it draws a triangular grid using 
+						<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Euclidean_distance">
+						Euclidean distance</a> to calculate the interpolation of the 
+						<a href="#documents">located primary record</a> those with a direct relation to it, 
+						based in the middle position between each pair of points.   
+						This option is only active if a proximity radius in meters has been specified.
+					</p>
+				</li>
+			</ol>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANT. In <em>Triangulated irregular network</em> and <em>Voronoi diagram</em>, only 
+				the points being of the same <a href="#documents">primary record type</a> 
+				tahn tthe found one will be linked.
+			</p>
+		</li>
+		<li>
+			<h6>Queries</h6>
+			<p>
+				Shown when at least a 
+				<a href="#documents">primary record</a> has been found.  
+				They can be activated simultaneously or not, as is the case with <em>Layers</em>. It offers the following options.
+			<p>
+			<ol type="a">
+				<li>
+					<p>
+						A selector for each query generated. The proximity search in meters includes three layers: 
+						located <a href="#documents">primary record</a>, 
+						buffer included ones and the dotted circle itself.
+					</p>
+				</li>
+				<li>
+					<p>
+						Clear. Remove all queries.
+					</p>
+				</li>
+				<li>
+					<p>
+						Export. Generates a file in  
+						<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Valores_separados_por_comas">CSV</a> 
+						format containing the <a href="#documents">primary records</a> included in queries, 
+						whether they are showing or not.
+					</p>
+				</li>
+			</ol>
+		</li>
+	</ol>	
 </div>
 
-<div id="c-atab-five" class="tabcontent is-hidden">
-	<h4 class="h1">Redes</h4>
+<div id="step47" class="shtabcontent hide">
+	<h3 id="title-helplegends">Legends</h3>
+	
+	<h4 id="title-helplegends-specialcols">Special columns</h4>
+	
 	<p>
-		<span class="text-error">DEVELOPING DOCUMENTATION / DOCUMENTATION UNDER DEVELOPMENT</span>. Networks
+		In PF, the tables showing the result of operations with data, 
+		such <em>Groups</em> and <em>Correlations</em>, 
+		have some columns added to the requested information complementing it.
 	</p>
-</div>
+	
+	<div class="table-responsive">
+		<table>
+			<tbody>
+				<tr>
+					<th class="text-align-center"><strong>Z</strong></th>
+					<td>
+						Relevanceof a row by the <em>normalized value</em> or 
+						<em>z-score</em> of its frequence. To know more about, 
+						<a target="_blank" rel="nofollow" 
+						href="https://es.wikipedia.org/wiki/Unidad_tipificada">click here</a>.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>O</strong></th>
+					<td>
+						The frequence of a row is <em>significant value</em> or <em>outlier</em>. To know more about, 
+						<a target="_blank" rel="nofollow" 
+						href="https://es.wikipedia.org/wiki/Valor_at%C3%ADpico">click here</a>.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>L</strong></th>
+					<td>
+						The frequence of a row is <em>greater</em> [<strong>&uarr;</strong>], 
+						<em>lesser</em> [<strong>&darr;</strong>] or <em>equal</em> [<strong>&#8597;</strong>] 
+						to <em>arithmetical mean</em> (average) of total of frequencies.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>S</strong></th>
+					<td>
+						The frequence of a row is described by a <em>color</em> of the <em>chromatic scale</em> 
+						selected in <a href="#settings">Settings</a>.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center"><strong>Count</strong></th>
+					<td>
+						The frequency of the row represents the number of times a value appears in a given query. 
+						It is the <em>quantity</em> of values sharing a group of features.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<h4 id="title-helplegends-colorscode">Color codes</h4>
+	
+	<p>
+		PATHFINDER uses a color coded system to identify different types of elements. 
+		<a href="#documents">Primary record types</a> are identified as shown below.
+	</p>	
+	
+	<div class="table-responsive no-margin">
+		<table>
+			<tbody>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-success">P</button>
+					</th>
+					<th>
+						Actor
+					</th>
+					<td>
+						Person or entity interacting with <em>catalogs</em> or 
+						<em>exhibitions</em> acting as author, editor, illustrator, curator, 
+						loaner or other different roles.			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-tertiary">B</button>
+					</th>
+					<th>
+						Catalog
+					</th>
+					<td>
+						Any article, book, web page or text in general used as guide or description for  
+						the visitor about a particular exhibition. Its "natural" utility 
+						is to store info about the artwork collection shown in exhibition. 
+						It may have a <em>physical</em> or <em>virtual</em> existence, being  
+						in this case the group of exhibited <em>artwork</em>.			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-secondary">C</button>
+					</th>
+					<th>
+						Company
+					</th>
+					<td>
+						Any organization whose relationship with entities, exhibitions, catalogs or actors 
+						could be defined STRICTLY in commercial or business terms. Its singularity, 
+						so, is not its public, private or mixed ownership, nor the fact of its aim 
+						includes or not profit motive, but the profit aim of the RELATIONSHIP.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-error">E</button>
+					</th>
+					<th>
+						Entity
+					</th>
+					<td>
+						Any institution of a legal existence being used in  
+						<a rel="noopener" target="_blank" href="http://www.expofinder.es">ExpoFinder</a>
+						context both as <em>RSS/Atom or HTML data source</em>, 
+						whose results are consumed by the system to explore Internet to find  
+						temporary exhibitions, or as any other human group acting as 
+						organization or funding support for an exhibition or its catalog. 
+						May be, too, an institution linked to an <em>actor</em> acting as labor, research or 
+						academic reference.				
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-warning">X</button>
+					</th>
+					<th>
+						Exhibition
+					</th>
+					<td>
+						Any event showing publicly a set of artworks of an artistic nature 
+						or whose aim will be spread specific knowledge of the academic field of 
+						Art History.				
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-info">A</button>
+					</th>
+					<th>
+						Artwork
+					</th>
+					<td>
+						Any manifestation of human activity by means of which the real is interpreted or 
+						the imagined is embodied using plastic, linguistic or sound resources. 
+						For the purposes of PF, it must be linked to <em>actor/actors</em> or 
+						<em>catalog/catalogs</em>.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-<div id="c-atab-six" class="tabcontent is-hidden">
-	<h4 class="h1">Mapas</h4>
+	<h4 id="title-helplegends-mapbuttons"><em>Mapa</em> operation buttons</h4>
+	
 	<p>
-		<span class="text-error">DEVELOPING DOCUMENTATION / DOCUMENTATION UNDER DEVELOPMENT</span>. Maps
-	</p>
+		<em>Maps</em> uses a group of buttons, up to down the left upper corner of plan, 
+		carrying out each one the actions listed below.
+	</p>	
+	
+	<div class="table-responsive">
+		<table>
+			<tbody>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="plus" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Zoom +
+					</th>
+					<td>
+						Zoom the map on the screen, reducing the field of view. It is deactivated when the maximum value is reached.				
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="minus" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Zoom -
+					</th>
+					<td>
+						Zoom out the map, increasing the field of view. It is deactivated when the minimum value is reached.			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="maximize" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Extension by selection
+					</th>
+					<td>
+						It allows you to select a rectangle on the map to center and increase the details by decreasing the scale 
+						(bringing the point of view closer).			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="crosshair" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Crosshair
+					</th>
+					<td>
+						It draws a color circle in the geometric center of the map.			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="home" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Home
+					</th>
+					<td>
+						Accommodates the point of view to the one selected as the initial position 
+						in <a href="#settings">Settings</a>.			
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="search" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Search
+					</th>
+					<td>
+						It opens a text input fields allowing to locate a geographical position in the map, 
+						using the free services from 
+						<a target="_blank" rel="nofollow" 
+						href="https://nominatim.openstreetmap.org/">OpenStreetMap Nominatim</a>. 
+						If PF finds any result, point of view will be adjusted appropriately.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="maximize2" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Full screen view
+					</th>
+					<td>
+						Extends the map to the full size of the user's screen. It is an alternative button, 
+						and when pressed again restores the initial size.
+					</td>
+				</tr>
+				<tr>
+					<th class="text-align-center">
+						<button class="button button-square button-border button-dark">
+							<svg width="16" height="16" viewBox="0 0 24 24" class="svgicon">
+								<path class="printer" d=""></path>
+							</svg>
+						 </button>
+					</th>
+					<th>
+						Save
+					</th>
+					<td>
+						Saves an image of the map in PNG format.	
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>

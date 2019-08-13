@@ -1,282 +1,286 @@
-<style>
-/* Local tabs */
-.stablinks a:hover {
-	color: #06f;
-}
+<header class="margin-bottom-l">
+	<div class="container">
+	    	<img class="margin-right-s" src="./assets/img/logos/IMGLOGOPF.svg" alt="PATHFINDER" 
+	    		style="height:100px;width:100px;float:left" />
+		<h1 class="display-title display-title-xxl margin-top-s">
+			<span class="margin-vertical-auto">Data</span>
+		</h1>
+		<p class="lead lead-s margin-vertical-m">
+			This is the system core.  It allows to perform statistical, graphic and geographical 
+			analysis of the data, as well as to filter, export, group them&hellip;
+		</p>
+		<h2 id="data-collection" class="hide color-secondary"></h2>
+	</div>
+</header>
 
-.stablinks a.active {
-	color: #ff0000;
-}
-
-.stabcontent {
-	display: none;
-}
-</style>
-<div class="header">
-	<h1>
-		<img class="logo" src="./assets/img/logos/IMGLOGOPF.svg" alt="PATHFINDER" height="50" />Datos
-	</h1>
-	<h2>
-		The core of the system. It allows to perform statistical, graphic and geographical analysis of the data, 
-		as well as to filter them, export them, group them&hellip; Try the different available options.
-	</h2>
-	<div id="data-collection"></div>
-</div>
-<div id="c-tab-zero">
-	<div id="panel" class="logo-background">
-		<div id="data-s-db-div" class="border-bottom content">
-			<h2 class="margin-top">Database.</h2>
-			<form class="pure-form pure-form-stacked">
-				<fieldset>
-					<legend class="no-line">
-						<span id="dx-desc">Server ir <span id="data-s-server"></span></span>.  
-						<span id="data-s-datastatus">JSON file must have the right format.</span>
-					</legend>
-					<input class="is-hidden" id="data-file-loader" type="file" onchange="file.load(this);this.value = null;" />
-					<div class="pure-g">
-						<div class="pure-u-1-1">
-							<a id="data-a-server" 
-								class="pure-button pure-button-disabled margin-right border-left-purple" 
-								href="javascript:ajax.auth();">
-								<i class="fa fa-cloud-download-alt"></i>
-								Update data
-							</a> 
-							<a class="pure-button margin-right border-left-orange" 
-								href="javascript:byId('data-file-loader').click();">
-								<i class="fa fa-database"></i>
-								File load
-							</a>
-							<span id="data-s-db-txt" class="is-hidden">
-								<a class="pure-button margin-right border-left-blue" 
-									href="javascript:info.database();">
-									<i class="fa fa-info-circle"></i>
-									Info
-								</a>
-								<a class="pure-button margin-right border-left-yellow" 
-									href="javascript:info.export();">
-									<i class="fas fa-file-export"></i>
-									Data export
-								</a>
-							</span>
+<main>
+	<section>
+		<div class="container logo-background">
+			<div id="c-tab-zero">
+				<div id="panel" class="no-margin no-padding">
+					<div id="data-s-db-div" class="content">
+						<h2 id="title-db">Database.</h2>
+						<p>
+							<span id="dx-desc">Server is <span id="data-s-server"></span></span>.  
+							<span id="data-s-datastatus">JSON file must have the right format.</span>
+						</p>
+						<input class="hide" id="data-file-loader" type="file" 
+						onchange="file.load(this);this.value = null;" />
+						<div class="group group-xs">
+							<ul>
+	 							<li>
+	       							<a id="data-a-server" class="button button-error button-block button-icon" 
+	       								onclick="ajax.auth();">
+										<span>Update data</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="downloadcloud" d=""></path>
+										</svg>
+									</a>
+								</li>
+	 							<li>
+	       							<a class="button button-warning button-block button-icon" 
+	       								href="javascript:byId('data-file-loader').click();">
+										<span>Load file</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="database" d=""></path>
+										</svg>
+									</a>
+								</li>
+	 							<li id="data-s-db-info" class="hide">
+	       							<a class="button button-primary button-block button-icon" 
+	       								href="javascript:info.database();">
+										<span>Info</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="info" d=""></path>
+										</svg>
+									</a>
+								</li>
+	 							<li id="data-s-db-export" class="hide">
+	       							<a class="button button-tertiary button-block button-icon" 
+	       								href="javascript:info.export();">
+										<span>Export</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="download" d=""></path>
+										</svg>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div id="data-size" class="hide margin-top-s" style="min-height:94px;">
+							<p class="form-message light"><span class="loading">Working</span></p>
+						</div>										
+					</div>
+					<div class="content panelelement hide padding-vertical-s">
+						<h2 id="title-collections">Collections.</h2>
+						<div class="group group-xs">
+							<ul>
+	 							<li>
+									<a id="dc-button" class="button button-secondary button-block button-icon" 
+										href="">
+										<span>Load collection</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="archive" d=""></path>
+										</svg>
+									</a>
+								</li>
+								<li>
+									<div id="data-s-collections"></div>
+								</li>
+							</ul>
+						</div>
+						<p id="dc-desc" class="form-message light"><span class="loading">Wait a moment</span></p>
+					</div>
+					<div class="content panelelement hide padding-bottom-s">
+						<h2 id="title-reports">Reports.</h2>
+						<div class="group group-xs">
+							<ul>
+	 							<li>
+									<a data-tooltip="TAB format" 
+										id="dr-ana" class="button button-tertiary button-block button-icon" href="">
+										<span>Analytic</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="file" d=""></path>
+										</svg>
+									</a>
+								</li>
+	 							<li>
+									<a data-tooltip="RTF format" 
+										id="dr-tex" class="button button-tertiary button-block button-icon" href="">
+										<span>Textual</span>
+										<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+											<path class="filetext" d=""></path>
+										</svg>
+									</a>
+								</li>
+								<li>
+									<div id="data-s-reports-0"></div>
+								</li>
+								<li>
+									<div id="data-s-reports-1"></div>
+								</li>
+							</ul>
+						</div>
+						<p id="dr-desc" class="form-message light"><span class="loading">Working</span></p>
+					</div>
+				</div>
+			</div>
+			
+			<div id="c-tab-one" class="tabcontent hide">
+				<div class="content">
+					<h2 id="title-listing">Listing</h2>
+					<div class="no-print" id="data-selectors"></div>
+					<div id="data-listing" class="margin-vertical-l min-height-50vh">
+						<p class="color-error text-align-center margin-vertical-auto">
+							No data
+						</p>
+					</div>
+				</div>
+			</div>
+			<div id="c-tab-two" class="tabcontent hide">
+				<div class="content">
+					<h2 id="title-stats" class="margin-top">Stats</h2>
+					<div class="group group-xs margin-bottom-s no-print">
+						<ul>
+							<li>
+								<button id="stab0" 
+									class="stablinks button button-s button-light button-border" 
+									onclick="javascript:toolkit.generictab('stab0', 'step0', 'stabcontent', 'stablinks');">
+								Info</button>
+							</li>
+							<li>
+								<button id="stab1" 
+									class="stablinks button button-s button-light button-border" 
+									onclick="javascript:toolkit.generictab('stab1', 'step1', 'stabcontent', 'stablinks');stats.schema();">
+								Grouping</button>
+							</li>
+							<li>
+								<button id="stab3" 
+									class="stablinks button button-s button-light button-border" 
+									onclick="javascript:toolkit.generictab('stab3', 'step3', 'stabcontent', 'stablinks');stats.cooccurrences();">
+								Correlations</button>
+							</li>
+						</ul>
+					</div>
+					<div id="step0" class="stabcontent visible">
+						<div class="no-print" id="info-selectors"></div>
+						<div id="info-listing" class="margin-bottom-s visible min-height-50vh">
+							<p class="margin-top">
+								In order to have PATHFINDER running as a tool to extract new knowledge is 
+								necessary, first time, to <em>quantify</em> database records. 
+								It means, 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=BRXlHCN">
+									<mark class="background-info-50">qualitative</mark></a>, 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=AVqx1Ac">
+									<mark class="background-info-50">continuous</mark></a> 
+								<span data-tooltip="ver cuarta acepción"><i class="far fa-question-circle"></i></span>	
+									and 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=LIJKfze">
+									<mark class="background-info-50">incommensurable</mark></a> information 
+								must to be transformed in  
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=BSFLCp9">
+									<mark class="background-info-50">quantitative</mark></a>, 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=Dt8QXrV">
+									<mark class="background-info-50">discreet</mark></a> 
+								<span data-tooltip="ver cuarta acepción"><i class="far fa-question-circle"></i></span>	
+									and 
+								<a rel="nofollow" target="_blank" href="http://dle.rae.es/?id=Ovvw32B">
+									<mark class="background-info-50">mensurable</mark></a> values. 
+							</p>
+							<h4>Grouping</h4>
+							<p>
+								Aggregation functions perform statistical analyzes on numbers. 
+								An aggregation function calculates a single result value from a set of 
+								values or records, paying attention to repeated characteristics or 
+								<em>metainformation</em>, evaluaring their frequency and distribution. 
+								Use this option to know the incidence of certain parameters in the complete 
+								sample of selected values. IMPORTANT: all calculations are performed  
+								<em>only</em> on <em>filtrados</em> values.
+							</p>
+							<h4>Correlations</h4>
+							<p>
+								You need to be careful with this section and understand what kind of information 
+								you can extract. It is a very powerful option to discover hidden 
+								relationships between subsets of primary records, but it is necessary 
+								to know how to extract the significance of its results.
+							</p>
+							<p>
+								PATHFINDER calculates here the matches between two groups of primary 
+								records related to each other from a third group. In other words, 
+								the "neighborhood" of two elements. For example, if a certain set of actors, 
+								characterized by sharing a metadata type, participates as authors of artwork 
+								in an exhibition, it would be "neighbor" of another group 
+								of actors participating as curators.
+							</p>
+							<p>
+								However, it can determine that there are relationships, for example, 
+								between entities sharing a parent entity, whose importance may not be 
+								relevant (or may be). As an example, PATHFINDER can find links between 
+								entities managed by a high-ranking organization, such as in the case of 
+								a ministry or general management, and in this case be a "useless 
+								knowledge"; however, if the aforementioned organism is of a lower rank, 
+								it is possible that the discovery of such links is very useful.
+							</p>
 						</div>
 					</div>
-					<div id="data-s-chart"></div>
-				</fieldset>
-			</form>			
-		</div>
-		<div class="content panelelement border-bottom is-hidden">
-			<h2 class="margin-top">Collections.</h2>
-			<form class="pure-form pure-form-stacked">
-				<fieldset>
-					<legend id="dc-desc" class="no-line"></legend>
-					<div class="pure-g">
-						<div id="data-s-collections" class="pure-u-1-2"></div>
-						<div class="pure-u-1-3">
-							<a id="dc-button" class="pure-button border-left-purple margin-left" 
-								href="" style="margin:.25em 0;">
-								<i class="fa fa-layer-group"></i>
-								Load collection
-							</a>
+					<div id="step1" class="stabcontent hide">
+						<div class="no-print" id="schema-selectors"></div>
+						<div id="schema-listing" class="margin-vertical-l visible min-height-50vh">
+							<div class="color-error text-align-center margin-vertical-auto">
+								No data
+							</div>
 						</div>
 					</div>
-				</fieldset>
-			</form>
-		</div>
-		<div class="content panelelement is-hidden">
-			<h2 class="margin-top">Reports.</h2>
-			<form class="pure-form pure-form-stacked">
-				<fieldset>
-					<legend id="dr-desc" class="no-line"></legend>
-					<div class="pure-g">
-						<div id="data-s-reports-0" class="pure-u-1-4"></div>
-						<div id="data-s-reports-1" class="pure-u-1-4"></div>
-						<div class="pure-u-1-2">
-							<a data-tooltip="formato TAB (separado por tabuladores)" style="margin:.25em 0;" 
-								id="dr-ana" class="pure-button border-left-yellow" href="">
-								<i class="fa fa-table"></i>
-								Analytical (TAB)
-							</a>
-							<a data-tooltip="formato RTF (texto enriquecido)" style="margin:.25em 0;" 
-								id="dr-tex" class="pure-button border-left-yellow margin-left" href="">
-								<i class="fa fa-file-alt"></i>
-								Textual (RTF)
-							</a>
+					<div id="step3" class="stabcontent hide">
+						<div class="no-print" id="cooccurrences-selectors"></div>
+						<div id="cooccurrences-listing" class="margin-vertical-l visible min-height-50vh">
+							<p class="color-error text-align-center margin-vertical-auto">
+								No data
+							</p>
 						</div>
 					</div>
-				</fieldset>
-			</form>
-		</div>
-	</div>
-</div>
+				</div>
+			</div>
 
-<div id="c-tab-one" class="tabcontent margin-bottom">
-	<div class="content border-bottom">
-		<h2 class="margin-top">Listing</h2>
-		<div class="no-print" id="data-selectors"></div>
-		<div id="data-listing" class="margin-bottom margin-top logo-background vertical-center">
-			<p class="text-error is-text-center">
-				No data
-			</p>
-		</div>
-	</div>
-</div>
-
-<div id="c-tab-two" class="tabcontent margin-bottom">
-	<div class="content border-bottom">
-		<h2 class="margin-top">Stats</h2>
-		<div class="pure-menu pure-menu-horizontal pure-menu-scrollable margin-top">
-			<ul class="pure-menu-list">
-				<li class="pure-menu-item pure-menu-active">
-					<a id="stab0" class="stablinks pure-menu-link" 
-						href="javascript:toolkit.generictab('stab0', 'step0', 'stabcontent', 'stablinks');">
-						Info</a>
-				</li>
-				<li class="pure-menu-item">
-					<a id="stab1" class="stablinks pure-menu-link" 
-						href="javascript:toolkit.generictab('stab1', 'step1', 'stabcontent', 'stablinks');stats.schema();">
-						Groups</a>
-				</li>
-				<li class="pure-menu-item">
-					<a id="stab2" class="stablinks pure-menu-link" 
-						href="javascript:toolkit.generictab('stab2', 'step2', 'stabcontent', 'stablinks');stats.relations();">
-						Relations</a>
-				</li>
-				<li class="pure-menu-item">
-					<a id="stab3" class="stablinks pure-menu-link" 
-						href="javascript:toolkit.generictab('stab3', 'step3', 'stabcontent', 'stablinks');stats.cooccurrences();">
-						Correlations</a>
-				</li>
-			</ul>
-		</div>
-		<div id="step0" class="stabcontent" style="display:block;">
-			<div class="no-print" id="info-selectors"></div>
-			<div id="info-listing" class="margin-bottom is-visible logo-background">
-				<p class="margin-top">
-					To ensure a proper operation of PATHFINDER as a new knowledge getter tool, 
-					first of all it is necessary <em>quantify</em> database records. It means to 
-					transformate 
-					<a rel="nofollow" target="_blank" href="https://en.oxforddictionaries.com/definition/qualitative">
-						<em>qualitative</em></a>, 
-					<a rel="nofollow" target="_blank" href="https://en.oxforddictionaries.com/definition/continuous">
-						<em>continuous</em></a> 
-					<span data-tooltip="as in maths, 1.2">[?]</span>	
-						and 
-					<a rel="nofollow" target="_blank" href="https://en.oxforddictionaries.com/definition/immeasurable">
-						<em>immeasurable</em></a> info in  
-					<a rel="nofollow" target="_blank" href="https://en.oxforddictionaries.com/definition/quantitative">
-						<em>quantitative</em></a>, 
-					<a rel="nofollow" target="_blank" href="https://en.oxforddictionaries.com/definition/discrete">
-						<em>discrete</em></a> 
-						and 
-					<a rel="nofollow" target="_blank" href="https://en.oxforddictionaries.com/definition/measurable">
-						<em>measurable</em></a> values. 
-				</p>
-				<h4>Groups</h4>
-				<p>
-					Aggregation functions perform statistical analyzes on numbers. An aggregation function calculates 
-					a single result value from a set of values or records, paying attention to the characteristics 
-					or meta-information that are repeated, evaluating their frequency and distribution.
-					Use this option to know the incidence of certain parameters in the complete sample of selected values. 
-					Utilice esta opción para conocer la incidencia de ciertos parámetros en la muestra 
-					completa de valores seleccionados. IMPORTANT: all calculations are performed using 
-					only <em>filtered</em> values.
-				</p>
-				<h4>Relations</h4>
-				<p>
-					Using a grouping or aggregation mechanism, PATHFINDER calculates the relevance 
-					of the relationships between the various types of records. 
-					Use this option to determine the "intensity" or importance of them.
-				</p>
-				<h4>Correlations</h4>
-				<p>
-					You need to be careful with this section and understand what kind of information you can extract. 
-					It is a very powerful option to discover hidden relationships between subsets of primary registers, 
-					but it is necessary to know how to extract the significance of its results.
-				</p>
-				<p>
-					PATHFINDER calculates here the coincidences between two groups of primary registers 
-					related to each other from a third group. In other words, the "neighborhood" of two elements. 
-					For example, if a particular set of actors, characterized by sharing a metadata type, 
-					participates as authors of works of art in an exhibition, 
-					it would be "neighbor" of another group of actors that coincided in it participating as curators.
-				</p>
-				<p>
-					However, it can discover relationships, for example, 
-					between entities sharing a parent entity, whose importance may not be relevant (or may be). 
-					As an example, PATHFINDER can find links between entities managed by a high-ranking organization, 
-					such as in the case of a ministry or general management, being a sort of "useless knowledge"; 
-					however, may be the aforementioned item have a lower rank in the organization tree, 
-					info being probabily meaningful.
-				</p>
+			<div id="c-tab-three" class="tabcontent hide">
+				<div class="content">
+					<h2 id="title-charts">Charts</h2>
+					<div class="no-print" id="charts-selectors"></div>
+					<div id="stats-charts" class="margin-vertical-l visible min-height-50vh">
+						<p class="color-error text-align-center margin-vertical-auto">
+							No data
+						</p>
+					</div>
+				</div>
+			</div>
+			
+			<div id="c-tab-four" class="tabcontent hide">
+				<div class="content">
+					<h2 id="title-networks">Networks</h2>
+					<div class="no-print" id="network-selectors"></div>
+					<div id="stats-network" class="margin-vertical-l min-height-50vh">
+						<p class="color-error text-align-center margin-vertical-auto">
+							No data
+						</p>
+					</div>
+				</div>
+			</div>
+			
+			<div id="c-tab-five" class="tabcontent hide">
+				<div class="content margin-bottom-l">
+					<h2 id="title-maps">Maps</h2>
+					<div class="no-print" id="base-map-selectors"></div>
+					<div id="base-map" class="full-width page-map">
+						<p class="color-error text-center margin-vertical-auto min-height-50vh">
+							No data
+						</p>
+					</div>
+					<p class="form-message">
+						<span id="base-map-currentcoords" class="color-primary"></span>
+						&nbsp;
+						<span id="base-map-currentaddress"></span>
+					</p>
+				</div>
 			</div>
 		</div>
-		<div id="step1" class="stabcontent">
-			<div class="no-print" id="schema-selectors"></div>
-			<div id="schema-listing" class="margin-bottom margin-top is-visible logo-background vertical-center">
-				<p class="text-error is-text-center">
-					No data
-				</p>
-			</div>
-		</div>
-		<div id="step2" class="stabcontent">
-			<div class="no-print" id="relations-selectors"></div>
-			<div id="relations-listing" class="margin-bottom margin-top is-visible logo-background vertical-center">
-				<p class="text-error is-text-center">
-					No data
-				</p>
-			</div>
-		</div>
-		<div id="step3" class="stabcontent">
-			<div class="no-print" id="cooccurrences-selectors"></div>
-			<div id="cooccurrences-listing" class="margin-bottom margin-top is-visible logo-background vertical-center">
-				<p class="text-error is-text-center">
-					No data
-				</p>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div id="c-tab-three" class="tabcontent margin-bottom">
-	<div class="content border-bottom" style="position:relative">
-		<h2 class="margin-top">Charts</h2>
-		<div class="no-print" id="charts-selectors"></div>
-		<div id="stats-charts" class="margin-bottom margin-top logo-background vertical-center">
-			<p class="text-error is-text-center">
-				No data
-			</p>
-		</div>
-	</div>
-</div>
-
-<div id="c-tab-four" class="tabcontent margin-bottom">
-	<div class="content border-bottom" style="position:relative">
-		<h2 class="margin-top">Networks</h2>
-		<div class="no-print" id="network-selectors"></div>
-		<div id="stats-network" class="margin-bottom margin-top logo-background vertical-center">
-			<p class="text-error is-text-center">
-				No data
-			</p>
-		</div>
-	</div>
-</div>
-
-<div id="c-tab-five" class="tabcontent margin-bottom">
-	<div class="content border-bottom" style="position:relative">
-		<h2 class="margin-top">Maps</h2>
-		<div class="no-print" id="map-selectors"></div>
-		<div id="stats-map" class="margin-bottom margin-top logo-background vertical-center">
-			<p class="text-error is-text-center">
-				No data
-			</p>
-		</div>
-		<div class="pure-g">
-			<div class="pure-u-1" style="min-height:9.5vh !important;">
-				<p style="line-height:1.1em">
-					<small id="map-currentcoords" class="text-blue"></small> 
-					<small id="map-currentaddress"></small>
-				</p>
-			</div>
-		</div>
-	</div>
-</div>
+	</section>
+</main>

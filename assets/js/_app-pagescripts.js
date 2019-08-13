@@ -70,8 +70,6 @@ const pagescripts = {
 		toolkit.msg('app-home-info', appinfo);
 		appinfo = undefined;
 
-		//charts.sizechart('home-sizes', true);
-					
 		byId('main').querySelectorAll('img').forEach(o => o.style.background = '');
 	},
 	data: (starttimer = true, setoverlay = true) => {
@@ -117,8 +115,7 @@ const pagescripts = {
 					isloaded('L') && 
 					isloaded('_') && 
 					isloaded('echarts') && 
-					isloaded('dl') && 
-					isloaded('d3')
+					isloaded('dl') 
 				).then(() => {
 					if(byId('data-size')) {
 						byId('data-size').classList.remove('hide');
@@ -154,9 +151,10 @@ const pagescripts = {
 					toolkit.msg('data-s-collections', `${c`working`.uf()}&hellip;`);
 					ui.collectionselector('data-s-collections', setoverlay);
 
-					ui.datalist(d.currentpages.list);
+					ui.datalist('', d.currentpages.list);
 
 					if(screen.siteoverlayisset) screen.siteoverlay(false);
+					
 					if(setoverlay) {
 						toolkit.statustext();
 					}
@@ -281,6 +279,12 @@ const pagescripts = {
 			title = undefined;
 		});
 		toolkit.msg('colorscales', scales.join('\n'));
+		
+		if(byId('mapbase-select')) byId('mapbase-select').value = String(window.settings.mapbasedefault);
+
+		if(byId('hmaplow')) byId('hmaplow').value = window.settings.hmaplow;
+		if(byId('hmapmedium')) byId('hmapmedium').value = window.settings.hmapmedium;
+		if(byId('hmaphigh')) byId('hmaphigh').value = window.settings.hmaphigh;
 		
 		let resyesno = res => res ? `<span class="color-success">${c`yes`}</span>` : `<span class="color-error">${c`no`}</span>`;
 		let rescolor = res => res ? 'color-success' : 'color-error';

@@ -590,12 +590,12 @@ dd {
 						<dd>
 							No, también está en inglés. PF detecta el lenguaje predefinido del navegador que se 
 							esté usando y es el que emplea por defecto. Pero si se desea cambiar el idioma, 
-							en el <a href="javascript:toolkit.markdemo('lang');">pie de página</a> (ver más abajo) 							se muestra 
+							en el <a class="demo-link" href="javascript:toolkit.markdemo('lang');">pie de página</a> (ver más abajo) 							se muestra 
 							la abreviatura internacional del idioma alternativo en color <span class="color-error">rojo</span>; 
 							es decir, si el interfaz está en español aparecerá <span class="color-error">EN</span> (por 
 							<em>English</em>), y <span class="color-error">ES</span> si está en inglés. Si quiere probarlo, 
 							puede <a href="javascript:i18n.changelang('en');">pulsar aquí</a>. También se puede seleccionar 
-							desde el menú de <a href="javascript:toolkit.markdemo('settings');">opciones</a>.
+							desde el menú de <a class="demo-link" href="javascript:toolkit.markdemo('settings');">opciones</a>.
 						</dd>
 						<dt>
 							¿Qué elementos se usan en las pantallas de PF? Es decir ¿cómo se emplea el interfaz de usuario?
@@ -609,7 +609,7 @@ dd {
 							¿Cuál es el menú principal?
 						</dt>
 						<dd>
-							Está <a href="javascript:toolkit.markdemo('menu');">a la izquierda</a>. 
+							Está <a class="demo-link" href="javascript:toolkit.markdemo('menu');">a la izquierda</a>. 
 							Desde él se accede a las diversas pantallas, 
 							aunque no controla <em>todas</em> las actividades: para eso está cada <em>submenú</em>. 
 							El menú <em>Ayuda</em> abre una ventana emergente con la información global más relevante 
@@ -619,7 +619,7 @@ dd {
 							¿Qué es esa información situada sobre las opciones de menú?
 						</dt>
 						<dd>
-							La <a href="javascript:toolkit.markdemo('filtermenu');">información sobre el filtro</a>. 
+							La <a class="demo-link" href="javascript:toolkit.markdemo('filtermenu');">información sobre el filtro</a>. 
 							El fondo aparece en color <mark class="background-error-50">rojo</mark> si aún no se 
 							ha cargado un archivo de datos. En caso contrario muestra el estado del filtro (consulte 
 							<a href="javascript:toolkit.generictab('stab3', 'step3', 'stabcontent', 'stablinks');">aquí</a> 
@@ -632,7 +632,7 @@ dd {
 						</dt>
 						<dd>
 							Se puede ver en la 
-							<a href="javascript:toolkit.markdemo('submenu');">zona del menú que esté activa en cada página</a>, 
+							<a class="demo-link" href="javascript:toolkit.markdemo('submenu');">zona del menú que esté activa en cada página</a>, 
 							y ofrece las posibles tareas que se pueden realizar en ella. 
 						</dd>
 						<dt>
@@ -640,7 +640,7 @@ dd {
 						</dt>
 						<dd>
 							Los 
-							<a href="javascript:toolkit.markdemo('questionmark');">pequeños signos de interrogación entre corchetes</a> 
+							<a class="demo-link" href="javascript:toolkit.markdemo('questionmark');">pequeños signos de interrogación entre corchetes</a> 
 							(<span data-demo="questionmark">[?]</span>), si son enlaces abren una ventana emergente de ayuda, 
 							y en caso 
 							contrario indican un <em>punto singular de información</em>; estos últimos despliegan un 
@@ -651,7 +651,7 @@ dd {
 							¿Qué al final de cada página?
 						</dt>
 						<dd>
-							El <a href="javascript:toolkit.markdemo('footer');">pie de página</a> 
+							El <a class="demo-link" href="javascript:toolkit.markdemo('footer');">pie de página</a> 
 							tiene enlaces referentes a las instituciones y las referencias externas de PF. Pero 
 							justo al comienzo, donde figura el nombre y la versión de la aplicación, hay uno algo especial: 
 							al pulsar sobre él abre una ventana emergente que muestra, además de la información 
@@ -660,7 +660,7 @@ dd {
 							<a href="#settings">aquí</a> para consultarlo en <em>Fundamentos</em>).
 							<br>
 							Hay 
-							<a href="javascript:toolkit.markdemo('footerright');">varios enlaces interesantes</a>. 
+							<a class="demo-link" href="javascript:toolkit.markdemo('footerright');">varios enlaces interesantes</a>. 
 							<em>Colores</em> informa sobre los códigos cromáticos utilizados en PF para determinar 
 							los <a href="#documents">tipos de registro primario</a> involucrados en una operación, y 
 							en los efectos que determinadas acciones tienen en el funcionamiento del sistema. 
@@ -745,8 +745,7 @@ dd {
 											Si se equivoca, PF emitirá un error.
 										</li>
 										<li>
-											Cuando termine el procesado, PF presentará una ventana emergente con información 
-											sobre velocidad de tratamiento y la pantalla de <a href="#data"><em>Datos</em></a> cambiará 
+											Cuando termine el procesado, la pantalla de <a href="#data"><em>Datos</em></a> cambiará 
 											para mostrar las nuevas operaciones que se pueden realizar.
 										</li>
 									</ol>
@@ -936,82 +935,18 @@ dd {
 							(no son <em>jerárquicas</em>) y actuarán según el vínculo entre ellas.
 						</dd>
 						<dt>
-							Pero ¿qué es eso del "vínculo" entre condiciones?
-						</dt>
-						<dd>
-							La manera en que se unen; y está tomada de la vida real. Veamos, si yo quiero comprar un 
-							ordenador que sea bueno <em>Y</em> que sea barato para satisfacer mis deseos deberá cumplir 
-							<em>simultaneamente</em> ambas condiciones, no solamente una de ellas; pero si quiero 
-							que sea bueno <em>O</em> barato bastará con que no valga muy caro o con que funcione estupendamente 
-							para que mi petición sea correctamente atendida.
-							<br /><br />
-							Yendo a lo práctico, podemos verlo como en una tabla en la que se especifica cuál es el 
-							vínculo entre tres condiciones (A, B y C) y qué sucede en cada caso. Sería más o menos así:
-							<br /><br />
-							<table class="mq-table pure-table-bordered pure-table table-smaller">
-								<thead>
-									<tr>
-										<th>Cumplimiento</th>
-										<th>Comportamiento</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th>Estricto</th>
-										<td>
-											Sólo los registros que comparten los conjuntos obtenidos a partir de las condiciones 
-											A, B y C; es decir, que X sea parte de A, sea parte de B y sea parte de C
-										</td>
-									</tr>
-									<tr>
-										<th><em>Todas</em> las condiciones</th>
-										<td>
-											Cualquier cosa que compartan A, B y C; es decir, si X pertenece a A y B pero no a C, 
-											se incluirá; igualmente si pertenece a C y B pero no a A. 
-											No se incluirá si no pertenece a la vez a una pareja de condiciones al menos
-										</td>
-									</tr>
-									<tr>
-										<th><em>Cualquier</em> condición</th>
-										<td>
-											Cualquier cosa que pertenezca a cualquiera de las condiciones A, B o C, 
-											tanto si está compartido como si no
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</dd>
-						<dt>
 							Mucha teoría y poca práctica: pónganme ejemplos&hellip;
 						</dt>
 						<dd>
 							Pues ahí van. Pero no olvide que <em>el filtro arrojará resultados erróneos o no arrojará 
 							ninguno</em> si no respeta las reglas lógicas en su construcción.
-							<br /><br />
-							Si para saber en cuántas exposiciones Picasso participó como autor en Málaga  
-							se utiliza el siguiente juego de condiciones y se emplea el vínculo <em>Estricto</em> o 
-							<em>Todo</em> para calcular el resultado el conjunto obtenido sería incorrecto 
-							(en realidad no obtendría ningún registro).
-							<ol>
-								<li>Que la localidad del lugar de celebración de la exposición contenga "málaga”</li>
-								<li>Que el nombre del actor contenga "ruiz picasso"</li>
-							</ol>
-							¿Por qué? Porque PF dice lo siguiente:
-							<br>
-							<p class="aside background-secondary-50">
-								"A ver, este usuario quiere saber cuántas exposiciones 
-								se han celebrado en Málaga y cuántos actores se llaman ‘ruiz picasso’; pero ¿qué tienen que ver 
-								las exposiciones con los actores? Como no lo sé porque no me lo ha dicho, no puedo obtener nada".
-							</p>
-							Y no deja de ser lógico. Sin embargo, si se realiza la consulta con los siguientes parámetros, 
-							la cosa cambia:
-							<ol>
-								<li>Que la localidad del lugar de celebración de la exposición contenga "málaga”</li>
-								<li>Que el nombre del actor contenga "ruiz picasso"</li>
-								<li>Que en la exposición, el campo "actor que participa como autor" no sea nulo</li>
-							</ol>
-							Ahora PF ya sabe en calidad de qué queremos conocer la participación del universal 
-							pintor en exposiciones malagueñas.
+							<br />
+							Quizá lo mejor sea partir de un pequeño esquema.
+							<img src="./assets/img/illustrations/filtering_es.svg" />
+							PF selecciona por separado los registros primarios que cumplen cada condición. A 
+							continuación calcula la <em>intersección</em> de ambos subconjuntos, y, si 
+							se han establecido <em>inclusiones</em> y/o <em>restricciones</em> las añade 
+							al resultado final.
 						</dd>
 						<dt>
 							Pero dice un viejo adagio que "con una rueda no anda un carro". ¿Hay un límite 
@@ -1020,19 +955,15 @@ dd {
 						<dd>
 							Absolutamente ninguno. Puede poner tantas cuantas desee. Pero tenga en cuenta lo siguiente:
 							<ol>
-								<li>Cada condición <em>debe ser calculada individualmente</em> (usando el enlace que figura) 
+								<li>Cada condición <em>debe ser calculada individualmente</em> 
 								antes de realizar el cálculo de todas ellas vinculadas. En realidad cada condición es singular 
 								(¿cuántos autores se llamas "Picasso"? ¿cuántas exposiciones se han celebrado en Málaga?), 
 								y solo adquieren sentido como filtro al vincularlas entre si.</li>
 								<li>Si se desconocen los posibles valores que una condición puede adoptar (por ejemplo, 
-								si no se sabe si existe un autor llamado "Picasso") se puede pulsar el enlace <em>valores</em> 
-								en la fila de la condición; de acuerdo a lo especificado en su operador y modificador, 
-								PF mostrará una lista de posibilidades. Y eso es importante, porque si como operador 
-								se emplea "sea igual que" o como modificador se selecciona "localidad", si en el campo 
-								de búsqueda se escribe "picasso" no se mostrará ningún elemento, en el primer caso 
-								porque no hay ningún autor cuyo nombre sea <em>exactamente igual</em> a "picasso" (así, 
-								sin mayúsculas ni nada&hellip;), y en el segundo porque no hay una <em>localidad</em> 
-								en el nombre de un actor.</li>
+								si no se sabe si existe un autor llamado "Picasso") se puede pulsar el enlace 
+								<img src="./assets/img/svg/search.svg" height="14" width="14"> 
+								en la fila de la condición; de acuerdo a lo especificado 
+								PF mostrará una lista de posibilidades.</li>
 								<li>Ya se habrá dado cuenta de que el operador "contenga" no toma en cuenta mayúsculas, 
 								minúsculas ni tildes o acentos. El sistema empleado, como todo en PF, trata de respetar 
 								al máximo posible la funcionalidad ofrecida por el navegador que se esté utilizando y, por 
@@ -1045,10 +976,6 @@ dd {
 								correctamente la comparación de caracteres diacríticos. 
 								Esa característica se da solamente en los operadores <em>contenga</em> y <em>no 
 								contenga</em>. En los demás, la comparación es estricta.</li>
-								<li>PF, según el tipo de vínculo entre condiciones, seleccionará registros de distintos 
-								tipos; en nuestro ejemplo, seleccionará actores (Picasso) y exposiciones; si solo deseo 
-								ver unos u otros, justo debajo de la línea para vincular condiciones aparecen unos 
-								selectores y, en este caso, desmarcaría todos menos "exposición".</li>
 							</ol>
 						</dd>
 						<dt>
@@ -1076,7 +1003,7 @@ dd {
 								<li>entre; es un caso especial; si se escriben dos valores separados por una 
 								barra inclinada (/) buscará los registros que <em>estén comprendidos</em> entre 
 								el valor a la izquierda de la barra y el valor a la derecha; se usa mucho en fechas 
-								(entre 2010 y 2015, "2010/2015"); funciona contexto también, y la comparación es 
+								(entre 2010 y 2015, "2010/2015"); funciona con texto también, y la comparación es 
 								estricta.</li>
 								<li>sea nulo, no sea nulo; es un caso especial; indica si el campo ha de contener un 
 								valor o estar vacío; se emplea, como ya se ha visto, en las combinaciones de condiciones.</li>

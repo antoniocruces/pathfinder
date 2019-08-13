@@ -1,5 +1,11 @@
 'use strict';
 
+/* global AppError, byId, c, d, isBlank, isNil, isObject, isVisible, k, l, toolkit */
+/* eslint no-confusing-arrow: ["error", {"allowParens": true}] */
+/* exported screen */
+/* eslint-env es6 */
+
+// global screen functions
 const screen = {
 	overlay: undefined,
 	alert: undefined,
@@ -194,7 +200,7 @@ const screen = {
 				`<span>`,
 				`${closemark}`,
 				`<a class="pull-right no-print margin-right-s" `,
-				`href="javascript:toolkit.printdiv('modal-content', '${features.title}');">`,
+				`href="javascript:toolkit.printdiv('modal-content', '${escapeqoutes(features.title)}');">`,
 				`<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">`,
 				`<path class="printer" d=""></path>`,
 				`</svg>`,
@@ -235,6 +241,15 @@ const screen = {
 		
 		if(modalclose) {
 			modalclose.addEventListener('click', function() {
+				if(byId('single-map')) {
+					if(d.map.single) {
+						d.map.single.eachLayer(function(layer) {
+							layer.remove();
+						});
+						d.map.single.remove();
+						d.map.single = null;
+					}
+				}
 				modal.remove();
 				if(modal) modal = undefined;
 				document.documentElement.style.overflowY = 'auto';
@@ -274,7 +289,7 @@ const screen = {
 		].join('');
 		let printmark = [
 			`<a class="pull-right no-print margin-right-s" `,
-			`href="javascript:toolkit.printdiv('alert-content', '${features.title}');">`,
+			`href="javascript:toolkit.printdiv('alert-content', '${escapeqoutes(features.title)}');">`,
 			`<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">`,
 			`<path class="printer" d=""></path>`,
 			`</svg>`,

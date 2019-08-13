@@ -114,6 +114,8 @@ const router = {
 				if(namespace === 'L') {
 					eval('window.Leaflet = undefined;');
 					eval('window.turf = undefined;');
+					eval('window.TWEEN = undefined;');
+					eval('window._Group = undefined;');
 				}
 			}
 		}

@@ -121,8 +121,10 @@ const info = {
 					title: c`filter-info`.uf(),
 					content: res,
 					action: [
-						`<a class="button button-primary margin-right-s" href="javascript:ui.filterscreen()">${c`advanced`.uf()}</a>`,
-						`<a class="button button-error margin-right-s" href="javascript:ui.clearfilter(false)">${c`clear`.uf()}</a>`,
+						`<a class="button button-primary margin-right-s" `,
+						`href="javascript:ui.filterscreen()">${c`advanced`.uf()}</a>`,
+						`<a class="button button-error margin-right-s" `,
+						`href="javascript:ui.clearfilter(false)">${c`clear`.uf()}</a>`,
 					].join(''),
 					cancel: true,
 					canceltitle: c`close`.uf()
@@ -174,7 +176,7 @@ const info = {
 		});
 	},
 	settings: (element, value) => {
-		window.settings[element] = value;
+		window.settings[element] = value;		
 		if(document.querySelectorAll('[data-' + element + ']').length > 0) {
 			document.querySelectorAll('[data-' + element + ']').forEach(elm => {
 				if(elm.dataset[element] === value.toString()) {
@@ -237,113 +239,102 @@ const info = {
 			toolkit.timer('info.database');
 			toolkit.statustext(true);
 			sleep(50).then(() => {
-				toolkit.runinsequence(
-					[
-						dbq.dbinfo()						
-					]		
-				)
+				toolkit.runinsequence([dbq.dbinfo(), dbq.filterinfo()])
 				.then(res => {
-					dbq.filterinfo().then(ret => {
-						if(ret) {
-							let url = 'assets/views/' + l.toLowerCase() + '/dbinfo.html';
-							let rec = [];
-							Object.keys(ret).sort((a, b) => a.localeCompare(b)).forEach(o => {
-								rec.push(
-									`<span class="empty-square background-${dbe.getbcolorfromslug(ic(o))}"></span>
-									${o}: <span class="margin-right-s">${ret[o].count.toLocaleString(l)}
-									</span>`
-								);
-							});
-							cfetch(url).then(txt => txt.text()).then(txt => { 
-								let out = [];
-								let tot = d.metlength + d.taxlength;
-								
-								out.push(txt);
-								
-								out.push(`<h4 class="margin-top-s margin-bottom-s">${c`file`.uf()}</h4>`);
-								out.push(`<p>${dbe.datafileinfo()}</p>`);
-								out.push(`<p>${dbe.tablesinfo()}</p>`);
-								
-								out.push(`<h4 class="margin-bottom-s">${c`records`.uf()}</h4>`);
-								out.push(`<p>${rec.join(' ')}</p>`);
+					if(res[1]) {
+						let url = 'assets/views/' + l.toLowerCase() + '/dbinfo.html';
+						let rec = [];
+						Object.keys(res[1]).sort((a, b) => a.localeCompare(b)).forEach(o => {
+							rec.push(
+								`<span class="empty-square background-${dbe.getbcolorfromslug(ic(o))}"></span>
+								${o}: <span class="margin-right-s">${res[1][o].count.toLocaleString(l)}
+								</span>`
+							);
+						});
 
-								out.push(`<h4 class="margin-bottom-s">${c`metadata`.uf()}</h4>`);
+						let out = [];
+						
+						out.push(`<h4 class="margin-top-s margin-bottom-s">${c`file`.uf()}</h4>`);
+						out.push(`<p>${dbe.datafileinfo()}</p>`);
+						out.push(`<p>${dbe.tablesinfo()}</p>`);
+						
+						out.push(`<h4 class="margin-bottom-s">${c`records`.uf()}</h4>`);
+						out.push(`<p>${rec.join(' ')}</p>`);
 
-								out.push(`<div class="table-responsive" style="margin-bottom:1em!important">`);
-								out.push(`<table>`);
-								out.push(`<thead>`);
-								out.push(`<tr>`);
-								out.push(`<th>${c`record-type`}</th>`);
-								out.push(`<th>${c`metadata`}</th>`);
-								out.push(`<th class="text-align-right">${c`count`}</th>`);
-								out.push(`<th class="text-align-right">${c`percentage`}</th>`);
-								out.push(`</tr>`);
-								out.push(`</thead>`);
-								out.push(`<tbody>`);
-								Object.keys(res[0]).sort((a, b) => a.localeCompare(b)).forEach(o => {
-									let rectype = ic(String(o)).substr(0, 1) === '_' ? ic(String(o)).substr(5, 3) : 'tax';
-									out.push(`
-										<tr>
-										<td>
-										<span class="empty-square background-${dbe.getbcolorfromtip(rectype)}"></span>
-										${c(rectype)}</span>
-										</td>
-										<td>
-										${o}
-										</td>
-										<td class="text-align-right">
-										${res[0][o].count.toLocaleString(l)}
-										</td>
-										<td class="text-align-right">
-										${((res[0][o].count / tot) * 100).toLocaleString(l).padStart(12, ' ')}%
-										</td>
-										</tr>
-									`);
-									rectype = undefined;
-								});
-								out.push(`</tbody>`);
-								out.push(`</table>`);
-								out.push(`</div>`);
+						out.push([
+							`<h4 class="margin-bottom-s">`,
+							`${c`metadata`.uf()}`,
+							`<button class="button button-info button-icon button-text pull-right" `,
+							`onclick="info.dbinfochart()"`,
+							`><span>${c`chart`.uf()}</span>`,
+							`<svg width="18" height="18" viewBox="0 0 24 24" class="svgicon" `,
+							`style="fill: rgb(0, 136, 204);">`,
+							`<path class="piechart" d=""></path></svg>`,
+							`</button>`,
+							`</h4>`
+						].join(''));
 
-								let features = {
-									progress: false,
-									title: c`database-info`.uf(),
-									content: out.join(''),
-									action: false,
-									cancel: true,
-									canceltitle: c`close`.uf()
-								}
-								screen.modal = screen.displaymodal(features);
+						out.push(`<div class="table-responsive" style="margin-bottom:1em!important">`);
+						out.push(`<table>`);
+						out.push(`<thead>`);
+						out.push(`<tr>`);
+						out.push(`<th>${c`record-type`}</th>`);
+						out.push(`<th>${c`metadata`}</th>`);
+						out.push(`<th class="text-align-right">${c`count`}</th>`);
+						out.push(`<th class="text-align-right">${c`percentage`}</th>`);
+						out.push(`</tr>`);
+						out.push(`</thead>`);
+						out.push(`<tbody>`);
+						Object.keys(res[0]).sort((a, b) => a.localeCompare(b)).forEach(o => {
+							let rectype = ic(String(o)).substr(0, 1) === '_' ? ic(String(o)).substr(5, 3) : 'tax';
+							let tot = rectype === 'tax' ? d.taxlength : d.metlength;
+							out.push(`
+								<tr>
+								<td>
+								<span class="empty-square background-${dbe.getbcolorfromtip(rectype)}"></span>
+								${c(rectype)}</span>
+								</td>
+								<td>
+								${o}
+								</td>
+								<td class="text-align-right">
+								${res[0][o].count.toLocaleString(l)}
+								</td>
+								<td class="text-align-right">
+								${((res[0][o].count / tot) * 100).toLocaleString(l).padStart(12, ' ')}%
+								</td>
+								</tr>
+							`);
+							rectype = tot = undefined;
+						});
+						out.push(`</tbody>`);
+						out.push(`</table>`);
+						out.push(`</div>`);
 
-								screen.siteoverlay(false);
-								toolkit.timer('info.database');
-								toolkit.statustext();
-
-								features = undefined;
-								out = tot = url = rec = ret = res = undefined;
-							})
-							.catch(err => { 
-								screen.siteoverlay(false);
-								toolkit.timer('info.database');
-								toolkit.statustext();
-								url = rec = ret = res = undefined;
-								throw new AppError(c`database-info` + ': ' + err); 
-							});
-						} else {
-							screen.siteoverlay(false);
-							toolkit.timer('info.database');
-							toolkit.statustext();
-							ret = res = undefined;
-							throw new AppError(c`database-info` + ': ' + c`no-data`);
+						let features = {
+							progress: false,
+							title: c`database-info`.uf(),
+							content: out.join(''),
+							action: false,
+							cancel: true,
+							canceltitle: c`close`.uf()
 						}
-					})
-					.catch(err => { 
+						screen.modal = screen.displaymodal(features);
+
 						screen.siteoverlay(false);
 						toolkit.timer('info.database');
 						toolkit.statustext();
-						ret = res = undefined;
-						throw new AppError(c`database-info` + ': ' + err); 
-					});
+
+						features = undefined;
+						out = url = rec = res = undefined;
+
+					} else {
+						screen.siteoverlay(false);
+						toolkit.timer('info.database');
+						toolkit.statustext();
+						res = undefined;
+						throw new AppError(c`database-info` + ': ' + c`no-data`);
+					}
 				})
 				.catch(err => {
 					screen.siteoverlay(false);
@@ -371,7 +362,6 @@ const info = {
 			}
 			screen.alert = screen.displayalert(features);
 			
-			//let figures = ui.stackedbarchart(true);
 			dbq.sizechart(true).then(res => {
 				let route = d.cooccurrencesroute.map(o => d.chains.find(f => f.link === o.rkey));
 				let nodes = [];
@@ -446,7 +436,6 @@ const info = {
 						},
 						data: nodes,
 						links: edges,
-						focusNodeAdjacency: true,
 						label: {
 							normal: {
 								position: "inside",
@@ -482,13 +471,12 @@ const info = {
 			throw new AppError(c`route` + ': ' + err); 
 		});
 	},
-
-	datastatus: (ctype = 'local', stitle = 'remote') => {
-		let url = `./assets/views/${l}/datastatusinfo.html`;
+	dbinfochart: () => {
+		let url = `./assets/views/${l}/dbinfo.html`;
 		cfetch(url).then(txt => txt.text()).then(txt => { 
 			let features = {
 				title: [
-					`${c`data-status`.uf()}: ${c(stitle)}`,
+					`${c`database-info`.uf()}`,
 				].join(''),
 				content: txt,
 				cancel: true,
@@ -497,111 +485,90 @@ const info = {
 			}
 			screen.alert = screen.displayalert(features);
 			
-			let data = d['stackedcharts' + ctype];
-			data = [].concat(Object.keys(data).map(o => ({
-				name: c(data[o].name), 
-				color: dbe.getcolorfromslug(data[o].name),
-				value: data[o].count,
-			})));
-						
-			let scale = 1;
-			let rich = {
-				text: {
-					color: "#777",
-					fontSize: 15 * scale,
-					padding: [5, 4],
-					align: 'center'
-				},
-				total: {
-					color: "#777",
-					fontSize: 40 * scale,
-					align: 'center'
-				},
-			}
-			let series = [{
-				name: c(stitle),
-				type: 'pie',
-				radius: ['42%', '50%'],
-				hoverAnimation: false,
-				color: data.map(o => o.color),
-				label: {
-					normal: {
-						formatter: function(params, ticket, callback) {
-							let total = 0; 
-							let percent = 0;
-							data.forEach(function(value, index, array) {
-								total += value.value;
-							});
-							percent = ((params.value / total) * 100).toFixed(1);
-							total = undefined;
-							return [
-								`{text|${params.name}}`,
-								`{text|${params.value.toLocaleString(l)}}`,
-								`{text|${percent}%}`,
-							].join('');
-						},
-						rich: rich
-					},
-				},
-				labelLine: {
-					normal: {
-						length: 55 * scale,
-						length2: 0,
-						lineStyle: {
-							color: '#777'
-						}
-					}
-				},
-				data: data,
-			}];
-
-			let pchart = echarts.init(byId('datastatus-chart'));		
-			pchart.showLoading({text: c`working`});
-			let options = {
-				textStyle: {
-					fontFamily: 'Dosis'
-				},
-				itemStyle: {
-					shadowColor: 'rgba(0, 0, 0, 0.5)',
-					shadowBlur: 10
-				},
-				tooltip: {},
-				animation: false,
-				series: series,
-				legend: {
-					selectedMode: false,
-					formatter: function(name) {
-						var total = 0; 
-						var averagePercent; 
-						data.forEach(function(value, index, array) {
-							total += value.value;
+			dbq.dbinfo(true).then(res => {
+				let met = [];
+				let tax = [];
+				Object.keys(res).sort((a, b) => a.localeCompare(b)).forEach(o => {
+					let rectype = ic(String(o)).substr(0, 1) === '_' ? ic(String(o)).substr(5, 3) : 'tax';
+					if(rectype === 'tax') {
+						tax.push({
+							name: o,
+							value: res[o].count,
 						});
-						return '{total|' + total.toLocaleString(l) + '}';
-					},
-					data: [data[0].name],
-					left: 'center',
-					top: 'center',
-					icon: 'none',
-					align:'center',
-					textStyle: {
-						color: "#777",
-						fontSize: 16 * scale,
-						rich: rich
-					},
-				},
-			};
+					} else {
+						met.push({
+							name: o,
+							value: res[o].count,
+						});
+					}
+				});
 
-			pchart.setOption(options);
-			pchart.hideLoading();
-			
-			url = features = scale = rich = series = pchart = options = undefined;
+				let pchart = echarts.init(byId('dbinfo-chart'));		
+				pchart.showLoading({text: c`working`});
+				let options = {
+					textStyle: {
+						fontFamily: 'Dosis'
+					},
+					itemStyle: {
+						shadowColor: 'rgba(0, 0, 0, 0.5)',
+						shadowBlur: 10
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}:({d}%)"
+					},
+					toolbox: chartshelper.toolbox({
+						orient: 'vertical', 
+						mtype: false, 
+						save: true, 
+						table: false, 
+						full: true,
+						dom: 'route-chart'
+					}),
+					series: [{
+						name: c`taxonomies`,
+						type: 'pie',
+						selectMode: 'single',
+						radius: [0, '30%'],
+						label: {
+							normal: {
+								position: 'inner'
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: tax,
+					}, {
+						name: c`metadata`,
+						type: 'pie',
+						radius: ['62%', '70%'],
+						label: {
+							normal: {
+								position: 'outer'
+							}
+						},
+						data: met,
+					}]
+				};
+	
+				pchart.setOption(options);
+				pchart.hideLoading();
+				
+				met = tax = url = features = pchart = options = undefined;
+			})
+			.catch(err => { 
+				url = undefined;
+				throw new AppError(c`dbinfo-chart` + ': ' + err); 
+			});
 		})
 		.catch(err => { 
 			url = undefined;
-			throw new AppError(c`datastatus` + ': ' + err); 
+			throw new AppError(c`dbinfo-chart` + ': ' + err); 
 		});
 	},
-
 	filtermatches: () => {
 		let url = `./assets/views/${l}/filtermatches.html`;
 		cfetch(url).then(txt => txt.text()).then(txt => { 
@@ -739,7 +706,6 @@ const info = {
 						},
 						data: nodes,
 						links: edges,
-						focusNodeAdjacency: true,
 						label: {
 							normal: {
 								position: "inside",
@@ -909,6 +875,27 @@ const info = {
 			url = undefined;
 			throw new AppError(c`help` + ': ' + err); 
 		});
+	},
+	filterstats: () => {
+		let features = {
+			title: c`filter-info`.uf(),
+			content: `<div class="single-charts" id="filter-info-chart"></div>`,
+		}
+		let data = dbq.filteraccounting();
+		let options = charts.doughnutoptions(
+			data.records, 
+			data.filtered, 
+			c`records`, 
+			c`filtered`, 
+			c`records`.uf(),
+			'filter-info-chart'
+		);
+		screen.alert = screen.displayalert(features);
+		let pchart = echarts.init(byId('filter-info-chart'));		
+		pchart.showLoading({text: c`working`});
+		pchart.setOption(options);
+		pchart.hideLoading();
+		features = data = options = undefined;
 	},
 	filterdescription: () => {
 		let features = {

@@ -38,6 +38,22 @@ const toolkit = {
 			byId('body').classList.remove('main');
 		}
 	},
+	copytoclipboard: cid => {
+		var range = document.createRange();
+		range.selectNode(document.getElementById(cid));
+		window.getSelection().removeAllRanges(); 
+		window.getSelection().addRange(range); 
+		document.execCommand('copy');
+		window.getSelection().removeAllRanges();
+		if(byId(cid + '-copy-link')) {
+			toolkit.msg(cid + '-copy-link', c`copied`.uf());
+			byId(cid + '-copy-link').classList.add('button-success');
+			window.setTimeout(() => {
+				byId(cid + '-copy-link').classList.remove('button-success');
+				toolkit.msg(cid + '-copy-link', c`copy`.uf());
+			}, 2000);
+		}
+	},
 	showfooter: visible => {
 		if(visible) {
 			byId('pagefooter').classList.remove('hidden');
@@ -231,10 +247,72 @@ const toolkit = {
 			`GiB`
 		].join('')
 	),
+	
+listbox_move: (cid, direction = 'up') => {
+	let lbx = byId(cid);
+	if(!lbx) return;
+	let sel = lbx.selectedIndex;
+	if(-1 === sel) {
+		alert(c`select-option-to-move`.uf());
+		return;
+	}
+	let inc = direction === 'up' ? -1 : 1;
+	if((sel + inc) < 0 || (sel + inc) > (lbx.options.length - 1)) return;
+	let selvalue = lbx.options[sel].value;
+	let seltext = lbx.options[sel].text;
+	lbx.options[sel].value = lbx.options[sel + inc].value
+	lbx.options[sel].text = lbx.options[sel + inc].text
+	lbx.options[sel + inc].value = selvalue;
+	lbx.options[sel + inc].text = seltext;
+	lbx.selectedIndex = sel + inc;
+},
+listbox_moveacross: (sid, did, mid, aid) => {
+	let src = byId(sid);
+	let dst = byId(did);
+	if(!src || !dst) return;
+	for (let count = 0, len = src.options.length; count < len; count++) {
+		if(src.options[count]) {
+			if(src.options[count].selected === true) {
+				let opt = src.options[count];
+				let newopt = document.createElement('option');
+				newopt.value = opt.value;
+				newopt.text = opt.text;
+				newopt.selected = true;
+				try {
+					dst.add(newopt, null);
+					src.remove(count, null);
+				} catch (error) {
+					dst.add(newopt);
+					src.remove(count);
+				}
+				count--;
+			}
+		}
+	}
+	if(mid) {
+		if(byId(mid).options.length) {
+			if(aid) {
+				byId(aid).classList.remove('hide');
+			}
+		} else {
+			byId(aid).classList.add('hide');
+		}
+	}
+},
+listbox_selectall: (cid, isselect) => {
+	let lbx = byId(cid);
+	if(!lbx) return;
+	for (let count = 0, len = lbx.options.length; count < len; count++) {
+		lbx.options[count].selected = isselect;
+	}
+},
+
 	toggleelement: eid => {
 		let elm = byId(eid + '-stats-info');
 		let alm = byId(eid + '-listing');
 		let plm = byId(eid + '-pareto');
+		let rlm = byId(eid + '-relevance');
+		let rls = byId(eid + '-relevancescatter');
 		let xlm = byId(eid + '-dropdown') ? byId(eid + '-dropdown') : null;
 		let slm = byId(eid + '-showhidestats');
 		if(!eid || isBlank(eid)) throw new AppError(c`stats` + ': ' + c`no-data`);
@@ -260,7 +338,17 @@ const toolkit = {
 			tmp.resize();
 			tmp = undefined;
 		}
-		elm = alm = plm = xlm = slm = undefined;
+		if(rlm) {
+			let tmp = echarts.getInstanceByDom(rlm);
+			tmp.resize();
+			tmp = undefined;
+		}
+		if(rls) {
+			let tmp = echarts.getInstanceByDom(rls);
+			tmp.resize();
+			tmp = undefined;
+		}
+		elm = alm = plm = xlm = rlm = rls = slm = undefined;
 	},
 	togglepair: (elma, elmb, isstartingpage = false) => {
 		let selma = byId(elma);
@@ -309,6 +397,9 @@ const toolkit = {
 			elm = tab = undefined;
 		});
 		if(dbe.verifytables()) {
+			/*
+			if(isVisible(byId('data-listing'))) ui.datalist();
+			*/
 			if(isVisible(byId('schema-listing'))) stats.schema();
 			if(isVisible(byId('relations-listing'))) stats.relations();
 			if(isVisible(byId('stats-charts'))) {
@@ -319,7 +410,7 @@ const toolkit = {
 			}
 			toolkit.showactivecollection();
 		}
-		if(isVisible(byId('stats-map'))) {
+		if(isVisible(byId('base-map'))) {
 			maps.basemap();
 		}
 		tabs = undefined;
@@ -357,18 +448,19 @@ const toolkit = {
 		} else {
 			clear(parent);
 			if(dbe.verifytables()) {
-				let fil = d.filtered.toLocaleString(l);
+				let fil = dbe._filterids().length.toLocaleString(l);
 				let tot = d.poslength.toLocaleString(l);
 				toolkit.msg(
 					'app-status', 
 					[
 						`<span class="color-success">${fil}</span>`,
+						d.filterrefine ? ' [R]' : '',
 						` / `,
 						`<span class="color-error">${tot}</span>`,
-						` (${Math.round((d.filtered / d.poslength) * 100)}%)`
+						` (${Math.round((dbe._filtered() / d.poslength) * 100)}%)`
 					].join('')
 				);
-				toolkit.microchart('app-microchart', Math.round((d.filtered / d.poslength) * 100));
+				toolkit.microchart('app-microchart', Math.round((dbe._filtered() / d.poslength) * 100));
 				parent.classList.add('background-success-50');
 				fil = tot = undefined;
 			} else {
@@ -635,7 +727,13 @@ const toolkit = {
 		};
 		document.body.appendChild(newiframe);
 	},
-
+	getnumberinrange: (num, range) => {
+		let pos = 0;
+		for(let i = 0, len = range.length; i < len; i++) {
+			pos = num.between(range[i], (range[i + 1] ? range[i + 1] : Infinity)) ? i : pos;
+		}
+		return pos;
+	},
 	highlight: function(str, fragment) {
 		if(!isString(str)) return str;
 		let str_folded = str.na().toLowerCase().replace(/[<>]+/g, "");
@@ -869,6 +967,31 @@ const toolkit = {
 		return ((size / Math.pow(1024, i)).toFixed(2) * 1).toLocaleString(l) + ['B', 'KB', 'MB', 'GB', 'TB'][i];
 	},
 	simpletable: (json, cid) => {
+		if(!json.length) {
+			return [
+				`<div class="table-responsive">`,
+				`<table id="${cid}">`,
+				`<caption>`,
+				`<p class="text-align-right">`,
+				`<a class="button button-tertiary button-icon button-border disabled" `,
+				`href="javascript:file.exporttabletocsv('${cid}');">`,
+				`<span>${c`export`.uf()}</span>`,
+				`<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">`,
+				`<path class="download" d=""></path>`,
+				`</svg>`, 
+				`</a>`,	
+				`</p>`,
+				`</caption>`, 
+				`<thead><tr>&nbsp;</tr></thead>`,
+				`<tbody>`,
+				`<tr>`,
+				`<td class="text-align-center color-error">${c`no-data`.uf()}</td>`,
+				`</tr>`,
+				`</tbody>`,
+				`</table>`,
+				`</div>`,
+			].join('');			
+		}
 		let isoverlayset = screen.siteoverlayisset ? true : false;
 		let cols = Object.keys(json[0]);
 		let smallclass = cols.length > 4 ? 'table-smaller' : '';
@@ -990,7 +1113,7 @@ const toolkit = {
 	formatfield: (val, nid = null) => {
 		let out = [];
 		if(d.points.indexOf(val.rkey) > -1) {
-			let coords = val.value.toString().trim().split(',');
+			let coords = val.value ? val.value.toString().trim().split(',') : [];
 			if (coords.length > 1) {
 				out.push(`
 					<a href="javascript:toolkit.mappopup('${coords[0] + ',' + coords[1]}',${nid});">${val.value}</a>
@@ -1008,7 +1131,8 @@ const toolkit = {
 		let coo = coords.toString().trim().split(',');
 		let tit = toolkit.ddtodms(parseFloat(coo[0]), false) + ', ' + toolkit.ddtodms(parseFloat(coo[1]), true);
 		let pro = d.mapproviders.find(o => o.name === 'CartoDB Positron');
-		cfetch(d.reversegeocodesrc.replace(new RegExp("@", "g"), coo.join('&lon=')))
+		let src = d.reversegeocodesrc + '?format=json&lat=@&zoom=27&addressdetails=1';
+		cfetch(src.replace(new RegExp("@", "g"), coo.join('&lon=')))
 		.then(ret => ret.json())
 		.then(ret => {
 			let modalcontent = [
@@ -1034,7 +1158,7 @@ const toolkit = {
 			}).addTo(stmap);
 			
 			modalcontent = features = undefined;
-			coo = tit = stmap = undefined;
+			src = coo = tit = stmap = undefined;
 		})
 		.catch(err => {
 			let modalcontent = [
@@ -1060,7 +1184,7 @@ const toolkit = {
 			}).addTo(stmap);
 			
 			modalcontent = features = undefined;
-			coo = tit = stmap = undefined;
+			src = coo = tit = stmap = undefined;
 		});
 	},
 	rkeytranslate: function(rkey) { return rkey.substr(0, 5) === '_cp__' ? c(rkey.substr(5, 3)) + ': ' + c(rkey) : c(rkey); },
@@ -1111,37 +1235,6 @@ const toolkit = {
 		});
 		cumulativePercent = undefined;
 	},
-	/*
-	showpanel: elm => {
-		let element = document.getElementById(elm) || null;
-		if(element) {
-			let siblings = element.parentNode.childNodes;
-			siblings.forEach(o => {
-				if(o.id) {
-					if(o.id === elm) {
-						o.style.display = 'block';						
-					} else {
-						o.style.display = 'none';
-					}
-				}
-			});
-			siblings = undefined;
-		}
-		let selectors = document.querySelectorAll('nav.tabs');
-		selectors.forEach(o => {
-			o.childNodes.forEach(n => {
-				if(n.id) {
-					if(n.id === elm.replace('flt', 'p')) {
-						n.classList.add('active');						
-					} else {
-						n.classList.remove('active');						
-					}
-				}
-			});
-		});
-		element = selectors = undefined;
-	},
-	*/
 	fuzzymatch: (text, collection) => {
 		if(isNil(text) || text === '') return [];
 		let sorted = (a, b) => {
@@ -1190,20 +1283,29 @@ const toolkit = {
 		let list = [];
 		let keys = [
 			'charts',
+			'chartshelper',
 			'dbe',
+			'dbx',
 			'dbb',
+			'dbm',
 			'dbs',
 			'dbq',
+			'dbhelper',
+			'screen',
 			'ajax',
 			'file',
 			'i18n',
+			'icons',
 			'info',
+			'mapengine',
 			'maps',
+			'maphelpers',
+			'mapops',
 			'pagescripts',
+			'pagescriptshelper',
 			'router',
 			'trade',
 			'ui',
-			'uihelper',
 		];
 		keys.forEach(o => {
 			Object.keys(eval(o)).forEach(n => {
@@ -1287,31 +1389,36 @@ const toolkit = {
 		currentcol = currentquery = undefined;
 		return out;
 	},
-	tagfield: (fid, lid, arr, ref, fnc = undefined) => {
+	tagfield: (fid, lid, arr, ref, fnc = undefined, allowdups = false) => {
 		let tagsinput = byId(fid);
 		let tagslist = byId(lid);
 		let tagsarr = arr;
 		let tagsref = ref;
 		let tagsfnc = fnc;
+		let tagsdup = allowdups;
 		
 		tagsinput.addEventListener('keyup', ({key, target}) => {
 			if (key === 'Enter' && target.value.trim() && target.dataset.field.trim()) {
-				if(tagsarr.includes(target.dataset.field)) {
+/*				
+				if(tagsarr.includes(target.dataset.field) && !tagsdup) {
 					throw new AppError(c`duplicate-value-not-allowed`);
 				} else {
-					if(!tagsref.includes(target.dataset.field)) {
-						alert(`${c`error`.uf()}: ${c`invalid-value`}.`);
-					} else {
-						let elm = createtagelement(target.dataset.field);
-						tagslist.appendChild(elm);
-						tagsarr.push(target.dataset.field);
-						target.value = '';
-						target.dataset.field = '';
-						if(byId(lid + '-trigger')) byId(lid + '-trigger').classList.add('disabled');
-						toolkit.drawicons();
-						elm = undefined;
-					}
+*/
+				if(!tagsref.includes(target.dataset.field)) {
+					alert(`${c`error`.uf()}: ${c`invalid-value`}.`);
+				} else {
+					let elm = createtagelement(target.dataset.field);
+					tagslist.appendChild(elm);
+					tagsarr.push(target.dataset.field);
+					target.value = '';
+					target.dataset.field = '';
+					if(byId(lid + '-trigger')) byId(lid + '-trigger').classList.add('disabled');
+					toolkit.drawicons();
+					elm = undefined;
 				}
+/*
+				}
+*/
 			} else {
 				if(target.value.trim() === '') {
 					if(byId(lid + '-trigger')) byId(lid + '-trigger').classList.add('disabled');

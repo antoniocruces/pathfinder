@@ -1,38 +1,33 @@
 <div class="content">
-<h3 class="margin-top margin-bottom">Valores estrictos</h3>
+<h3 class="margin-top margin-bottom">Strict mode</h3>
 <p>
-	PATHFINDER no recuperará aquellos registros alguno de cuyos campos esté vacío o contenga un valor nulo 
-	(el cero no se considera como tal).
+	PATHFINDER will not retrieve any records whose fields are empty or contain a null value (zero is not considered as such).
 </p>
 
-<h3 class="margin-top margin-bottom">Valores significativos</h3>
+<h3 class="margin-top margin-bottom">Significant values</h3>
 <p>
-	En estadística, un <strong>valor atípico</strong> (<em>outlier</em>) es un punto de datos que difiere significativamente de los otros 
-	presentes en una muestra. A menudo, los valores atípicos pueden alertar los resultados de un estudio. Sin embargo, en el ámbito con el 
-	que trabaja PATHFINDER, los <em>outliers</em> suelen indicar características destacadas y resaltables en el conjunto de datos analizado. 
-	Por eso se utiliza su referencia como <strong>valores significativos</strong>. Son, por así decirlo (y sin olvidar que los atípicos 
-	tienen un elevado grado de subjetividad), los elementos de un grupo que "se salen de norma" y, por consigueinte, llaman la atención.
+	In statistics, an <strong>outlier</strong> is a data point that differs significantly from the others present in a sample. Often, outliers can alert the results of a study. However, in the environment where PATHFINDER works, <em>outliers</em> usually indicate outstanding and outstanding characteristics in the analyzed data set.
+That is why your reference is used as <strong> significant values </strong>. They are, so to speak (and without forgetting that the atypical
+they have a high degree of subjectivity), the elements of a group that "go out of norm" and, therefore, attract attention.
 </p>
 <p>
-	El método matematico más generalizado para detectarlos se conoce como 
-	<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Tukey%27s_range_test">test de Tukey</a>, 
-	y utiliza la diferencia entre el primer y el tercer 
-	<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Cuartil">cuartil</a>, 
-	que suele denominarse <em>rango intercuartílico</em> o IQR (</em>interquartile range</em>). 
-	Para calcular estos elementos en primer lugar se localiza la 
-	<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/Mediana_(estad%C3%ADstica)">mediana</a> de la muestra, es decir, 
-	el valor de la variable situada en la posición central de un conjunto de datos ordenados. A partir de ahí se ubican los 
-	cuartiles, que son los tres valores que dividen a dicho conjunto en cuatro partes porcentualmente iguales; es decir, que 
-	donde comienza el 25% de los elementos se sitúa el primer cuartil, la mediana en el 50% y el tercer cuartil en el 75%.
-	Suelen considerarse dos categorías de valores atípicos:
-</p>
+	The most widespread mathematical method to detect outliers is known as
+<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Tukey%27s_range_test">Tukey tes </a>,
+and it uses the difference between the first and the third
+<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Quartile">quartile</a>,
+(usually known as <em>interquartile range</em> or IQR).
+First of all, to calculate these elements you must to find the
+<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Median">median</a> of the sample, that is,
+the value of the variable located in the central position of a set of ordered data. From there, the
+quartiles, which are the three values ​​that divide aforementioned set into four equal size parts; that is
+where 25% of the elements begins, the first quartile is located, the median is 50% and the third quartile is 75%.
+Two categories of outliers are usually considered:</p>
 <ul>
-	<li>Leve (1.5 * IQR): Si el valor está a 1,5 veces la distancia del rango intercuartílico con respecto a uno de esos cuartiles.</li>
-	<li>Extremo (3 * IQR): Si el valor está a 3 veces la distancia del rango intercuartílico con respecto a uno de esos cuartiles.</li>
+	<li>Mild (1.5 * IQR): If the value is 1.5 times the distance of the interquartile range from one of those quartiles.</li>
+	<li>Extreme (3 * IQR): If the value is 3 times the distance of the interquartile range from one of those quartiles.</li>
 </ul>
 <p>
-	Los valores atípicos, por tanto, son aquellos que se sitúan "por debajo" o "por encima" de la "normalidad". PATHFINDER, por razones de 
-	operatividad, detecta valores atípicos de categoría <em>leve</em> (1.5 * IQR).
+	Atypical values, therefore, are those located "below" or "above" normality. PATHFINDER, for operational reasons, detects outliers of <em>mild</em> category (1.5 * IQR).
 </p>
 <svg xmlns="http://www.w3.org/2000/svg" width="342.9" height="150.5" version="1.1">
 <defs/>
@@ -52,11 +47,11 @@
 <text x="107" y="45.2" style="font-family:Arial; font-size:37.3px; fill:#ba00ff; stroke-width:0.5;">4,</text>
 <text x="157.8" y="45.2" style="font-family:Arial; font-size:37.3px; fill:#ba00ff; stroke-width:0.5;">5,</text>
 <text x="322.1" y="46" style="font-family:Arial; font-size:37.3px; fill:#ba00ff; stroke-width:0.5;">8</text>
-<text x="60.2" y="125" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">primer</text>
-<text x="169.4" y="124.9" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">cuartil medio</text>
-<text x="275.1" y="125" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">tercer</text>
-<text x="60.9" y="145.2" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">cuartil</text>
-<text x="169.4" y="145.1" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">(mediana)</text>
-<text x="275.8" y="145.2" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">cuartil</text>
+<text x="60.2" y="125" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">first</text>
+<text x="169.4" y="124.9" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">medium quartile</text>
+<text x="275.1" y="125" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">third</text>
+<text x="60.9" y="145.2" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">quartile</text>
+<text x="169.4" y="145.1" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">(mediaa)</text>
+<text x="275.8" y="145.2" style="font-family:Arial; text-align:center; text-anchor:middle; font-size:16px; fill:black; stroke-width:0.5;">quartile</text>
 </svg>
 </div>

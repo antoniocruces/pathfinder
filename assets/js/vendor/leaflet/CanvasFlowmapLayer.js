@@ -22,6 +22,7 @@
 }(function(L) {
   // layer source code
   var canvasRenderer = L.canvas();
+  var svgRenderer = L.svg();
 
   var CanvasFlowmapLayer = L.GeoJSON.extend({
     options: {
@@ -697,7 +698,7 @@
 
       this._drawSelectedCanvasPaths(true); // draw it again to give the appearance of a moving dot with a new lineDashOffset
 
-      TWEEN.update(time);
+      if(TWEEN) TWEEN.update(time);
 
       this._animationFrameId = L.Util.requestAnimFrame(this._animator, this);
     },

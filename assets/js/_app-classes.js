@@ -126,24 +126,60 @@ class ExtendableError extends Error {
 class AppError extends ExtendableError {
 	constructor(message) {
 		super(message);
-		this.name = c`app-error`.toUpperCase();
-		this.message = [
-			`${c`error-type`.uf()}: `,
-			`${this.name}\n`,
-			`${message}`,
-		].join('');
+		this.message = message;
+		this.name = c`app-warning`.uf();
+	}
+	toJSON() {
+		return {
+			error: {
+				name: this.name,
+				message: this.message,
+				stacktrace: this.stack
+			}
+		}
 	}
 }
 
 class AppWarning extends ExtendableError {
 	constructor(message) {
 		super(message);
-		this.name = c`warning`.toUpperCase();
-		this.message = [
-			`${c`error-type`.uf()}: `,
-			`${this.name}\n`,
-			`${message}`,
-		].join('');
+		this.message = message;
+		this.name = c`app-warning`.uf();
+	}
+	toJSON() {
+		return {
+			error: {
+				name: this.name,
+				message: this.message,
+				stacktrace: this.stack
+			}
+		}
+	}
+}
+
+// Data ring (circular data structure)
+class Circular {
+	constructor (arr, startIntex) {
+		this.arr = arr;
+		this.currentIndex = startIntex || 0;
+	}
+
+	next() {
+		let i = this.currentIndex;
+		let arr = this.arr;
+		this.currentIndex = i < arr.length-1 ? i+1 : 0;
+		return this.current();
+	}
+	
+	prev() {
+		let i = this.currentIndex;
+		let arr = this.arr;
+		this.currentIndex = i > 0 ? i-1 : arr.length-1;
+		return this.current();
+	}
+	
+	current() {
+		return this.arr[this.currentIndex];
 	}
 }
 
@@ -350,7 +386,6 @@ function autocomplete(input, array) {
 		let a = document.createElement('DIV');
 		a.setAttribute('id', this.id + 'autocomplete-list');
 		a.setAttribute('class', 'autocomplete-items');
-		//a.style.zIndex = 5;
 		this.parentNode.appendChild(a);
 		for (let i = 0, len = array.length; i < len; i++) {
 			if (dbe._operation('li', fc(array[i]), val)) {
@@ -588,6 +623,179 @@ class Graph {
 	}
 }
 
+// Pivot data class
+class PivotData {
+	constructor(data, opts) {
+		this.inputData = data || [];
+		this.colAttrs = opts.colAttrs || [];
+		this.rowAttrs = opts.rowAttrs || [];
+		this.aggregator = opts.aggregator || this._aggregator;
+
+		this.tree = {};
+		this.colKeys = [];
+		this.rowKeys = [];
+		this.colKeysMap = {};
+		this.rowKeysMap = {};
+
+		this.defoliate = this.aggregator();
+
+		this.init();
+	}
+
+	init() {
+		this.forEachRecord();
+
+		this.sortColKeys();
+		this.sortRowKeys();
+	}
+
+	static _comparearray(a, b, index) {
+		let i = index || 0;
+		if (i >= a.length || i >= b.length) return 1;
+		if (a[i] > b[i]) {
+			return 1;
+		} else if (a[i] < b[i]) {
+			return -1;
+		} else {
+			return PivotData._comparearray(a, b, ++i);
+		}
+	}
+
+	static _aggregator() {
+		return {
+			data: [],
+			push: function(record) {
+				if (Array.isArray(record)) {
+					this.data = this.data.concat(record);
+				} else {
+					this.data.push(record);
+				}
+				return this;
+			},
+			format() {
+				return this.data.length;
+			},
+		};
+	}
+
+	static _spansize(arr, i, j) {
+		let l, len, n, noDraw, ref, ref1, stop, x;
+		if (i !== 0) {
+			noDraw = true;
+			for (x = l = 0, ref = j; 0 <= ref ? l <= ref : l >= ref; x = 0 <= ref ? ++l : --l) {
+				if (arr[i - 1][x] !== arr[i][x]) {
+					noDraw = false;
+				}
+			}
+			if (noDraw) {
+				return -1;
+			}
+		}
+		len = 0;
+		while (i + len < arr.length) {
+			stop = false;
+			for (x = n = 0, ref1 = j; 0 <= ref1 ? n <= ref1 : n >= ref1; x = 0 <= ref1 ? ++n : --n) {
+				if (arr[i][x] !== arr[i + len][x]) {
+					stop = true;
+				}
+			}
+			if (stop) {
+				break;
+			}
+			len++;
+		}
+		return len;
+	}
+
+	forEachRecord() {
+		for (let i = 0, len = this.inputData.length; i < len; i++) {
+			let record = this.inputData[i];
+			this.processRecord(record);
+		}
+	}
+
+	processRecord(record) {
+		const rowKey = [];
+		const colKey = [];
+
+		this.rowAttrs.forEach((rowAttr) => {
+			rowKey.push(record[rowAttr] || '');
+		});
+
+		this.colAttrs.forEach((colAttr) => {
+			colKey.push(record[colAttr] || '');
+		});
+
+		const flatRowKey = rowKey.join(' ');
+		const flatColKey = colKey.join(' ');
+
+		if (colKey.length > 0) {
+
+			if (!this.colKeysMap[flatColKey]) {
+
+				this.colKeysMap[flatColKey] = this.aggregator();
+				this.colKeys.push(colKey);
+			}
+			this.colKeysMap[flatColKey].push(record);
+		}
+
+		if (rowKey.length > 0) {
+
+			if (!this.rowKeysMap[flatRowKey]) {
+
+				this.rowKeysMap[flatRowKey] = this.aggregator();
+				this.rowKeys.push(rowKey);
+			}
+			this.rowKeysMap[flatRowKey].push(record);
+		}
+
+		if (colKey.length > 0 && rowKey.length > 0) {
+
+			if (!this.tree[flatRowKey]) {
+
+				this.tree[flatRowKey] = {};
+			}
+
+			if (!this.tree[flatRowKey][flatColKey]) {
+				this.tree[flatRowKey][flatColKey] = this.aggregator();
+			}
+
+			this.tree[flatRowKey][flatColKey].push(record);
+		}
+	}
+
+	getAggregator(rowKey, colKey) {
+		const flatRowKey = rowKey.join(' ');
+		const flatColKey = colKey.join(' ');
+
+		if (rowKey.length === 0 && colKey.length === 0) {
+
+			return this.aggregator().push(this.inputData);
+		} else if (rowKey.length === 0) {
+
+			return this.colKeysMap[flatColKey];
+		} else if (colKey.length === 0) {
+
+			return this.rowKeysMap[flatRowKey];
+		} else {
+
+			const branch = this.tree[flatRowKey];
+
+			const Aggregator = branch ? branch[flatColKey] : null;
+
+			return Aggregator || this.defoliate;
+		}
+	}
+
+	sortColKeys() {
+		this.colKeys = this.colKeys.sort(PivotData._comparearray);
+	}
+
+	sortRowKeys() {
+		this.rowKeys = this.rowKeys.sort(PivotData._comparearray);
+	}
+}
+
 // Autosearch function 
 // As seen at https://github.com/kraaden/autocomplete but modified
 
@@ -606,10 +814,10 @@ function autosearch(settings) {
 	let keypressCounter = 0;
 	let debounceTimer;
 	if (!settings.input) {
-		throw new Error('input undefined');
+		throw new AppError('input undefined');
 	}
 	let input = settings.input;
-	container.className = 'autosearch ' + (settings.className || '');
+	container.className = 'autosearch' + ((' ' + settings.className) || '');
 	containerStyle.position = 'fixed';
 
 	function detach() {
@@ -906,3 +1114,434 @@ function autosearch(settings) {
 		destroy: destroy
 	};
 }
+
+/* TEST */
+// DAG Class
+// as seen at https://github.com/cjongseok/dag.js but not so seriously modified
+class Dag {
+	constructor() {
+		this.edges = [];
+		this.tagObjs = {};
+		this.tagInvertedIndex = {};
+	}
+
+	get T() {
+		return Object.keys(this.tagObjs)
+			.reduce((previous, tag) => previous.concat([tag]), []);
+	}
+
+	get E() {
+		const edges = [];
+		Object.keys(this.edges).forEach((to) => {
+			this.edges[to].forEach(edge => edges.push(this.edge(edge.f, to)));
+		});
+		return edges;
+	}
+
+	get V() {
+		const verticies = Object.keys(this.edges).reduce((previous, key) => {
+			if (this.edges[key].length > 0) {
+				if (!previous.includes(key)) {
+					previous.push(key);
+				}
+				this.edges[key].forEach((e) => {
+					if (!previous.includes(e.f)) {
+						previous.push(e.f);
+					}
+				});
+			}
+			return previous;
+		}, []);
+		return verticies;
+	}
+
+	get kind() {
+		const tags = this.T;
+		return tags.length;
+	}
+
+	get order() {
+		const verticies = this.V;
+		return verticies.length;
+	}
+
+	get size() {
+		return Object.keys(this.edges).reduce((previous, key) => previous + this.edges[key].length, 0);
+	}
+
+	edge(from, to) {
+		if (this.edges[to] !== undefined) {
+			const edge = this.edges[to].find(e => e.f === from);
+			if (edge !== undefined) {
+				return {
+					from: edge.f,
+					to,
+					weight: edge.w,
+					tags: edge.ts.reduce((previous, tagObject) => previous.concat([tagObject.name]), []),
+				};
+			}
+		}
+		return undefined;
+	}
+
+	includes(from, to) {
+		return this.edge(from, to) !== undefined;
+	}
+
+	add(from, to, tags, weight) {
+		if (this.testCycle(from, to)) {
+			throw new AppError(c`cycle` + ': ' + from + ' -> ' + to);
+		}
+
+		let tagArray = tags;
+		if (!Array.isArray(tags)) {
+			tagArray = [tags];
+		}
+		tagArray.forEach((tag) => {
+			if (!(tag in this.tagObjs)) {
+				this.tagObjs[tag] = {
+					name: tag
+				};
+			}
+		});
+
+		const edge = {
+			f: from,
+			w: weight,
+			ts: tagArray.reduce((previous, tag) => previous.concat([this.tagObjs[tag]]), []),
+		};
+
+		if (this.edges[to] === undefined) {
+			this.edges[to] = [];
+		}
+		this.edges[to].push(edge);
+		tagArray.forEach((tag) => {
+			if (!(tag in this.tagInvertedIndex)) {
+				this.tagInvertedIndex[tag] = {};
+			}
+			if (!(to in this.tagInvertedIndex[tag])) {
+				this.tagInvertedIndex[tag][to] = [];
+			}
+			this.tagInvertedIndex[tag][to].push(edge);
+		});
+
+		return this;
+	}
+
+	reverseBFS(start, hitCondition, callback) {
+		const q = [start];
+		while (q.length > 0) {
+			const visit = q.shift();
+			if (hitCondition !== undefined && hitCondition(visit)) {
+				return visit;
+			}
+			if (callback !== undefined) {
+				callback(visit);
+			}
+			if (this.edges[visit] !== undefined) {
+				this.edges[visit].forEach(e => q.push(e.f));
+			}
+		}
+		return undefined;
+	}
+
+	testCycle(from, to) {
+		if (from === to) {
+			return true;
+		}
+		const hit = this.reverseBFS(from, v => v === to);
+		if (hit === undefined) {
+			return false;
+		}
+		return true;
+	}
+
+	clone() {
+		const newDag = new Dag();
+		Object.keys(this.edges).forEach((key) => {
+			newDag.edges[key] = this.edges[key];
+		});
+		Object.keys(this.tagObjs).forEach((tag) => {
+			newDag.tagObjs[tag] = this.tagObjs[tag];
+		});
+		Object.keys(this.tagInvertedIndex)
+			.forEach((tag) => {
+				newDag.tagInvertedIndex[tag] = this.tagInvertedIndex[tag];
+			});
+		return newDag;
+	}
+
+	deepClone() {
+		const newDag = new Dag();
+		Object.keys(this.edges).forEach((to) => {
+			this.edges[to].forEach((e) => {
+				const tags = e.ts.reduce((previous, tagObj) => previous.concat([tagObj.name]), []);
+				newDag.add(e.f, to, tags, e.w);
+			});
+		});
+
+		return newDag;
+	}
+
+	edgesFrom(from) {
+		const dag = new Dag();
+		Object.keys(this.edges).forEach((key) => {
+			this.edges[key].forEach((e) => {
+				if (e.f === from) {
+					const cloned = {
+						from: e.f,
+						to: key,
+						weight: e.w
+					};
+					cloned.tags = e.ts.reduce((previous, tagObject) => previous.concat([tagObject.name]), []);
+					dag.add(cloned.from, cloned.to, cloned.tags, cloned.weight);
+				}
+			});
+		});
+		return dag;
+	}
+
+	edgesTo(to) {
+		if (undefined === this.edges[to]) {
+			return new Dag();
+		}
+		const dag = new Dag();
+		this.edges[to].forEach((e) => {
+			const cloned = {
+				from: e.f,
+				to,
+				weight: e.w
+			};
+			cloned.tags = e.ts.reduce((previous, tagObject) => previous.concat([tagObject.name]), []);
+			dag.add(cloned.from, cloned.to, cloned.tags, cloned.weight);
+		});
+		return dag;
+	}
+
+	neighbourhood(vertex) {
+		const dag = this.edgesFrom(vertex);
+		if (undefined === this.edges[vertex]) {
+			return dag;
+		}
+		this.edges[vertex].forEach((e) => {
+			const cloned = {
+				from: e.f,
+				to: vertex,
+				weight: e.w
+			};
+			cloned.tags = e.ts.reduce((previous, tagObject) => previous.concat([tagObject.name]), []);
+			dag.add(cloned.from, cloned.to, cloned.tags, cloned.weight);
+		});
+		return dag;
+	}
+
+	tagOrder(tag) {
+		if (!(tag in this.tagInvertedIndex)) {
+			return 0;
+		}
+
+		const verticies = Object.keys(this.tagInvertedIndex[tag]).reduce((previous, to) => {
+			if (this.tagInvertedIndex[tag][to].length > 0) {
+				if (!previous.includes(to)) {
+					previous.push(to);
+				}
+				this.tagInvertedIndex[tag][to].forEach((e) => {
+					if (!previous.includes(e.f)) {
+						previous.push(e.f);
+					}
+				});
+			}
+			return previous;
+		}, []);
+
+		return verticies.length;
+	}
+
+	tagSize(tag) {
+		if (!(tag in this.tagInvertedIndex)) {
+			return 0;
+		}
+
+		return Object.keys(this.tagInvertedIndex[tag])
+			.reduce((count, to) => count + this.tagInvertedIndex[tag][to].length, 0);
+	}
+
+	tagKind(tag) {
+		if (!(tag in this.tagInvertedIndex)) {
+			return 0;
+		}
+
+		const tags = Object.keys(this.tagInvertedIndex[tag]).reduce((previous, to) => {
+			if (this.tagInvertedIndex[tag][to].length > 0) {
+				this.tagInvertedIndex[tag][to].forEach((e) => {
+					e.ts.forEach((tagObj) => {
+						if (!previous.includes(tagObj.name)) {
+							previous.push(tagObj.name);
+						}
+					});
+				});
+			}
+			return previous;
+		}, [tag]);
+
+		return tags.length;
+	}
+
+	filterByTag(tag) {
+		if (!(tag in this.tagInvertedIndex)) {
+			return undefined;
+		}
+		const filteredEdges = this.tagInvertedIndex[tag];
+
+		const filtered = new Dag();
+		Object.keys(filteredEdges).forEach((to) => {
+			filteredEdges[to].forEach((edge) => {
+				const cloned = {
+					from: edge.f,
+					to,
+					tags: [],
+					weight: undefined
+				};
+				cloned.tags = edge.ts.reduce((previous, tagObj) => previous.concat([tagObj.name]), []);
+				filtered.add(cloned.from, cloned.to, cloned.tags, cloned.weight);
+			});
+		});
+
+		return filtered;
+	}
+
+	removeEdge(from, to) {
+		if (!(to in this.edges)) {
+			return this;
+		}
+
+		const targetIndex = this.edges[to].findIndex(e => e.f === from);
+		if (targetIndex === -1) {
+			return this;
+		}
+		const removed = this.edges[to].splice(targetIndex, 1)[0];
+		if (this.edges[to].length === 0) {
+			delete this.edges[to];
+		}
+
+		removed.ts.forEach((tagObj) => {
+			this.tagInvertedIndex[tagObj.name][to] =
+				this.tagInvertedIndex[tagObj.name][to].filter(edge => edge.f !== from);
+			if (this.tagInvertedIndex[tagObj.name][to].length === 0) {
+				delete this.tagInvertedIndex[tagObj.name][to];
+			}
+		});
+
+		removed.ts.forEach((tagObj) => {
+			if (this.tagSize(tagObj.name) === 0) {
+				delete this.tagObjs[tagObj.name];
+				delete this.tagInvertedIndex[tagObj.name];
+			}
+		});
+
+		return this;
+	}
+
+	removeVertex(vertex) {
+		if (vertex in this.edges) {
+			delete this.edges[vertex];
+
+			Object.keys(this.tagInvertedIndex).forEach((tag) => {
+				delete this.tagInvertedIndex[tag][vertex];
+			});
+		}
+
+		Object.keys(this.edges).forEach((to) => {
+			const tagsToRemove = [];
+			this.edges[to] = this.edges[to].filter((e) => {
+				e.ts.forEach((tagObj) => {
+					if (!tagsToRemove.includes(tagObj.name)) {
+						tagsToRemove.push(tagObj.name);
+					}
+				});
+				return e.f !== vertex;
+			});
+			if (this.edges[to].length === 0) {
+				delete this.edges[to];
+			}
+
+			tagsToRemove.forEach((tag) => {
+				this.tagInvertedIndex[tag][to] = this.tagInvertedIndex[tag][to].filter(e => e.f !== vertex);
+				if (this.tagInvertedIndex[tag][to].length === 0) {
+					delete this.tagInvertedIndex[tag][to];
+				}
+			});
+		});
+
+		Object.keys(this.tagObjs).forEach((tag) => {
+			if (this.tagSize(tag) === 0) {
+				delete this.tagObjs[tag];
+				delete this.tagInvertedIndex[tag];
+			}
+		});
+
+		return this;
+	}
+}
+
+function graphToDAG(vertices, incoming, outgoing, getFrom, getTo) {
+	getFrom = getFrom || function(edge) { return edge[0]; }
+	getTo = getTo || function(edge) { return edge[1]; }
+
+	vertices = new Set(vertices)
+	const toFlip = new Set()
+	const lhs = new Set()
+	const rhs = new Set()
+
+	function removeSourceOrSink(vertices, incoming, into, getAttr) {
+		for (var vertex of vertices) {
+			var edges = incoming.get(vertex)
+			if (!edges) {
+				vertices.delete(vertex)
+				into.add(vertex)
+				continue
+			}
+			var ok = false
+			for (var edge of edges) {
+				if (vertices.has(getAttr(edge))) {
+					ok = true
+					break
+				}
+			}
+			if (!ok) {
+				vertices.delete(vertex)
+				into.add(vertex)
+				continue
+			}
+		}
+	}
+	
+	while (vertices.size) {
+		removeSourceOrSink(vertices, outgoing, rhs, getTo)
+		removeSourceOrSink(vertices, incoming, lhs, getFrom)
+		if (vertices.size) {
+			var max = -Infinity
+			var maxVertex = null
+			for (let vertex of vertices) {
+				var diff = outgoing.get(vertex).size - incoming.get(vertex).size
+				if (diff > max) {
+					max = diff
+					maxVertex = vertex
+				}
+			}
+			vertices.delete(maxVertex)
+			lhs.add(maxVertex)
+		}
+	}
+	for (let vertex of lhs) {
+		for (let edge of outgoing.get(vertex)) {
+			if (rhs.has(getTo(edge))) {
+				toFlip.add(edge)
+			}
+		}
+	}
+
+	return toFlip
+}
+
+

@@ -143,25 +143,19 @@
 						<ul>
 							<li>
 								<button id="stab0" 
-									class="stablinks button button-s button-light button-border" 
+									class="stablinks button button-light button-border" 
 									onclick="javascript:toolkit.generictab('stab0', 'step0', 'stabcontent', 'stablinks');">
 								Información</button>
 							</li>
 							<li>
 								<button id="stab1" 
-									class="stablinks button button-s button-light button-border" 
+									class="stablinks button button-light button-border" 
 									onclick="javascript:toolkit.generictab('stab1', 'step1', 'stabcontent', 'stablinks');stats.schema();">
 								Grupos</button>
 							</li>
 							<li>
-								<button id="stab2" 
-									class="stablinks button button-s button-light button-border" 
-									onclick="javascript:toolkit.generictab('stab2', 'step2', 'stabcontent', 'stablinks');stats.relations();">
-								Relaciones</button>
-							</li>
-							<li>
 								<button id="stab3" 
-									class="stablinks button button-s button-light button-border" 
+									class="stablinks button button-light button-border" 
 									onclick="javascript:toolkit.generictab('stab3', 'step3', 'stabcontent', 'stablinks');stats.cooccurrences();">
 								Correlaciones</button>
 							</li>
@@ -201,12 +195,6 @@
 								completa de valores seleccionados. IMPORTANTE: todos los cálculos se realizan 
 								<em>únicamente</em> sobre los valores <em>filtrados</em>.
 							</p>
-							<h4>Relaciones</h4>
-							<p>
-								Utilizando un mecanismo de agrupamiento o agregación, PATHFINDER calcula la 
-								importancia de las relaciones entre los diversos tipos de registros. Utilice esta 
-								opción para determinar la "intensidad" o importancia de las mismas.
-							</p>
 							<h4>Correlaciones</h4>
 							<p>
 								Es preciso ser cuidadoso con este apartado y <em>comprender</em> qué 
@@ -237,14 +225,6 @@
 							<div class="color-error text-align-center margin-vertical-auto">
 								Sin datos
 							</div>
-						</div>
-					</div>
-					<div id="step2" class="stabcontent hide">
-						<div class="no-print" id="relations-selectors"></div>
-						<div id="relations-listing" class="margin-vertical-l visible min-height-50vh">
-							<p class="color-error text-align-center margin-vertical-auto">
-								Sin datos
-							</p>
 						</div>
 					</div>
 					<div id="step3" class="stabcontent hide">
@@ -285,16 +265,16 @@
 			<div id="c-tab-five" class="tabcontent hide">
 				<div class="content margin-bottom-l">
 					<h2 id="title-maps">Mapas</h2>
-					<div class="no-print" id="map-selectors"></div>
-					<div id="stats-map" class="full-width page-map">
+					<div class="no-print" id="base-map-selectors"></div>
+					<div id="base-map" class="full-width page-map">
 						<p class="color-error text-center margin-vertical-auto min-height-50vh">
 							Sin datos
 						</p>
 					</div>
 					<p class="form-message">
-						<span id="map-currentcoords" class="color-primary"></span>
+						<span id="base-map-currentcoords" class="color-primary"></span>
 						&nbsp;
-						<span id="map-currentaddress"></span>
+						<span id="base-map-currentaddress"></span>
 					</p>
 				</div>
 			</div>

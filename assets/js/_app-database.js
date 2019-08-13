@@ -37,6 +37,10 @@ const dbe = {
 		),
 	},
 
+	_filterids: () => !d.filterrefine ? d.filterids : d.filterids.filter(o => d.filterrefine.has(o)),
+
+	_filtered: () => !d.filterrefine ? d.filtered : dbe._filterids().length,
+	
 	_normalize: val => String(val).na().toLowerCase(),
 	
 	_divide: (val, pos) => String(val).split('/')[pos] || null,
@@ -44,24 +48,24 @@ const dbe = {
 	_ohash: txt => btoa(txt),
 
 	_deploy: (key, val) => {
-		if(k.dates.includes(key)) return String(val).dateparts();
-		if(d.places.includes(key)) return String(val).places();
-		if(d.uris.includes(key)) return String(val).hosts();
-		if(d.points.includes(key)) return String(val).points();
-		if(d.relatives.includes(key)) return String(val).relations();
-		if(d.ages.includes(key)) return val;
-		if(d.genders.includes(key)) return String(val).gender();
-		return String(val).string();
+		if(k.dates.includes(key)) return String(val).dateparts(key);
+		if(d.places.includes(key)) return String(val).places(key);
+		if(d.uris.includes(key)) return String(val).hosts(key);
+		if(d.points.includes(key)) return String(val).points(key);
+		if(d.relatives.includes(key)) return String(val).relations(key);
+		if(d.ages.includes(key)) return Number(val).ages(key).value; //return val;
+		if(d.genders.includes(key)) return String(val).gender(key);
+		return String(val).string(key);
 	},
 
 	_fieldname: (key) => {
-		if(k.dates.includes(key)) return Object.keys(String(null).dateparts()).map(o => key + '|' + o);
-		if(d.places.includes(key)) return Object.keys(String(null).places()).map(o => key + '|' + o);
-		if(d.uris.includes(key)) return Object.keys(String(null).hosts()).map(o => key + '|' + o);
-		if(d.points.includes(key)) return Object.keys(String(null).points()).map(o => key + '|' + o);
-		if(d.relatives.includes(key)) return Object.keys(String(null).relations()).map(o => key + '|' + o);
-		if(d.ages.includes(key)) return Object.keys(Number(null).ages()).map(o => key + '|' + o);
-		if(d.genders.includes(key)) return Object.keys(String(null).gender()).map(o => key + '|' + o);
+		if(k.dates.includes(key)) return Object.keys(String(null).dateparts(key)).map(o => key + '|' + o);
+		if(d.places.includes(key)) return Object.keys(String(null).places(key)).map(o => key + '|' + o);
+		if(d.uris.includes(key)) return Object.keys(String(null).hosts(key)).map(o => key + '|' + o);
+		if(d.points.includes(key)) return Object.keys(String(null).points(key)).map(o => key + '|' + o);
+		if(d.relatives.includes(key)) return Object.keys(String(null).relations(key)).map(o => key + '|' + o);
+		if(d.ages.includes(key)) return Object.keys(Number(null).ages(key)).map(o => key + '|' + o);
+		if(d.genders.includes(key)) return Object.keys(String(null).gender(key)).map(o => key + '|' + o);
 		return Object.keys(String(null).string()).map(o => key + '|' + o);
 	},
 
@@ -97,13 +101,16 @@ const dbe = {
 			country: val => String(val).places().country,
 			host: val => String(val).hosts().hostname,
 			xyears: val => Number(val).ages().years,
+			xyearsbin: val => Number(val).ages().yearsbin,
 			xmonths: val => Number(val).ages().months,
 			xweeks: val => Number(val).ages().weeks,
 			xdays: val => Number(val).ages().days,
 			years: val => val.years,
+			yearsbin: val => val.yearsbin,
 			months: val => val.months,
 			weeks: val => val.weeks,
 			days: val => val.days,
+			isalive: val => val.isalive,
 			longitude: val => String(val).points().latitude,
 			latitude: val => String(val).points().longitude,
 			rid: val => String(val).relations().rid,
@@ -255,6 +262,7 @@ const dbe = {
 	getbcolorfromtip: tip => d.post_types.filter(o => o.tip === tip).map(o => o.bcolor)[0],
 	getposbyid: cid => (cid && !isNaN(cid)) ? d.store.pos[cid] : null,
 	gettitlefromid: cid => dbe.getposbyid(cid) ? toolkit.titleformat(dbe.getposbyid(cid).value) : toolkit.titleformat(''),
+	gettabletypefromrkey: rkey => rkey.gettabletype(),
 	
 	getkeysfromarray: arr => {
 		let out = [];
@@ -290,6 +298,7 @@ const dbe = {
 		}
 		return out.join('; ');
 	},
+	
 	tablesinfo: function() {
 		if(dbe.verifytables()) {
 			return [
@@ -308,16 +317,32 @@ const dbe = {
 	datalength: () => Object.keys(d.store.pos || {}).length + 
 		Object.keys(d.store.met || {}).length + 
 		Object.keys(d.store.tax || {}).length,
-	
-	verifysql: () => true,
-	
-	verifytables: () => dbe.verifysql() && d.store.pos && d.store.met && d.store.tax,
 
+	verifytables: () => !isBlank(d.store.pos) && !isBlank(d.store.met) && !isBlank(d.store.tax),
+/*
+	_links: () => {
+		let tmp = dbe.hashtable(
+			objectunique([].concat(
+				dbm.list().map(o => ({tin: d.store.pos[o.ID].rkey, link: o.rkey})),
+				dbm.list().map(o => ({tin: o.rkey, link: d.store.pos[o.ID].rkey})),
+				d.chains.map(o => ({tin: o.tin, link: o.link})),
+				d.chains.map(o => ({tin: o.tout, link: o.link})),
+				d.chains.map(o => ({tin: o.link, link: o.tin})),
+				d.chains.map(o => ({tin: o.link, link: o.tout})),
+			)), 
+		'tin');
+		Object.keys(tmp).forEach(o => {
+			tmp[o] = tmp[o].unique().sort();
+		});
+		return tmp;
+	},
+*/	
 	_documents: (astree = false, filtered = false) => { 
 		if(filtered) {
+			let tmp = dbe._filterids();
 			return astree ? 
-				pick(d.store.pos, d.filterids) : 
-				Object.values(d.store.pos).filter(o => d.filterids.includes(o.ID)); 
+				pick(d.store.pos, tmp) : 
+				Object.values(d.store.pos).filter(o => tmp.includes(o.ID)); 
 		} else {
 			return astree ? 
 				d.store.pos : 
@@ -341,6 +366,8 @@ const dbe = {
 				color: d.store.pos[o.ID].color,
 				title: toolkit.titleformat(d.store.pos[o.ID].value)
 			};
+			obj[obj.ptype + '|string'] = obj.title;
+			obj[obj.ptype + '_type|string'] = obj.ptype;
 			let key = o.rkey;
 			Object.keys(o).filter(k => !blacklist.includes(k)).forEach(k => {
 				obj[key + '|' + k] = o[k];
@@ -354,9 +381,10 @@ const dbe = {
 
 	_metadata: (astree = false, filtered = false) => {
 		if(filtered) {
+			let tmp = dbe._filterids();
 			return astree ? 
-				pick(d.store.met, d.filterids) : 
-				Object.values(pick(d.store.met, d.filterids)).flatten(); 
+				pick(d.store.met, tmp) : 
+				Object.values(pick(d.store.met, tmp)).flatten(); 
 		} else {
 			return astree ? 
 				d.store.met : 
@@ -364,12 +392,45 @@ const dbe = {
 		}
 	},
 
+	_features: (astree = false, filtered = false) => {
+		let prepare = obj => {
+			let rkey = obj.rkey;
+			let blacklist = new Set(['rtype']);
+			let out = {};
+			Object.keys(obj)
+				.filter(o => !blacklist.has(o))
+				.forEach(o => out[o === 'ID' ? o : rkey + '|' + o] = obj[o]);
+			out.RID = out.ID;
+			rkey = blacklist = undefined;
+			return out;
+		};
+		let ages = dbm.ages(false);
+		let baseset = new Set(k.metadata);
+		let baseres = [].concat(
+			dbe._mutate(Object.values(d.store.met).flatten().filter(o => baseset.has(o.rkey))),  
+			dbe._mutate(Object.values(d.store.tax).flatten().filter(o => baseset.has(o.rkey))),
+			dbe._mutate(ages.filter(o => baseset.has(o.rkey)))
+		).map(o => prepare(o));
+		prepare = ages = baseset = undefined;
+		if(filtered) {
+			let tmp = dbe._filterids();
+			return astree ? 
+				dbe.hashtable(pick(baseres, tmp), 'ID') : 
+				Object.values(pick(baseres, tmp)).flatten(); 
+		} else {
+			return astree ? 
+				dbe.hashtable(baseres, 'ID') : 
+				Object.values(baseres).flatten();
+		}
+	},
+
 	_taxonomies: (astree = false, filtered = false, unfolded = false) => {
 		let tax = d.store.tax; 
 		if(filtered) {
+			let tmp = dbe._filterids();
 			return astree ? 
-				pick(tax, d.filterids) : 
-				Object.values(pick(tax, d.filterids)).flatten(); 
+				pick(tax, tmp) : 
+				Object.values(pick(tax, tmp)).flatten(); 
 		} else {
 			return astree ? 
 				tax : 
@@ -379,7 +440,7 @@ const dbe = {
 
 	_relations: (astree = false, filtered = false) => {
 		let ids = new Set(Object.keys(d.store.pos).map(o => Number(o)));
-		let fil = new Set(d.filterids);
+		let fil = new Set(dbe._filterids());
 		let rel = [
 			...Object.values(d.store.met).flatten()
 				.filter(o => d.relatives.includes(o.rkey))
@@ -395,90 +456,133 @@ const dbe = {
 	},
 
 	_points: (astree = true, filtered = false, formatted = false) => {
-		let obj = filtered ? pick(d.store.met, d.filterids) : d.store.met;
+		let tmp = dbe._filterids();
+		let obj = filtered ? pick(d.store.met, tmp) : d.store.met;
+		tmp = undefined;
 		return astree ? 
 			dbe.hashrecord(
 				Object.values(obj).flatten().filter(o => d.points.includes(o.rkey))
+					.filter(o => !isBlank(o.value))
 					.map(o => formatted ? Object.assign({}, o, String(o.value).points()): o),
 				'ID'
 			) : 
 			Object.values(obj).flatten().filter(o => d.points.includes(o.rkey))
+				.filter(o => !isBlank(o.value))
 				.map(o => formatted ? Object.assign({}, o, String(o.value).points()): o);
 	},
 
-	_places: (astree = true, filtered = false, formatted = false) => {
-		let obj = filtered ? pick(d.store.met, d.filterids) : d.store.met;
+	_places: (astree = true, filtered = false, formatted = true) => {
+		let tmp = dbe._filterids();
+		let obj = filtered ? pick(d.store.met, tmp) : d.store.met;
+		tmp = undefined;
 		return astree ? 
 			dbe.hashrecord(
 				Object.values(obj).flatten().filter(o => d.places.includes(o.rkey))
+					.filter(o => !isBlank(o.value))
 					.map(o => formatted ? Object.assign({}, o, String(o.value).places()): o),
 				'ID'
 			) : 
 			Object.values(obj).flatten().filter(o => d.places.includes(o.rkey))
+				.filter(o => !isBlank(o.value))
 				.map(o => formatted ? Object.assign({}, o, String(o.value).places()): o);
 	},
 
-	_startdates: (astree = true, filtered = false, formatted = false) => {
-		let obj = filtered ? pick(d.store.met, d.filterids) : d.store.met;
+	_startdates: (astree = true, filtered = false, formatted = true) => {
+		let tmp = dbe._filterids();
+		let obj = filtered ? pick(d.store.met, tmp) : d.store.met;
+		tmp = undefined;
 		return astree ? 
 			dbe.hashrecord(
 				Object.values(obj).flatten().filter(o => d.startdates.includes(o.rkey) && dbe._validyear(o.value))
+					.filter(o => !isBlank(o.value))
 					.map(o => formatted ? Object.assign({}, o, String(o.value).dateparts()): o),
 				'ID'
 			) : 
 			Object.values(obj).flatten().filter(o => d.startdates.includes(o.rkey) && dbe._validyear(o.value))
+				.filter(o => !isBlank(o.value))
 				.map(o => formatted ? Object.assign({}, o, String(o.value).dateparts()): o);
 	},
 
-	_enddates: (astree = true, filtered = false, formatted = false) => {
-		let obj = filtered ? pick(d.store.met, d.filterids) : d.store.met;
+	_enddates: (astree = true, filtered = false, formatted = true) => {
+		let tmp = dbe._filterids();
+		let obj = filtered ? pick(d.store.met, tmp) : d.store.met;
+		tmp = undefined;
 		return astree ? 
 			dbe.hashrecord(
 				Object.values(obj).flatten().filter(o => d.enddates.includes(o.rkey) && dbe._validyear(o.value))
+					.filter(o => !isBlank(o.value))
 					.map(o => formatted ? Object.assign({}, o, String(o.value).dateparts()): o),
 				'ID'
 			) : 
 			Object.values(obj).flatten().filter(o => d.enddates.includes(o.rkey) && dbe._validyear(o.value))
+				.filter(o => !isBlank(o.value))
 				.map(o => formatted ? Object.assign({}, o, String(o.value).dateparts()): o);
 	},
 
-	_genders: (astree = true, filtered = false, formatted = false) => {
-		let obj = filtered ? pick(d.store.met, d.filterids) : d.store.met;
+	_genders: (astree = true, filtered = false, formatted = true) => {
+		let tmp = dbe._filterids();
+		let obj = filtered ? pick(d.store.met, tmp) : d.store.met;
+		tmp = undefined;
 		return astree ? 
 			dbe.hashrecord(
 				Object.values(obj).flatten().filter(o => d.genders.includes(o.rkey))
+					.filter(o => !isBlank(o.value))
 					.map(o => formatted ? Object.assign({}, o, dbe._deploy(o.rkey, o.value)): o),
 				'ID'
 			) : 
 			Object.values(obj).flatten().filter(o => d.genders.includes(o.rkey))
+				.filter(o => !isBlank(o.value))
 				.map(o => formatted ? Object.assign({}, o, dbe._deploy(o.rkey, o.value)): o);
 	},
 
+	_ownership: (astree = true, filtered = false, formatted = true) => {
+		let tmp = dbe._filterids();
+		let obj = filtered ? pick(d.store.tax, tmp) : d.store.tax;
+		return astree ? 
+			dbe.hashrecord(
+				Object.values(obj).flatten().filter(o => d.ownership.includes(o.rkey))
+					.filter(o => !isBlank(o.value))
+					.map(o => formatted ? Object.assign({}, o, dbe._deploy(o.rkey, o.value)): o),
+				'ID'
+			) : 
+			Object.values(obj).flatten().filter(o => d.ownership.includes(o.rkey))
+				.filter(o => !isBlank(o.value))
+				.map(o => formatted ? Object.assign({}, o, dbe._deploy(o.rkey, o.value)): o);
+	},
+	
 	_ages: (astree = true, filtered = false) => {
-		let obj = filtered ? pick(d.store.met, d.filterids) : d.store.met;
+		let xmp = dbe._filterids();
+		let obj = filtered ? pick(d.store.met, xmp) : d.store.met;
+		xmp = undefined;
 		let sta = dbm.startdates(false, filtered, false, toolkit.randomstring());
 		let tmp = dbe.hashrecord(
 			dbm.enddates(false, filtered, false, toolkit.randomstring()).map(o => ({ID: o.ID, value: Date.parse(o.value)})),
 			'ID'
 		);
 		let currentyear = new Date().getFullYear();
+		let forbidden = new Set(d.forbiddendates);
 		let age = sta
 			.map(o => {
-				let ages = ((tmp[o.ID] ? tmp[o.ID].value : Date.now()) - Date.parse(o.value)).ages();
-				if(ages.years > -1 && ages.years < currentyear) {
-					return {
-						ID: o.ID, 
-						rtype: 'met',
-						rkey: o.rkey.substr(0, 9) + 'age', 
-						color: d.store.pos[o.ID] ? d.store.pos[o.ID].color : null,
-						years: ages.years || null,
-						months: ages.months || null,
-						weeks: ages.weeks || null,
-						days: ages.days || null,
-						string: ages.string || null,
-						number: ages.number || null,
-						value: ages
-					};
+				if(!forbidden.has(o.value)) {
+					let ages = ((tmp[o.ID] ? tmp[o.ID].value : Date.now()) - Date.parse(o.value)).ages();
+					let isalive = tmp[o.ID] === undefined;
+					if(ages.years > -1 && ages.years < currentyear) {
+						return {
+							ID: o.ID, 
+							rtype: 'met',
+							rkey: o.rkey.substr(0, 9) + 'age', 
+							color: d.store.pos[o.ID] ? d.store.pos[o.ID].color : null,
+							years: ages.years || null,
+							yearsbin: ages.yearsbin || null,
+							months: ages.months || null,
+							weeks: ages.weeks || null,
+							days: ages.days || null,
+							string: ages.string || null,
+							number: ages.number || null,
+							isalive: isalive ? c`dead` : c`alive`,
+							value: ages
+						};
+					}
 				}
 			})
 			.filter(o => o !== undefined)
@@ -487,15 +591,19 @@ const dbe = {
 		return astree ? dbe.hashrecord(age, 'ID') : age;
 	},
 	
-	_hosts: (astree = true, filtered = false, formatted = false) => {
-		let obj = filtered ? pick(d.store.met, d.filterids) : d.store.met;
+	_hosts: (astree = true, filtered = false, formatted = true) => {
+		let tmp = dbe._filterids();
+		let obj = filtered ? pick(d.store.met, tmp) : d.store.met;
+		tmp = undefined;
 		return astree ? 
 			dbe.hashrecord(
 				Object.values(obj).flatten().filter(o => d.uris.includes(o.rkey))
+					.filter(o => !isBlank(o.value))
 					.map(o => formatted ? Object.assign({}, o, String(o.value).hosts()): o),
 				'ID'
 			) : 
 			Object.values(obj).flatten().filter(o => d.uris.includes(o.rkey))
+				.filter(o => !isBlank(o.value))
 				.map(o => formatted ? Object.assign({}, o, String(o.value).hosts()): o);
 	},
 
@@ -504,7 +612,7 @@ const dbe = {
 		let pox = dbm.points(true, filtered, false, toolkit.randomstring());
 		let poi = new Set(Object.keys(pox).map(o => Number(o)));
 		let pla = new Set(Object.keys(met).map(o => Number(o)));
-		let fil = new Set(d.filterids);
+		let fil = new Set(dbe._filterids());
 		let dif = [...dbe._setdifference(pla, poi)].filter(o => filtered ? fil.has(o) : true);
 		let out = [];
 		dif.forEach(o => {
@@ -532,7 +640,7 @@ const dbe = {
 	},
 	list: (filtered = false, regenerate = false) => regenerate ? [
 		...dbm.documents(false, filtered, toolkit.randomstring()), 
-		...Object.values(dbm.metadata(false, filtered,toolkit.randomstring())), 
+		...Object.values(dbm.metadata(false, filtered, toolkit.randomstring())), 
 		...Object.values(dbm.taxonomies(false, filtered, false, toolkit.randomstring())),
 		...dbm.ages(false, filtered, toolkit.randomstring())
 	] : [
@@ -548,8 +656,16 @@ const dbe = {
 		let geojson = {};
 		geojson.type = 'FeatureCollection';
 		geojson.features = [];
+		let rels = dbm.relations(true);
 
 		for (let k = 0, len = data.length; k < len; k++) {
+			let rsize = rels[data[k].id || data[k].ID] ? rels[data[k].id || data[k].ID].length : 1;
+			//let rrange = maphelpers.clamprange(d.mapdataranges, rsize, 1, d.mapiconradius) / 2;
+			let rrange = maphelpers.clamprange(d.mapdataranges, rsize, 1, d.mapiconfeatures.size.micro);
+			/*
+			let rcolor = data[k].gender ? d.mapgendercolors
+				.find(o => c(o.name).uf() === data[k].gender.uf()).color : data[k].color ? data[k].color : null;
+			*/
 			let newFeature = {
 				"type": "Feature",
 				"geometry": {
@@ -572,12 +688,18 @@ const dbe = {
 					"destination_lon": data[k].destination_lon || null,
 					"latitude": data[k].latitude || null,
 					"longitude": data[k].longitude || null,
-					"rkey": data[k].rkey || null
+					"rkey": data[k].rkey || null,
+					"year": data[k].year || null,
+					"size": rsize,
+					"range": rrange,
+					"gender": data[k].gender || null,
+					"ownership": data[k].ownership || null,
 				},
 			};
 			geojson.features.push(newFeature);
-			newFeature = undefined;
+			newFeature = rsize = rrange = undefined;
 		}
+		rels = undefined;
 		return geojson;		
 	},
 };
@@ -636,17 +758,19 @@ const dbb = {
 		d.store.pos = dbe.hashrecord(data.pos.map(o => colorize(o)), 'ID');
 		d.store.met = dbe.hashtable(data.met, 'ID');
 		d.store.tax = dbe.hashtable(data.tax.filter(o => d.taxonomies.includes(o.rkey)), 'ID');
+
+		d.poslength = data.pos.length;
+		d.metlength = data.met.length;;
+		d.taxlength = data.tax.length;;
+
 		d.filterids = Object.keys(d.store.pos).map(o => Number(o));
+		d.filteruuid = filteruuid();
 		d.datalength = dbe.datalength(); 
 		
 		data = validdate = colorize = undefined;
 		resolve(true);
 	}),
 	setuphelpers: () => new Promise(resolve => {
-		d.poslength = Object.keys(d.store.pos).length || 0;
-		d.metlength = Object.keys(d.store.met).length || 0;
-		d.taxlength = Object.keys(d.store.tax).length || 0;
-
 		d.chains = dbe._relations(false).map(o => JSON.stringify({
 			tin: d.store.pos[o.ID].rkey,
 			link: o.rkey,
@@ -672,9 +796,12 @@ const dbm = {
 	startdates: memoize(dbe._startdates),
 	enddates: memoize(dbe._enddates),
 	genders: memoize(dbe._genders),
+	ownership: memoize(dbe._ownership),
 	ages: memoize(dbe._ages),
 	hosts: memoize(dbe._hosts),
 	autogeolocation: memoize(dbe._autogeolocation),
+	features: memoize(dbe._features),
+	list: memoize(dbe.list),
 }
 
 // database stats functions
@@ -705,7 +832,10 @@ const dbs = {
 		};
 	},
 	count: (array, filter, facet) => sortobjectbykey(
-		array.filter(o => isBlank(filter) ? true : o.rkey === filter).countByMultiple(['rkey', 'color', facet])
+		array
+			.filter(o => isBlank(filter) ? true : o.rkey === filter)
+			.filter(o => dbhelper.filterexclude(o.value) === false)
+			.countByMultiple(['rkey', 'color', facet])
 	),
 	ages: (filter, facet, filtered = true) => 
 		objectflatten(dbs.count(dbm.ages(false, filtered, toolkit.randomstring()), filter, facet)),
@@ -728,11 +858,13 @@ const dbq = {
 	clearfilter: (condition = null) => new Promise((resolve, reject) => {
 		if(!d.store.pos) reject('no-data');
 		d.filterids = Object.values(d.store.pos).sortBy(['rkey', 'value']).map(o => o.ID); 
+		d.filteruuid = filteruuid();
 		Object.keys(d.filtersubfilter).forEach(o => {
 			d.filtersubfilter[o] = false;
 		});
 		d.filtermatches = {};
 		d.filtersubrel = [];
+		d.filtersublinks = [];
 		d.filter = [];
 		if(condition) d.filter.push(condition);
 		d.filtered = d.filterids.length;
@@ -746,10 +878,12 @@ const dbq = {
 		d.schemastrict = true;
 		d.schemaoutliersonly = false;
 		d.schemaresults = [];
+		d.schemapivot = {cols: [], rows: [], result: [], visible: false};
 		d.schemastats = [];
 		d.schemaoutliers = [];
-		
-		d.relationsptype = null;
+		d.schemarelevance = [];
+		d.schemauuid = null;
+		/*		
 		d.relationscols = ['', ''];
 		d.relationsbound = '<';
 		d.relationsstrict = true;
@@ -757,25 +891,29 @@ const dbq = {
 		d.relationsresults = [];
 		d.relationsstats = [];
 		d.relationsoutliers = [];
-
+		d.relationsrelevance = [];
+		d.relationsuuid = null;
+		*/
 		d.cooccurrencessource = '';
 		d.cooccurrencestarget = '';
 		d.cooccurrencesroute = [];
 		d.cooccurrencesoutliersonly = false;
 		d.cooccurrencesstats = [];
 		d.cooccurrencesoutliers = [];
+		d.cooccurrencesrelevance = [];
 		d.cooccurrencesresults = [];
+		d.cooccurrencesfeatures = [];
+		d.cooccurrencesuuid = null;
 
 		if(isVisible(byId('schema-listing'))) stats.schema();
+		/*
 		if(isVisible(byId('relations-listing'))) stats.relations();
+		*/
 		if(isVisible(byId('stats-charts'))) {
 			charts.chart();
 		}
 		if(isVisible(byId('stats-network'))) {
 			charts.relations();
-		}
-		if(isVisible(byId('stats-map'))) {
-			maps.basemap();
 		}
 		
 		window.storecurrentsize = toolkit.currentmemory();
@@ -788,8 +926,9 @@ const dbq = {
 	export: () => new Promise(resolve => {
 		let tmp = [];
 		let all = dbe.tree();
-		d.filterids.forEach(i => all[i].forEach(o => tmp.push(o)));
-		all = undefined;
+		let tmp2 = dbe._filterids();
+		tmp2.forEach(i => all[i].forEach(o => tmp.push(o)));
+		all = tmp2 = undefined;
 		resolve(tmp
 			.map(o => ({ID: o.ID, type: c(o.rtype), key: c(o.rkey), value: o.value}))
 			.sortBy(['ID', 'key', 'value'])
@@ -800,16 +939,28 @@ const dbq = {
 		let doc = dbm.documents();
 		let docs = doc.map(o => new Record(o)).countBy(skey); 
 		let matches = [];
-		for(let i = d.filterids.length; i--;) {
-			if(d.store.pos[d.filterids[i]]) matches.push(d.store.pos[d.filterids[i]]);
+		let tmp = dbe._filterids();
+		for(let i = tmp.length; i--;) {
+			if(d.store.pos[tmp[i]]) matches.push(d.store.pos[tmp[i]]);
 		}
 		let tmatches = matches.map(o => new Record(o)).countBy(skey);
 		Object.keys(docs).forEach(o => Object.assign(docs[o], {
 			ids: tmatches[o] ? tmatches[o].count : 0
 		}));
-		doc = matches = tmatches = undefined;
+		doc = matches = tmatches = tmp = undefined;
 		resolve(docs);
 	}),
+	filteraccounting: () => {
+		var tmp = new Set(dbe._filterids());
+		var obj = Object.values(d.store.pos).filter(o => tmp.has(o.ID)).countBy(['rkey']);
+		tmp = undefined;
+		return {
+			records: Object.keys(obj).map(o => ({name: o, value: obj[o].count})),
+			filtered: Math.round(
+				(Object.values(obj).map(o => o.count).sum() / Object.keys(d.store.pos).length) * 100
+			), 
+		};	
+	},
 	search: (operator = null, modifier = null, val = null, key = null) => new Promise(resolve => {
 		let rk = item => key ? key === item.rkey : true;
 		let op = dbe._operation;
@@ -930,50 +1081,7 @@ const dbq = {
 			
 			let result = Object.values(results).map(o => Array.from(o)).flatten();
 			let submatches = [];
-			/*
-			Object.keys(subfilter).filter(o => o !== 'artwork').forEach(o => {
-				let rsl = group([result], 'rkey');
-				Object.keys(rsl).forEach(k => {
-					let tmp = subfilter[o];
-					if(rsl[k]) {
-						let rset = rsl[k];
-						submatches.push(relations.filter(f => rset.has(f.ID) && tmp.has(f.RID)).forEach(f => result.push(f.RID)));
-						submatches.push(relations.filter(f => rset.has(f.RID) && tmp.has(f.ID)).forEach(f => result.push(f.ID)));
-						rset = undefined;
-					}
-					tmp = undefined;
-				});
-				rsl = undefined;
-			});
-			Object.keys(subfilter).filter(o => o === 'artwork').forEach(o => {
-				let rsl = group([result], 'rkey');
-				Object.keys(rsl).forEach(k => {
-					let tmp = subfilter[o];
-					if(rsl[k]) {
-						let rset = rsl[k];
-						submatches.push(
-							relations.filter(f => 
-								rset.has(f.ID) && tmp.has(f.RID) && (
-									d.filtersublinks.length ? d.filtersublinks.includes(f.rkey) : true
-								)
-							).forEach(f => result.push(f.RID))
-						);
-						submatches.push(
-							relations.filter(f => 
-								rset.has(f.RID) && tmp.has(f.ID) && (
-									d.filtersublinks.length ? d.filtersublinks.includes(f.rkey) : true
-								)
-							).forEach(f => result.push(f.ID))
-						);
-						rset = undefined;
-					}
-					tmp = undefined;
-				});
-				rsl = undefined;
-			});
-			*/
 			
-			/* TEST START */
 			Object.keys(subfilter).filter(o => o !== 'artwork').forEach(o => {
 				let rsl = group([result], 'rkey');
 				Object.keys(rsl).forEach(k => {
@@ -1019,13 +1127,16 @@ const dbq = {
 				});
 				rsl = undefined;
 			});
-			/* TEST END */
 			
 			result = result.unique();
-
-			d.filterids = trans(result).sortBy(['rkey', 'value']).map(o => o.ID);
+			d.filterids = trans(result)
+				.sortBy(['rkey', 'value'])
+				.map(o => o.ID);
+			d.filteruuid = filteruuid();
 			
 			d.filtered = d.filterids.length;
+			d.filterrefine = null;
+			
 			// Stats clear
 			dbq.clearstats();
 
@@ -1040,6 +1151,7 @@ const dbq = {
 		}
 	}),
 	readytosetfilter: () => (d.filter.map(o => o.results).flatten().length > 0),
+	
 	listvalues: fid => new Promise(resolve => {
 		let f = d.filter[fid];
 		let rk = item => f.rkey ? f.rkey === item.rkey : true;
@@ -1244,9 +1356,10 @@ const dbq = {
 				out.main.push({
 					id: cid,
 					title: toolkit.titleformat(pos.value),
-					color: 'red',
-					shape: 'x',
-					radius: 10,
+					color: dbe.getcolorfromslug(pos.rkey),
+					bcolor: dbe.getbcolorfromslug(pos.rkey),
+					shape: 'cross',
+					radius: 16,
 					origin_id: cid,
 					origin_lat: ppo ? ppo.latitude : ppo, 
 					origin_lon: ppo ? ppo.longitude : ppo,
@@ -1447,6 +1560,7 @@ const dbq = {
 	globalnetwork: (ptype = '', rtype = '', relfield = '', bound = '>', singleid = null) => {
 		let sourcefield = bound === '>' ? 'ID' : 'RID';
 		let targetfield = bound === '>' ? 'RID' : 'ID';
+		/*
 		if(isBlank(ptype) || isBlank(rtype)) {
 			return {
 				nodes: [],
@@ -1456,18 +1570,45 @@ const dbq = {
 				categories: []
 			};
 		}
+		*/
+		/*
 		let operation = (o, bo, pt, rt, rk, id) => 
+			dbhelper.filterexclude(d.store.pos[o.ID].value) === false && 
+			dbhelper.filterexclude(d.store.pos[o.RID].value) === false && 
 			o.bound === bo && 
-			d.store.pos[o.ID].rkey === pt && 
-			d.store.pos[o.RID].rkey === rt && 
+			!isBlank(pt) ? d.store.pos[o.ID].rkey === pt : true && 
+			!isBlank(rt) ? d.store.pos[o.RID].rkey === rt : true && 
 			(
 				id ? 
-				dbe._operation('li', d.store.pos[o.ID].value, id) || dbe._operation('li', d.store.pos[o.RID].value, id) : 
+				dbe._operation('li', d.store.pos[o.ID].value, id) || 
+					dbe._operation('li', d.store.pos[o.RID].value, id) : 
 				true
 			) && 
 			(!isBlank(rk) ? o.rkey === rk : true);
-		let res = dbm.relations(false, true)
-			.filter(o => operation(o, bound, ptype, rtype, relfield, singleid));
+		*/
+		let filterrel = () => {
+			let fil = new Set(dbe._filterids());
+			let rll = dbe._relations(false, false);
+			let fre = rll.filter(o => fil.has(o.ID) && fil.has(o.RID));
+			let stages = {};
+			stages.bound = fre.filter(o => o.bound === bound);
+			stages.source = stages.bound.filter(o => !isBlank(ptype) ? d.store.pos[o.ID].rkey === ptype : true);
+			stages.target = stages.source.filter(o => !isBlank(ptype) ? d.store.pos[o.RID].rkey === rtype : true);
+			
+			stages.excid = stages.target.filter(o => dbhelper.filterexclude(d.store.pos[o.ID].value) === false);
+			stages.excrid = stages.excid.filter(o => dbhelper.filterexclude(d.store.pos[o.RID].value) === false);
+			stages.single = stages.excrid.filter(o => 
+				singleid ?
+					dbe._operation('li', d.store.pos[o.ID].value, singleid) || dbe._operation('li', d.store.pos[o.RID].value, singleid) : 
+					true
+			);
+			stages.rkey = stages.single.filter(o => !isBlank(relfield) ? o.rkey === relfield : true);
+			let tmp = stages.rkey;
+			fil = rll = fre = stages = undefined;
+			return tmp;
+		}
+			
+		let res = filterrel();
 		let nodes = Object.entries([
 			...res.map(o => ({id: o[sourcefield]})),
 			...res.map(o => ({id: o[targetfield]})),
@@ -1496,7 +1637,7 @@ const dbq = {
 		})).unique();
 		let rkeys = res.map(o => o.rkey).unique();
 
-		sourcefield = targetfield = operation = res = undefined;
+		sourcefield = targetfield = filterrel = res = undefined;
 		return {
 			nodes: nodes,
 			bounds: [bound], 
@@ -1523,7 +1664,7 @@ const dbq = {
 
 		let tmpstore = [];
 		let result = [];
-		let fset = new Set(d.filterids);
+		let fset = new Set(dbe._filterids());
 		let isvalid = (a, b) => a.rkey === b.rkey && gtype(a.RID) === b.tin && gtype(a.ID) === b.tout;
 		let isinfilter = (a, b) => fset.has(a) || fset.has(b);
 		let gtype = nid => d.store.pos[nid].rkey;
@@ -1644,6 +1785,12 @@ const dbhelper = {
 		elm.innerHTML = d[key].map(o => fc(o)).join(', ');
 		elm = undefined;
 	},
+	filterexclude: txt => isBlank(d.filterexclude) ? false : d.filterexclude
+		.split(';')
+		.map(o => String(o).trim())
+		.map(o => dbe._operation('li', txt, o))
+		.filter(o => o)
+		.length > 0,
 	calculatescale: arr => {
 		let names = Object.keys(arr);
 		let counts = Object.values(arr);
@@ -1688,7 +1835,8 @@ const dbhelper = {
 	},
 	routedraw: did => {
 		let legend = `${did.split('-')[0]}-legend`;
-		let rset = `${did.split('-')[0]}-routeset`;
+		let rset1 = `${did.split('-')[0]}-routeset1`;
+		let rset2 = `${did.split('-')[0]}-routeset2`;
 		let tmp = [];
 
 		d.cooccurrencesroute.forEach((o, i) => {
@@ -1727,10 +1875,12 @@ const dbhelper = {
 		toolkit.msg(did, tmp.join(''));
 		byId(legend).classList.remove('hide');
 		byId(legend).classList.add('visible');
-		byId(rset).classList.remove('hide');
-		byId(rset).classList.add('visible');
+		byId(rset1).classList.remove('hide');
+		byId(rset1).classList.add('visible');
+		byId(rset2).classList.remove('hide');
+		byId(rset2).classList.add('visible');
 		toolkit.drawicons();
-		legend = rset = tmp = undefined;
+		legend = rset1 = rset2 = tmp = undefined;
 	},
 	routeremove: (did, index, item) => {
 		d.cooccurrencesroute[index]['show' + item] = false;
@@ -1743,7 +1893,6 @@ const dbhelper = {
 		let ptype = nid => dbe.getposbyid(nid).rkey;
 		let g = new Graph();
 		let keys = relations.map(o => `${ptype(o.ID)}|${o.rkey}|${ptype(o.RID)}`).unique();
-		//let store = [];
 		keys.forEach(v => {
 			let rels = relations.filter(o => o.bound === '<' && `${ptype(o.ID)}|${o.rkey}|${ptype(o.RID)}` === v);
 			let set = new Set(rels.map(o => o.RID));
@@ -1751,7 +1900,7 @@ const dbhelper = {
 			tmp
 				.map(o => `${ptype(o.ID)}|${o.rkey}|${ptype(o.RID)}`)
 				.unique()
-				.forEach(o => { g.addedge(v, o); /* store.push(o); */ });
+				.forEach(o => { g.addedge(v, o); });
 			rels = set = tmp = undefined
 		});
 		let source = d.cooccurrencessource;

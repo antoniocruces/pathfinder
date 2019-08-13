@@ -1,62 +1,88 @@
-<div class="pure-menu">
-	<a class="pure-menu-heading" href="#home">PATHFINDER</a>
-	<ul class="pure-menu-list">
-		<li class="pure-menu-item">
-			<a href="javascript:info.filter();" class="pure-menu-link pure-menu-status">
+<nav class="navigation">
+	<ul>
+		<li class="home-link background-secondary-400">
+			<h1 class="display-title display-title-l margin-top-s">
+				<img src="./assets/img/logos/IMGLOGOPF.svg" alt="PATHFINDER" 
+	    				style="margin:.5rem .5rem .5rem 1rem;height:30px;width:30px;float:left" />
+				<a style="line-height:.7"  href="#home">
+					PATHFINDER <span id="side-app-info" class="font-size-xs font-weight-thin"></span>
+				</a>
+			</h1>
+		</li>
+		<li class="background-error-50">
+			<a href="javascript:info.filter();">
 				<span id="app-microchart"></span>
-				<span id="app-status">ready</span>
+				<span id="app-status">Ready</span>
 			</a>
 		</li>
-		<li class="pure-menu-item menu-item-divided">
-			<a href="#data" class="pure-menu-link">Data</a>
+		<li>
+			<a href="#data">Data</a>
 		</li>
-		
-		<li class="pure-menu-item menu-item-divided">
-			<a href="#settings" class="pure-menu-link pure-menu-selected">Settings</a>
+		<li class="active">
+			<a href="#settings">Options</a>
+			<ul class="background-light-100">
+				<li>
+					<a id="sel-one" id="sel-zero" href="javascript:toolkit.selecttab('tab', 'zero')">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="checkcircle" d=""></path>
+						</svg> 
+						Requirements
+					</a>
+				<li>
+					<a id="sel-one" id="sel-one" href="javascript:toolkit.selecttab('tab', 'one')">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="sliders" d=""></path>
+						</svg> 
+						Settings
+					</a>
+				</li>
+				<li>
+					<a href="javascript:i18n.changelang(l === 'en' ? 'es' : 'en');">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="flag" d=""></path>
+						</svg> 
+						Language
+					</a>
+				</li>
+				<!--
+				<li>
+					<a href="javascript:info.changetheme();">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="layout" d=""></path>
+						</svg> 
+						Tema
+					</a>
+				</li>
+				-->
+				<li>
+					<a href="javascript:info.app();">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="monitor" d=""></path>
+						</svg> 
+						Application
+					</a>
+				</li>
+				<li>
+					<a href="javascript:info.help('settings');">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="helpcircle" d=""></path>
+						</svg> 
+						More info&hellip;
+					</a>
+				</li>
+			</ul>
 		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" id="sel-zero" href="javascript:toolkit.selecttab('tab', 'zero')">
-				<i class="fa fa-tasks"></i>
-				Requirements
-			</a>
+		<li>
+			<a href="#documents">Documents</a>
 		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" id="sel-one" href="javascript:toolkit.selecttab('tab', 'one')">
-				<i class="fa fa-sliders-h"></i>
-				Settings
-			</a>
-		</li>
-
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" href="javascript:i18n.changelang(l === 'en' ? 'es' : 'en');">
-				<i class="fa fa-language"></i> 
-				Language
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" href="javascript:info.changetheme();">
-				<i class="fa fa-palette"></i>
-				Theme
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" href="javascript:info.app();">
-				<i class="fa fa-network-wired"></i> 
-				App
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" href="javascript:info.help('settings');">
-				<i class="fa fa-question-circle"></i> 
-				Help
-			</a>
-		</li>
-		
-		<li class="pure-menu-item">
-			<a href="#documents" class="pure-menu-link menu-item-divided">Documents</a>
-		</li>
-		<li class="pure-menu-item menu-item-divided menu-item-divided">
-			<a href="javascript:info.help('app');" class="pure-menu-link">Help</a>
+		<li>
+			<a href="javascript:info.help('app');">Help</a>
 		</li>
 	</ul>
+</nav>
+
+<div id="search-container" class="field field-float-label no-margin-bottom">
+	<input id="search-input" class="background-info-50 no-border border-radius-none" type="search" placeholder="search...">
+	<label id="search-results-count" for="search-input">search...</label>
+	<ul id="search-results" class="search-results"></ul>
 </div>

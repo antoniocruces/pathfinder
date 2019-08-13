@@ -1,5 +1,5 @@
 /* @preserve
- * Leaflet 1.3.1+Detached: ba6f97fff8647e724e4dfe66d2ed7da11f908989.ba6f97f, a JS library for interactive maps. http://leafletjs.com
+ * Leaflet 1.3.1, a JS library for interactive maps. http://leafletjs.com
  * (c) 2010-2017 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */
 
@@ -9,7 +9,7 @@
 	(factory((global.L = {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "1.3.1+HEAD.ba6f97f";
+var version = "1.3.1";
 
 /*
  * @namespace Util
@@ -5777,7 +5777,7 @@ var Draggable = Evented.extend({
 		// Fired when a drag is about to start.
 		this.fire('down');
 
-		var first = e.touches.length ? e.touches[0] : e;
+		var first = e.touches.length ? e.touches[0] : e; /* var first = e.touches ? e.touches[0] : e; */
 
 		this._startPoint = new Point(first.clientX, first.clientY);
 
@@ -11909,6 +11909,7 @@ var Canvas = Renderer.extend({
 	},
 
 	_destroyContainer: function () {
+		Util.cancelAnimFrame(this._redrawRequest);
 		delete this._ctx;
 		remove(this._container);
 		off(this._container);

@@ -1,20 +1,256 @@
-<div class="pure-menu pure-menu-horizontal">
-	<ul class="pure-menu-list">
-		<li class="pure-menu-item pure-menu-active">
-			<a id="s-atab-zero" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'zero')">Requisitos</a>
+<div class="group group-xs">
+	<ul>
+		<li>
+			<button id="stab40" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab40', 'step40', 'shtabcontent', 'shtablinks');">
+			Requirements</button>
 		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-one" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'one')">Ajustes</a>
+		<li>
+			<button id="stab41" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab41', 'step41', 'shtabcontent', 'shtablinks');">
+			Settings</button>
+		</li>
+		<li>
+			<button id="stab42" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab42', 'step42', 'shtabcontent', 'shtablinks');">
+			Language</button>
+		</li>
+		<li>
+			<button id="stab44" 
+				class="shtablinks button button-s button-light button-border" 
+				onclick="javascript:toolkit.generictab('stab44', 'step44', 'shtabcontent', 'shtablinks');">
+			Application</button>
 		</li>
 	</ul>
 </div>
-<div id="c-atab-zero" class="is-visible">
+
+<div id="step40" class="shtabcontent visible">
+	<h3 id="title-helprequirements">Requirements</h3>
 	<p>
-		<span class="text-error">DOCUMENTACIÓN EN DESARROLLO</span>. Requisitos.
+		This page shows relevant information about the software and hardware of the client computer 
+		and shows some recommendations about minimum desirable requirements to optimize 
+		the user experience when running app.
+	</p>
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		BE MIND OF. Keep in mind that PATHFINDER is an application that try to maximize the power of the
+client computer, and barely lock server resources
+(data and application). It uses a browser to do so. Being Firefox and Chrome the recommended ones,
+nevertheless having one of them but <em>outdated</em> is not a good idea. The PF engine makes use 
+of the latest technologies
+<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/JavaScript"><em>JavaScript</em></a> and
+<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/ECMAScript"><em>ECMAScript</em></a>,
+and therefore you must ensure that you have browsers offering them.
+	</p>	
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		TO THINK OF. It has been verified through extensive tests that PF can work correctly 
+		and with no drawbacks with only 4GB of RAM; even so, it is preferable to have 
+		8GB as minimum, because currently it does not involve big money spending.
+	</p>
+	
+	<h4>Recommended browsers</h4>
+	<div class="boxes boxes-four-cols">
+		<div class="padding-m border-radius background-white color-dark">
+			<h5 class="margin-top-m">Google Chrome &ge; 51</h5>
+          	<p class="color-grey">
+          		Closed source web browser developed by Google. 
+          		Use Blink rendering engine. Free.
+          	</p>
+			<img src="./assets/img/logos/chrome.svg" alt="Chrome." style="max-width:5em">
+			<p>
+				<a rel="nofollow" target="_blank" href="https://www.google.com/chrome/" 
+				class="button button-primary button-icon button-text">
+					<span>Get it</span>
+					<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+						<path class="arrowright" d=""></path>
+					</svg>
+				</a>
+			</p>
+		</div>
+		<div class="padding-m border-radius background-white color-dark">
+			<h5 class="margin-top-m">Mozilla Firefox &ge; 50</h5>
+          	<p class="color-grey">
+          		Open source web browser developed by Mozilla Corporation and 
+          		Mozilla Foundation. Use Gecko rendering engine. Free.
+          	</p>
+			<img src="./assets/img/logos/firefox.svg" alt="Firefox." style="max-width:5em">
+			<p>
+				<a rel="nofollow" target="_blank" href="https://www.mozilla.org/es-ES/firefox/new/" 
+				class="button button-primary button-icon button-text">
+					<span>Get it</span>
+					<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+						<path class="arrowright" d=""></path>
+					</svg>
+				</a>
+			</p>
+		</div>
+		<div class="padding-m border-radius background-white color-dark">
+			<h5 class="margin-top-m">Opera Software Opera &ge; 40</h5>
+          	<p class="color-grey">
+          		Web browser created by the Norwegian company Opera Software for various platforms. 
+          		Use Blink rendering engine. Free.
+          	</p>
+			<img src="./assets/img/logos/opera.svg" alt="Firefox." style="max-width:5em">
+			<p>
+				<a rel="nofollow" target="_blank" href="https://www.opera.com/es"  
+				class="button button-primary button-icon button-text">
+					<span>Get it</span>
+					<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+						<path class="arrowright" d=""></path>
+					</svg>
+				</a>
+			</p>
+		</div>
+		<div class="padding-m border-radius background-white color-dark">
+			<h5 class="margin-top-m">Apple Safari &ge; 10</h5>
+          	<p class="color-grey">
+          		Closed source web browser developed by Apple Inc. 
+          		It is available for macOS and iOS. 
+          		Use WebKit rendering engine. Free.
+          	</p>
+			<img src="./assets/img/logos/safari.svg" alt="Firefox." style="max-width:5em">
+			<p>
+				<a rel="nofollow" target="_blank" href="https://www.apple.com/es/safari/"  
+				class="button button-primary button-icon button-text">
+					<span>Get it</span>
+					<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+						<path class="arrowright" d=""></path>
+					</svg>
+				</a>
+			</p>
+		</div>
+	</div>
+</div>
+<div id="step41" class="shtabcontent hide">
+	<h3 id="title-helpsettings">Settings</h3>
+	<p>
+		It allows you to configure the basic operating parameters of PATHFINDER. 
+		They can be modified by clicking on the desired option. 
+		Once changed, PF will store them in the client browser, 
+		and will be used in the following work sessions.
+	</p>
+	<p>
+		The screen has the following items.
+	</p>
+	<ol type="1">
+		<li>
+			<p>
+				Error control.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Error capture. PF will display a popup window when an error occurs.
+					</p>
+				</li>
+				<li>
+					<p>
+						Detailed error messages. PF will include debug information in the error message. 
+						It will only be efective if <em>Error capture</em> option is activated.
+					</p>
+				</li>
+				<li>
+					<p>
+						Show error in development console. PF will show error in browser console. 
+						It will only be efective if <em>Error capture</em> option is activated.
+					</p>
+				</li>
+				<li>
+					<p>
+						Warning before page reload. PF will warn before executing a request to reload the 
+						page in the browser, in order to to prevent data loss. Recharge can thus be canceled.
+					</p>
+				</li>
+			</ol>
+		</li>
+		<li>
+			<p>
+				Limitations.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Max load time for libraries (slow connections; in s). PF will warn 
+						if, trying to load a code library, exceeds this limit.
+					</p>
+				</li>
+				<li>
+					<p>
+						Max items to show in descriptive stats. In analysis pages, section <em>Statistics</em>, 
+						PF shows a list of the most outstanding values ("top N values"). 
+						This parameter controls the number of those that will be displayed.
+					</p>
+				</li>
+				<li>
+					<p>
+						Max of <em>rows</em> to show in a table (rows in a table, vertices and edges in a graph). 
+						Although the only PF limitation is determined by the amount of memory available on 
+						the client computer, it can improve the user experience if, in some particular circumstances, 
+						more restrictive limits to the recovered data are established. 
+						Strictly speaking they are not necessary.
+					</p>
+				</li>
+			</ol>
+		</li>
+		<li>
+			<p>
+				Tables & listings.
+			</p>
+			<ol type="a">
+				<li>
+					<p>
+						Items per page. Page size (number of rows) for the tables shown on the screen.
+					</p>
+				</li>
+				<li>
+					<p>
+						Z-score format. In the tables, where appropriate, PF shows the normalized 
+						value or <em>z-score</em> of each frequency. For more information about the 
+						standardized value or standardized unit, 
+						<a rel="nofollow" target="_blank" href="https://en.wikipedia.org/wiki/Utilized_type">click here</a>. 
+						This value can be displayed in numerical or graphic format.
+					</p>
+				</li>
+			</ol>
+		</li>
+		<li>
+			<p>
+				Color scale. PF adds to the tables that show frequencies a visual indicator 
+				of the relevance of each row with respect to the total. 
+				This indicator is shown by graduated colors.
+			</p>			
+		</li>
+	</ol>
+</div>
+<div id="step42" class="shtabcontent hide">
+	<h3 id="title-helplanguage">Language</h3>
+	<p>
+		PATHFINDER is designed as a multi-language application as far as its interface is concerned 
+		(currently data is only in Spanish). This option (or the link at <a href="javascript:toolkit.markdemo('footer');">footer</a>) allows to switch between the two available languages (at present): Spanish and English.
+	</p>
+	<p class="aside background-warning-50">			
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANT. Keep in mind that, if you change language, PF will restart. 
+		If a database is loaded 
+		(<a rel="nofollow" target="_blank" href="https://es.wikipedia.org/wiki/JSON"><em>JSON</em></a> file), 
+		any operation carried out will be lost, although not the file itself. PF warns about 
+		database status when a language change is requested.
 	</p>
 </div>
-<div id="c-atab-one" class="is-hidden">
+<div id="step44" class="shtabcontent hide">
+	<h3 id="title-helpapp">Application</h3>
 	<p>
-		<span class="text-error">DOCUMENTACIÓN EN DESARROLLO</span>. Ajustes.
+		Pop-up window showing the status of the app (browser speed, source code,&hellip;) and 
+		some other interesting data.
 	</p>
 </div>

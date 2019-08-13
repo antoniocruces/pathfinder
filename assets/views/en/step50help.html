@@ -1,0 +1,78 @@
+<div class="margin-bottom-l">
+	<h4 class="margin-vertical" id="titlestep100">1. INCLUSIONS & RESTRICTIONS.</h4>
+	<p>
+		They affect the records that the filter will select once the filtering conditions have been applied. 
+		<ul>
+			<li>
+				Include. Add to the list of primary records selected by the filter conditions 
+				those directly related to them compliant with the checked types. 
+				For example, if conditions only affect exhibitions but actors are included, 
+				those related to each filtered exhibition will be added.
+			</li>
+			<li>
+				Restrictions. Limit the records included only to those ones whose relational field is checked. 
+				Following the previous example, it is possible to select only 
+				those actors acting as exhibition curators.
+			</li>
+		</ul>
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep101">2. FILTER PANEL.</h4>
+	
+	<p>
+		Each condition is represented by a row, with the following features. 
+	</p>
+	<ul>
+		<li>
+			Modifier. Select the facet to be used to validate the condition. For example, "year" in the case of a date.
+		</li>
+		<li>
+			Field on which the search will be carried out.
+		</li>
+		<li>
+			Operator. The usual ones to compare numerical or textual values, considering or not 
+			(in the case of <em>contains</em> and <em>does not contain</em> operators) uppercase and diacritical, 
+			plus the <em> between </em> operator, designed to deal with two numerical values in sequence 
+			("between 2010 and 2015" will select the records whose year, 
+			if that facet was applied, falls within that range), 
+			although it also works with textual values.
+		</li>
+		<li>
+			Value. It is possible to get a list of matching possible values by clicking on  
+			<svg width="14" height="14" viewBox="0 0 24 24" class="svgicon">
+				<path class="search" d=""></path>
+			</svg> icon.
+		</li>
+		<li>
+			Search (<span class="color-error">red</span> if no result) and remove condition buttons.
+		</li>
+	</ul>
+	<p>
+		There is no limit on the number of applicable conditions.
+	</p>
+	
+	<h4 class="margin-vertical" id="titlestep102">3. OPERATIONS.</h4>
+	
+	<p>
+		Button panel at the bottom of the filter window allowing: 
+	</p>
+	<ul>
+		<li>
+			Save or load "collections", which are frequently used filter definitions, 
+			that the user can store as files on his local disk.
+		</li>
+		<li>
+			Calculate. It means, to perform single calc to each condition.
+			<p class="aside background-warning-50">
+				IMPORTANT: PF will not perform the filtering operation if all present conditions have not been calculated.
+			</p>
+		</li>
+		<li>
+			Filter. Evaluation of the conditions and generation of the filtered subset. 
+			When done, an additional button is displayed to present a graph of the conditions and their links.
+		</li>
+		<li>
+			Clear. Set up the filter by deleting the subset.
+		</li>
+	</ul>	
+</div>

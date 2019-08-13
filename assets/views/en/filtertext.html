@@ -1,240 +1,213 @@
-<div class="pure-menu pure-menu-horizontal margin-top">
-	<ul class="pure-menu-list">
-		<li class="pure-menu-item pure-menu-active">
-			<a id="s-atab-zero" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'zero')">Advanced</a>
+<div class="group group-xs margin-bottom-l no-print">
+	<ul>
+		<li>
+			<button id="xstab0" 
+				class="xstablinks button button-grey button-border" 
+				onclick="javascript:toolkit.generictab('xstab0', 'xc-atab-zero', 'xstabcontent', 'xstablinks');">
+			Definition</button>
 		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-one" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'one')">Search</a>
+		<li>
+			<button id="xstab1" 
+				class="xstablinks button button-grey button-border" 
+				onclick="javascript:toolkit.generictab('xstab1', 'xc-atab-one', 'xstabcontent', 'xstablinks');">
+			Count</button>
 		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-two" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'two')">Count</a>
+		<li>
+			<button id="xstab2" 
+				class="xstablinks button button-grey button-border" 
+				onclick="javascript:toolkit.generictab('xstab2', 'xc-atab-two', 'xstabcontent', 'xstablinks');">
+			Terms</button>
 		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-three" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'three')">Terminology</a>
-		</li>
-		<li class="pure-menu-item">
-			<a id="s-atab-four" class="pure-menu-link" href="javascript:toolkit.selecttab('atab', 'four')">Instructions</a>
+		<li>
+			<button id="xstab3" 
+				class="xstablinks button button-grey button-border" 
+				onclick="javascript:toolkit.generictab('xstab3', 'xc-atab-three', 'xstabcontent', 'xstablinks');">
+			Instructions</button>
 		</li>
 	</ul>
 </div>
 
-<div id="c-atab-zero" class="tabcontent is-visible active">
+<div id="xc-atab-zero" class="xstabcontent visible active">
 
-<div id="flt-incsubf" class="is-marginless"></div>
+<div id="flt-incsubf" class="no-margin"></div>
 
 <p class="margin-top">
 	Conditions: <strong id="flt-filterlength">1</strong>
-	<a href="javascript:ui.addcondition();" class="pure-button bg-teal margin-left">
-		<i class="far fa-plus-square"></i>
-		<span>Add condition</span>
-	</a>
+	<button onclick="javascript:ui.addcondition();" 
+		class="button button-square button-info button-s button-border margin-left-s" 
+		data-tooltip="añadir condición">
+		<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+			<path class="plus" d=""></path>
+		</svg>
+	</button>
+	<span class="form-message color-light margin-left-s">
+		Formula: facet + field + operator + value (values list) = calculate or remove
+	</span>
 </p>
 
 <div id="flt-main"></div>
 </div>
 
-<div id="c-atab-one" class="tabcontent is-hidden">
-<p class="margin-top">
-	<a class="pull-right no-print" href="javascript:info.filterdescription();">[?]</a>
-</p>
-<h4 class="margin-bottom">Terms:</h4>
-
-<form id="search-main" class="pure-form margin-bottom"></form>
+<div id="xc-atab-one" class="xstabcontent hide">
+<div class="margin-top-s" id="filter-info-stats" style="width: 100%; min-height: 4em;">Working&hellip;</div>
 </div>
 
 
-<div id="c-atab-two" class="tabcontent is-hidden">
-<div class="margin-top" id="filter-info-stats" style="width: 100%; min-height: 4em;">Working&hellip;</div>
-</div>
-
-
-<div id="c-atab-three" class="tabcontent is-hidden">
+<div id="xc-atab-two" class="xstabcontent hide">
 <div id="flt-terms"></div>
 </div>
 
-<div id="c-atab-four" class="tabcontent is-hidden">
-<h4 class="margin-top margin-bottom">Instructions</h4>
-<p>
-	PATHFINDER uses 
-	<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Filter_(mathematics)"><strong>filter</strong></a>, 
-	paradigm as in 
-	<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Set_theory">set theory</a>. In short, it tries to select, 
-	including or excluding some particular features, a subset of the database records.
-</p>
-<p>
-	Note that, <em>once a filter is applied to the data, it will remain active as long as there is no order against</em>, 
-	and its presence <em>affects ALL operations</em> to be carried out by PATHFINDER.
-</p>
+<div id="xc-atab-three" class="xstabcontent hide">
+	<p>
+		PATHFINDER uses the paradigm of  
+		<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Filter_(mathematics)">
+			filter</a>, like as in 
+		<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Set_theory">
+			set theory</a>.
+		In short, it tries to select a subset of primary records by inclusion or exclusion of some features 
+		affecting to their titles, metadata or taxonomies.
+	</p>
+	
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANT. When a filter has been set to data, it remains active  
+		until unset or until a new filter were set.
+	</p>
+	
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		TO CONSIDER. The presence of a filter affects ALL operations carried on by PATHFINDER.
+	</p>
+	
+	<h4 class="margin-vertical-s">Filter definition</h4>
+	<p>
+		It allows to set conditions to limit the subset of primary records. 
+		The order in which the conditions are added does not affect the final result.
+	</p>
+	<p>
+		It is possible to add any conditions number by clicking on  
+		<mark class="background-info-100">
+			<svg width="14" height="14" viewBox="0 0 24 24" class="svgicon">
+				<path class="plus" d=""></path>
+			</svg>
+		</mark>.
+	</p>
+	<p>
+		Only <em>operator</em> and <em>value</em> are mandatory in each condition. 
+		Any condition has the following items:
+	</p>
 
-<h4 class="margin-top margin-bottom">Advanced filter</h4>
-<p>
-	It allows to set successive and concurrent <em>conditions</em> in order to <em>limit</em> the scope of work. So:
-</p>
 	<ol>
 		<li>
-			Set the <em>restrictors</em> for a condition. Note that only <em>operator</em> and <em>value</em> are rerquired.
-			<ol>
-				<li>
-					<em>modifier</em>: extract a particular element of some metainfos; for example, 
-					<em>year</em> or <em>day of week</em> of a date.
-				</li>
-				<li>
-					<em>metainfo</em>: también denominado <em>faceta</em> en ciertos sistemas; determina sobre 
-					qué tipo de información se realizará la búsqueda; por ejemplo, <em>lugar donde se celebra</em> una exposición.
-				</li>
-				<li>
-					<em>operator</em>: 
-					determines how a condition must be met; for example, that a record contains or does not equal a given value; 
-					keep in mind that such compliance, if no modifier or meta information is specified, 
-					will be verified on all records.					
-				</li>
-				<li>
-					<em>value</em>: to search (it can be a number, a date,&hellip;). <span class="no-data">BE CAREFUL: 
-					if you use <em>between</em> operator separate the values with the symbol "/" (bar)</span>.  
-					That is, if you want to search for a value between 2010 and 2011 write "2010/2011". Be conscious about
-					a blue button (<i class="fas fa-search"></i>) to the left of text input field to launch a particular 
-					search in order to get 
-					the more similar terms present in database matching the valueyou are trying to use. This kind of 
-					search is carried out on no taking account about letter case or accented chars basis.
-				</li>
-			</ol>
-		</li>		 
-		<li>
-			Click on the red button to the right to make PATHFINDER calculate the subsequent data subset. Note than 
-			button color will change to green when calculation is done.
+			<em>modifier</em>: extract one particular side of some metainformations;  
+			eg. <em>year</em> or <em>weekday</em> from a date.
 		</li>
 		<li>
-			Add, if you want, new conditions to limit result as you need.
+			<em>metainformation</em>: also called <em>facet</em>; field to search for; 
+			eg. <em>place</em> where an exhibition is hold.
 		</li>
 		<li>
-			At footer there is a purple-coloured button (<i class="fas fa-calculator"></i>) designed to sequentially 
-			perform calculation for each single condition.
+			<em>operator</em>: determines how a condition is to be met; 
+			eg. records <em>containing</em> or 
+			<em>not being equal</em> to some <em>value</em>; 
+			be mind of, if there is not <em>modifier</em> or <em>metainfo</em> specified, 
+			condition <em>will be verified against the whole record set</em>.
 		</li>
 		<li>
-			When you think all the conditions are OK, press <em>Set filter</em> (<i class="fas fa-filter"></i>) blue button 
-			at footer. In a few seconds filter will be set.
+			<em>value</em>: text to search for (may be a number, a date,&hellip;). 
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANT. If operator <em>between</em> is used, 
+				values must to be separated with "/" (slash); eg. 
+				if you want to search values between 2010 and 2011 write "2010/2011".
+			</p>
+			<p class="aside background-info-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="info" d=""></path>
+				</svg>
+				TO CONSIDER. Use of "contain" and "do not contain" operators implies that
+				the search will be carried out not having mind of uppercase, lowercase or 
+				accented characters.
+			</p>
 		</li>
 		<li>
-			Above the first condition there are two dropdown selectors. Use them at will.
-			<ol>
-				<li>Include. You can decide what primary record types must PATHFINDER include in the final result. By default 
-				only the records matching some of the set conditions will be included, but it is possible to force 
-				PATHFINDER to search for "concomitants" record types.</li>
-				<li>Restrictions. Only the records matching the relational fields selected in this section will be 
-				included in final result.</li>
-			</ol>
+			match search: button 
+			<mark class="background-light-200 margin-right-xxs">
+				<svg width="14" height="14" viewBox="0 0 24 24" class="svgicon">
+					<path class="search" d=""></path>
+				</svg>
+			</mark>
+			shows a list of primary records,
+			taxonomies or metainformations matching the text written in <em>value</em> text input element. 
+			Search will be performed using "contains" operator.
 		</li>
 		<li>
-			Next to it, PATHFINDER will show the figure of final result count and a tiny pie chart with 
-			the selected records percent. You can, too, get a table with result broken down by 
-			primary record types by <a href="javascript:toolkit.selecttab('atab', 'two')">clicking here</a>.
+			partial result: is shown as a number of primary records matching condition, backgrounded as 
+			<mark class="background-error-50">light red</mark> if 0 or  
+			<mark class="background-success-50">light green</mark> if bigger.
+		</li>
+		<li>
+			remove: delete condition.
 		</li>
 	</ol>
-	<p>
-		NOTE: There is a list of valid metainfos, modifiers and operators available in 
-		in <a href="javascript:toolkit.selecttab('atab', 'three')"><em>Terminology</em></a> section.
-	</p>
-	<p>
-		Next image can help to better filtering process understanding. 
-	</p>
 
-	<div class="margin-top margin-bottom pure-g">
-		<div class="pure-u-1-2">
-			<p>
-				<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
-				<g fill="#FFF">
-				<circle cx="200" cy="137.5" r="137.5"/>
-				<circle cx="137.5" cy="262.5" r="137.5"/>
-				<circle cx="262.5" cy="262.5" r="137.5"/>
-				</g><g stroke-width="10" stroke="#606060" fill="none">
-				<circle cx="200" cy="137.5" r="132.5"/>
-				<circle cx="137.5" cy="262.5" r="132.5"/>
-				<circle cx="262.5" cy="262.5" r="132.5"/>
-				</g>
-				<g font-weight="bold" fill="#888" font-family="Roboto Mono">
-				<text font-size="72px">
-				<tspan x="176" y="100">A</tspan>
-				<tspan x="46" y="300">B</tspan>
-				<tspan x="300">C</tspan></text>
-				<text font-size="48px">
-				<tspan x="148" y="241">ABC</tspan>
-				<tspan x="168" y="333">BC</tspan>
-				<tspan x="83" y="185">AB</tspan>
-				<tspan x="250">AC</tspan></text>
-				</g></svg>
-			</p>
-		</div>
-		<div class="pure-u-1-2">
-			<table class="mq-table pure-table-bordered pure-table">
-				<caption>
-					Combinations
-				</caption>
-				<thead>
-					<tr>
-						<th class="highlight">&nbsp;</th>
-						<th class="highlight">All</th>
-						<th class="highlight">Any</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>A, B, C</td>
-						<td>ABC</td>
-						<td>A B C AB BC AC ABC</td>
-					</tr>
-					<tr>
-						<td>A, B</td>
-						<td>AB</td>
-						<td>A B AB</td>
-					</tr>
-					<tr>
-						<td>B, A</td>
-						<td>AB</td>
-						<td>A B AB</td>
-					</tr>
-					<tr>
-						<td>A, C</td>
-						<td>AC</td>
-						<td>A C AC</td>
-					</tr>
-					<tr>
-						<td>C, A</td>
-						<td>AC</td>
-						<td>A C AC</td>
-					</tr>
-					<tr>
-						<td>B, C</td>
-						<td>BC</td>
-						<td>B C BC</td>
-					</tr>
-					<tr>
-						<td>C, B</td>
-						<td>BC</td>
-						<td>B C BC</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-
-	<h4 class="margin-top margin-bottom">Search</h4>
+	<h4 class="margin-vertical-s">Include and restrict</h4>
 	<p>
-		To make your search useful and effective, be sure to follow next advices.
+		PATHFINDER performs filter calculation operation following a list of sequential steps:
 	</p>
+	<ol type="A">
+		<li>
+			Calculates the primary records that SIMULTANEOUSLY meet ALL 
+			the conditions expressed (intersection between the subsets).
+		</li>
+		<li>
+			Calculates ALL primary records <em>related</em> to the selected ones during step A matching 
+			the record types selected in <mark class="background-light-200">Include</mark> menu.
+		</li>
+		<li>
+			Final result will include unique records selected during steps A and B. 
+			But if one or more <em>relational fields</em> of the 
+			<mark class="background-light-200">Restrictions</mark> menu is checked, 
+			only ones of selected set matching them will be included at end. 
+			For example, if primary <em>actor</em> records are included, and 
+			<em>curator</em> and <em>collector</em> are checked as relational fields, 
+			PATHFINDER will not select any actor unless included in step A conditions; if so, 
+			if all exhibitions in which Goya participates as artist are included but 
+			only curators and collectors are checked, PF will filter the exhibitions 
+			of the Aragonese painter, adding curators and collectors.
+		</li>
+	</ol>
+
+	<h4 class="margin-vertical-s">Operations</h4>
+	<p>
+		When all desired conditions are set, PATHFINDER performs the operations 
+		shown at the bottom of filtering window.
+	</p>	
 	<ol>
-		<li> 
-			Write out all or part of text to search on.
+		<li>
+			Collections. A particular group of conditions, inclusions and restrictions is called <em>collection</em>. 
+			When ready (using the tools described above), the collection can be stored at local disk (client computer), 
+			and to be loaded when needed.
 		</li>
 		<li>
-			Select where you need the search will be carried out: a particular metadata kind or any metadata instead.
+			Calculate. PF check all the conditions one each time and calculates its partial result.
 		</li>
 		<li>
-			Click the Search (<i class="fas fa-filter"></i>) blue button.
+			Filter and clear. Activation or removing filter for a particular collection.
+		</li>
+		<li>
+			Filter links. When a filter is activated, this button will be shown.  
+			If clicked, it pops up a window plotting a directed graph of the primary record types and 
+			their relationships.
 		</li>
 	</ol>
 	
-	<h4 class="margin-top margin-bottom">Filtering process flowchart</h4>
-	<img src="./assets/img/illustrations/filter_es.png">
+	<h4 class="margin-vertical-s">Filtering process diagram</h4>
+	<img src="./assets/img/illustrations/filter_es.svg" class="margin-bottom-l">
 </div>
-
-

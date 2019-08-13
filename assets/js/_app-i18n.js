@@ -3,6 +3,7 @@
 /* global AppError, cfetch, cultures, d, toolkit, URLSearchParams */
 /* exported c, fc, i18n, ic, l */
 
+// language functions
 let usp = new URLSearchParams(window.location.search);
 const l = usp.has('l') ? usp.get('l') : window.navigator.language.split('-')[0].toLowerCase() === 'es' ? 'es' : 'en';
 const c = text => cultures[l] && cultures[l][text] || text;

@@ -1,66 +1,98 @@
-<h4 class="margin-top margin-bottom" id="help-subtitle">Color codes</h4>
+<h4 class="padding-vertical-s">Color codes</h4>
 
 <p>
-	PATHFINDER uses a color coded system to identify different types of elements.
-	PATHFINDER utiliza un sistema codificado de colores para identificar diferentes tipos de elementos. 
-	The <a href="#documents">primary record types</a> are identified according to the table below.
+	PATHFINDER uses a color coded system to identify different types of elements. 
+	<a href="#documents">Primary record types</a> are identified as shown below.
 </p>	
 
-<div class="table-responsive is-marginless">
-	<table class="mq-table pure-table-bordered pure-table">
+<div class="table-responsive no-margin">
+	<table>
 		<tbody>
 			<tr>
-				<td class="highlight is-text-center">
-					<span class="short-padding-left short-padding-right bg-person" 
-						style="color:#fff">P</span>
-				</td>
-				<td width="99%">
+				<th class="text-align-center">
+					<button class="button button-square button-success">P</button>
+				</th>
+				<th>
 					Actor
+				</th>
+				<td>
+					Person or entity interacting with <em>catalogs</em> or 
+					<em>exhibitions</em> acting as author, editor, illustrator, curator, 
+					loaner or other different roles.			
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<span class="short-padding-left short-padding-right bg-book" 
-						style="color:#fff">B</span>
-				</td>
-				<td>
+				<th class="text-align-center">
+					<button class="button button-square button-tertiary">B</button>
+				</th>
+				<th>
 					Catalog
+				</th>
+				<td>
+					Any article, book, web page or text in general used as guide or description for  
+					the visitor about a particular exhibition. Its "natural" utility 
+					is to store info about the artwork collection shown in exhibition. 
+					It may have a <em>physical</em> or <em>virtual</em> existence, being  
+					in this case the group of exhibited <em>artwork</em>.			
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<span class="short-padding-left short-padding-right bg-company" 
-						style="color:#fff">C</span>
-				</td>
-				<td>
+				<th class="text-align-center">
+					<button class="button button-square button-secondary">C</button>
+				</th>
+				<th>
 					Company
+				</th>
+				<td>
+					Any organization whose relationship with entities, exhibitions, catalogs or actors 
+					could be defined STRICTLY in commercial or business terms. Its singularity, 
+					so, is not its public, private or mixed ownership, nor the fact of its aim 
+					includes or not profit motive, but the profit aim of the RELATIONSHIP.
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<span class="short-padding-left short-padding-right bg-entity" 
-						style="color:#fff">E</span>
-				</td>
-				<td>
+				<th class="text-align-center">
+					<button class="button button-square button-error">E</button>
+				</th>
+				<th>
 					Entity
+				</th>
+				<td>
+					Any institution of a legal existence being used in  
+					<a rel="noopener" target="_blank" href="http://www.expofinder.es">ExpoFinder</a>
+					context both as <em>RSS/Atom or HTML data source</em>, 
+					whose results are consumed by the system to explore Internet to find  
+					temporary exhibitions, or as any other human group acting as 
+					organization or funding support for an exhibition or its catalog. 
+					May be, too, an institution linked to an <em>actor</em> acting as labor, research or 
+					academic reference.				
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<span class="short-padding-left short-padding-right bg-exhibition" 
-						style="color:#fff">X</span>
-				</td>
-				<td>
+				<th class="text-align-center">
+					<button class="button button-square button-warning">X</button>
+				</th>
+				<th>
 					Exhibition
+				</th>
+				<td>
+					Any event showing publicly a set of artworks of an artistic nature 
+					or whose aim will be spread specific knowledge of the academic field of 
+					Art History.				
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<span class="short-padding-left short-padding-right bg-artwork" 
-						style="color:#fff">A</span>
-				</td>
-				<td>
+				<th class="text-align-center">
+					<button class="button button-square button-info">A</button>
+				</th>
+				<th>
 					Artwork
+				</th>
+				<td>
+					Any manifestation of human activity by means of which the real is interpreted or 
+					the imagined is embodied using plastic, linguistic or sound resources. 
+					For the purposes of PF, it must be linked to <em>actor/actors</em> or 
+					<em>catalog/catalogs</em>.
 				</td>
 			</tr>
 		</tbody>
@@ -68,74 +100,103 @@
 </div>
 
 <p>
-	In PATHFINDER, each type of link or button has a color code shown as a thick line on the left, 
-	indicating the type of <em>activity</em> it will perform. This code corresponds to the following table.
+	Any button is drawn using a color code showing the kind of activity to be done. The code list is shown below.
 </p>
 
 <div class="table-responsive">
-	<table class="mq-table pure-table-bordered pure-table">
+	<table>
 		<tbody>
 			<tr>
-				<td class="highlight is-text-center">
-					<a class="pure-button border-left-yellow" href="javascript:;">&nbsp;</a>
+				<td class="text-align-center">
+					<button class="button button-square button-tertiary">
+						<svg width="16" height="16" viewBox="0 0 16 16">
+							<circle cx="8" cy="8" r="8"></circle>
+						</svg>
+					</button>
 				</td>
 				<td>
-					Generation of files and download to disk. PATHFINDER creates a file containing the 
-					requested information and downloads it to a disk on the client’s computer. 
-					For proper operation, of course, this computer must have sufficient free space.
+					File generation and download. PATHFINDER will make a file containing  
+					the requested information and will start a download process to client computer 
+					disc; it must to have enough free space to save it.
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<a class="pure-button border-left-purple" href="javascript:;">&nbsp;</a>
+				<td class="text-align-center">
+					<button class="button button-square button-secondary">
+						<svg width="16" height="16" viewBox="0 0 16 16">
+							<circle cx="8" cy="8" r="8"></circle>
+						</svg>
+					</button>
 				</td>
 				<td>
-					Downloading files or information from the server. You need the client’s computer 
-					to be connected to the Internet. In the case of downloading files, this computer 
-					must have sufficient free space.
+					Remote (server) file download. Client computer must be online, connected to Internet, 
+					and to have enough free space to save it.  
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<a class="pure-button border-left-blue" href="javascript:;">&nbsp;</a>
+				<td class="text-align-center">
+					<button class="button button-square button-primary">
+						<svg width="16" height="16" viewBox="0 0 16 16">
+							<circle cx="8" cy="8" r="8"></circle>
+						</svg>
+					</button>
 				</td>
 				<td>
+					
 					Presentation of information prepared or calculated by PATHFINDER. 
-					Can be displayed in a pop-up window (sometimes in full screen). 
-					Usually involves a variable processing time.
+					It can be shown in a pop-up window (sometimes full screen), and normally 
+					implies a variable processing time.
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<a class="pure-button border-left-orange" href="javascript:;">&nbsp;</a>
+				<td class="text-align-center">
+					<button class="button button-square button-warning">
+						<svg width="16" height="16" viewBox="0 0 16 16">
+							<circle cx="8" cy="8" r="8"></circle>
+						</svg>
+					</button>
 				</td>
 				<td>
-					File upload from the client’s computer disk. Normally the files consumed by PATHFINDER are usually in 
-					<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/JSON">JSON</a> format.
+					Loading in memory of a file from client computer disc. Normally, 
+					PATHFINDER consumes files in 
+					<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/JSON">JSON</a> 
+					format. Be careful about it to avoid system errors.
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<a class="pure-button border-left-green" href="javascript:;">&nbsp;</a>
+				<td class="text-align-center">
+					<button class="button button-square button-success">
+						<svg width="16" height="16" viewBox="0 0 16 16">
+							<circle cx="8" cy="8" r="8"></circle>
+						</svg>
+					</button>
 				</td>
 				<td>
-					Help information. This is usually in the form of a pop-up window.
+					Help info. Shown normally as a pop-up window.
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<a class="pure-button border-left-grey" href="javascript:;">&nbsp;</a>
+				<td class="text-align-center">
+					<button class="button button-square button-grey">
+						<svg width="16" height="16" viewBox="0 0 16 16">
+							<circle cx="8" cy="8" r="8"></circle>
+						</svg>
+					</button>
 				</td>
 				<td>
-					Printing or downloadig image or Adobe&trade; Acrobat&reg; (PDF) file.
+					Printing or downloading of a image or Adobe&trade; Acrobat&reg; (PDF) file.
 				</td>
 			</tr>
 			<tr>
-				<td class="highlight is-text-center">
-					<a class="pure-button border-left-cyan" href="javascript:;">&nbsp;</a>
+				<td class="text-align-center">
+					<button class="button button-square button-info">
+						<svg width="16" height="16" viewBox="0 0 16 16">
+							<circle cx="8" cy="8" r="8"></circle>
+						</svg>
+					</button>
 				</td>
 				<td>
-					[NOT YET SET].
+					System operations.
 				</td>
 			</tr>
 		</tbody>

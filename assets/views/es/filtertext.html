@@ -1,10 +1,10 @@
-<div class="group group-xs margin-bottom-l">
+<div class="group group-xs margin-bottom-l no-print">
 	<ul>
 		<li>
 			<button id="xstab0" 
 				class="xstablinks button button-grey button-border" 
 				onclick="javascript:toolkit.generictab('xstab0', 'xc-atab-zero', 'xstabcontent', 'xstablinks');">
-			Avanzado</button>
+			Definición</button>
 		</li>
 		<li>
 			<button id="xstab1" 
@@ -40,6 +40,9 @@
 			<path class="plus" d=""></path>
 		</svg>
 	</button>
+	<span class="form-message color-light margin-left-s">
+		Fórmula: faceta + campo + operador + valor (lista de valores) = calcular o eliminar
+	</span>
 </p>
 
 <div id="flt-main"></div>
@@ -55,198 +58,164 @@
 </div>
 
 <div id="xc-atab-three" class="xstabcontent hide">
-<h4 class="margin-vertical-s">Consideraciones previas</h4>
-<p>
-	PATHFINDER utiliza el paradigma de 
-	<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Filtro_(matemáticas)"><strong>filtro</strong></a>, 
-	propio de la 
-	<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Teor%C3%ADa_de_conjuntos">teoría de conjuntos</a>. Básicamente 
-	trata de seleccionar mediante inclusión o exclusión de determinadas características a un subgrupo de los registros 
-	presentes en el sistema.
-</p>
-<p>
-	Tenga en cuenta que <em>una vez aplicado un filtro a los datos, permanecerá activo</em> hasta que no se exstablezca 
-	lo contrario, y su presencia <em>afecta a TODAS las operaciones</em> que PATHFINDER ejecute.
-</p>
+	<p>
+		PATHFINDER utiliza el paradigma de 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Filtro_(matemáticas)">
+			filtro</a>, propio de la 
+		<a rel="noopener" target="_blank" href="https://es.wikipedia.org/wiki/Teor%C3%ADa_de_conjuntos">
+			teoría de conjuntos</a>.
+		Básicamente trata de seleccionar un subconjunto de registros primarios 
+		mediante inclusión o exclusión de determinadas características que afecten a sus títulos, 
+		metadatos o taxonomías.
+	</p>
+	
+	<p class="aside background-warning-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="bell" d=""></path>
+		</svg>
+		IMPORTANTE. Una vez aplicado un filtro a los datos, permanecerá activo 
+		hasta que no se establezca un nuevo filtro o se elimine el que está presente.
+	</p>
+	
+	<p class="aside background-info-50">
+		<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+			<path class="info" d=""></path>
+		</svg>
+		A TENER EN CUENTA. La presencia de un filtro afecta a TODAS las operaciones 
+		realizadas por PATHFINDER.
+	</p>
+	
+	<h4 class="margin-vertical-s">Definición de filtro</h4>
+	<p>
+		Permite establecer condiciones que acotan el conjunto de registros primarios. El orden en que 
+		añada las condiciones no afecta al resultado final.
+	</p>
+	<p>
+		Puede añadir cualquier número de condiciones pulsando sucesivamente sobre el botón 
+		<mark class="background-info-100">
+			<svg width="14" height="14" viewBox="0 0 24 24" class="svgicon">
+				<path class="plus" d=""></path>
+			</svg>
+		</mark>
+	</p>
+	<p>
+		En cada condición los únicos campos obligatorios son <em>operador</em> y <em>valor</em>. 
+		Cada condición consta de los siguientes elementos:
+	</p>
 
-<h4 class="margin-vertical-s">Filtro avanzado</h4>
-<p>
-	Permite exstablecer <em>condiciones</em> sucesivas y concurrentes que <em>acotarán</em> el ámbito de trabajo. Para ello: 
-</p>
 	<ol>
 		<li>
-			Exstablezca los <em>restrictores</em> para una condición. Tenga en cuenta que únicamente son <em>obligatorios</em> 
-			<em>operador</em> y <em>valor</em>.
-			<ol>
-				<li>
-					<em>modificador</em>: extrae un aspecto determinado de ciertas metainformaciones; por ejemplo, 
-					<em>año</em> o <em>día de la semana</em> de una fecha.
-				</li>
-				<li>
-					<em>metainformación</em>: también denominado <em>faceta</em> en ciertos sistemas; determina sobre 
-					qué tipo de información se realizará la búsqueda; por ejemplo, <em>lugar donde se celebra</em> una exposición.
-				</li>
-				<li>
-					<em>operador</em>: determina cómo ha de cumplirse una condición; por ejemplo, que un registro <em>contenga</em> o 
-					<em>no sea igual</em> a un <em>valor</em> dado; tenga en cuenta que dicho cumplimiento, si no se 
-					especifica <em>modificador</em> o <em>metainformación</em>, el cumplimiento de la condición se 
-					verificará sobre <em>todos los registros</em>.
-				</li>
-				<li>
-					<em>valor</em>: texto a buscar (puede ser una cifra, una fecha,&hellip;). <span class="no-data">ATENCIÓN: 
-					si utiliza el operador <em>entre</em> separe los valores con el símbolo "/" (barra)</span>. Es decir, 
-					si desea buscar un valor comprendido entre 2010 y 2011 escriba "2010/2011".
-				</li>
-				<li>
-					<em>relación</em>: inclusión &mdash;o no&mdash; de los registros que se relacionan con cada uno de los 
-					que cumplan la condición. Hay dos tipos de relación: <em>entrante</em> (cualquier registro que se 
-					vincule al seleccionado; por ejemplo, un actor que participa como artista en una exposición) y 
-					<em>saliente</em> (cualquier registro con el que el seleccionado se relacione; por ejemplo, 
-					un catálogo en el que el actor seleccionado participe como autor).
-				</li>
-			</ol>
-		</li>		 
-		<li>
-			Pulse <strong>=</strong> (signo <em>igual</em>) para que PATHFINDER calcule el número de registros o 
-			<em>subconjunto</em> que cumple la condición.
+			<em>modificador</em>: extrae un aspecto determinado de ciertas 
+			metainformaciones; por ejemplo, <em>año</em> o <em>día de la semana</em> de una fecha.
 		</li>
 		<li>
-			Añada, si lo desea, cuantas condiciones precise para acotar el filtro.
+			<em>metainformación</em>: también denominado <em>faceta</em>; determina sobre 
+			qué tipo de información se realizará la búsqueda; 
+			por ejemplo, <em>lugar donde se celebra</em> una exposición.
 		</li>
 		<li>
-			Una vez haya calculado todas las condiciones implicadas, exstablezca el filtro siguiendo el esquema adecuado a lo que 
-			se pretenda conseguir.
-			<ol>
-				<li>
-					<em>Todas (intersección)</em>: el filtro deberá seleccionar aquellos registros que cumplen simultáneamente 
-					todas las condiciones exstablecidas.
-				</li>
-				<li>
-					<em>Cualquiera (unión)</em>: el filtro deberá seleccionar aquellos registros que cumplen cualquiera de  
-					las condiciones exstablecidas.
-				</li>
-				<li>
-					<em>La primera y no el resto (diferencia)</em>: el filtro deberá seleccionar 
-					aquellos registros que cumplen la primera  
-					condición pero no las subsiguientes. Tenga en cuenta que es más eficaz si solamente se especifican 
-					dos condiciones, puesto que si añade más cada vez será más restrictivo.
-				</li>
-			</ol>
+			<em>operador</em>: determina cómo ha de cumplirse una condición; 
+			por ejemplo, que un registro <em>contenga</em> o 
+			<em>no sea igual</em> a un <em>valor</em> dado; 
+			tenga en cuenta que dicho cumplimiento, si no se 
+			especifica <em>modificador</em> o <em>metainformación</em>, 
+			se verificará sobre <em>todos los registros</em>.
 		</li>
 		<li>
-			Cada vez que añada o quite una condición deberá calcularla individualmente (signo =, <em>igual</em>) o 
-			no se incluirá en el filtro.
+			<em>valor</em>: texto a buscar (puede ser una cifra, una fecha,&hellip;). 
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANTE. Si utiliza el operador <em>entre</em> 
+				separe los valores con el símbolo "/" (barra) Es decir, 
+				si desea buscar un valor comprendido entre 2010 y 2011 escriba "2010/2011".
+			</p>
+			<p class="aside background-info-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="info" d=""></path>
+				</svg>
+				A TENER EN CUENTA. El uso de los operadores "contenga" y "no contenga" implica que 
+				la búsqueda se realizará sin tener en cuenta mayúsculas, minúsculas o tildes (caracteres 
+				acentuados).
+			</p>
+		</li>
+		<li>
+			búsqueda de coincidencias: el botón 
+			<mark class="background-light-200 margin-right-xxs">
+				<svg width="14" height="14" viewBox="0 0 24 24" class="svgicon">
+					<path class="search" d=""></path>
+				</svg>
+			</mark>
+			muestra una lista de valores presentes en los registros primarios, 
+			taxonomías o metainformaciones que coincidan con lo que figura en <em>valor</em>. La 
+			búsqueda se realizará utilizando el operador "contenga".
+		</li>
+		<li>
+			resultado parcial: se muestra como una cifra con fondo 
+			<mark class="background-error-50">rojo claro</mark> si es 0 y 
+			<mark class="background-success-50">verde claro</mark> si es superior. Expresa el  
+			número de registros primarios que cumplen la condición.
+		</li>
+		<li>
+			quitar: borrar la condición.
 		</li>
 	</ol>
-	<p>
-		Dispone de una lista de <em>modificadores</em>, <em>metainformaciones</em> y <em>operadores</em> válidos 
-		el el apartado de <a href="javascript:toolkit.showpanel('flt-one');"><em>Terminología</em></a>. La ilustración que 
-		se muestra a continuación puede ayudar a comprender mejor el proceso de filtrado. 
-	</p>
 
-	<div class="margin-vertical-s">
-		<div class="pure-u-1-2">
-			<p>
-				<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
-				<g fill="#FFF">
-				<circle cx="200" cy="137.5" r="137.5"/>
-				<circle cx="137.5" cy="262.5" r="137.5"/>
-				<circle cx="262.5" cy="262.5" r="137.5"/>
-				</g><g stroke-width="10" stroke="#606060" fill="none">
-				<circle cx="200" cy="137.5" r="132.5"/>
-				<circle cx="137.5" cy="262.5" r="132.5"/>
-				<circle cx="262.5" cy="262.5" r="132.5"/>
-				</g>
-				<g font-weight="bold" fill="#888" font-family="Roboto Mono">
-				<text font-size="72px">
-				<tspan x="176" y="100">A</tspan>
-				<tspan x="46" y="300">B</tspan>
-				<tspan x="300">C</tspan></text>
-				<text font-size="48px">
-				<tspan x="148" y="241">ABC</tspan>
-				<tspan x="168" y="333">BC</tspan>
-				<tspan x="83" y="185">AB</tspan>
-				<tspan x="250">AC</tspan></text>
-				</g></svg>
-			</p>
-		</div>
-		<div class="table-responsive">
-			<table>
-				<caption>
-					Combinaciones
-				</caption>
-				<thead>
-					<tr>
-						<th>&nbsp;</th>
-						<th>Todas</th>
-						<th>Cualquiera</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>A, B, C</td>
-						<td>ABC</td>
-						<td>A B C AB BC AC ABC</td>
-					</tr>
-					<tr>
-						<td>A, B</td>
-						<td>AB</td>
-						<td>A B AB</td>
-					</tr>
-					<tr>
-						<td>B, A</td>
-						<td>AB</td>
-						<td>A B AB</td>
-					</tr>
-					<tr>
-						<td>A, C</td>
-						<td>AC</td>
-						<td>A C AC</td>
-					</tr>
-					<tr>
-						<td>C, A</td>
-						<td>AC</td>
-						<td>A C AC</td>
-					</tr>
-					<tr>
-						<td>B, C</td>
-						<td>BC</td>
-						<td>B C BC</td>
-					</tr>
-					<tr>
-						<td>C, B</td>
-						<td>BC</td>
-						<td>B C BC</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-
-	<h4 class="margin-vertical-s">Búsqueda</h4>
+	<h4 class="margin-vertical-s">Inclusión y restricción</h4>
 	<p>
-		Para que la búsqueda sea efectiva deberá seguir las siguientes convenciones.
+		PATHFINDER realiza la operación de cálculo del filtro por pasos sucesivos:
 	</p>
+	<ol type="A">
+		<li>
+			Calcula los registros primarios que cumplen SIMULTÁNEAMENTE TODAS las condiciones expresadas 
+			(intersección entre los subconjuntos).
+		</li>
+		<li>
+			Calcula TODOS los registros primarios <em>relacionados</em> con los seleccionados en el paso A 
+			que se hayan marcado en el botón 
+			<mark class="background-light-200">Incluir</mark>.
+		</li>
+		<li>
+			Incluirá en el resultado final los registros primarios seleccionados en el paso A más 
+			los seleccionados en el paso B. Pero si se marca cualquier <em>campo relacional</em> 
+			de los que se muestran al pulsar el botón 
+			<mark class="background-light-200">Restricciones</mark>, solo se incluirán 
+			de los seleccionados en el paso B aquellos que estén relacionados con los seleccionados 
+			en el paso A por los campos marcados. Por ejemplo, si se incluyen 
+			registros de tipo <em>actor</em> y se marcan como restricciones los campos relacionales 
+			<em>actor comisario</em> y <em>coleccionista prestatario</em> PATHFINDER no seleccionará 
+			ningún <em>actor artista</em> a menos que esté incluido en las condiciones 
+			especificadas en el paso A; en ese caso, si se incluyen en las condiciones todas las exposiciones 
+			en las que participe Goya como artista pero se restringen de la manera expresada, PF 
+			filtrará las exposiciones del pintor aragonés con sus comisarios y prestatarios.
+		</li>
+	</ol>
+
+	<h4 class="margin-vertical-s">Operaciones</h4>
+	<p>
+		PATHFINDER realiza las siguientes operaciones de filtro con los botones que figuran al 
+		pie de la página.
+	</p>	
 	<ol>
-		<li> 
-			Escriba <em>todo</em> o <em>parte</em> del texto que desee buscar.
+		<li>
+			Colecciones. Un grupo de condiciones, inclusiones y restricciones se denomina <emZ>colección</em>. 
+			Una vez definido tal grupo puede guardarse en el disco local del ordenador cliente, y ser 
+			recupero cuando se desee.
 		</li>
 		<li>
-			Seleccione dónde se realizará la búsqueda: o en un tipo de metadato 
-			asociado a los registros o en cualquiera de ellos.
+			Calcular. Revisa una por una todas las condiciones y calcula sus resultados parciales.
 		</li>
 		<li>
-			Pulse <em>calcular</em> para que PATHFINDER evalúe los resultados obtenidos.
+			Filtrar y limpiar. Establecer o borrar una colección como filtro.
 		</li>
 		<li>
-			Pulse <em>filtrar</em> para que PATHFINDER exstablezca el filtro. 
-			Recuerde que <em>pulsar esta opción provocará un error si previamente 
-			no se ha realizado el cálculo</em>.
+			Vínculos de filtro. Botón que aparece una vez establecido 
+			un filtro y que muestra un grafo dirigido con los distintos tipos de registros primarios 
+			y la forma en que la colección de filtro los relaciona entre sí.
 		</li>
 	</ol>
 	
 	<h4 class="margin-vertical-s">Diagrama de un proceso de filtrado</h4>
-	<img src="./assets/img/illustrations/filter_es.png">
+	<img src="./assets/img/illustrations/filter_es.svg" class="margin-bottom-l">
 </div>
-
-

@@ -209,6 +209,69 @@
 								<a data-mapzoom="5" href="javascript:info.settings('mapzoom', 5);">5</a>, 
 								<a data-mapzoom="6" href="javascript:info.settings('mapzoom', 6);">6</a>.
 							</li>
+							<li>
+								<div class="group group-m">
+									<ul>
+										<li>
+											Mapa base por defecto: 
+										</li>
+										<li>
+											<label class="select" for="mapbase-select">
+												<select id="mapbase-select" 
+													onchange="info.settings('mapbasedefault', Number(this.value));">
+													<option value="0">OSM Color</option>
+													<option value="1">OSM HOT</option>
+													<option value="2">CartoDB DarkMatter</option>
+													<option value="3">CartoDB Positron</option>
+													<option value="4">CartoDB Positron No Labels</option>
+													<option value="5">CartoDB Positron Labels Only</option>
+													<option value="6">CartoDB Voyager</option>
+													<option value="7">CartoDB Voyager No Labels</option>
+													<option value="8">CartoDB Voyager Labels Only</option>
+													<option value="9">ESRI World Imagery</option>
+													<option value="10">ESRI World Street Map</option>
+													<option value="11">ESRI World Topographic Map</option>
+													<option value="12">ESRI World Gray Canvas</option>
+													<option value="13">Hydda Full</option>
+													<option value="14">Hydda Base</option>
+													<option value="15">OpenTopoMap</option>
+													<option value="16">Stamen TonerLite</option>
+													<option value="17">Stamen Terrain</option>
+													<option value="18">Wikimedia</option>
+												</select>
+											</label>
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<div class="group group-m">
+									<ul>
+										<li>
+											Colores para gradiente de mapa de calor: 
+										</li>
+										<li>
+											40% 
+											<input id="hmaplow" data-hmaplow="1" type="color" value="#00ffff" 
+												onchange="info.settings('hmaplow',this.value);">
+											65% 
+											<input id="hmapmedium" data-hmapmedium="1" type="color" value="#ffff00" 
+												onchange="info.settings('hmapmedium',this.value);">
+											100% 
+											<input id="hmaphigh" data-hmaphigh="1" type="color" value="#ff0000" 
+												onchange="info.settings('hmaphigh',this.value);">
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								Animación temporal. Intervalo: 
+								<a data-mapanimation="1000" href="javascript:info.settings('mapanimation', 1000);">1s</a>, 
+								<a data-mapanimation="2000" href="javascript:info.settings('mapanimation', 2000);">2s</a>, 
+								<a data-mapanimation="3000" href="javascript:info.settings('mapanimation', 3000);">3s</a>, 
+								<a data-mapanimation="4000" href="javascript:info.settings('mapanimation', 4000);">4s</a>, 
+								<a data-mapanimation="5000" href="javascript:info.settings('mapanimation', 5000);">5s</a>.
+							</li>
 						</ul>
 
 						<h3 id="title-scales">Escala cromática</h3>

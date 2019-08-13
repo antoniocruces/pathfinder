@@ -85,7 +85,7 @@ const ui = {
 				return selectlabel;
 			}
 			let align = (typ, txt) => {
-				let statslist = [c`count`.uf(), 'Z', 'O', 'L', 'S'];
+				let statslist = [c`count`.uf(), 'Z', 'O', 'L', 'S', 'B', 'F', 'T'];
 				if(typ === 'th') {
 					return `text-align-center${statslist.includes(txt) ? ' color-info' : ''}`;
 				} else {
@@ -195,7 +195,7 @@ const ui = {
 						`<li class="text-align-right">`,
 						`<input type="search" name="text-search" class="pull-right plain-search" `,
 						`id="${options.type + '-'}text-search" `,
-						`placeholder="${c`search`.uf()}..." value="${options.searchtext}">`,
+						`placeholder="${c`intro-to-search`}..." value="${options.searchtext}">`,
 						`</li>`,
 						
 						`</ul>`,
@@ -213,16 +213,16 @@ const ui = {
 		
 				toolkit.cleardomelement(options.cid);
 
-				//byId(options.cid).classList.add('vertical-center');
+				/*
 				toolkit.msg(
 					'relations-listing', 
 					`<p class="color-blue text-align-center vertical-center">${c`working`.uf()}</p>`,
 				);
+				*/
 				
 				let tmptbl = createTable([headings, ...subset]);
 
 				toolkit.msg(options.cid, '');
-				//byId(options.cid).classList.remove('vertical-center');
 				
 				byId(options.cid).insertAdjacentHTML('beforeend', tmptbl);
 				
@@ -297,17 +297,19 @@ const ui = {
 					options.updatepagefn, 
 					{capture: false, passive: true}
 				);
-				byId(options.type + '-text-search').addEventListener(
-					'keyup', 
-					options.selectorfn, 
-					{capture: false, passive: true}
-				);
+
 				byId(options.type + '-text-search').addEventListener(
 					'search', 
 					options.selectorfn, 
 					{capture: false, passive: true}
 				);
-
+				
+				byId(options.type + '-text-search').addEventListener(
+					'blur', 
+					options.selectorfn, 
+					{capture: false, passive: true}
+				);
+				
 				byId(options.type + '-pgxbutton').addEventListener(
 					'click', 
 					options.exportfn, 
@@ -322,14 +324,8 @@ const ui = {
 					toolkit.msg(options.type + '-page-stats', options.stats);
 				}
 				
-				byId(options.type + '-text-search').focus();
-				let endindex = byId(options.type + '-text-search').value.length
-				if(byId(options.type + '-text-search').setSelectionRange) {
-					byId(options.type + '-text-search').setSelectionRange(endindex, endindex);
-				}
-						
 				toolkit.drawicons();		
-				subset = headings = getCells = createBody = createTable = endindex = undefined;
+				subset = headings = getCells = createBody = createTable = undefined;
 			} else {
 				toolkit.msg(
 					options.cid, 
@@ -342,7 +338,7 @@ const ui = {
 						`<li class="text-align-right">`,
 						`<input type="search" name="text-search" class="pull-right plain-search" `,
 						`id="${options.type + '-'}text-search" `,
-						`placeholder="${c`search`.uf()}..." value="${options.searchtext}">`,
+						`placeholder="${c`intro-to-search`}..." value="${options.searchtext}">`,
 						`</li>`,
 
 						`</ul>`,
@@ -353,20 +349,21 @@ const ui = {
 					].join('')
 				);
 
-				byId(options.type + '-text-search').addEventListener('keyup', options.selectorfn, {capture: false, passive: true});
-				byId(options.type + '-text-search').addEventListener('search', options.selectorfn, {capture: false, passive: true});
+				byId(options.type + '-text-search').addEventListener(
+					'search', 
+					options.selectorfn, 
+					{capture: false, passive: true}
+				);
+				
+				byId(options.type + '-text-search').addEventListener(
+					'blur', 
+					options.selectorfn, 
+					{capture: false, passive: true}
+				);
 				
 				if(!isBlank(options.caption)) {
 					toolkit.msg(options.type + '-page-caption', options.caption);
 				}
-				
-				byId(options.type + '-text-search').focus();
-				var endindex = byId(options.type + '-text-search').value.length
-				if(byId(options.type + '-text-search').setSelectionRange) {
-					byId(options.type + '-text-search').setSelectionRange(endindex, endindex);
-				}
-				
-				endindex = undefined;
 			}
 			if(useoverlay) screen.siteoverlay(false);
 			
@@ -374,6 +371,180 @@ const ui = {
 			align = makecelltext = undefined;
 		});
 	},
+
+	makepivottable: (pivotData, opts) => {
+		let renderOptions = {
+			isShowAttr: true,
+			isShowCount: false,
+		};
+		renderOptions = Object.assign(renderOptions, opts);
+	
+		let colAttrs = pivotData.colAttrs;
+		let rowAttrs = pivotData.rowAttrs;
+		let colKeys = pivotData.colKeys;
+		let rowKeys = pivotData.rowKeys;
+	
+		let pivotWrapper = document.createElement('div');
+		pivotWrapper.setAttribute('class', 'table-responsive');
+
+		let pivotTable = document.createElement('table');
+		pivotTable.setAttribute('class', 'font-size-s');
+		pivotTable.setAttribute('id', 'pivot-table');
+		
+		let tcaption = document.createElement('caption');
+		tcaption.innerHTML = [
+			`<p class="text-align-right">`,
+			`<a id="pivot-table-export" `,
+			`class="button button-tertiary button-icon button-border" `,
+			`href="javascript:`,
+			`file.exportdatatocsv(file.tabletoarray(byId(\'pivot-table\')),\'\\t\',false);`,
+			`">`,
+			`<span> `,
+			`${c`export`.uf() + '&hellip;'}`,
+			`</span>`,
+			`<svg width="22" height="22" viewBox="0 0 24 24" class="svgicon">`,
+			`<path class="download" d=""></path>`,
+			`</svg>`,
+			`</a>`,
+			`</p>`,
+		].join('');
+
+		pivotTable.appendChild(tcaption);
+
+		let thead = document.createElement('thead');
+		thead.setAttribute('class', 'font-weight-semibold');
+	
+		for (let iColAttrs = 0, lenColAttrs = colAttrs.length; iColAttrs < lenColAttrs; iColAttrs++) {
+			let tr = document.createElement('tr');
+			
+			if (iColAttrs === 0) {
+				if (rowAttrs.length > 0) {
+					let th = document.createElement('th');
+					th.setAttribute('colspan', rowAttrs.length);
+					th.setAttribute('rowspan', colAttrs.length);
+					tr.appendChild(th);
+				}
+				if (rowAttrs.length === 0 && renderOptions.isShowCount && !renderOptions.isShowAttr) {
+					let th = document.createElement('th');
+					th.setAttribute('rowspan', colAttrs.length);
+					tr.appendChild(th);
+				}
+			}
+	
+			if (renderOptions.isShowAttr) {
+				let th = document.createElement('th');
+				th.textContent = fc(String(colAttrs[iColAttrs]));
+				tr.appendChild(th);
+			}
+	
+			for (let i = 0, len = colKeys.length; i < len; i++) {
+				let colSpan = PivotData._spansize(colKeys, i, iColAttrs);
+				if (colSpan !== -1) {
+					let th = document.createElement('th');
+					th.textContent = fc(String(colKeys[i][iColAttrs]));
+					th.setAttribute('colspan', colSpan);
+					if (renderOptions.isShowAttr && rowAttrs.length > 0 && iColAttrs === lenColAttrs - 1) {
+						th.setAttribute('rowspan', 2);
+					}
+					tr.appendChild(th);
+				}
+			}
+	
+			if (iColAttrs === 0 && renderOptions.isShowCount) {
+				let th = document.createElement('th');
+				th.textContent = c`total`.uf();
+				th.setAttribute('rowspan', colAttrs.length + (rowAttrs.length === 0 ? 0 : 1));
+				tr.appendChild(th);
+			}
+	
+			thead.appendChild(tr);
+		}
+	
+		if (renderOptions.isShowAttr && rowAttrs.length > 0) {
+			let tr = document.createElement('tr');
+			for (let i = 0, len = rowAttrs.length; i <= len; i++) {
+				let th = document.createElement('th');
+				th.textContent = rowAttrs[i] ? fc(String(rowAttrs[i])) : '/';
+				if(!rowAttrs[i]) th.setAttribute('class', 'text-align-center');
+				tr.appendChild(th);
+			}
+	
+			if (colAttrs.length === 0 && renderOptions.isShowCount) {
+				let th = document.createElement('th');
+				th.textContent = c`total`.uf();
+				tr.appendChild(th);
+			}
+	
+			thead.appendChild(tr);
+		}
+	
+		pivotTable.appendChild(thead);
+	
+		let tbody = document.createElement('tbody');
+	
+		for (let iRowKeys = 0, lenRowKeys = rowKeys.length; iRowKeys < lenRowKeys; iRowKeys++) {
+			let tr = document.createElement('tr');
+			for (let i = 0, len = rowKeys[iRowKeys].length; i < len; i++) {
+				let rowSpan = PivotData._spansize(rowKeys, iRowKeys, i);
+				if (rowSpan !== -1) {
+					let th = document.createElement('th');
+					th.textContent = rowKeys[iRowKeys][i];
+					th.setAttribute('rowspan', rowSpan);
+	
+					if (renderOptions.isShowAttr && colAttrs.length > 0 && i === len - 1) {
+						th.setAttribute('colspan', 2);
+					}
+	
+					tr.appendChild(th);
+				}
+			}
+	
+			for (let i = 0, len = colKeys.length; i < len; i++) {
+				let td = document.createElement('td');
+				td.setAttribute('class', 'text-align-right');
+				td.innerHTML = pivotData.getAggregator(rowKeys[iRowKeys], colKeys[i]).format();
+	
+				tr.appendChild(td);
+			}
+	
+			if (renderOptions.isShowCount) {
+				let td = document.createElement('td');
+				td.setAttribute('class', 'text-align-right');
+				td.innerHTML = pivotData.getAggregator(rowKeys[iRowKeys], []).format();
+				tr.appendChild(td);
+			}
+	
+			tbody.appendChild(tr);
+		}
+	
+		pivotTable.appendChild(tbody);
+	
+		if (renderOptions.isShowCount) {
+			let tr = document.createElement('tr');
+			let th = document.createElement('th');
+			th.textContent = c`total`;
+			th.setAttribute('colspan', rowAttrs.length + (colAttrs.length === 0 || !renderOptions.isShowAttr ? 0 : 1));
+			tr.appendChild(th);
+	
+			for (let i = 0, len = colKeys.length; i < len; i++) {
+				let td = document.createElement('td');
+				td.innerHTML = pivotData.getAggregator([], colKeys[i]).format();
+				td.setAttribute('class', 'text-align-right');
+				tr.appendChild(td);
+			}
+	
+			let td = document.createElement('td');
+			td.setAttribute('class', 'text-align-right');
+			td.innerHTML = pivotData.getAggregator([], []).format();
+			tr.appendChild(td);
+	
+			pivotTable.appendChild(tr);
+		}
+	
+		pivotWrapper.appendChild(pivotTable);
+		return pivotWrapper;
+	},
+
 	makestats: arr => {
 		let stats = dbs.stats(arr) || {};
 		let len = Object.keys(stats).length;
@@ -397,6 +568,7 @@ const ui = {
 		};
 	},
 	datalist: (cid = '', page = 1, row = '', text = '', srt = 1, xprt = false) => {
+		if(!dbe.verifytables()) return;
 		if(!screen.siteoverlayisset) {
 			screen.siteoverlay(true);
 		}
@@ -413,14 +585,15 @@ const ui = {
 					.map(o => o.ID);
 				result = Array.from(new Set([...posfilter, ...taxfilter]));
 			} else {
-				result = d.filterids;
+				result = dbe._filterids();
 			}
 			let setresult = new Set(result);
 			posfilter = taxfilter = result = undefined;
 			
 			let rowsfields = ['type', 'title', 'taxonomies'];
 			let descending = srt < 0 ? '-' : ''; 
-			let sortedlist = d.filterids.map(o => ({
+			let tmp = dbe._filterids();
+			let sortedlist = tmp.map(o => ({
 				ID: o,
 				type: c(d.store.pos[o].rkey).uf(),
 				title: toolkit.titleformat(d.store.pos[o].value),
@@ -429,7 +602,7 @@ const ui = {
 					'',
 			})).sortBy([descending + rowsfields[Math.abs(srt) - 1]]);
 			
-			rowsfields = descending = undefined;
+			rowsfields = descending = tmp = undefined;
 			
 			if(xprt) {
 				file.exportdatatocsv(sortedlist.filter(o => setresult.has(o.ID)));
@@ -443,7 +616,6 @@ const ui = {
 				cid: 'data-listing',
 				type: 'list',
 				page: Number(page) || d.currentpages.list,
-				/* caption: true, */
 				items: sortedlist.map(o => o.ID).filter(o => setresult.has(o)), 
 				searchtext: text,
 				pgfunction: 'ui.datalist',
@@ -469,7 +641,6 @@ const ui = {
 						title: [
 							`<a href="javascript:ui.singlerecord(${id},${id},true);">`,
 							`${str1}</a>`,
-							/* `</a>`, */
 						].join(''),
 						taxonomies: str2,
 					};
@@ -501,8 +672,8 @@ const ui = {
 					ui.datalist(cid, page, row, text, srt, true);
 				},
 			};
-			ui.maketable(opts);
 			if(screen.siteoverlayisset) screen.siteoverlay(false);	
+			ui.maketable(opts, true);
 			opts = sortedlist = undefined;
 		});
 	},
@@ -542,7 +713,7 @@ const ui = {
 			let tit = [c`tax`, c`met`, c`rel`];
 			let out = [];
 
-			out.push('<div class="group group-xs margin-top-s margin-bottom-s">');
+			out.push('<div class="group group-xs margin-top-s margin-bottom-s no-print">');
 			out.push('<ul>');
 
 			let net = (dbm.relations(true)[cid] || []);
@@ -603,15 +774,17 @@ const ui = {
 				`ui.singlestats(${cid})">${c`stats`.uf()}</a>`,
 				`</p>`,
 			].join(''));
-			out.push([
-				`<p class="no-margin-bottom">`,
-				`<svg width="18" height="18" viewBox="0 0 24 24" class="svgicon margin-right-xs">`,
-				`<path class="globe" d=""></path>`,
-				`</svg>`,
-				`<a class="text-decoration-none" id="s-stab-six" href="javascript:toolkit.selecttab('stab', 'six');`,
-				`ui.singlemap(${cid})">${c`maps`.uf()}</a>`,
-				`</p>`,
-			].join(''));
+			if(dbm.points(true)[cid]) {
+				out.push([
+					`<p class="no-margin-bottom">`,
+					`<svg width="18" height="18" viewBox="0 0 24 24" class="svgicon margin-right-xs">`,
+					`<path class="globe" d=""></path>`,
+					`</svg>`,
+					`<a class="text-decoration-none" id="s-stab-six" href="javascript:toolkit.selecttab('stab', 'six');`,
+					`ui.singlemap(${cid})">${c`maps`.uf()}</a>`,
+					`</p>`,
+				].join(''));
+			}
 			out.push([
 				`</div>`,
 				`</div>`,
@@ -731,6 +904,12 @@ const ui = {
 			screen.modal = screen.displaymodal(features);
 			features = icon = undefined;
 
+			if(!d.maptransformations.single.maintainqueries) {
+				d.mapsearch.single.id = null;
+				d.mapsearch.single.text = null;
+				d.maplayers.single.queries = {};
+			}
+
 			toolkit.statustext();
 			toolkit.timer('ui.singlerecord');
 			screen.siteoverlay(false);
@@ -778,12 +957,11 @@ const ui = {
 					return [
 						`<button `,
 						`class="button ${bgc} filter-search-result" `,
-						`data-tooltip="${c`calculate`} + ${c`result`}" `,
 						`onclick="javascript:ui.filtercondition(${nid});">`,
 						`${ndi.toLocaleString(l)}</button>`,
 					].join('');
 				};
-			
+				
 				let makesubfilter = () => {
 					let pinc = [];
 					let pres = [];
@@ -816,6 +994,16 @@ const ui = {
 						].join(''));
 					});
 					
+					let refinesignal = d.filterrefine ? [
+						`<li>`,
+						`<a class="button button-border button-error button-icon" `,
+						`href="javascript:ui.clearfilterrefine();">`,
+						`${c`clear-filter-refine`.uf()} `,
+						`(${d.filterrefine ? d.filterrefine.size.toLocaleString(l) : ''})`,
+						`</a>`,
+						`</li>`,
+					].join('\n') : '';
+					
 					let sub = [
 						`<div class="group group-xs">`,
 						`<ul>`,
@@ -841,15 +1029,23 @@ const ui = {
 						`<li>`,
 						`<a class="button button-border" `,
 						`data-tooltip="${c`filter-description`}" `,
-						`href="javascript:toolkit.generictab('xstab1', 'xc-atab-two', 'xstabcontent', 'xstablinks');">`,
+						`href="javascript:toolkit.generictab('xstab1', 'xc-atab-one', 'xstabcontent', 'xstablinks');">`,
 						`<span>`,
 						`${c`filtered`.uf()}: `,
-						d.filtered.toLocaleString(l),
+						dbe._filtered().toLocaleString(l),
 						`</span>`,
-						`<span id="flt-microchart" class="margin-left-s">`,
+						`</li>`,
+
+						`<li>`,
+						`</a>`,
+						`<a class="button button-light button-border button-icon" `,
+						`href="javascript:info.filterstats();">`,
+						`<span id="flt-microchart">`,
 						`</span>`,						
 						`</a>`,
 						`</li>`,
+
+						`${refinesignal}`,
 
 						`<li>`,
 						`<span id="fltwarning" class="color-error margin-right-l"></span>`,
@@ -858,6 +1054,8 @@ const ui = {
 						`</ul>`,
 						`</div>`,			
 					].join('');
+					
+					refinesignal = undefined;
 					
 					return sub;	
 				};
@@ -989,7 +1187,6 @@ const ui = {
 							value="${o.value}"
 							onkeyup="dbq.updatefiltercondition(${ix}, this);ui.filtercondisok(${ix})" />
 							<button class="button button-border button-icon" 
-							data-tooltip="${c`values-list`}" 
 							onclick="javascript:ui.listvalues(${ix});">
 							<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
 							<path class="search" d=""></path>
@@ -1002,7 +1199,6 @@ const ui = {
 							<div class="button-group">
 							${makenode(ix, o.results.length, o.isok, o.matches)}
 							<button class="button" 
-							data-tooltip="${c`remove-condition`}" 
 							onclick="javascript:ui.removecondition(${ix});">
 							${c`remove`.uf()}
 							</button>
@@ -1032,51 +1228,8 @@ const ui = {
 					});
 	
 					toolkit.msg('flt-incsubf', makesubfilter());
-					toolkit.microchart('flt-microchart', Math.round((d.filtered / d.poslength) * 100), 'filterchart');
+					toolkit.microchart('flt-microchart', Math.round((dbe._filtered() / d.poslength) * 100), 'filterchart');
 					toolkit.msg('flt-filterlength', d.filter.length.toLocaleString(l));
-					
-					/*
-					if(document.getElementById('search-main')) {
-						let srh = [];
-						srh.push(`
-							<div class="group group-xs">
-							<ul>
-							<li>
-							<label class="select" for="search-rkey">
-							<select id="search-rkey" 
-							onchange="dbq.updatefiltercondition(0, this);ui.filtercondisok(0)">
-							<option value=""${d.filter[0].rkey === '' ? ' selected' : ''}>${c`any-metainfo`}</option>
-							${k.keys.sort((a, b) => toolkit.rkeytranslate(a).localeCompare(toolkit.rkeytranslate(b), l)).map(x => 
-							`<option value="${x}"${d.filter[0].rkey === x ? ' selected' : ''}>
-							${toolkit.rkeytranslate(x)}</option>`)}
-							</select>
-							</label>
-							</li>
-							<li>
-							<input id="search-val" type="search" placeholder="${c`search`}..." 
-							class="filter-value" value="${d.filter[0].value}" 
-							onkeyup="dbq.updatesearchcondition(this.value)">
-							</li>
-							<li>	
-							<a class="button button-border button-icon button-info" 
-							data-tooltip="${c`search`}" 
-							href="javascript:ui.filtersearch(byId('search-val').value,byId('search-rkey').value, true, 'one');">
-							<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
-							<path class="search" d=""></path>
-							</svg> 
-							</a>
-							</li>
-							<li>
-							<span id="search-results"></span>
-							</li>
-							</ul>
-							</div>
-							<p id="search-description"></p>
-						`);
-						toolkit.msg('search-main', srh.join(''));
-						srh = undefined;
-					}
-					*/
 					
 					if(xfid) {
 						for(let i = 0, len = d.filter.length; i < len; i++) {
@@ -1089,9 +1242,6 @@ const ui = {
 						{tab: '1', pad: 'one'},
 						{tab: '2', pad: 'two'},
 						{tab: '3', pad: 'three'},
-						/*
-						{tab: '4', pad: 'four'},
-						*/
 					].find(o => o.pad === defaultpanel);
 					toolkit.generictab(`xstab${tabs.tab}`, `xc-atab-${tabs.pad}`, 'xstabcontent', 'xstablinks');
 					tabs = undefined;
@@ -1179,9 +1329,12 @@ const ui = {
 				d.filter[idx].results = ret.results;
 				
 				nod.querySelector('.filter-search-result').innerHTML = d.filter[idx].results.length.toLocaleString(l);
-				nod.querySelector('.filter-search-result').classList.remove('bg-success');
-				nod.querySelector('.filter-search-result').classList.remove('bg-error');
-				nod.querySelector('.filter-search-result').classList.add(d.filter[idx].results.length ? 'bg-success' : 'bg-error');
+				nod.querySelector('.filter-search-result').classList.remove('background-success-50');
+				nod.querySelector('.filter-search-result').classList.remove('background-error-50');
+				nod.querySelector('.filter-search-result').classList.add(d.filter[idx].results.length ? 
+					'background-success-50' : 
+					'background-error-50'
+				);
 				
 				if(document.getElementById('flt-description')) {
 					toolkit.msg('flt-description', ui.describefilter());
@@ -1291,7 +1444,7 @@ const ui = {
 		}
 		src = trn = isvalid = undefined;
 	},
-	setfilter: (opr, activatetimer = true) => {
+	setfilter: (opr, activatetimer = true, cid = 'base') => {
 		if(!dbq.readytosetfilter()) {
 			let url = 'assets/views/' + l.toLowerCase() + '/filternotready.html';
 			cfetch(url).then(txt => txt.text()).then(txt => { 
@@ -1305,7 +1458,7 @@ const ui = {
 		}
 		sleep(50).then(() => {
 			dbq.setfilter(opr === '_strict')
-			.then(() => {
+			.then(ret => {
 				d.currentfilterlink = opr;
 				if(document.getElementById('filter-info-stats')) {
 					toolkit.statustext();
@@ -1318,16 +1471,19 @@ const ui = {
 				d.currentpages.list = 0;
 
 				if(isVisible(byId('schema-listing'))) stats.schema();
-				if(isVisible(byId('relations-listing'))) stats.relations();
+				//if(isVisible(byId('relations-listing'))) stats.relations();
 				if(isVisible(byId('stats-charts'))) {
 					charts.chart();
 				}
 				if(isVisible(byId('stats-network'))) {
 					charts.relations();
 				}
-				if(isVisible(byId('stats-map'))) {
+				if(isVisible(byId('base-map'))) {
 					d.mapdata = {};
-					maps.basemap();
+					maps.basemap(cid);
+				}
+				if(isVisible(byId('single-map'))) {
+					maps.basemap(cid);
 				}
 
 				toolkit.statustext();
@@ -1336,7 +1492,7 @@ const ui = {
 				if(screen.siteoverlayisset) {
 					screen.siteoverlay(false);
 				}
-				if(!d.filterids.length) {
+				if(!dbe._filterids().length) {
 					throw new AppWarning(c`no-data`.uf());
 				}
 			})
@@ -1351,26 +1507,21 @@ const ui = {
 		});
 	},
 	describefilter: () => {
-		let out = [];
-		d.filter.forEach(o => {
-			out.push(
-				[
-					o.modifier !== '' ? c(o.modifier) : '',
-					o.rkey !== '' ? '[' + c(o.rkey) + ']' : '[' + c`any-metainfo` + ']',
-					c(o.operator),
-					o.value !== '' ? '"' + o.value + '"' : '',
-				].join(' ').trim()
-			);
-		});
-		let sub = [];
-		Object.keys(d.filtersubfilter).forEach(o => {
-			if(d.filtersubfilter[o]) sub.push(c(o));
-		});
+		let out = {terms: '', include: '', restrictions: ''};
+		out.terms = d.filter.map(o => [
+			o.modifier !== '' ? c(o.modifier) : '',
+			o.rkey !== '' ? c(o.rkey) : c`any-metainfo`,
+			c(o.operator),
+			o.value !== '' ? '"' + o.value + '"' : '',
+		].join(' ').trim()).join(` ${c`and`} `);
+		out.include = Object.keys(d.filtersubfilter)
+			.filter(o => d.filtersubfilter[o]).map(o => c(o)).join(', ');
+		out.restrictions = d.filtersublinks.map(o => fc(o)).join(', ');
+				
 		return [
-			`<p class="margin-top margin-bottom">`, 
-			out.join(d.currentfilterlink ? ' ' + c(d.currentfilterlink) + ' ' : ', '),
-			`.</p>`, 
-			sub.length ? `<p class="margin-bottom">${c`include`.uf()} ${sub.join(', ')}.</p>` : ``,
+			`<p class="aside margin-top margin-bottom background-light-100">`, 
+			Object.keys(out).map(o => c(o).uf() + ': ' + (isBlank(out[o]) ? c('none') : out[o])).join('. '),
+			`</p>`,
 		].join('');
 	},
 	describecondition: (fid = 0) => {
@@ -1395,20 +1546,43 @@ const ui = {
 		}
 	},
 	clearfilter: (showfilter = true) => {
-		dbq.clearfilter(Object.assign({}, d.filterrecord))
-		.then(() => {
-			// Collections reset
-			file.unloadremotecollection();
-			
-			if(isVisible(byId('modal-content'))) {
-				toolkit.modalclose();
-			}
-			if(showfilter) ui.filterscreen();
-			ui.datalist();
-		})
-		.catch(err => { 
-			throw new AppError(c`filter` + ': ' + err); 
+		screen.siteoverlay(true);
+		toolkit.statustext(true);
+		toolkit.timer('ui.clearfilter');
+		sleep(50).then(() => {
+			dbq.clearfilter(Object.assign({}, d.filterrecord))
+			.then(() => {
+				// Collections reset
+				file.unloadremotecollection();
+				
+				if(isVisible(byId('modal-content'))) {
+					toolkit.modalclose();
+				}
+				toolkit.timer('ui.clearfilter');
+				toolkit.statustext(false);
+				screen.siteoverlay(false);
+				if(showfilter) ui.filterscreen();
+				ui.datalist();
+			})
+			.catch(err => { 
+				toolkit.timer('ui.clearfilter');
+				toolkit.statustext(false);
+				screen.siteoverlay(false);
+				throw new AppError(c`filter` + ': ' + err); 
+			});
 		});
+	},
+	clearfilterrefine: () => {
+		d.filterrefine = null;
+		if(byId('base-map')) maps.datamap('base');
+		if(byId('schema-listing')) stats.schema();
+		//if(byId('relations-listing')) stats.relations();
+		if(byId('cooccurrences-listing')) stats.cooccurrences();
+		ui.datalist();
+		ui.filterscreen();
+		toolkit.statustext(false);
+		toolkit.timer('ui.clearfilterrefine');
+		screen.siteoverlay(true);
 	},
 	setfiltervalue: (fid, val) => {
 		let row = document.querySelector('[data-fid="' + fid + '"]');
@@ -1436,9 +1610,9 @@ const ui = {
 				<table>
 				<thead>
 				<tr>
-				<th colspan="2">${c('type').uf()}</th>
-				<th colspan="2">${c('filtered').uf()}</th>
-				<th>${c('total').uf()}</th>
+				<th colspan="2">${c`type`.uf()}</th>
+				<th colspan="2">${c`filtered`.uf()}</th>
+				<th>${c`total`.uf()}</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -1456,7 +1630,7 @@ const ui = {
 					</td>
 					<td>
 					<span style="color: ${dbe.getcolorfromslug(o)};">
-					${c(o).uf()}
+					${c(o)}
 					</span>
 					</td>
 					<td class="text-align-right">
@@ -1827,7 +2001,7 @@ const ui = {
 			dbq.singlestats(cid, row)
 			.then(res => {
 				let out = [];
-				if(res && res.length) {
+				if(res && Object.keys(res).length) {
 					let blacklist = ['ID', 'RID', 'relstartstring', 'relendstring', 'relpoint', 'relkey'];
 					let rowlist = Object.keys(res).filter(o => !blacklist.includes(o));
 	
@@ -1964,13 +2138,11 @@ const ui = {
 				droprows = out = undefined;
 				screen.siteoverlay(false);
 			})
-			/*
 			.catch(err => {
 				droprows = undefined;
 				screen.siteoverlay(false);
 				throw new AppError(c`stats` + ': ' + err);
 			});
-			*/
 		});
 	},
 	singletimeline: (cid, typ = 'year') => {
@@ -2165,249 +2337,7 @@ const ui = {
 			throw new AppError(c`taxogram` + ': ' + err);
 		});
 	},
-	singlemap: (cid, typ = '') => {
-		// BE CAREFUL: Modified leaflet-src.js, v1.3.1, line 5780.
-		// ORIGINAL: var first = e.touches ? e.touches[0] : e;
-		// MODIFIED: var first = e.touches.length ? e.touches[0] : e;
-		// "e.touches" is ever an array, so original value is ever true, too
-		
-		if (!window.L || !L.GeoJSON) throw new AppError(c`invalid-map-library`);
-		dbq.singlemap(cid)
-		.then(res => {
-			let isvalidflowpoint = f => (
-				f.origin_id && f.origin_lat && f.origin_lon && f.destination_id && f.destination_lat && f.destination_lon
-			);
-			let makepopupinfo = (nid, rkey) => {
-				let rec = dbe.getposbyid(nid) || null;
-				return !rec ? 
-					`ID: ${nid}` : 
-					`ID: ${nid}. <a href="javascript:ui.singlerecord(${nid},${cid})">${toolkit.titleformat(rec.value)}</a>
-					<br />${c(rkey)}						
-					`;
-			};
-			let mai = res.main.length ? dbe.makegeojson(res.main) : null;
-			let rel = dbe.makegeojson(res.related);
-			let nei = dbe.makegeojson(res.neighbourhood);
-			let flo = dbe.makegeojson([...res.related, ...res.neighbourhood].filter(o => isvalidflowpoint(o)));
-
-			let out = [];
-			out.push(`
-				<div class="group group-xs margin-top-s margin-bottom-s">
-				<ul>
-				<li>
-				${c`related`.uf()}: &#9711; ${rel.features.length.toLocaleString(l)}.
-				${c`neighbourhood`.uf()}: &#9634; ${nei.features.length.toLocaleString(l)}.
-				</li>
-				</ul>
-				</div>
-				<style>
-				.leaflet-control-layers-toggle {
-					background-image:url(${'./assets/js/vendor/leaflet/'}images/layers.png);
-				}
-				</style>
-				<div id="single-map" class="margin-vertical-s" 
-				style="width: 100%; height: 500px; border: 1px solid lightgray;"></div>
-			`);
-			
-			toolkit.msg('c-stab-six', out.join(''));
-			
-			let baselayers = {};
-			let overlays = {};
-			
-			baselayers['OSM Color'] = L.tileLayer.provider('OpenStreetMap.Mapnik');
-			baselayers['OSM B&W'] = L.tileLayer.provider('OpenStreetMap.BlackAndWhite');
-			baselayers['OSM HOT'] = L.tileLayer.provider('OpenStreetMap.HOT');
-			baselayers['OpenTopoMap'] = L.tileLayer.provider('OpenTopoMap');
-			baselayers['ESRI World Imagery'] = L.tileLayer.provider('Esri.WorldImagery');
-			baselayers['CartoDB DarkMatter'] = L.tileLayer.provider('CartoDB.DarkMatter');
-			baselayers['Wikimedia'] = L.tileLayer.provider('Wikimedia');
-
-			let smap = L.map('single-map', {
-				zoom: 3,
-			});
-
-			L.Icon.Default.imagePath = './assets/js/vendor/leaflet/images/';	
-			
-			baselayers['OSM Color'].addTo(smap);
-
-			if(mai) {
-				overlays[c`main`.uf()] = L.geoJSON(mai, {
-					pointToLayer: (feature, latlng) => new L.ShapeMarker(latlng, {
-						shape: feature.properties.shape,
-						radius: feature.properties.radius,
-						fillOpacity: 0.85,
-						color: feature.properties.color,
-						draggable: false,
-						title: feature.properties.title
-					}),
-					onEachFeature: (feature, layer) => {
-						layer.bindPopup(makepopupinfo(feature.properties.id, feature.properties.rkey));
-					}
-				}).addTo(smap);
-			}
-			
-			let clsrel = L.markerClusterGroup();
-			let clsnei = L.markerClusterGroup();
-			
-			let tmplay = L.geoJSON(rel, {
-				pointToLayer: (feature, latlng) => new L.ShapeMarker(latlng, {
-					shape: feature.properties.shape,
-					radius: feature.properties.radius,
-					fillOpacity: 0.85,
-					color: feature.properties.color,
-					draggable: false,
-					title: feature.properties.title
-				}),
-				onEachFeature: function (feature, layer) {
-					layer.bindPopup([(c(feature.properties.rkey) || `[${c`unknown`}]`.uf()), feature.properties.title].join('. '));
-					layer.on('dragend', function(e) {
-						e.preventDefault();
-						document.getElementById("lat1").value = layer.getLatLng().lat;
-						document.getElementById("lng1").value = layer.getLatLng().lng;
-					});
-				}
-			});
-			clsrel.addLayer(tmplay);
-			tmplay = L.geoJSON(nei, {
-				pointToLayer: (feature, latlng) => new L.ShapeMarker(latlng, {
-					shape: feature.properties.shape,
-					radius: feature.properties.radius,
-					fillOpacity: 0.85,
-					color: feature.properties.color,
-					draggable: false,
-					title: feature.properties.title
-				}),
-				onEachFeature: function (feature, layer) {
-					layer.bindPopup([(c(feature.properties.rkey) || `[${c`unknown`}]`.uf()), feature.properties.title].join('. '));
-					layer.on('dragend', function(e) {
-						e.preventDefault();
-						document.getElementById("lat1").value = layer.getLatLng().lat;
-						document.getElementById("lng1").value = layer.getLatLng().lng;
-					});
-				}
-			});
-			clsnei.addLayer(tmplay);
-			tmplay = null;
-
-			overlays[c`clusters`.uf() + '. ' + c`related`.uf()] = clsrel;
-			overlays[c`clusters`.uf() + '. ' + c`neighbourhood`.uf()] = clsnei;
-			overlays[c`density-related`.uf()] = L.heatLayer(
-				rel.features
-					.filter(o => o.geometry.coordinates[1] && o.geometry.coordinates[0])
-					.map(o => [o.geometry.coordinates[1], o.geometry.coordinates[0]]), 
-				{minOpacity: 0.5, gradient: {1: 'blue'}}
-			);
-			overlays[c`density-neighbourhood`.uf()] = L.heatLayer(
-				nei.features
-					.filter(o => o.geometry.coordinates[1] && o.geometry.coordinates[0])
-					.map(o => [o.geometry.coordinates[1], o.geometry.coordinates[0]]), 
-				{minOpacity: 0.5, gradient: {1: 'red'}}
-			);
-			overlays[c`flow`.uf()] = L.canvasFlowmapLayer(flo, {				
-					originAndDestinationFieldIds: {
-						originUniqueIdField: 'origin_id',
-						originGeometry: {
-							x: 'origin_lon',
-							y: 'origin_lat'
-						},
-						destinationUniqueIdField: 'destination_id',
-						destinationGeometry: {
-							x: 'destination_lon',
-							y: 'destination_lat'
-						}
-					},
-					pathDisplayMode: 'all',
-					wrapAroundCanvas: true,
-					animationStarted: false,
-					style: function(feature) {
-						if (feature.properties.isOrigin) {
-							return {
-								radius: 10,
-								weight: 1,
-								color: 'rgb(195, 255, 62)',
-								fillColor: feature.properties.color,
-								fillOpacity: 0.6
-							};
-						} else {
-							return {
-								radius: 5,
-								weight: 0.25,
-								color: 'rgb(17, 142, 170)',
-								fillColor: feature.properties.color,
-								fillOpacity: 0.7
-							};
-						}
-					},
-					pathProperties: function(feature) {
-						return {
-							type: 'dashed',
-							symbol: {
-								strokeStyle: feature.properties.color,
-								shadowBlur: 1.5,
-								lineWidth: 0.5,
-								shadowColor: 'rgb(207, 241, 17)',
-								lineCap: 'round'
-							}
-						};
-					}							
-				}
-			);
-		
-			L.control.layers(baselayers, overlays).addTo(smap);
-
-			if(typ === 'c') {
-				smap.fitWorld().zoomIn();
-				smap.setView([50.00, 14.44], 3);
-			} else {
-				let bound = overlays[c`clusters`.uf() + '. ' + c`related`.uf()].getBounds();
-				if(bound.isValid()) {
-					smap.fitBounds(overlays[c`clusters`.uf() + '. ' + c`related`.uf()].getBounds(), {
-						padding: [50, 50]
-					});
-				} else {
-					smap.fitWorld().zoomIn();
-					smap.setView([50.00, 14.44], 3);
-				}
-			}
-			
-			let shownLayer, polygon;
-
-			function removePolygon() {
-				if (shownLayer) {
-					shownLayer.setOpacity(1);
-					shownLayer = null;
-				}
-				if (polygon) {
-					smap.removeLayer(polygon);
-					polygon = null;
-				}
-			}
-
-			clsrel.on('clustermouseover', function (a) {
-				removePolygon();
-				a.layer.setOpacity(0.2);
-				shownLayer = a.layer;
-				polygon = L.polygon(a.layer.getConvexHull());
-				smap.addLayer(polygon);
-			});
-			clsrel.on('clustermouseout', removePolygon);
-			clsnei.on('clustermouseover', function (a) {
-				removePolygon();
-				a.layer.setOpacity(0.2);
-				shownLayer = a.layer;
-				polygon = L.polygon(a.layer.getConvexHull());
-				smap.addLayer(polygon);
-			});
-			clsnei.on('clustermouseout', removePolygon);
-			smap.on('zoomend', removePolygon);
-
-			isvalidflowpoint = makepopupinfo = mai = rel = nei = flo = undefined;
-			res = out = baselayers = overlays = smap = clsrel = clsnei = undefined;
-		})
-		.catch(err => {
-			throw new AppError(c`maps` + ': ' + err);
-		});
-	},
+	singlemap: (cid, typ = '') => maps.singlemap(cid, typ),
 	directsearch: e => {
 		e.preventDefault();
 		let str = byId('search-input').value || '';

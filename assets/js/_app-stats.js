@@ -6,7 +6,7 @@
 // stats functions
 const stats = {
 	schema: (cid = '', page = 1, row = '', text = '', srt = 1, xprt = false, calculate = false) => {
-		if(!d.filterids) return;
+		if(!dbe._filterids()) return;
 		screen.siteoverlay(true);
 		toolkit.timer('stats.schema');
 		toolkit.statustext(true);
@@ -15,6 +15,14 @@ const stats = {
 			if(document.getElementById('schema-listing')) {
 				let sel = [];
 				let tgl = `javascript:toolkit.toggleelement('schema');`;
+				let tgp = [
+					`javascript:`,
+					`if(d.schemapivot.visible){`,
+					`d.schemapivot.visible=false;stats.schema();`,
+					`}else{`,
+					`d.schemapivot.visible=true;stats.showpivotalert();`,
+					`}`,
+				].join('');
 				sel.push([
 					`<div class="group group-xs margin-bottom-s">`,
 					`<ul>`,
@@ -26,7 +34,7 @@ const stats = {
 					`<div class="input-group">`,
 					`<input id="schema-input" type="text" class="autocomplete-input" `,
 					`data-field="" `,
-					`placeholder="${c`query-selector-info`}"/>`,
+					`placeholde="${c`query-selector-info`}"/>`,
 					`<a id="schema-query-trigger" `,
 					`class="button info button-square button-border disabled" `,
 					`href="javascript:byId('schema-input').dispatchEvent(new KeyboardEvent('keyup',{key:'Enter'}));" `,
@@ -87,6 +95,18 @@ const stats = {
 					`id="schema-showhidestats" href="${tgl}">${c`stats`.uf()}</a>`,
 					
 					`</li>`,
+
+					`<li `,
+					`${d.schemacols.length ? '' : 'class="hide" '} `,
+					`id="schema-showhidepivot-wp">`,
+
+					`<a class="button info button-border" `,
+					`id="schema-showhidepivot" href="${tgp}">`,
+					`${d.schemapivot.visible ? c`table`.uf() : c`pivot`.uf()}`,
+					`</a>`,
+					
+					`</li>`,
+
 					`<li>`,
 
 					`<a class="button info" `,
@@ -135,6 +155,7 @@ const stats = {
 					d.schemarectype = null;
 					d.schemacols = [];
 					d.schemaresults = [];
+					d.schemapivot = {cols: [], rows: [], result: [], visible: false};
 					d.schemastats = [];
 					d.schemaoutliers = [];
 					sel = tgl = undefined;
@@ -151,30 +172,27 @@ const stats = {
 						[].concat(...k.keys.sort(toolkit.sortlocale).map(o => dbe._fieldname(o)))
 					);
 					return;	
+					
+					byId('schema-showhidepivot-wp').classList.add('hide');
 				}
 
 				let t0 = performance.now();
 				if(d.schemaresults.length < 1 || calculate) {
 					let pcols = d.schemacols.filter(o => !isBlank(o));
-					let res = stats.mutatedlist(pcols, true, true); 
-					d.schemaresults = stats.calculate(res, pcols, d.schemastrict);
-					pcols = res = undefined;
+					d.schemaresults = stats.unfolfedlist(pcols, true, true); 
+					pcols = undefined;
 				}
 				
 				if(d.schemaresults.length) {
 					stats.descriptivestats('schema', d.schemaresults);
 					
-					sleep(100).then(() => {
-						let validrecord = (obj, txt) => {
-							let ret = false;
-							Object.values(obj).forEach(o => {
-								if(dbe._operation('li', o, txt)) ret = true;
-							});
-							return ret;
-						}
+					sleep(50).then(() => {
+						var validrecord = (obj, txt) => Object.values(obj).filter(o => dbe._operation('li', o, txt)).length;
 						let oonly = d.schemaoutliersonly;
 						let oresults = d.schemaresults.filter(o => !isBlank(text) ? validrecord(o, text) : true);
 						let fresults = oonly ? oresults.filter(o => d.schemaoutliers.includes(o.count)) : oresults;
+						
+						if(!fresults.length) return false;
 						
 						let rowsfields = Object.keys(fresults[0]);
 						let descending = srt < 0 ? '-' : ''; 
@@ -185,7 +203,7 @@ const stats = {
 						rowsfields = descending = validrecord = undefined;
 									
 						if(xprt) {
-							file.exportdatatocsv(sortedlist);
+							file.exportdatatocsv(stats.localstats(sortedlist));
 							screen.siteoverlay(false);
 							toolkit.timer('stats.schema');
 							toolkit.statustext();
@@ -205,9 +223,9 @@ const stats = {
 							`${lstats.meaningful.toLocaleString(l)} `,
 							`(${lstats.rowmeaning.toLocaleString(l)} ${c`rows`})</strong>. `,
 							`${c`chart`.uf()}: `, 
-							`<a href="javascript:charts.showplot('schema', false);">${c`sorted`}</a> `, 
+							`<a href="javascript:charts.showplot('schema', false, false, '${text}');">${c`sorted`}</a> `, 
 							`${c`or`}  `, 
-							`<a href="javascript:charts.showplot('schema', true);">${c`normalized`}</a>.`, 							
+							`<a href="javascript:charts.showplot('schema', true, false, '${text}');">${c`normalized`}</a>.`, 							
 						].join('');
 						lstats = undefined; 
 						
@@ -239,7 +257,7 @@ const stats = {
 									].join('');
 								cellcolor = undefined;
 
-								let statslist = ['count', 'zscore', 'outlier', 'level', 'scale'];
+								let statslist = ['count', 'zscore', 'outlier', 'level', 'scale', 'bin', 'from', 'to'];
 								let isfield = nam => !statslist.includes(nam);
 								let out = {};
 								Object.keys(obj).forEach(o => {
@@ -257,6 +275,9 @@ const stats = {
 												break;
 											case 'level':
 											case 'outlier':
+											case 'bin':
+											case 'from':
+											case 'to':
 												out[o.substr(0, 1)] = `<span data-format="square">${formatnum(obj[o])}</span>`;
 												break;
 											case 'scale':
@@ -286,7 +307,10 @@ const stats = {
 										Number(sel.target.value) : 
 										Number(byId('schema-page-selector').value);
 									stats.schema(null, numpager, null, byId('schema-text-search').value, srt, false);
-									toolkit.msg('schema-page-current', Number(byId('schema-pg3').dataset.value).toLocaleString(l));
+									toolkit.msg(
+										'schema-page-current', 
+										Number(byId('schema-pg3').dataset.value).toLocaleString(l)
+									);
 									numpager = nodata = undefined;
 								}
 							},
@@ -298,8 +322,33 @@ const stats = {
 								stats.schema(cid, page, row, text, srt, true, false);
 							},
 						};
-						ui.maketable(opts);
+						//ui.maketable(opts);
 
+						byId('schema-showhidepivot-wp').classList.remove('hide');
+
+						if(d.schemapivot.visible) {
+							screen.siteoverlay(true);
+							sleep(50).then(() => {
+								let pvtable = ui.makepivottable(d.schemapivot.result, {
+									isShowCount: true,
+									isShowAttr: true
+								});
+							
+								pvtable.setAttribute('border', 1);
+								pvtable.setAttribute('cellspacing', 0);
+								pvtable.setAttribute('cellpadding', 0);
+
+								toolkit.cleardomelement('#schema-listing');
+								byId('schema-listing').appendChild(pvtable);
+								toolkit.drawicons();
+								pvtable = undefined;
+								screen.siteoverlay(false);
+							});
+						} else {
+							ui.maketable(opts);
+							opts = undefined;
+						}
+						
 						sel = tgl = undefined;
 						oonly = oresults = fresults = sortedlist = undefined;
 					});
@@ -320,8 +369,9 @@ const stats = {
 						'schema-query', 
 						d.schemacols, 
 						[].concat(...k.keys.sort(toolkit.sortlocale).map(o => dbe._fieldname(o))),
-						stats.schema
+						stats.schema,
 					);
+
 					autocomplete(
 						byId('schema-input'), 
 						[].concat(...k.keys.sort(toolkit.sortlocale).map(o => dbe._fieldname(o)))
@@ -352,6 +402,7 @@ const stats = {
 					d.schemarectype = null;
 					d.schemacols = [];
 					d.schemaresults = [];
+					d.schemapivot = {cols: [], rows: [], result: [], visible: false};
 					d.schemastats = [];
 					d.schemaoutliers = [];
 					toolkit.tagfield(
@@ -365,6 +416,9 @@ const stats = {
 						byId('schema-input'), 
 						[].concat(...k.keys.sort(toolkit.sortlocale).map(o => dbe._fieldname(o)))
 					);
+					
+					byId('schema-showhidepivot-wp').classList.add('hide');
+					
 					return;
 				}
 			} else {
@@ -376,8 +430,9 @@ const stats = {
 			toolkit.statustext();
 		});
 	},
+	/*
 	relations: (cid = '', page = 1, row = '', text = '', srt = 1, xprt = false, calculate = false) => {
-		if(!d.filterids) return;
+		if(!dbe._filterids()) return;
 
 		let dropfields = cid => {
 			let out = [];
@@ -552,7 +607,10 @@ const stats = {
 						let ridslist = rel.map(o => o.RID).unique();
 						
 						let col1set = new Set(mut.filter(o => o[d.relationscols[0]] !== undefined).map(o => o.ID));
-						let col2set = new Set(mut.filter(o => o[d.relationscols[1].replace('rel|', '')] !== undefined).map(o => o.ID));
+						let col2set = new Set(mut
+							.filter(o => o[d.relationscols[1].replace('rel|', '')] !== undefined)
+							.map(o => o.ID)
+						);
 						
 						let sel = rel.filter(o => 
 							(isBlank(d.relationsbound) ? true : o.bound === d.relationsbound) && 
@@ -646,13 +704,7 @@ const stats = {
 					if(d.relationsresults.length > 0) {
 						sleep(100).then(() => {
 							stats.descriptivestats('relations', d.relationsresults);
-							let validrecord = (obj, txt) => {
-								let ret = false;
-								Object.values(obj).forEach(o => {
-									if(dbe._operation('li', o, txt)) ret = true;
-								});
-								return ret;
-							}
+							let validrecord = (obj, txt) => Object.values(obj).filter(o => dbe._operation('li', o, txt)).length;
 							let oonly = d.relationsoutliersonly;
 							let oresults = d.relationsresults.filter(o => !isBlank(text) ? validrecord(o, text) : true);
 							let fresults = oonly ? 
@@ -668,7 +720,7 @@ const stats = {
 							rowsfields = descending = validrecord = undefined;
 										
 							if(xprt) {
-								file.exportdatatocsv(sortedlist);
+								file.exportdatatocsv(stats.localstats(sortedlist));
 								screen.siteoverlay(false);
 								toolkit.timer('stats.relations');
 								toolkit.statustext();
@@ -698,7 +750,6 @@ const stats = {
 								cid: 'relations-listing',
 								type: 'relations',
 								page: Number(page) || d.currentpages.relations,
-								/* caption: true, */
 								items: stats.localstats(sortedlist), 
 								stats: statstext, 
 								searchtext: text,
@@ -852,8 +903,9 @@ const stats = {
 			toolkit.statustext();
 		});
 	},
+	*/
 	cooccurrences: (cid = '', page = 1, row = '', text = '', srt = 1, xprt = false, calculate = false) => {
-		if(!d.filterids) return;
+		if(!dbe._filterids()) return;
 
 		let drops = suffix => {
 			let out = [];
@@ -894,6 +946,32 @@ const stats = {
 			].join('');
 		};
 
+		let dropmetas = () => {
+			let out = [];
+			let array = [].concat(...k.metadata.map(o => dbe._fieldname(o)))
+			let sorter = (a, b) => {
+				let stra = fc(String(a));
+				let strb = fc(String(b));
+				return stra.localeCompare(strb, l, {sensitivity: 'base', numeric: true});
+			};
+			array.sort(sorter).forEach(o => { 
+				out.push([
+					`<p class="no-margin-bottom">`,
+					`<label class="control control-checkbox control-xs">`,
+					`<input type="checkbox" `,
+					`id="subf-lnk-${o}"${d.cooccurrencesfeatures.includes(o) ? ' checked' : ''} `, 
+					`onclick="if(this.checked){d.cooccurrencesfeatures.push('${o}');}`,
+					`else{d.cooccurrencesfeatures.remove('${o}');}"`,
+					`>`,
+					`<span class="control-indicator"></span>`,
+					`<span class="control-label">${fc(o)}</span>`,
+					`</label>`,
+					`</p>`,
+				].join('')); 
+			});
+			return out.join('\n');
+		};
+		
 		d.cooccurrencesoutliersonly = isBlank(d.cooccurrencesoutliersonly) ? 
 			false : d.cooccurrencesoutliersonly;
 		
@@ -906,24 +984,26 @@ const stats = {
 			let sel = [];
 			let tgl = `javascript:toolkit.toggleelement('cooccurrences');`;
 			sel.push([
+				`<div class="group group-xs group-stretch margin-bottom-xs">`,
+				`<ul>`,
+				
+				`<li>`,
+				`${drops('source')}`,
+				`</li>`,
+				
+				`<li>`,
+				`${drops('target')}`,
+				`</li>`,
+				
+				`</ul>`,
+				`</div>`,
+													
 				`<div class="group group-xs margin-bottom-s">`,
 				`<ul>`,
 				
-				`<li style="width:35%">`,
-				
-				`${drops('source')}`,
-				
-				`</li>`,
-				`<li style="width:35%">`,
-				
-				`${drops('target')}`,
-				
-				`</li>`,
 				`<li>`,
-									
-				`<p class="form-message">&nbsp;</p>`,
 				`<div id="stats-cooccurrences-features" class="ddown">`,
-				`<a class="button info button-border" href="javascript:;">${c`filter`.uf()}</a>`,
+				`<button class="button info button-border">${c`filter`.uf()}</button>`,
 				`<div class="ddown-content padding-xs box-shadow-xxl background-white">`,
 				
 				`<p class="no-margin-bottom">`,
@@ -951,29 +1031,40 @@ const stats = {
 				`</li>`,
 				`<li>`,
 
-				`<p class="form-message">&nbsp;</p>`,
-				`<a class="button info button-border" `,
-				`id="cooccurrences-showhidestats" href="${tgl}">${c`stats`.uf()}</a>`,
+				`<button class="button info button-border" `,
+				`id="cooccurrences-showhidestats" onclick="${tgl}">${c`stats`.uf()}</button>`,
 				
 				`</li>`,
+
+				`<li>`,
+				`<div class="ddown">`,
+				`<button class="button info button-border">${c`include`.uf()}</button>`,
+				`<div class="ddown-content padding-xs box-shadow-xxl background-white no-margin-top">`,
+				`${dropmetas()}`,
+				`</div>`,
+				`</div>	`,
+				`</li>`,
 				
+				/*
 				`</ul>`,
 				`</div>`,
-
+				
 				`<div id="cooccurrences-routeset" class="hide margin-top-s">`,
 				`<div class="group group-xs">`,
 				`<ul>`,
-				`<li>`,
-				`<a class="button button-info button-s button-border" `,
+				*/
+				`<li id="cooccurrences-routeset1" class="hide">`,
+				`<a class="button button-info button-border" `,
 				`href="javascript:stats.cooccurrences(null, 1, null, '', 1, false, true);">`,
 				`${c`recalculate`.uf()}`,
 				`</a>`,
 				`</li>`,
-				`<li>`,
-				`<a class="button button-info button-s button-border" `,
+				`<li id="cooccurrences-routeset2" class="hide">`,
+				`<a class="button button-info button-border" `,
 				`href="javascript:info.route();">`,
 				`${c`route-graph`.uf()}</a>`,
 				`</li>`,
+				
 				`</ul>`,
 				`</div>`,
 
@@ -1008,7 +1099,8 @@ const stats = {
 					return;
 				}
 
-				let object = dbq.cooccurrences(calculate, false);
+				let object = stats.generatecooccurrences(calculate);
+				
 				if(object.length < 1) {
 					screen.siteoverlay(false);
 					toolkit.timer('stats.cooccurrences');
@@ -1021,7 +1113,8 @@ const stats = {
 					d.cooccurrencesstats = [];
 					d.cooccurrencesoutliers = [];
 					byId('cooccurrences-legend').classList.add('hide');
-					byId('cooccurrences-routeset').classList.add('hide');
+					byId('cooccurrences-routeset1').classList.add('hide');
+					byId('cooccurrences-routeset2').classList.add('hide');
 					drops = sel = tgl = t0 = undefined;
 					return;
 				}
@@ -1046,19 +1139,14 @@ const stats = {
 					d.cooccurrencesstats = [];
 					d.cooccurrencesoutliers = [];
 					byId('cooccurrences-legend').classList.add('hide');
-					byId('cooccurrences-routeset').classList.add('hide');
+					byId('cooccurrences-routeset1').classList.add('hide');
+					byId('cooccurrences-routeset2').classList.add('hide');
 					drops = sel = tgl = t0 = undefined;
 					return;
 				} else {
 					sleep(100).then(() => {
 						stats.descriptivestats('cooccurrences', d.cooccurrencesresults);
-						let validrecord = (obj, txt) => {
-							let ret = false;
-							Object.keys(obj).filter(o => o !== 'count').forEach(o => {
-								if(dbe._operation('li', d.store.pos[obj[o]].value, txt)) ret = true;
-							});
-							return ret;
-						}
+						var validrecord = (obj, txt) => Object.values(obj).filter(o => dbe._operation('li', o, txt)).length;
 						let oonly = d.cooccurrencesoutliersonly;
 						let oresults = d.cooccurrencesresults.filter(o => 
 							!isBlank(text) ? validrecord(o, text) : true
@@ -1079,7 +1167,8 @@ const stats = {
 							d.cooccurrencesstats = [];
 							d.cooccurrencesoutliers = [];
 							byId('cooccurrences-legend').classList.add('hide');
-							byId('cooccurrences-routeset').classList.add('hide');
+							byId('cooccurrences-routeset1').classList.add('hide');
+							byId('cooccurrences-routeset2').classList.add('hide');
 							drops = sel = tgl = t0 = undefined;
 							validrecord = oonly = oresults = fresults = undefined;
 							return;
@@ -1094,7 +1183,7 @@ const stats = {
 						rowsfields = descending = validrecord = undefined;
 									
 						if(xprt) {
-							file.exportdatatocsv(sortedlist);
+							file.exportdatatocsv(stats.localstats(sortedlist));
 							screen.siteoverlay(false);
 							toolkit.timer('stats.relations');
 							toolkit.statustext();
@@ -1216,7 +1305,14 @@ const stats = {
 									].includes(sel.target.id) ? 
 										Number(sel.target.value) : 
 										Number(byId('cooccurrences-page-selector').value);
-									stats.cooccurrences(null, numpager, null, byId('cooccurrences-text-search').value, srt, false);
+									stats.cooccurrences(
+										null, 
+										numpager, 
+										null, 
+										byId('cooccurrences-text-search').value, 
+										srt, 
+										false
+									);
 									toolkit.msg(
 										'cooccurrences-page-current', 
 										Number(byId('cooccurrences-pg3').dataset.value).toLocaleString(l)
@@ -1249,7 +1345,7 @@ const stats = {
 	
 					byId('cooccurrences-listing').classList.remove('hide');
 					byId('cooccurrences-listing').classList.add('visible');
-					
+
 					window.storecurrentsize = toolkit.currentmemory();
 					toolkit.showmemory('app-memory');
 				}
@@ -1301,7 +1397,6 @@ const stats = {
 
 			let outliers = dresults.outliers.length;
 			let outlierspercent = (~~outliers / (arr.length || 1)) * 100;
-			let his = makehistogram(arr);
 			
 			tmp = undefined;
 			let maxresentropy = Math.log2(dresults.results.length);
@@ -1328,43 +1423,98 @@ const stats = {
 				</p>
 				</div>
 				<h4>${c`histogram`.uf()}</h4>
-				${!his.length ? c`n-a` : toolkit.simpletable(his)}
-				<div id="${cid}-pareto" class="margin-top-s" style="width: 100%; height: 400px;"></div>
+				<div id="${cid}-pareto-table" class="margin-top-s" style="width:100%;"></div>
+				<div id="${cid}-pareto" class="margin-top-s" style="width: 100%; height: 700px;"></div>
+				<h4>${c`relevance`.uf()}</h4>
+				<div id="${cid}-relevance-table" class="margin-top-s" style="width:100%;"></div>
+				<div id="${cid}-relevance" class="margin-top-s" style="width: 100%; height: 700px;"></div>
+				<div id="${cid}-relevancescatter" class="margin-top-s" style="width: 100%; height: 700px;"></div>
 			`;
 		};
-		let makehistogram = (arr, fortable = true) => {
-			let his = dl.histogram(arr);
+		let makehistogram = (arr = []) => {
+			let out = {table: [], data: []};
+			let his = dl.histogram(arr, {maxbins: 10});
 			let bin = his.bins;
 			delete his.bins;
 			let total = his.map(o => o.count).reduce(function(a, b) { return a += b; }, 0);
 			let percval = 0;
-			if(fortable) {
-				Object.keys(his).forEach(o => {
-					percval += his[o].count;
-					his[o] = Object.assign({}, {
-						range: [`${c`bt`} ${his[o].value.toLocaleString(l)} `,
-							`${c`and`} ${(his[o].value + bin.step - 1).toLocaleString(l)}`].join(''), 
-						values: his[o].count.toLocaleString(l), 
-						percent: ((his[o].count / total) * 100).toLocaleString(l),
-						cummulative: ((percval / total) * 100).toLocaleString(l),
-					});
+			Object.keys(his).forEach(o => {
+				percval += his[o].count;
+				out.table[o] = Object.assign({}, {
+					range: [`${c`bt`} ${his[o].value.toLocaleString(l)} `,
+						`${c`and`} ${(his[o].value + bin.step - 1).toLocaleString(l)}`].join(''), 
+					values: his[o].count.toLocaleString(l), 
+					percent: ((his[o].count / total) * 100).toLocaleString(l),
+					cummulative: ((percval / total) * 100).toLocaleString(l),
 				});
-			} else {
-				Object.keys(his).forEach(o => {
-					percval += his[o].count;
-					his[o] = Object.assign({}, {
-						chartlabel: [`${c`bt`} ${his[o].value.toLocaleString(l)} `,
-							`${c`and`} `,
-							`${(his[o].value + bin.step - 1).toLocaleString(l)}`].join(''),
-						chartbar: his[o].count,
-						chartline: (percval / total) * 100
-					});
+			});
+			percval = 0;
+			Object.keys(his).forEach(o => {
+				percval += his[o].count;
+				out.data[o] = Object.assign({}, {
+					chartlabel: [`${c`bt`} ${his[o].value.toLocaleString(l)} `,
+						`${c`and`} `,
+						`${(his[o].value + bin.step - 1).toLocaleString(l)}`].join(''),
+					chartbar: his[o].count,
+					chartline: (percval / total) * 100
 				});
-			}
-			bin = total = percval = undefined;
-			return his;
+			});
+			his = bin = total = percval = undefined;
+			return out;
 		};
 
+		let makerelevance = (arr = [], cols = []) => {
+			let dat = stats.localstats(arr);
+			let maxbin = arraymax(dat.map(o => o.bin || 0));
+			let firstcol = cols[0];
+			let lastcol = cols[cols.length - 1];
+			let cleanobj = obj => {
+				let blacklist = ['outlier', 'zscore', 'level', 'scale', 'count', 'bin', 'from', 'to'];
+				let tmp = {
+					value: Object.keys(obj).filter(k => !blacklist.includes(k)).map(k => obj[k]).join(' > '),					 
+					firstvalue: Object.keys(obj)
+						.filter(k => !blacklist.includes(k))
+						.filter((k, i) => i === 0)
+						.map(k => obj[k]).join(''), 
+					qualifier: Object.keys(obj)
+						.filter(k => !blacklist.includes(k))
+						.filter(k => k === lastcol)
+						.map(k => obj[k]).join(''),
+					bin: obj.bin,
+					from: obj.from,
+					to: obj.to,
+					count: obj.count,
+					zscore: obj.zscore,
+				};
+				return tmp;
+			};
+			function sorter(fields) {
+				let dir = [];
+				let i;
+				let l = fields.length;
+				fields = fields.map(function(o, i) {
+					if (o[0] === "-") {
+						dir[i] = -1;
+						o = o.substring(1);
+					} else {
+						dir[i] = 1;
+					}
+					return o;
+				});
+				return function (a, b) {
+					for (i = 0; i < l; i++) {
+						let o = fields[i];
+						if (a[o] > b[o]) return dir[i];
+						if (a[o] < b[o]) return -(dir[i]);
+					}
+					return 0;
+				};
+			}
+			return dat
+				.map(o => cleanobj(o))
+				.sort(sorter(['-bin', 'value']));
+		};
+		
 		let sta = dl.read(out, {type: 'json', parse: 'auto'});
 
 		let tmx = dbs.stats(isObject(out) ? Object.values(out).map(o => o.count) : out.map(o => o.count));
@@ -1468,25 +1618,66 @@ const stats = {
 			topvals.join(''),
 		].join(''));
 		toolkit.drawicons();
-							
+		
+		let his = makehistogram(sta.map(o => o.count));
+		let rlv = makerelevance(sta, d[cid + 'cols']).filter(o => o.bin > 0);
+		
+		d[cid + 'relevance'] = rlv;
+		
+		toolkit.msg(cid + '-pareto-table', toolkit.simpletable(his.table));
+		
 		let pchart = echarts.init(byId(cid + '-pareto'));
-		let options = charts.paretooptions(makehistogram(sta.map(o => o.count), false), cid + '-pareto');
+		let options = charts.paretooptions(
+			his.data, 
+			cid + '-pareto'
+		);
 		pchart.setOption(options);
 
+		toolkit.msg(cid + '-relevance-table', toolkit.simpletable(rlv));
+
+		let rchart = echarts.init(byId(cid + '-relevance'), {width: '100%'});
+		options = charts.relevanceoptions(
+			rlv, 
+			d[cid + 'results'].map(o => o.count).sum(),
+			c`relevance-groups`.uf(),
+			`${c`funnel`.uf()}. ${c`nightingale-rose`.uf()}`,
+			cid + '-relevance'
+		);
+		rchart.setOption(options);
+
+		let rschart = echarts.init(byId(cid + '-relevancescatter'), {width: '100%'});
+		options = charts.scatterrelevanceoptions(
+			rlv, 
+			cid,
+			c`relevance`.uf(),
+			c`four-quarters-map`.uf(),
+			cid + '-relevancescatter'
+		);
+		rschart.setOption(options);
+		
 		dresults = sortobject = topvalues = makesample = undefined;
-		makehistogram = sta = sum = sma = formatentropy = topvals = rslt = jaccard = undefined;
-		pchart = options = undefined;
+		his = rlv = makehistogram = makerelevance = sta = sum = sma = undefined;
+		formatentropy = topvals = rslt = jaccard = undefined;
+		pchart = rchart = rschart = options = undefined;
 	},
 	calculate: (res, pcols, strict = true) => {
+		let grp = arr => Object.values(arr.reduce((r, c) => (
+			r[c.ID] = Object.assign((r[c.ID] || {}), c), r
+		), {}));
 		let tmx = new Set([...res.map(o => o.ID)]);
 		let tmz = dbe.hashrecord(res, 'ID');
 		let rel = dbe.hashrecord(dbm.relations(false)
+			.filter(o => o.bound === '>')
 			.filter(o => tmx.has(o.ID) && tmx.has(o.RID))
 			.map(o => Object.assign({}, o, {related: tmz[o.RID]})), 
 		'ID');
 		let tmf = res.map(o => rel[o.ID] ? {...rel[o.ID].related, ...o} : o);
-		let tmp = arraygroup(tmf, pcols, 'results', strict);
-		tmf = rel = tmz = tmx = undefined;
+		
+		let tmw = grp(tmf)
+		
+		let tmp = arraygroup(tmw, pcols, 'results', strict);
+
+		tmf = rel = tmz = tmx = tmw = undefined;
 		return tmp.map(o => removekey(Object.assign({}, o, {count: o.results.length || 0}), 'results'));
 	},
 	prepare: (res, pcols, strict = true) => {
@@ -1516,37 +1707,381 @@ const stats = {
 		let mut = new Set(cols.filter(o => o.includes('|')).map(o => o.split('|')[0]));
 		let nor = new Set(cols.filter(o => !o.includes('|')));
 		let res = lis.filter(o => mut.has(o.rkey) || nor.has(o.rkey)).map(o => prepare(dbe._mutate(o, false))).flatten();
+
 		let set = new Set(res.map(o => o.ID));
 		
-		let doc = dbm.documents(false, filtered, toolkit.randomstring()).filter(o => set.has(o.ID)).map(o => ({
-			ID: o.ID,
-			ptype: o.rkey, 
-			color: o.color,
-			title: toolkit.titleformat(o.value)
-		}));
-		let joi = joinobjects(doc, res);
+		let doc = dbe._documents(false, filtered).filter(o => set.has(o.ID)).map(o => {
+			let obj = {};
+			obj.ID = o.ID;
+			obj[o.rkey + '|string'] = toolkit.titleformat(o.value);
+			return obj;
+		});
+		
+		let joi = joinobjects(res, doc);
 
-		prepare = lis = mut = nor = res = doc = undefined;
+		prepare = group = lis = mut = nor = undefined;
 		return joi;
-	},	
+	},
+	unfolfedlist: (cols, filtered = false, strict = true) => {
+		let prepare = obj => {
+			let rkey = obj.rkey;
+			let blacklist = new Set(['rtype']);
+			let out = {};
+			Object.keys(obj)
+				.filter(o => !blacklist.has(o))
+				.forEach(o => out[o === 'ID' ? o : rkey + '|' + o] = obj[o]);
+			out.RID = out.ID;
+			out.bound = '?';
+			rkey = blacklist = undefined;
+			return out;
+		};
+		let clearobj = obj => {
+			let mandatory = ['ID', 'RID'];
+			let out = {};
+			Object.keys(obj).forEach(o => {
+				if(mandatory.concat(cols).includes(o)) out[o] = obj[o];
+			});
+			mandatory = undefined;
+			return out;
+		}
+		let flatten = (object, separator = '|') => {
+			let isvalid = value => {
+				if(!value) return false;
+				let isarray  = Array.isArray(value);
+				let isobject = Object.prototype.toString.call(value) === '[object Object]';
+				let haskeys  = !!Object.keys(value).length;
+				return !isarray && isobject && haskeys;
+			}
+			let walker = (child, path = []) => {
+				return Object.assign({}, ...Object.keys(child).map(key => isvalid(child[key])
+					? walker(child[key], path.concat([key]))
+					: { [path.concat([key]).join(separator)] : child[key] })
+				);
+			}
+			return Object.assign({}, walker(object));
+		};
+		function jointables(left, right, lkey, rkey) {
+			rkey = rkey || lkey;
+			
+			let lookup = {};
+			let result = [];
+			
+			left.forEach(cr => lookup[cr[lkey]] = cr);
+			right.forEach(cr => {
+				let jr = _.clone(lookup[cr[rkey]]); 
+				_.extend(jr, cr); 
+				result.push(jr);
+			});
+			
+			return result.filter(o => o !== undefined);
+		}
+
+		let fields = cols.map(o => ({
+			field: o.split('|')[0], 
+			facet: o.split('|')[1],
+			isrel: d.relatives.includes(o.split('|')[0]),
+			relations: [],
+			result: [],
+			matches: [],
+		}));
+
+		let result = [];
+		let matches = [];
+		let setfil = new Set(dbe._filterids());
+
+		if(cols.length) {
+			let relations = dbm.relations(true);
+			let ages = dbm.ages(false);
+			
+			fields.forEach((f, i) => {
+				f.result = objectunique([].concat(
+					dbe._mutate(Object.values(d.store.pos).flatten().filter(o => o.rkey === f.field)), 
+					dbe._mutate(Object.values(d.store.met).flatten().filter(o => o.rkey === f.field)),  
+					dbe._mutate(Object.values(d.store.tax).flatten().filter(o => o.rkey === f.field)),
+					dbe._mutate(ages.filter(o => o.rkey === f.field))
+				).filter(o => setfil.has(o.ID)).map(o => prepare(o)).map(o => clearobj(o)));
+			});
+		
+			fields.forEach((f, i) => {
+				let out = [];
+				if(f.isrel) {
+					f.result.forEach(o => {
+						(relations[o.ID] || [])
+							.filter(r => r.rkey === f.field)
+							.forEach(r => {
+								out.push(Object.assign({}, o, {ID: r.ID, RID: r.RID}));
+								out.push(Object.assign({}, o, {ID: r.RID, RID: r.ID}));
+							});
+					});
+					out.forEach(o => f.result.push(o));
+				}
+				out = undefined;
+			});
+		
+			fields.forEach((f, i) => {
+				let out = [];
+				if(i === 0) {
+					matches = f.result.slice();
+				} else {
+					var tbld = dbe.hashtable(f.result, 'ID');
+					var tbli = dbe.hashtable(f.result, 'RID');
+					matches.forEach(o => {
+						var tmp = tbld[o.RID];
+						if(tmp) {
+							tmp.forEach(r => out.push(Object.assign({}, o, r)));
+						} else {
+							if(!d.schemastrict) out.push(o);
+						}
+					});
+					matches = out.slice();
+				}
+				out = undefined;
+			});
+		
+			matches = objectunique(matches);
+			
+			result = Object.entries(flatten(matches.countByMultiple(cols))).map(o => {
+				let obj = {};
+				let values = o[0].split('|');
+				cols.forEach((k, i) => obj[k] = c(values[i]));
+				obj.count = o[1];
+				values = undefined;
+				return obj;
+			});
+		}
+
+		prepare = clearobj = flatten = jointables = fields = setfil = undefined;
+		return result;
+	},
 	localstats: arr => {
-		let stats = dbs.stats(arr.map(o => o.count));
-		let throwput = obj => stats.zscoresmap[obj.count];
-		let outlier = obj => stats.outliers.includes(obj.count) ? 
+		let stats = dbs.stats(arr.map(o => o.count || o));
+		let throwput = obj => stats.zscoresmap[obj.count || obj];
+		let outlier = obj => stats.outliers.includes(obj.count || obj) ? 
 			c`yes` : 
 			c`no` ;
-		let soutlier = obj => stats.outliers.includes(obj.count) ? 1 : 0;
 		let zscoreratio = (obj, thr) => thr ? thr.zscoreratio.toFixed(5) : -1;
-		let slevel = obj => obj.count < stats.mean ? 
+		let slevel = obj => (obj.count || obj) < stats.mean ? 
 			`&darr;` : 
 			obj.count > stats.mean ? 
 				`&uarr;` : 
 				`&#8597;`;
-		return arr.map(o => Object.assign({}, o, {
+		let tmp = arr.map(o => Object.assign({}, o, {
 			outlier: outlier(o),
 			zscore: zscoreratio(o, throwput(o)),
 			level: slevel(o),
-			scale: (o.count - stats.min) / (stats.max - stats.min),
+			scale: ((o.count || o) - stats.min) / (stats.max - stats.min),
 		}));
+		let bins = dl.bins({
+			min: arraymin(tmp.map(o => o.scale || o)), 
+			max: arraymax(tmp.map(o => o.scale || o)), 
+			maxbins: 10
+		});
+		stats = throwput = outlier = slevel = undefined;
+		tmp = tmp.map(o => Object.assign({}, o, {
+			bin: isNaN(bins.index(o.scale || o)) ? 0 : bins.index(o.scale || o),
+			from: 0,
+			to: 0
+		}));
+		return tmp.map(o => Object.assign({}, o, {
+			from: o.bin * bins.step,
+			to: (o.bin + 1) * bins.step,
+			count: o.count || o,
+			zscore: o.zscore ? parseFloat(o.zscore, 10) : o,
+		}));
+	},
+	generatecooccurrences: (rebuild = false) => {
+		let out = [];
+		let fea = dbm.features(true);
+		let set = d.cooccurrencesfeatures.length ? new Set(d.cooccurrencesfeatures) : null;
+		let coo = dbq.cooccurrences(rebuild, true);
+		let removenids = obj => {
+			let tmp = {};
+			Object.keys(obj).forEach(k => {
+				if(k.substr(-4) !== '_NID') tmp[k] = obj[k];
+			});
+			return tmp;
+		};
+		coo.forEach(o => {
+			let obj = o;
+			let nws = [];
+			Object.keys(o).filter(k => k.substr(-4) === '_NID').forEach(k => {
+				let nam = k.substr(0, k.length - 4);
+				let nid = o[k];
+				let xtm = set ? fea[o[k]] : null;
+				if(xtm) {
+					let tmp = set ? xtm.filter(v => Object.keys(v).filter(w => set.has(w)).length).map(v => {
+						let tmp2 = {};
+						Object.keys(v).filter(w => set.has(w)).forEach(w => tmp2[w] = v[w]);
+						return tmp2;
+					}) : [];
+					if(tmp.length) {
+						let tmp3 = {};
+						tmp3[nam + '_NID'] = nid;
+						tmp.forEach(v => {
+							Object.keys(v).forEach(w => {
+								tmp3[w] = tmp3[w] || [];
+								tmp3[w].push(v[w]);
+								tmp3[w].sort();
+							});
+						});
+						Object.keys(tmp3).forEach(v => {
+							if(Array.isArray(tmp3[v])) tmp3[v] = tmp3[v].join('. ');
+							if(!isNaN(tmp3[v])) tmp3[v] = Number(tmp3[v]);
+						});
+						nws.push(tmp3);
+					}
+					tmp = undefined;
+				}
+				nam = nid = xtm = undefined;
+			});
+			if(nws.length) {
+				let tmpobj = {};
+				Object.keys(obj).forEach(k => {
+					if(k.substr(-4) === '_NID') {
+						let nam = k.substr(0, k.length - 4);
+						nws.filter(n => n[k]).forEach(n => {
+							Object.keys(n).forEach(v => tmpobj[nam + '|' + v] = n[v]);
+						});
+						tmpobj[k] = obj[k];
+						nam = undefined;
+					} else {
+						tmpobj[k] = obj[k];
+					}
+				});
+				out.push(removenids(tmpobj));
+				tmpobj = undefined;
+			} else {
+				out.push(removenids(obj));
+			}
+			obj = nws = undefined;
+		});
+		fea = set = coo = removenids = undefined;
+		return out;		
+	},
+	generatepivotdata: () => {
+		if(!d.schemaresults.length) {
+			throw new AppWarning(c`no-data`.uf());
+		}
+
+		let opts = {
+			rowAttrs: d.schemapivot.rows,
+			colAttrs: d.schemapivot.cols,
+			aggregator: function(argument) {
+				return {
+					data: [],
+					push: function(record) {
+						if (Array.isArray(record)) {
+							this.data = this.data.concat(record);
+						} else {
+							this.data.push(record);
+						}
+						return this;
+					},
+					format() {
+						return this.data.map(o => o.count).sum().toLocaleString(l);
+					},
+				};
+			}
+		};
+	
+		d.schemapivot.result = new PivotData(d.schemaresults, opts);
+
+		d.schemapivot.visible = true;
+		
+		toolkit.msg('schema-showhidepivot', c`table`.uf());
+		
+		stats.schema();
+	},
+	showpivotalert: () => {
+		if(!d.schemacols.length) {
+			throw new AppError(c`insufficient-data-warning`);
+		}
+		if(d.schemacols.length < 2) {
+			throw new AppError(c`insufficient-data-warning`);
+		}
+		
+		if(!d.schemapivot.cols.length) d.schemapivot.rows = d.schemacols.slice();
+		
+		let hidden = (d.schemapivot.cols.length && d.schemapivot.cols.length <= d.schemacols.length) ? '' : ' hide';
+		let res = [
+			`<div class="group group-m group-stretch">`,
+			`<ul>`,
+			
+			`<li>`,
+			`<p class="form-message">`,
+			`${c`rows`}`,
+			`</p>`,
+			`<select class="min-height-25vh" id="pivot-a" size="10" multiple>`,
+			d.schemapivot.rows.map(o => `<option value="${o}">${fc(o)}</option>`).join('\n'),
+			`</select>`,
+			`<p class="form-message text-align-center">`,
+			`<a href="javascript:toolkit.listbox_move('pivot-a', 'up');">${c`up`}</a> `,
+			`<a href="javascript:toolkit.listbox_move('pivot-a', 'down');">${c`down`}</a> `,
+			`<a href="javascript:toolkit.listbox_selectall('pivot-a', true);">${c`all`}</a> `,
+			`<a href="javascript:toolkit.listbox_selectall('pivot-a', false);">${c`none`}</a>`,
+			`</p>`,
+			`</li>`,
+			
+			`<li>`,
+			`<p class="text-align-center">`,
+			`<a class="button button-square" `,
+			`href="javascript:`,
+			`toolkit.listbox_moveacross('pivot-b', 'pivot-a', 'pivot-b', 'pivot-activate');`,
+			`">`,
+			`<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">`,
+			`<path class="arrowleft" d=""></path>`,
+			`</svg>`,
+			`</a> `,
+			`<a class="button button-square" `,
+			`href="javascript:`,
+			`toolkit.listbox_moveacross('pivot-a', 'pivot-b', 'pivot-b', 'pivot-activate');`,
+			`">`,
+			`<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">`,
+			`<path class="arrowright" d=""></path>`,
+			`</svg>`,
+			`</a>`,
+			`</p>`,
+			`</li>`,
+
+			`<li>`,
+			`<p class="form-message">`,
+			`${c`columns`}`,
+			`</p>`,
+			`<select class="min-height-25vh" id="pivot-b" size="10" multiple>`,
+			d.schemapivot.cols.map(o => `<option value="${o}">${fc(o)}</option>`).join('\n'),
+			`</select>`,
+			`<p class="form-message text-align-center">`,
+			`<a href="javascript:toolkit.listbox_move('pivot-b', 'up');">${c`up`}</a> `,
+			`<a href="javascript:toolkit.listbox_move('pivot-b', 'down');">${c`down`}</a> `,
+			`<a href="javascript:toolkit.listbox_selectall('pivot-b', true);">${c`all`}</a> `,
+			`<a href="javascript:toolkit.listbox_selectall('pivot-b', false);">${c`none`}</a>`,
+			`</p>`,
+			`</li>`,
+
+			`</ul>`,
+			`</div>`,
+		].join('\n');
+		
+		let features = {
+			progress: false,
+			title: c`pivot`.uf(),
+			content: res,
+			action: [
+				`<a id="pivot-activate" `,
+				`class="button button-primary margin-right-s{hidden} margin-right-xs" `,
+				`href="javascript:;`,
+				`d.schemapivot.rows=Array.from(byId('pivot-a').options).map(o => o.value);`,
+				`d.schemapivot.cols=Array.from(byId('pivot-b').options).map(o => o.value);`,
+				`d.schemapivot.visible=true;`,
+				`stats.generatepivotdata();`,
+				`if(screen.alert){screen.alert.remove();screen.alert=undefined;}`,
+				`">${c`calculate`.uf()}</a>`,
+			].join(''),
+			cancel: true,
+			canceltitle: c`close`.uf()
+		}
+		screen.alert = screen.displayalert(features);
+		toolkit.drawicons();
+		features = res = hidden = undefined;
 	},
 };

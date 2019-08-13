@@ -1,75 +1,103 @@
-<div class="pure-menu">
-	<a class="pure-menu-heading" href="#home">PATHFINDER</a>
-	<ul class="pure-menu-list">
-		<li class="pure-menu-item">
-			<a href="javascript:info.filter();" class="pure-menu-link pure-menu-status">
+<nav class="navigation">
+	<ul>
+		<li class="home-link">
+			<h1 class="display-title display-title-l margin-top-s">
+				<img src="./assets/img/logos/IMGLOGOPF.svg" alt="PATHFINDER" 
+	    				style="margin:.5rem .5rem .5rem 1rem;height:30px;width:30px;float:left" />
+				<a style="line-height:.7"  href="#home">
+					PATHFINDER <span id="side-app-info" class="font-size-xs font-weight-thin"></span>
+				</a>
+			</h1>
+		</li>
+		<li class="background-error-50">
+			<a href="javascript:info.filter();">
 				<span id="app-microchart"></span>
-				<span id="app-status">REady</span>
+				<span id="app-status">Ready</span>
 			</a>
 		</li>
-		<li class="pure-menu-item">
-			<a href="#data" class="pure-menu-link pure-menu-selected">Data</a>
+		<li class="active">
+			<a href="#data">Data</a>
+			<ul class="background-light-100">
+				<li>
+					<a id="sel-one" href="javascript:toolkit.selecttab('tab', 'zero')">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="command" d=""></path>
+						</svg> 
+						Panel
+					</a>
+				</li>
+				<li>
+					<a id="sel-one" href="javascript:ui.filterscreen();">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="filter" d=""></path>
+						</svg> 
+						Filter
+					</a>
+				</li>
+				<li>
+					<a id="sel-one" href="javascript:toolkit.selecttab('tab', 'one')">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="list" d=""></path>
+						</svg> 
+						Listing
+					</a>
+				</li>
+				<li>
+					<a id="sel-two" href="javascript:toolkit.selecttab('tab', 'two');toolkit.generictab('stab0', 'step0', 'stabcontent', 'stablinks')">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="percent" d=""></path>
+						</svg> 
+						Stats
+					</a>
+				</li>
+				<li>
+					<a id="sel-three" href="javascript:toolkit.selecttab('tab', 'three')">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="piechart" d=""></path>
+						</svg> 
+						Charts
+					</a>
+				</li>
+				<li>
+					<a id="sel-four" href="javascript:toolkit.selecttab('tab', 'four')">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="share2" d=""></path>
+						</svg> 
+						Networks
+					</a>
+				</li>
+				<li>
+					<a id="sel-five" href="javascript:toolkit.selecttab('tab', 'five')">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="globe" d=""></path>
+						</svg> 
+						 Maps
+					</a>
+				</li>
+				<li>
+					<a href="javascript:info.help('data');">
+						<svg width="24" height="18" viewBox="0 0 24 24" class="svgicon">
+							<path class="helpcircle" d=""></path>
+						</svg> 
+						More info&hellip;
+					</a>
+				</li>
+			</ul>
 		</li>
-
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" id="sel-one" href="javascript:toolkit.selecttab('tab', 'zero')">
-				<i class="fa fa-database"></i>
-				Panel
-			</a>
+		<li>
+			<a href="#settings">Options</a>
 		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" id="sel-one" href="javascript:ui.filterscreen()">
-				<i class="fa fa-filter"></i>
-				Filter & search
-			</a>
+		<li>
+			<a href="#documents">Documents</a>
 		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" id="sel-one" href="javascript:toolkit.selecttab('tab', 'one')">
-				<i class="fa fa-th-list"></i>
-				Listing
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" id="sel-two" href="javascript:toolkit.selecttab('tab', 'two')">
-				<i class="fa fa-calculator"></i>
-				Stats
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" id="sel-three" href="javascript:toolkit.selecttab('tab', 'three')">
-				<i class="fa fa-chart-bar"></i>
-				Charts
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" id="sel-four" href="javascript:toolkit.selecttab('tab', 'four')">
-				<i class="fa fa-sitemap"></i> 
-				Networks
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" id="sel-five" href="javascript:toolkit.selecttab('tab', 'five')">
-				<i class="fa fa-globe-europe"></i> 
-				Maps
-			</a>
-		</li>
-		<li class="pure-menu-item">
-			<a class="pure-menu-link sublink" href="javascript:info.help('data');">
-				<i class="fa fa-question-circle"></i> 
-				Help
-			</a>
-		</li>
-
-		<li class="pure-menu-item menu-item-divided">
-			<a href="#settings" class="pure-menu-link">Settings</a>
-		</li>
-		<li class="pure-menu-item menu-item-divided">
-			<a href="#documents" class="pure-menu-link">Documents</a>
-		</li>
-		<li class="pure-menu-item menu-item-divided menu-item-divided">
-			<a href="javascript:info.help('app');" class="pure-menu-link">Help</a>
+		<li>
+			<a href="javascript:info.help('app');">Help</a>
 		</li>
 	</ul>
+</nav>
+
+<div id="search-container" class="field field-float-label no-margin-bottom">
+	<input id="search-input" class="background-info-50 no-border border-radius-none" type="search" placeholder="search...">
+	<label id="search-results-count" for="search-input">search...</label>
+	<ul id="search-results" class="search-results"></ul>
 </div>
-
-

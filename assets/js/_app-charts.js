@@ -9,7 +9,7 @@
 const charts = {
 	chart: (name, filter = '', facet = '', serie = '') => {
 		if(typeof echarts === 'undefined') throw new AppError(c`library-error` + ': ECHARTS'); 
-		if(!d.filterids) return;
+		if(!dbe._filterids()) return;
 
 		name = name || d.charttables.filter(o => o.model === 'qry').map(o => o.name).sort(toolkit.sortlocale)[0];
 
@@ -343,6 +343,26 @@ const charts = {
 				sel.push(`</div>`);								
 				sel.push(`</li>`);
 
+				sel.push([
+					`<li>`,
+					`<p class="form-message">`,
+					`${c`do-not-include`.uf()}`,
+					`</p>`,
+					`<input type="search" id="sch-exclude" class="no-margin-bottom warning" `,
+					`onkeyup="javascript:d.filterexclude=cleartext(this.value);" `,
+					`onchange="javascript:d.filterexclude=cleartext(this.value);" `,
+					`onsearch="javascript:d.filterexclude=cleartext(this.value);`,
+					`charts.chart(`,
+					`byId('acc-chartname')?byId('acc-chartname').value:null,`,
+					`byId('acc-chartfilter')?byId('acc-chartfilter').value:null,`,
+					`byId('acc-chartfacet')?byId('acc-chartfacet').value:null`,
+					`);" `,
+					`placeholder="${c`separate-by-semicolon`}" `,
+					`value="${isBlank(d.filterexclude) ? '' : d.filterexclude}"`,
+					`>`,
+					`</li>`,
+				].join(''));
+				
 				sel.push(`
 					</ul>
 					</div>
@@ -426,12 +446,28 @@ const charts = {
 								value: r[1],
 								symbol: set.has(r[1]) ? 'triangle' : 'circle',
 							})),
+							label: {
+								normal: {
+									show: true,
+									formatter: (params) => {
+										return params.data.symbol === 'triangle' ? params.name : '';
+									},
+									rotate: 45,
+									color: (params) => {
+										return params.data.color || '#000';
+									},
+									fontSize: 20
+								},
+							},
 							emphasis: {
 								label: {
 									show: true,
 									formatter: '{b}: {c}',
 									rotate: 45,
-									color: '#000'
+									color: (params) => {
+										return params.data.color || '#000';
+									},
+									fontSize: 22
 								},
 							},
 						};
@@ -439,15 +475,15 @@ const charts = {
 							ser.areaStyle = {
 								normal: {
 									color: xcl,
-									opacity: 0.3,
+									opacity: 0.4,
 								}
 							};
 						} else {
-							ser.symbolSize = data => data.clamp(5, 30);
+							ser.symbolSize = data => data.clamp(8, 40);
 							ser.itemStyle = {
 								normal: {
 									shadowBlur: 10,
-									shadowColor: 'rgba(0, 0, 0, 0.3)',
+									shadowColor: 'rgba(0, 0, 0, 0.8)',
 									shadowOffsetY: 5,
 									color: xcl,
 									opacity: 0.4
@@ -681,6 +717,7 @@ const charts = {
 		};
 		let dropptypes = () => {
 			let out = [];
+			out.push(`<option value=""${ptype === '' ? ' selected' : ''}>${c`anyone`}</option>`);
 			d.record_types.forEach(o => { 
 				out.push(`<option value="${o}"${ptype === o ? ' selected' : ''}>${c(o)}</option>`); 
 			});
@@ -695,6 +732,7 @@ const charts = {
 		};
 		let droprtypes = () => {
 			let out = [];
+			out.push(`<option value=""${ptype === '' ? ' selected' : ''}>${c`anyone`}</option>`);
 			d.record_types.forEach(o => { 
 				out.push(`<option value="${o}"${rtype === o ? ' selected' : ''}>${c(o)}</option>`); 
 			});
@@ -770,6 +808,19 @@ const charts = {
 				`${droprelfields()}`,
 				`</li>`,
 
+				`<li>`,
+				`<p class="form-message">`,
+				`${c`do-not-include`.uf()}`,
+				`</p>`,
+				`<input type="text" id="flt-exclude" class="no-margin-bottom warning" `,
+				`onkeyup="javascript:d.filterexclude=cleartext(this.value);" `,
+				`onchange="javascript:d.filterexclude=cleartext(this.value);" `,
+				`onsearch="javascript:d.filterexclude=cleartext(this.value);" `,
+				`placeholder="${c`separate-by-semicolon`}" `,
+				`value="${isBlank(d.filterexclude) ? '' : d.filterexclude}"`,
+				`>`,
+				`</li>`,
+
 				`</ul>`,
 				`</div>`,
 				
@@ -829,23 +880,28 @@ const charts = {
 						byId('stats-network').style.border = '0';
 				
 						sleep(100).then(() => {
+							screen.siteoverlay(true);
 							let dataset = [];
 							let edg = [];
 							let nod = dbe.hashrecord(json.nodes, 'id');
 							json.edges.forEach(o => edg.push({
 								sourcetype: nod[o.source] ? nod[o.source].category : c(ptype),
-								sourcetitle: d.store.pos[o.source] ? toolkit.titleformat(d.store.pos[o.source].value).shorten(50) : '',
+								sourcetitle: d.store.pos[o.source] ? 
+									toolkit.titleformat(d.store.pos[o.source].value).shorten(50) : 
+									'',
 								sourcecount: nod[o.source] ? nod[o.source].value : -1,
 								bound: c(bound),
 								rkey: c(o.rkey),
 								targettype: nod[o.target] ? nod[o.target].category : c(rtype),
-								targettitle: d.store.pos[o.target] ? toolkit.titleformat(d.store.pos[o.target].value).shorten(50) : '',
+								targettitle: d.store.pos[o.target] ? 
+									toolkit.titleformat(d.store.pos[o.target].value).shorten(50) : 
+									'',
 								targetcount: nod[o.target] ? nod[o.target].value : -1,
-								count: (nod[o.source] ? nod[o.source].value : -1) + (nod[o.target] ? nod[o.target].value : -1)
+								count: (nod[o.source] ? nod[o.source].value : -1) + 
+									(nod[o.target] ? nod[o.target].value : -1)
 							}));
 							dataset.push(...edg);
 							
-							screen.siteoverlay(true);
 							sleep(50).then(() => {
 								toolkit.msg(
 									'stats-network', 
@@ -879,7 +935,6 @@ const charts = {
 									tbody.appendChild(tr);
 									tr = undefined;
 								}
-								//newtable.appendChild(thead);
 								newtable.appendChild(tbody);
 								oldtable.parentNode.replaceChild(newtable, oldtable);
 								thead = tbody = oldtable = newtable = undefined;
@@ -979,6 +1034,89 @@ const charts = {
 			pchart = droptype = dropptypes = droprtypes = undefined;
 			droprelfields = dropbound = outoflimits = undefined;
 		});
+	},
+	doughnutoptions: (json, percent, jsonname, percentname, title, dom) => {
+		let options = {
+			textStyle: {
+				fontFamily: 'Dosis'
+			},
+			toolbox: chartshelper.toolbox({
+				orient: 'vertical', 
+				mtype: false, 
+				save: true, 
+				table: false, 
+				full: false,
+				dom: dom
+			}),
+			tooltip: {
+				trigger: 'item',
+				formatter: "{a} <br/>{b}: {c} ({d}%)"
+			},
+			legend: {
+				orient: 'vertical',
+				x: 'left',
+				data: json.map(o => c(o.name))
+			},
+			series: [
+				{
+					name: percentname,
+					type: 'pie',
+					selectedMode: 'single',
+					radius: [0, '30%'],
+					label: {
+						normal: {
+							position: 'inner'
+						}
+					},
+					labelLine: {
+						normal: {
+							show: false
+						}
+					},
+					data:[
+						{
+							value: percent, 
+							name: percentname, 
+							selected: true,
+							itemStyle: {
+								normal: {
+									color: '#c5cbd7',
+								}
+							}
+						},
+						{
+							value: 100 - percent, 
+							name: c`total`,
+							itemStyle: {
+								normal: {
+									color: '#697181',
+								}
+							}
+						},
+					]
+				},
+				{
+					name: jsonname,
+					type: 'pie',
+					radius: ['40%', '55%'],
+					label: {
+						normal: {
+							formatter: '{a}\n{b}：{c}\n{d}%',
+						}
+					},
+					data: json.map(o => ({
+						name: c(o.name), 
+						value: o.value, 
+						itemStyle: {
+							normal: {
+								color: dbe.getcolorfromslug(o.name)
+							}
+						}
+					}))
+				}
+		    ]
+		};
+		return options;
 	},
 	wordcloudoptions: (json, title, dom) => {
 		let data = chartshelper.preparetreedata();
@@ -1093,7 +1231,7 @@ const charts = {
 					position: 'left',
 					verticalAlign: 'middle',
 					align: 'right',
-					fontSize: 9
+					fontSize: 12
 				}
 			},
 			leaves: {
@@ -1513,8 +1651,8 @@ const charts = {
 		if(layout === 'sankey') return charts.sankeyoptions(dom, json.nodes, json.edges, title, false);
 		let rnd = a => Math.floor(Math.random() * a);
 		let instance = echarts.getInstanceByDom(byId(dom));
-		let gw = instance.getWidth();
-		let gh = instance.getHeight();
+		let gw = instance ? instance.getWidth() : 0;
+		let gh = instance ? instance.getHeight() : 0;
 		let maxsize = Math.max.apply(null, json.nodes.map(o => o.value));
 		let itemsize = val => Math.max(2, Math.round((val / maxsize) * 100));
 		let options = {
@@ -2496,6 +2634,513 @@ const charts = {
 		};
 		return options;
 	},
+	relevanceoptions: (json, ctotal, title, subtitle, dom) => {
+		let tdata = [...Array(11).keys()]
+			.map(o => ({
+				name: o, 
+				cmax: 0, 
+				cmin: 0, 
+				value: 0
+			}));
+		let bins = json.groupBy(['bin']);
+		tdata.forEach(o => {
+			var elm = bins[o.name];
+			if(elm) {
+				o.cmax = arraymax(elm.map(b => b.count));
+				o.cmin = arraymin(elm.map(b => b.count));
+				o.value = elm.length;
+				o.name = `${c`from`} ${o.cmin} ${c`to`} ${o.cmax}`;
+			} else {
+				o.name = `${c`n-a`}`;
+			}
+		});
+		let lim = tdata.find(o => o.value > 0);
+		if(lim) {
+			tdata[0].name = `< ${lim.cmin}`;
+			tdata[0].cmax = lim.cmin - 1;
+			tdata[0].cmin = 1;
+			tdata[0].ccount = ctotal - d.schemarelevance.map(o => o.count).sum();
+		} else {
+			tdata[0].name = `${c`from`} ${tdata[0].cmin} ${c`to`} ${tdata[0].cmax}`
+			tdata[0].cmax = 1;
+			tdata[0].cmin = 1;
+			tdata[0].ccount = ctotal;
+		}
+		tdata = tdata.filter(o => o.name !== c`n-a`);
+		
+		bins = lim = undefined;
+	
+		let options = {
+			textStyle: {
+				fontFamily: 'Dosis'
+			},
+			toolbox: chartshelper.toolbox({
+				orient: 'vertical', 
+				mtype: false, 
+				save: true, 
+				table: false, 
+				full: true,
+				dom: dom
+			}),
+			title: {
+				text: title || c`relevance`.uf(),
+				subtext: subtitle || c`slide-for-data-zoom`.uf(),
+			},
+			tooltip: {
+				trigger: 'item',
+				formatter: "{a}<br/>{b}: {c} ({d}%)"
+			},
+			legend: {
+				x: 'center',
+				y: 'bottom',
+				data: tdata.map(o => o.name),
+			},
+			calculable: true,
+			series: [{
+					name: c`funnel`,
+					type: 'funnel',
+					center: ['25%', '50%'],
+					width: '40%',
+					min: 0,
+					max: 100,
+					minSize: '0%',
+					maxSize: '100%',
+					sort: 'descending',
+					gap: 2,
+					label: {
+						show: true,
+						position: 'inside'
+					},
+					labelLine: {
+						length: 10,
+						lineStyle: {
+							width: 1,
+							type: 'solid'
+						}
+					},
+					itemStyle: {
+						borderColor: '#fff',
+						borderWidth: 1
+					},
+					emphasis: {
+						label: {
+							fontSize: 20
+						}
+					},
+					data: tdata
+				},
+				{
+					name: c`nightingale-rose`,
+					type: 'pie',
+					radius: [30, 110],
+					center: ['75%', '50%'],
+					roseType: 'radius',
+					data: tdata
+				}
+			]
+		};
+		return options;
+	},
+	scatterrelevanceoptions: (json, cid, title, subtitle, dom) => {
+		let getsymbols = () => {
+			let col = d[cid + 'cols'] ? 
+				d[cid + 'cols'][d[cid + 'cols'].length - 1] : 
+				d[cid + 'route'][d[cid + 'route'].length - 1].rkey;
+			let ring = new Circular(d.chartsymbols);
+			let set = new Set(k.qualifiers);
+			let out = [];
+			let candidates = Object.values(dbm.metadata(false))
+				.filter(o => set.has(o.rkey))
+				.map(o => o.value)
+				.unique();
+			candidates.forEach(o => {
+				out.push({name: o, symbol: ring.next()});
+			});
+			if(out.length) {
+				return out;
+			} else {
+				return d.chartsymbols[0];
+			}
+		};
+		let symbols = getsymbols();
+		let getsymbol = qua => {
+			if(Array.isArray(symbols)) {
+				let sym = symbols.find(o => o.name === qua);
+				if(sym) {
+					return sym.symbol;
+				} else {
+					return d.chartsymbols[0];
+				}
+			} else {
+				return symbols;
+			}
+		};
+		
+		let data = {
+			axis: {
+				xAxis: c `bin`,
+				yAxis: c `count`
+			},
+			json: [].concat(
+				[{
+					name: c `average`,
+					rate: json.map(o => o.bin).avg(),
+					ratio: json.map(o => o.count).avg(),
+					value: json.map(o => o.zscore).avg(),
+					symbol: d.chartsymbols[0]
+				}],
+				json.map(item => ({
+					name: item.value, /* `${item.firstvalue} > ${item.qualifier}`, */
+					rate: item.bin,
+					ratio: item.count,
+					value: item.zscore,
+					symbol: getsymbol(item.qualifier),
+				}))
+			)
+		};
+		let minRate = 0;
+		let maxRate = 0;
+		let minRatio = 0;
+		let maxRatio = 0;
+		data.json.forEach((jsonitem, index) => {
+			if (index > 0) {
+				if (parseFloat(jsonitem.rate) < minRate) {
+					minRate = jsonitem.rate;
+				} else if (parseFloat(jsonitem.rate) > maxRate) {
+					maxRate = jsonitem.rate;
+				}
+		
+				if (parseFloat(jsonitem.ratio) < minRatio) {
+					minRatio = jsonitem.ratio;
+				} else if (parseFloat(jsonitem.ratio) > maxRatio) {
+					maxRatio = jsonitem.ratio;
+				}
+			} else {
+				minRate = maxRate = jsonitem.rate;
+				minRatio = maxRatio = jsonitem.ratio;
+			}
+		});
+		
+		let minValue = Math.min(minRate, minRatio);
+		let maxValue = Math.max(maxRate, maxRatio);
+		let xValue = 0,
+			yValue = 0;
+		data.json.forEach(item => {
+			if (item.name === c `average`) {
+				xValue = item.rate;
+				yValue = item.ratio;
+			}
+		});
+		
+		let seriesData = [];
+		data.json.map(item => {
+			seriesData.push({
+				name: item.name,
+				value: [Math.abs(item.rate), Math.abs(item.ratio), Math.abs(item.value)],
+				symbolSize: item.value * 30,
+				symbol: item.symbol,
+			});
+		});
+		
+		let logreg = ecStat.regression('logarithmic', json.map(o => [o.bin, o.count]));
+		let polreg = ecStat.regression('polynomial', json.map(o => [o.bin, o.count]), 3);
+		polreg.points.sort((a, b) => a[0] - b[0]);
+				
+		let options = {
+			textStyle: {
+				fontFamily: 'Dosis'
+			},
+			toolbox: chartshelper.toolbox({
+				orient: 'vertical', 
+				mtype: false, 
+				save: true, 
+				table: false, 
+				full: true,
+				dom: dom
+			}),
+			title: {
+				text: title || c`relevance`.uf(),
+				subtext: subtitle || c`four-quarters-map`,
+			},
+			grid: {
+				left: '3%',
+				right: '20%',
+				bottom: '3%',
+				width: '82%',
+				containLabel: true
+			},
+			tooltip: {
+				trigger: 'axis',
+				showDelay: 0,
+				formatter: function(params) {
+					let str = '';
+					params.filter(o => !isBlank(o.name)).forEach((param, index) => {
+						str += [
+							`<p class="no-vertical-margin">`,
+							`<strong>${param.name}</strong>. `,
+							`${param.value[1].toLocaleString(l)}`,
+							`</p>`
+						].join('');
+					});
+					return str;
+				},
+				axisPointer: {
+					show: true,
+					type: 'cross',
+					lineStyle: {
+						type: 'dashed',
+						width: 1
+					}
+				},
+			},
+			xAxis: [{
+				name: data.axis.xAxis,
+				type: 'value',
+				zlevel: 3,
+				scale: true,
+				axisLabel: {
+					formatter: '{value}'
+				},
+				splitLine: {
+					show: false
+				},
+				axisTick: {
+					show: false
+				},
+				axisLine: {
+					show: false,
+					symbol: ['none', 'none']
+				},
+			}],
+			yAxis: [{
+				name: data.axis.yAxis,
+				nameLocation: 'middle',
+				nameRotate: 90,
+				type: 'value',
+				scale: true,
+				zlevel: 3,
+				axisLabel: {
+					formatter: '{value}',
+					show: true,
+				},
+				splitLine: {
+					show: false
+				},
+				axisTick: {
+					show: false
+				},
+				axisLine: {
+					show: false,
+					symbol: ['none', 'none']
+				},
+			}],
+			series: [{
+				name: c`data`,
+				type: 'scatter',
+				data: seriesData,
+				zlevel: 2,
+				label: {
+					normal: {
+						show: true,
+						formatter: function(param) {
+							return param.value[0] > 5 ? param.name : '';
+						},
+						position: 'top',
+						color: '#000',
+						fontSize: 18
+					}
+				},
+
+				labelLine: {
+					length: 10,
+					lineStyle: {
+						width: 1,
+						type: 'solid',
+					}
+				},
+				emphasis: {
+					label: {
+						fontSize: 20
+					}
+				},
+
+				itemStyle: {
+					normal: {
+						color: function(param) {
+							if (param.name === c `average`) {
+								return 'red';
+							} else {
+								return d.chartsymbolcolors[d.chartsymbols.indexOf(param.data.symbol)]
+							}
+						},
+						borderColor: '#fff',
+						borderWidth: 1
+					}
+				},
+				markArea: {
+					zlevel: 0,
+					silent: true,
+					data: [
+						[{
+								name: c`unusual`,
+								itemStyle: {
+									color: '#ffeee5'
+								},
+								label: {
+									show: true,
+									position: ['30%', '50%'],
+									fontStyle: 'normal',
+									color: '#f50',
+									fontSize: 17
+								},
+								coord: [xValue, yValue]
+							},
+							{
+								coord: [Number.MAX_VALUE, 0]
+							}
+						],
+						[{
+								name: c`irrelevant`,
+								itemStyle: {
+									color: '#fce3e3'
+								},
+								label: {
+									show: true,
+									position: ['10%', '50%'],
+									fontStyle: 'normal',
+									color: '#c00',
+									fontSize: 17
+								},
+								xAxis: 0,
+								yAxis: 0
+							},
+							{
+								xAxis: xValue,
+								yAxis: yValue
+							}
+						],
+						[{
+								name: c`meaningful`,
+								itemStyle: {
+									color: '#e3f9e3'
+								},
+								label: {
+									show: true,
+									position: ['30%', '10%'],
+									fontStyle: 'bold',
+									color: '#00b300',
+									fontSize: 17
+								},
+								xAxis: xValue,
+								yAxis: yValue
+							},
+							{
+								xAxis: Number.MAX_VALUE,
+								yAxis: Number.MAX_VALUE
+							}
+						],
+						[{
+								name: c`relevant`,
+								itemStyle: {
+									color: '#f2e6fe'
+								},
+								label: {
+									show: true,
+									position: ['10%', '10%'],
+									fontStyle: 'normal',
+									color: '#7f19e6',
+									fontSize: 17
+								},
+								xAxis: 0,
+								yAxis: Number.MAX_VALUE
+							},
+							{
+								xAxis: xValue,
+								yAxis: yValue
+							}
+						]
+					]
+				},
+			}, {
+				name: c`logarithmic-regression`,
+				type: 'line',
+				lineStyle: {
+					normal: {
+						color: '#009800',
+						shadowColor: 'rgba(0, 0, 0, 0.5)',
+						shadowBlur: 10,
+						width: 1,
+						type: 'dotted'
+					}
+				},
+				smooth: true,
+				showSymbol: false,
+				data: logreg.points,
+				markPoint: {
+					itemStyle: {
+						normal: {
+							color: 'transparent',
+						}
+					},
+					label: {
+						normal: {
+							show: true,
+							position: 'left',
+							formatter: (obj) => c`logarithmic-regression`,
+							textStyle: {
+								color: '#007900',
+								fontSize: 10
+							}
+						}
+					},
+					data: [
+						{
+							coord: logreg.points[logreg.points.length - 1]
+						}
+					]
+				}
+			}, {
+				name: c`polynomial-regression`,
+				type: 'line',
+				lineStyle: {
+					normal: {
+						color: '#08c',
+						shadowColor: 'rgba(0, 0, 0, 0.5)',
+						shadowBlur: 10,
+						width: 1,
+						type: 'dotted'
+					}
+				},
+				smooth: true,
+				showSymbol: false,
+				data: polreg.points,
+				markPoint: {
+					itemStyle: {
+						normal: {
+							color: 'transparent'
+						}
+					},
+					label: {
+						normal: {
+							show: true,
+							position: 'left',
+							formatter: (obj) => c`polynomial-regression`,
+							textStyle: {
+								color: '#0074ad',
+								fontSize: 10
+							}
+						}
+					},
+					data: [
+						{
+							coord: polreg.points[polreg.points.length - 1]
+						}
+					]
+				}
+			}]
+		};		
+		return options;
+	},
 	gaussianoptions: (gaussiandata, q1, q3, highlimit, median, dom) => {
 		let olines = [];
 		let alines = [
@@ -2599,7 +3244,7 @@ const charts = {
 		olines = alines = gdata = cline = undefined;
 		return options;
 	},
-	showplot: (cid, gaussian = true, isoption = false) => {
+	showplot: (cid, gaussian = true, isoption = false, stext = '') => {
 		let features = {
 			title: `${c`plot`.uf()}. ${gaussian ? c`gaussian`.uf() : c`sorted`.uf()}`,
 			content: '',
@@ -2609,9 +3254,13 @@ const charts = {
 		}
 		screen.alert = screen.displayalert(features);
 
+		let filterbytext = (o, txt) => {
+			if(isBlank(txt)) return true;
+			return Object.values(o).map(v => dbe._operation('li', v, txt)).filter(v => v).length > 0;
+		};
 		let out = [];
 		let res = d[`${cid}results`];
-		let dat = dbs.stats(res.map(o => o.count));
+		let dat = dbs.stats(res.filter(o => filterbytext(o, stext)).map(o => o.count));
 		let otl = res.filter(o => dat.outliers.includes(o.count)).length;
 		let prc = Math.round((otl / res.length) * 100);
 		out.push(`
@@ -2641,7 +3290,9 @@ const charts = {
 		let rfields = Object.keys(res[0]);
 		pchart.setOption(
 			charts.gaussianoptions(
-				gaussian ? res.gaussiansort('count') : res.sortBy(rfields), 
+				gaussian ? 
+					res.filter(o => filterbytext(o, stext)).gaussiansort('count') : 
+					res.filter(o => filterbytext(o, stext)).sortBy(rfields), 
 				dat.q1,
 				dat.q3,
 				dat.highlimit,
@@ -2649,7 +3300,7 @@ const charts = {
 				isoption ? cid : cid + '-plot'
 			)
 		);
-		features = pchart = out = res = dat = otl = prc = undefined;
+		features = filterbytext = pchart = out = res = dat = otl = prc = undefined;
 	},
 	sizechart: (cid, ishome = true) => {
 		if(!cid) return;
@@ -2662,6 +3313,10 @@ const charts = {
 					!d.appelements.map(m => m.name).includes(Object.keys(res)[0]) ? 
 						'data-server-system-status' : 'app-server-system-status'
 					) : 'database-system-status';
+				let dunit = ishome ? (
+					!d.appelements.map(m => m.name).includes(Object.keys(res)[0]) ? 
+						c`items` : c`bytes`
+					) : c`items`;
 				let dicon = ishome ? (
 					!d.appelements.map(m => m.name).includes(Object.keys(res)[0]) ? 
 						'<img src="./assets/img/svg/download-cloud.svg" style="height:1rem" />' : 
@@ -2671,7 +3326,7 @@ const charts = {
 				
 				tmp.push(`<p class="no-margin-bottom" id="${prefix}system-status">`);
 				tmp.push(`${dicon} `);
-				tmp.push(`${c(dmessage).uf()}. ${c`logarithmic-scale`.uf()}. `);
+				tmp.push(`${c(dmessage).uf()}. ${c`weighted-scale`.uf()}. `);
 				tmp.push(`<span class="font-weight-semibold pull-right" id="${prefix}sizes-mouseover"></span>`);
 				tmp.push(`</p>`);
 
@@ -2687,7 +3342,7 @@ const charts = {
 						`fill="${res[o].color}" `,
 						`height="25" `,
 						`data-tooltip="${c(res[o].name).uf()}: `,
-						`${res[o].count.toLocaleString(l)} ${c`items`}" `,
+						`${res[o].count.toLocaleString(l)} ${dunit}" `,
 						`onmouseover="toolkit.msg('${prefix}sizes-mouseover', this.dataset.tooltip);" `,
 						`onmouseout="toolkit.msg('${prefix}sizes-mouseover', '');"`,
 						`>`,
@@ -2727,7 +3382,7 @@ const charts = {
 
 				if(!overlayactive) screen.siteoverlay(false);
 				
-				prefix = dmessage = dicon = res = tmp = overlayactive = undefined;
+				prefix = dmessage = dicon = dunit = res = tmp = overlayactive = undefined;
 			});
 		});
 	},	
@@ -2877,6 +3532,11 @@ const chartshelper = {
 				title: c`saveasimage`, 
 				icon: icons.charts.downloadicon(),
 			},
+			/*
+			dataZoom: {
+				lang: [c`data-view`.uf(), c`turn-off`.uf(), c`refresh`.uf()],
+			},
+			*/
 			dataView: {
 				show: features.table,
 				title: c`data-view`,

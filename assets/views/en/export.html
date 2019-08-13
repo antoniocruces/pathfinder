@@ -1,58 +1,61 @@
-<p class="margin-top">
-	PATHFINDER can generate files with the database content, ready to be read by other applications. 
-	Export process is very simple. Select the format you want and click on the appropriate button.
+<h4>Export</h4>
+
+<p>
+	PATHFINDER can generate files containig the data it handles and they can be read by other applications. 
+	The process of <em>export</em> is very simple. Select the format you want and click the adequate button. 
+	Note that PATHFINDER will only export records being filtered.
 </p>
-<p class="margin-top">
-Note that PATHFINDER will only export the records that have been filtered.
-</p>
-<main class="cardgrid">
-	<article>
-		<div class="cardtext">
-			<h3>TSV Format</h3>
-			<a class="pure-button border-left-yellow" href="javascript:file.export('TAB');">
-				<i class="fa fa-file-export"></i>
-				Export in TSV format
-			</a>
-			<p class="margin-top muted">
-			One record per line. Fields separated by a tab character.
-			</p>
-			<p class="margin-top">
-			References: 
+
+<div class="boxes no-margin-top">
+	<div class="border-radius background-light-50 color-dark" style="padding:1.5rem">
+		<h3 class="margin-top-m">TSV format.</h3>
+		<p class="color-grey">
+			One record per line. Fields separated by a tab (\t) character.
+		</p>
+		<p class="color-grey">
+			See: 
 			<a rel="noopener" target="_blank" 
 				href="http://www.iana.org/assignments/media-types/text/tab-separated-values">IANA Media Types</a>
-			</p>
-		</div>
-	</article>
-	<article>
-		<div class="cardtext">
-			<h3>CSV Format</h3>
-			<a class="pure-button border-left-yellow" href="javascript:file.export('CSV');">
-				<i class="fa fa-file-export"></i>
-				Export in CSV format
-			</a>
-			<p class="margin-top muted">
+		</p>
+		<a href="javascript:file.export('TAB');" class="button button-tertiary button-icon button-block">
+			<span>TSV</span>
+			<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+				<path class="download" d=""></path>
+			</svg>
+		</a>
+	</div>
+
+	<div class="border-radius background-light-50 color-dark" style="padding:1.5rem">
+		<h3 class="margin-top-m">CSV format.</h3>
+		<p class="color-grey">
 			One record per line. Fields separated by a comma (,) character.
-			</p>
-			<p class="margin-top">
-			References: 
+		</p>
+		<p class="color-grey">
+			See: 
 			<a rel="noopener" target="_blank" href="https://tools.ietf.org/html/rfc4180">IETF RFC 4180</a>
-			</p>
-		</div>
-	</article>
-	<article>
-		<div class="cardtext">
-			<h3>XML Format</h3>
-			<a class="pure-button border-left-yellow" href="javascript:file.export('XML');">
-				<i class="fa fa-file-export"></i>
-				Export in XML format
-			</a>
-			<p class="margin-top muted">
-			Extensible Markup Language. Predefinited tags.
-			</p>
-			<p class="margin-top">
-			References: 
+		</p>
+		<a href="javascript:file.export('CSV');" class="button button-tertiary button-icon button-block">
+			<span>CSV</span>
+			<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+				<path class="download" d=""></path>
+			</svg>
+		</a>
+	</div>
+
+	<div class="border-radius background-light-50 color-dark" style="padding:1.5rem">
+		<h3 class="margin-top-m">XML fomat.</h3>
+		<p class="color-grey">
+			Extensible Markup Language.
+		</p>
+		<p class="color-grey">
+			See: 
 			<a rel="noopener" target="_blank" href="http://www.rfc-editor.org/rfc/rfc7303.txt">IETF RFC 7303</a>
-			</p>
-		</div>
-	</article>
-</main>
+		</p>
+		<a href="javascript:file.export('XML');" class="button button-tertiary button-icon button-block">
+			<span>XML</span>
+			<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">
+				<path class="download" d=""></path>
+			</svg>
+		</a>
+	</div>
+</div>

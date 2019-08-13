@@ -69,10 +69,10 @@ const ajax = {
 		
 		plain = plain || false;
 		let url = ['c', 'p', 'm', 't'].map(o => `./assets/data/auth.php?q=pathfinder&f=json&c=z&x=${o}&u=${lid}@${lpw}`);
-		let prm = url.map(o => ajax.fetchjson(o));
 		let jsn = {};
-		toolkit.runinsequence(prm)
+		toolkit.runinsequence(url.map(o => ajax.fetchjson(o)))
 		.then(res => {
+			if(res instanceof AppError) throw res;
 			jsn.crd = res[0];
 			jsn.pos = res[1];
 			jsn.met = res[2];
@@ -95,9 +95,10 @@ const ajax = {
 			screen.siteoverlay(false);
 			alert(c`pin-notice`.uf() + ': ' + pin);
 			file.save(JSON.stringify(jsn, null, 2), filename, filetype);
-			lid = lpw = url = prm = jsn = pin = filename = filetype = undefined;
+			lid = lpw = url = jsn = pin = filename = filetype = undefined;
 		})
 		.catch(err => {
+			console.log(err)
 			toolkit.statustext();
 			toolkit.timer('ajax.download');
 			screen.siteoverlay(false);
@@ -113,15 +114,22 @@ const ajax = {
 		toolkit.timer('ajax.savecollection');
 		toolkit.statustext(true);
 		try {
+			let tmp = {};
 			let out = d.filter.slice();
 			out.forEach(o => Object.assign(o, {results: []}));
+			tmp.filter = out;
+			tmp.filtersubfilter = d.filtersubfilter;
+			tmp.filtersublinks = d.filtersublinks;
+			
 			let filename = Math.random().toString(36).substring(7) + '.json';
 			let filetype = 'application/json;charset=' + document.characterSet;
-			file.save(JSON.stringify(out, null, 2), filename, filetype);
+			
+			file.save(JSON.stringify(tmp, null, 2), filename, filetype);
+			
 			screen.siteoverlay(false);
 			toolkit.timer('ajax.savecollection');
 			toolkit.statustext();
-			out = filename = filetype = undefined;
+			tmp = out = filename = filetype = undefined;
 		} catch(err) {
 			screen.siteoverlay(false);
 			toolkit.timer('ajax.savecollection');
@@ -141,10 +149,10 @@ const ajax = {
 		.then(r => r.json())
 		.then(r => { resolve(r); })
 		.catch(err => {
-			reject([
+			reject(new AppError([
 				`${c`download-file-error`}: `,
 				`${err instanceof SyntaxError ? c`invalid-filecontent` : err.message}`,
-			].join(''));
+			].join('')));
 		});	
 	}),
 	networkinfo: (url, remote = false) => {
@@ -202,6 +210,22 @@ const file = {
 		
 		a.click();
 	},
+	datauritoblob: function (datauri) {
+		let bytestring = atob(datauri.split(',')[1]);
+		let mimestring = datauri.split(',')[0].split(':')[1].split(';')[0];
+		let ab = new ArrayBuffer(bytestring.length);
+		let dw = new DataView(ab);
+		for(let i = 0, len = bytestring.length; i < len; i++) {
+			dw.setUint8(i, bytestring.charCodeAt(i));
+		}
+		bytestring = dw = undefined;
+		//return new Blob([ab], {type: mimestring});
+		return {
+			content: ab, 
+			filename: window.version.appname + '_' + (Math.random().toString(36).substring(7)) + '.png', 
+			contenttype: mimestring
+		};
+	},	
 	loadremotecollection: cid => {
 		if(!Array.isArray(d.collections) || !cid || cid >= d.collections.length) return;
 		cid = Number(cid);
@@ -209,22 +233,33 @@ const file = {
 		toolkit.timer('file.loadremotecollection');
 		toolkit.statustext(true);
 		sleep(50).then(() => {
-			file.unloadremotecollection();
-			d.collections[cid].active = 1;
-			d.filter = [];
-			d.collections[cid].query.forEach(o => {
-				d.filter.push(Object.assign({}, o));
+			dbq.clearfilter(Object.assign({}, d.filterrecord))
+			.then(() => {
+				file.unloadremotecollection();
+				d.collections[cid].active = 1;
+				d.filter = [];
+				d.collections[cid].query.forEach(o => {
+					d.filter.push(Object.assign({}, o));
+				});
+				d.filtersubfilter = d.collections[cid].filtersubfilter;
+				d.filtersublinks = d.collections[cid].filtersublinks;
+				d.filter.forEach((o, i) => {
+					d.filter[i].results = dbq.immediatesearch(o.operator, o.modifier, o.value, o.rkey).results;
+				});
+				ui.setfilter('_relaxed', false);
+				if(byId('data-collection')) {
+					toolkit.showactivecollection();
+				}
+				toolkit.statustext();
+				toolkit.timer('file.loadremotecollection');
+				screen.siteoverlay(false);
+			})
+			.catch(err => { 
+				toolkit.statustext();
+				toolkit.timer('file.loadremotecollection');
+				screen.siteoverlay(false);
+				throw new AppError(c`filter` + ': ' + err); 
 			});
-			d.filter.forEach((o, i) => {
-				d.filter[i].results = dbq.immediatesearch(o.operator, o.modifier, o.value, o.rkey).results;
-			});
-			ui.setfilter('_relaxed', false);
-			if(byId('data-collection')) {
-				toolkit.showactivecollection();
-			}
-			toolkit.statustext();
-			toolkit.timer('file.loadremotecollection');
-			screen.siteoverlay(false);
 		})
 		.catch(err => {
 			toolkit.statustext();
@@ -254,19 +289,37 @@ const file = {
 				let data = null;
 				try {
 					data = JSON.parse(reader.result);
-					if(!Array.isArray(data)) {
+					if(!isObject(data)) {
 						extension = file = reader = validkeys = data = reader = undefined;
 						throw new AppError(c`invalid-filecontent`.uf());
 					}
-					if(Object.keys(data[0]).filter(o => !validkeys.includes(o)).length) {
+					if(!data.filter || !data.filtersubfilter || !data.filtersublinks) {
 						extension = file = reader = validkeys = data = reader = undefined;
 						throw new AppError(c`invalid-filecontent`.uf());
 					}
-					if(data.length === 0) {
+					if(!Array.isArray(data.filter)) {
+						extension = file = reader = validkeys = data = reader = undefined;
+						throw new AppError(c`invalid-filecontent`.uf());
+					}
+					if(Object.keys(data.filter[0]).filter(o => !validkeys.includes(o)).length) {
+						extension = file = reader = validkeys = data = reader = undefined;
+						throw new AppError(c`invalid-filecontent`.uf());
+					}
+					if(!isObject(data.filtersubfilter)) {
+						extension = file = reader = validkeys = data = reader = undefined;
+						throw new AppError(c`invalid-filecontent`.uf());
+					}
+					if(!Array.isArray(data.filtersublinks)) {
+						extension = file = reader = validkeys = data = reader = undefined;
+						throw new AppError(c`invalid-filecontent`.uf());
+					}
+					if(data.filter.length === 0) {
 						extension = file = reader = validkeys = data = reader = undefined;
 						throw new AppError(c`no-data`.uf());
 					}
-					d.filter = data;
+					d.filter = data.filter;
+					d.filtersubfilter = data.filtersubfilter;
+					d.filtersublinks = data.filtersublinks;
 					screen.siteoverlay(false);
 					toolkit.statustext();
 					fileinput.value = '';
@@ -374,7 +427,7 @@ const file = {
 					toolkit.statustext();
 					toolkit.timer('file.load');
 					
-					pagescripts.data(false, true);
+					pagescripts.data(false, false);
 					pagescriptshelper.sideappinfo();
 
 					extension = data = pts = pin = file = undefined;
@@ -766,6 +819,31 @@ const file = {
 		document.body.removeChild(dlLink);
 		MIME_TYPE = imgURL = dlLink = canvasElement = undefined;
 	},
+	tabletoarray: (tbl, opt_cellValueGetter) => {
+		opt_cellValueGetter = opt_cellValueGetter || function(td) {
+			return td.textContent || td.innerText;
+		};
+		var twoD = [];
+		for (var rowCount = tbl.rows.length, rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+			twoD.push([]);
+		}
+		for (var rowIndex = 0, tr; rowIndex < rowCount; rowIndex++) {
+			var tr = tbl.rows[rowIndex];
+			for (var colIndex = 0, colCount = tr.cells.length, offset = 0; colIndex < colCount; colIndex++) {
+				var td = tr.cells[colIndex],
+					text = opt_cellValueGetter(td, colIndex, rowIndex, tbl);
+				while (twoD[rowIndex].hasOwnProperty(colIndex + offset)) {
+					offset++;
+				}
+				for (var i = 0, colSpan = parseInt(td.colSpan, 10) || 1; i < colSpan; i++) {
+					for (var j = 0, rowSpan = parseInt(td.rowSpan, 10) || 1; j < rowSpan; j++) {
+						twoD[rowIndex + j][colIndex + offset + i] = text;
+					}
+				}
+			}
+		}
+		return twoD;
+	},
 	exporttabletocsv: (tid, separator = '\t') => {
 		if(!byId(tid)) throw new AppError(c`export` + ': ' + c`no-data`);
 		let csv = [];
@@ -777,8 +855,11 @@ const file = {
 			for (let j = 0, jlen = cols.length; j < jlen; j++) {
 				if(cols[j].dataset.svalue) {
 					row.push(cols[j].dataset.svalue);
+					let colspan = cols[j].colSpan || 1;
+					console.log('HAS DATASET', j, cols[j].textContent, colspan)
 				} else {
 					row.push(cols[j].textContent);
+					let colspan = cols[j].colSpan || 1;
 				}
 			}
 			csv.push(row.join(separator));
@@ -790,14 +871,19 @@ const file = {
 		file.save(csv.join('\n'), filename, filetype);
 		csv = rows = filename = filetype = undefined;
 	},
-	exportdatatocsv: (rows, separator = '\t') => {
+	exportdatatocsv: (rows, separator = '\t', includehead = true) => {
 		if(!rows) throw new AppError(c`export` + ': ' + c`no-data`);
 		if(!Array.isArray(rows)) throw new AppError(c`export` + ': ' + c`invalid-format`);
+		if(!rows.length) {
+			if(screen.siteoverlayisset) screen.siteoverlay(false);
+			throw new AppError(c`export` + ': ' + c`no-data`);
+		}
 		let csv = [];
-		csv.push(Object.keys(rows[0]).map(o => c(o)).join(separator));
+
+		if(includehead) csv.push(Object.keys(rows[0]).map(o => fc(o)).join(separator));
 		
 		for (let i = 0, len = rows.length; i < len; i++) {
-			csv.push(Object.values(rows[i]).join(separator));
+			csv.push(Object.values(rows[i]).map(o => cleartext(o)).join(separator));
 		}
 		
 		let filename = window.version.appname + '_' + (Math.random().toString(36).substring(7)) + '.csv';
