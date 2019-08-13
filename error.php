@@ -49,104 +49,53 @@ $errortitle = $rtitle ? $rtitle : $codes[$status][0];
 $message    = $rmessage ? $rmessage : $codes[$status][1];
 
 ?>
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="PATHFINDER. ExpoFinder Data Analysis & Exploitation">
-	<meta name="author" content="Antonio Cruces Rodríguez. iArtHis_LAB">
-	<title>PATHFINDER</title>
-	<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dosis">
-	<link id="css_app-styles" rel="stylesheet" href="assets/css/_app-styles.css">
-</head>
-
-<body>
-	<div id="layout">
-		<a href="#menu" id="menuLink" class="menu-link">
-			<span></span>
-		</a>
-		<div id="side" class="no-print">
-			<div class="pure-menu">
-				<a class="pure-menu-heading" href="./">PATHFINDER</a>
-				<ul class="pure-menu-list">
-					<li class="pure-menu-item bg-red text-light-red">
-						<a href="javascript:;" class="pure-menu-link pure-menu-status">
-							<span id="app-microchart"></span>
-							<span id="app-status">ERROR</span>
-						</a>
-					</li>
-					<li class="pure-menu-item menu-item-divided">
-						<a href="./" class="pure-menu-link">Home / Inicio</a>
-					</li>
-				</ul>
-			</div>			
-		</div>
-		<div id="main">
-			<main>
-				<div class="header">
-					<h1>
-						<img class="logo" src="./assets/img/logos/IMGLOGOPF.svg" alt="PATHFINDER" height="50">
-						<span class="text-error">ERROR</span>
-					</h1>
-					<h2>
-						This page is shown because PATHFINDER is in an unrecoverable error condition.
-					</h2>
-					<h2>
-						Esta página se muestra porque PATHFINDER está en una condición de error irrecuperable.
-					</h2>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>PATHFINDER</title>
+		<meta name="description" content="PATHFINDER. ExpoFinder Data Analysis & Exploitation">
+		<meta name="author" content="Antonio Cruces Rodríguez" >
+		<link rel="stylesheet" href="./assets/css/_app-styles.css">
+	</head>
+	<body class="text-black background-white">
+		<div id="body">
+			<section class="padding-top-l flex-grow-container">
+				<div id="main" class="flex-grow-main">
+					<main>
+						<header class="padding-vertical-l text-align-center">
+							<div class="container">
+	    							<img class="logo" src="./assets/img/logos/ANIMATEDLOGOPF.svg" 
+	    							alt="PATHFINDER" style="min-height:95px;">
+								<p class="lead lead-s margin-vertical-m">
+									Herramienta para el análisis gráfico y textual de datos procedentes de 
+									<a rel="noopener" href="http://expofinder.uma.es" target="_blank">ExpoFinder</a>.
+								</p>
+								<h2 class="no-margin-bottom color-error">
+									This page is shown because PATHFINDER is in an unrecoverable error condition.
+								</h2>
+								<h2 class="no-margin-top color-error">
+									Esta página se muestra porque PATHFINDER está en una condición de error irrecuperable.
+								</h2>
+								<h2><?php echo $errortitle; ?></h3>
+				
+								<p>
+									Error description / Descripción del error: 
+									<strong>
+										<span id="err-description"><?php echo $message; ?></span>
+									</strong>
+								</p>
+						
+								<p>
+									<a class="button" href="./">Home / Inicio</a>
+								</p>
+							</div>
+						</header>						
+					</main>
 				</div>
-				
-				<div class="pagecontent">
-					<div class="content">
-						<h3 class="pagecontent-header"><?php echo $errortitle; ?></h3>
-				
-						<p>
-							Error description / Descripción del error: 
-							<strong>
-								<span id="err-description"><?php echo $message; ?></span>
-							</strong>
-						</p>
-				
-						<p>
-							<a class="pure-button" href="./">Home / Inicio</a>
-						</p>
-					</div>
-				</div>				
-			</main>
+			</section>
 		</div>
-	</div>
-	<div id="footer" class="footer no-print">
-		<div class="legal pure-g">
-			<div class="pure-u-1 u-sm-1-2">
-				<p class="legal-license">
-					<span data-demo="footerleft" id="ftr-id">
-						<a href="javascript:info.app();">
-							<span id="footer-application"></span>
-						</a>
-						<a rel="noopener" target="_blank" href="https://hdplus.es">HD+</a>
-						&nbsp;|&nbsp;
-						<a id="doi-link" rel="noopener" target="_blank" href="">DOI</a>
-						&nbsp;|&nbsp;
-						<a id="github-link" rel="noopener" target="_blank" href="">GitHub</a>
-					</span>
-				</p>
-				<p class="legal-license">&copy; 2019 
-					<a rel="noopener" target="_blank" href="http://iarthislab.es">iArtHis_LAB</a>
-					. All rights reserved. 
-					<a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.es_ES">
-						<img src="./assets/img/logos/cc.svg" width="12" height="12" />
-						<img src="./assets/img/logos/by.svg" width="12" height="12" />
-						<img src="./assets/img/logos/sa.svg" width="12" height="12" />
-					</a>
-				</p>
-			</div>
-		</div>
-	</div>	
-</body>
+	</body>
 </html>
