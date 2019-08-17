@@ -1151,7 +1151,44 @@
 					</p>
 				</li>
 			</ol>
-		</li>
+		</li>		
+		<li>
+			<h6>Rango temporal y selectores de fecha</h6>
+			<p>
+				Aquellos <a href="#documents">registros primarios</a> que disponen de un vector temporal (por ejemplo, 
+				los actores o las exposiciones) pueden ser mostrados o no a voluntad del usuario. Para ello existen tres 
+				controles, que gestionan la faceta año de estos registros “temporalizados”.
+			<p>
+			<ol type="a">
+				<li>
+					<p>
+						Rango temporal. Muestra una ventana emergente que permite determinar la fecha más antigua y 
+						la más reciente que será mostrada en el mapa. 
+					</p>
+				</li>
+				<li>
+					<p>
+						Lapso temporal. Al pulsar el botón se dispara un sistema que automáticamente selecciona secuencialmente 
+						solo un año de los incluidos en el rango temporal. De esa manera, se puede apreciar la evolución de un fenómeno 
+						a lo largo del tiempo. Es especialmente útil con la capa de mapa de calor activa. Al volver a pulsar el botón 
+						el mecanismo se desactiva. Es posible controlar el intervalo en segundos para el salto anual 
+						desde el menú <a href="#settings">Opciones</a>, submenú Ajustes.
+					</p>
+				</li>
+				<li>
+					<p>
+						Selector temporal. Actúa, mediante un deslizador, filtrando en mapa solo los elementos con el año que la etiqueta muestre.
+					</p>
+				</li>
+			</ol>
+			<p class="aside background-warning-50">
+				<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon pull-left margin-right-s">
+					<path class="bell" d=""></path>
+				</svg>
+				IMPORTANTE. Para todos aquellos registros con vector temporal que disponen de fecha de inicio y fecha de final 
+				(nacimiento y muerte, apertura y cierre…) en Mapas solo se emplea la fecha de inicio para calcular la faceta año.
+			</p>			
+		</li>		
 	</ol>	
 </div>
 
