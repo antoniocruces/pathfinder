@@ -12,24 +12,24 @@ const trade = {
 			if (v instanceof Array) {
 				for (let i = 0, n = v.length; i < n; i++)
 					addChild(name, v[i], ind);
-			} else if (typeof v === "object") {
-				xml.push(ind, "<", name);
+			} else if (typeof v === 'object') {
+				xml.push(ind, '<', name);
 				childs = [];
 				for (let p in v) {
 					if (!v.hasOwnProperty(p))
 						continue;
-					if (p.charAt(0) === "@")
-						xml.push(" ", p.substr(1), '="', v[p].toString().replace('&', '&amp;').replace('"', '&quot;'), '"');
+					if (p.charAt(0) === '@')
+						xml.push(' ', p.substr(1), '="', v[p].toString().replace('&', '&amp;').replace('"', '&quot;'), '"');
 					else
 						childs.push(p);
 				}
-				xml.push(childs.length ? ">" : "/>");
+				xml.push(childs.length ? '>' : '/>');
 				if (childs.length) {
 					for (let i = 0, n = childs.length, p; i < n; i++) {
 						p = childs[i];
-						if (p === "#text")
+						if (p === '#text')
 							xml.push(v[p].toString().replace('&', '&amp;').replace('<', '&lt;'));
-						else if (p === "#cdata")
+						else if (p === '#cdata')
 							xml.push(['<![CDATA[', v[p].toString().replace([']]', '>'].join(''), [']]]]', '><![CDATA[>'].join('')) + ']]>'].join(''));
 						else
 							addChild(p, v[p], ind + tab);
@@ -39,13 +39,13 @@ const trade = {
 					xml.push('</', name, '>');
 				}
 			} else {
-				xml.push([ind, "<", name, ">", v.toString().replace('&', '&amp;').replace('<', '&lt;'), "</", name, ">"].join(''));
+				xml.push([ind, '<', name, '>', v.toString().replace('&', '&amp;').replace('<', '&lt;'), '</', name, '>'].join(''));
 			}
 			childs = null;
 		};
 		for(let m in o) {
 			if(m) {
-				addChild(m, o[m], "\n");
+				addChild(m, o[m], '\n');
 			}
 		}
 		xml.shift(); // Remove the first indent

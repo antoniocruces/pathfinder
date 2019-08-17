@@ -1,45 +1,36 @@
 'use strict';
 
-/* global AppError, byId, c, d, isBlank, isNil, isObject, isVisible, k, l, toolkit */
+/* global AppError, byId, c, d, file, removeqoutes, toolkit */
 /* eslint no-confusing-arrow: ["error", {"allowParens": true}] */
 /* exported screen */
 /* eslint-env es6 */
 
 // global screen functions
-const screen = {
+const gscreen = {
 	overlay: undefined,
 	alert: undefined,
 	modal: undefined,
 	siteoverlayisset: false,
 	documentoverlay: function() {
 		let instance = this;
-		let bodyHeight = (() => {
-			return getdocumentdimensions('Height','min');    
-		})();
-	
 		function getdocumentdimensions(prop, m) {
 			m = m || 'max';
 			return Math[m](
-				Math[m](document.body["scroll" + prop], document.documentElement["scroll" + prop]),
-				Math[m](document.body["offset" + prop], document.documentElement["offset" + prop]),
-				Math[m](document.body["client" + prop], document.documentElement["client" + prop])
+				Math[m](document.body['scroll' + prop], document.documentElement['scroll' + prop]),
+				Math[m](document.body['offset' + prop], document.documentElement['offset' + prop]),
+				Math[m](document.body['client' + prop], document.documentElement['client' + prop])
 			);
 		}
 		
 		let css = (el, o) => {
-			for (let i in o) { el.style[i] = o[i]; }
+			for(let i in o) { 
+				if(o.hasOwnProperty(i)) {
+					el.style[i] = o[i];
+				}
+			}
 			return el;
 		};
 	 
-	    let getwindowheight = () => {
-	        return window.innerHeight ||
-				(
-					document.compatMode === "CSS1Compat" && 
-					document.documentElement.clientHeight || 
-					document.body.clientHeight
-				);
-	    }
-	
 		this.css = function(o){
 			css(instance.element, o);
 			return instance;
@@ -76,13 +67,17 @@ const screen = {
 		};
 		
 		this.remove = function() {
-			this.element.parentNode && this.element.parentNode.removeChild(instance.element);
+			if(this.element.parentNode) this.element.parentNode.removeChild(instance.element);
 		};
 		
 		this.show = function() {};
 		
 		this.on = function(what, handler){
-			what.toLowerCase() === 'show' ? (instance.show = handler) : instance.element['on' + what] = handler;
+			if(what.toLowerCase() === 'show') {
+				instance.show = handler;
+			} else {
+				instance.element['on' + what] = handler;
+			} 
 			return instance;
 		};
 	 
@@ -90,7 +85,7 @@ const screen = {
 			instance.duration = duration || instance.duration;
 			document.getElementsByTagName('body')[0].appendChild(instance.element);
 			instance.show.call(instance.element,instance);
-			instance.duration && setTimeout(() => { instance.remove(); }, instance.duration);
+			if(instance.duration) setTimeout(() => { instance.remove(); }, instance.duration);
 			return instance;
 		};
 	},
@@ -98,7 +93,7 @@ const screen = {
 		let over = byId('siteoverlay');
 		let text = byId('siteoverlaytext');
 		if(active) {
-			if(!screen.siteoverlayisset) {
+			if(!gscreen.siteoverlayisset) {
 				if(over) {
 					text.parentNode.removeChild(text);
 					over.parentNode.removeChild(over);
@@ -134,10 +129,11 @@ const screen = {
 				newover.appendChild(newtext);
 				document.body.appendChild(newover);
 				
-				newover.offsetHeight;
+				let tmp = newover.offsetHeight;
+				tmp = undefined;
 				newover.style.display='block';
 				
-				screen.siteoverlayisset = true;
+				gscreen.siteoverlayisset = true;
 				newover = newtext = undefined;
 			}
 		} else {
@@ -145,7 +141,7 @@ const screen = {
 				text.parentNode.removeChild(text);
 				over.parentNode.removeChild(over);
 			}
-			screen.siteoverlayisset = false;
+			gscreen.siteoverlayisset = false;
 		}
 		over = text = undefined;
 	},
@@ -159,16 +155,15 @@ const screen = {
 			help: features.help || null,
 			icon: features.icon || '',
 		};
-
 		if(byId('appmodal')) byId('appmodal').remove();
 		let modal = document.createElement('div');
 		modal.id = 'appmodal';
 		let body = document.getElementsByTagName('body')[0];
 		let closemark = [
 			`<a class="pull-right no-print" `,
-			`href="javascript:if(screen.modal){screen.modal.remove();`,
-			`screen.modal=undefined;if(screen.siteoverlayisset)screen.siteoverlay(false);`,
-			`screen.togglebodyscrollbar();}">`,
+			`href="javascript:if(gscreen.modal){gscreen.modal.remove();`,
+			`gscreen.modal=undefined;if(gscreen.siteoverlayisset){gscreen.siteoverlay(false);}`,
+			`gscreen.togglebodyscrollbar();}">`,
 			`<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">`,
 			`<path class="xcircle" d=""></path>`,
 			`</svg>`,
@@ -176,7 +171,7 @@ const screen = {
 		].join('');
 		let exporttext = [
 			`<a class="pull-right no-print margin-right-s" `,
-			`href="javascript:screen.exportmodaltext('modal-content');">`,
+			`href="javascript:gscreen.exportmodaltext('modal-content');">`,
 			`<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">`,
 			`<path class="download" d=""></path>`,
 			`</svg>`,
@@ -200,7 +195,7 @@ const screen = {
 				`<span>`,
 				`${closemark}`,
 				`<a class="pull-right no-print margin-right-s" `,
-				`href="javascript:toolkit.printdiv('modal-content', '${escapeqoutes(features.title)}');">`,
+				`href="javascript:toolkit.printdiv('modal-content', '${removeqoutes(features.title)}');">`,
 				`<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">`,
 				`<path class="printer" d=""></path>`,
 				`</svg>`,
@@ -237,7 +232,7 @@ const screen = {
 		toolkit.drawicons();			
 		
 		let modalclose = document.querySelector('#modal-close');
-		if(!screen.siteoverlayisset) screen.siteoverlay(true);
+		if(!gscreen.siteoverlayisset) gscreen.siteoverlay(true);
 		
 		if(modalclose) {
 			modalclose.addEventListener('click', function() {
@@ -253,7 +248,7 @@ const screen = {
 				modal.remove();
 				if(modal) modal = undefined;
 				document.documentElement.style.overflowY = 'auto';
-				if(screen.siteoverlayisset) screen.siteoverlay(false);
+				if(gscreen.siteoverlayisset) gscreen.siteoverlay(false);
 			});
 		}
 
@@ -279,8 +274,8 @@ const screen = {
 		let body = document.getElementsByTagName('body')[0];
 		let closemark = [
 			`<span class="pull-right no-print">`,
-			`<a href="javascript:if(screen.alert){screen.alert.remove();`,
-			`screen.alert=undefined;}">`,
+			`<a href="javascript:if(gscreen.alert){gscreen.alert.remove();`,
+			`gscreen.alert=undefined;}">`,
 			`<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">`,
 			`<path class="xcircle" d=""></path>`,
 			`</svg>`,
@@ -289,7 +284,7 @@ const screen = {
 		].join('');
 		let printmark = [
 			`<a class="pull-right no-print margin-right-s" `,
-			`href="javascript:toolkit.printdiv('alert-content', '${escapeqoutes(features.title)}');">`,
+			`href="javascript:toolkit.printdiv('alert-content', '${removeqoutes(features.title)}');">`,
 			`<svg width="24" height="24" viewBox="0 0 24 24" class="svgicon">`,
 			`<path class="printer" d=""></path>`,
 			`</svg>`,
@@ -365,8 +360,8 @@ const screen = {
 			action: false,
 			cancel: true,
 			canceltitle: c`close`.uf()
-		}
-		screen.alert = screen.displayalert(features);
+		};
+		gscreen.alert = gscreen.displayalert(features);
 		txt = url = features = undefined;
 	},
 	theme: (name, value) => {
@@ -403,8 +398,8 @@ const screen = {
 		classes = length = i = undefined;
 	},
 	exportmodaltext: (cid) => {
-		screen.siteoverlay(true);
-		toolkit.timer('screen.exportmodaltext');
+		gscreen.siteoverlay(true);
+		toolkit.timer('gscreen.exportmodaltext');
 		toolkit.statustext(true);
 		if(byId('app-overlay-txt')) toolkit.msg('app-overlay-txt', `<span class="loading">${c`working`.uf()}</span>`);
 		try {
@@ -412,13 +407,13 @@ const screen = {
 			let filename = Math.random().toString(36).substring(7) + '.txt';
 			let filetype = 'text/plain;charset=' + document.characterSet;
 			file.save(out, filename, filetype);
-			screen.siteoverlay(false);
-			toolkit.timer('screen.exportmodaltext');
+			gscreen.siteoverlay(false);
+			toolkit.timer('gscreen.exportmodaltext');
 			toolkit.statustext();
 			out = filename = filetype = undefined;
 		} catch(err) {
-			screen.siteoverlay(false);
-			toolkit.timer('screen.exportmodaltext');
+			gscreen.siteoverlay(false);
+			toolkit.timer('gscreen.exportmodaltext');
 			toolkit.statustext();
 			throw new AppError(c`export-modal-text` + ': ' + c`export-save-error`);
 		}

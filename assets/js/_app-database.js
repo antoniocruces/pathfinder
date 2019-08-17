@@ -1,6 +1,6 @@
 'use strict';
 
-/* global AppError, byId, c, charts, d, isBlank, isNil, isObject, isVisible, k, l, maps, objectflatten, Record, Relative, sortobjectbykey, Stats, stats, toolkit */
+/* global AppError, byId, c, charts, d, equijoin, fc, fetchtextasync, filteruuid, Graph, gscreen, isBlank, isJSON, isNil, isNumber, isObject, isVisible, joinobjects, k, l, maphelpers, memoize, objectflatten, pick, Record, Relative, sortobjectbykey, sleep, Stats, stats, toolkit */
 /* eslint no-confusing-arrow: ["error", {"allowParens": true}] */
 /* exported dbb, dbe, dbq, dbs */
 /* eslint-env es6 */
@@ -10,8 +10,8 @@ const dbe = {
 	_operation: (operation, a, b) => {
 		operation = isBlank(operation) ? 'li' : operation;
 		const operators = {
-			eq: (a, b) => a == b,
-			ne: (a, b) => a != b,
+			eq: (a, b) => a === b,
+			ne: (a, b) => a !== b,
 			gt: (a, b) => a > b,
 			ge: (a, b) => a >= b,
 			lt: (a, b) => a < b,
@@ -174,8 +174,8 @@ const dbe = {
 	arraycolumnsum: array => {
 		let add = (x, y) => !isNaN(x) && !isNaN(y) ? x + y : 0;
 		let sum = xs => xs.reduce(add, 0);
-		let head = ([x, ...xs]) => x;
-		let tail = ([x, ...xs]) => xs;
+		let head = ([x, ...xs]) => { xs = undefined; return x; };
+		let tail = ([x, ...xs]) => { x = undefined; return xs; };
 		
 		let transpose = ([xs, ...xxs]) => {
 			let aux = ([x, ...xs]) =>
@@ -195,30 +195,32 @@ const dbe = {
 			let temp = {};
 			thekeys.forEach(function(f) {
 				temp[f] = {};
-				temp[f]["_labels"] = [];
-				temp[f]["_labelsdata"] = [];
-				temp[f]["_data"] = {};
+				temp[f]._labels = [];
+				temp[f]._labelsdata = [];
+				temp[f]._data = {};
 			});
-			arr.forEach((f, i) => {
+			arr.forEach(f => {
 				thekeys.forEach(a => {
 					let value = f[a];
 					if(Array.isArray(value)) {
 						value.forEach(r => {
-							temp[a]["_data"][r] = (temp[a]["_data"][r] || 0) + 1;
-							temp[a]["_labels"][r] = null;
+							temp[a]._data[r] = (temp[a]._data[r] || 0) + 1;
+							temp[a]._labels[r] = null;
 						});
 					} else {
-						temp[a]["_data"][value] = (temp[a]["_data"][value] || 0) + 1;
-						temp[a]["_labels"][value] = null;
+						temp[a]._data[value] = (temp[a]._data[value] || 0) + 1;
+						temp[a]._labels[value] = null;
 					}
 					value = undefined;
 				});
 			});
 			thekeys.forEach(f => {
-				for (let i in temp[f]["_data"]) {
-					temp[f]["_labelsdata"].push(temp[f]["_data"][i]);
+				for(let i in temp[f]._data) {
+					if(temp[f]._data.hasOwnProperty(i)) {
+						temp[f]._labelsdata.push(temp[f]._data[i]);
+					}
 				}
-				temp[f]["_labels"] = Object.keys(temp[f]["_labels"]);
+				temp[f]._labels = Object.keys(temp[f]._labels);
 			});
 			obj = temp;
 			thekeys = temp = undefined;
@@ -238,7 +240,7 @@ const dbe = {
 			let ttags = cleanterms.split('@').map(o => String(o).trim());
 			if(ttags.length > 0) {
 				ttags.forEach(t => {
-					t = t.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+					t = t.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
 					let vtags = toolkit.fuzzymatch(t, tokens);
 					if(vtags.length > 0) tags.push(vtags[0]);
 					vtags = undefined;
@@ -319,24 +321,7 @@ const dbe = {
 		Object.keys(d.store.tax || {}).length,
 
 	verifytables: () => !isBlank(d.store.pos) && !isBlank(d.store.met) && !isBlank(d.store.tax),
-/*
-	_links: () => {
-		let tmp = dbe.hashtable(
-			objectunique([].concat(
-				dbm.list().map(o => ({tin: d.store.pos[o.ID].rkey, link: o.rkey})),
-				dbm.list().map(o => ({tin: o.rkey, link: d.store.pos[o.ID].rkey})),
-				d.chains.map(o => ({tin: o.tin, link: o.link})),
-				d.chains.map(o => ({tin: o.tout, link: o.link})),
-				d.chains.map(o => ({tin: o.link, link: o.tin})),
-				d.chains.map(o => ({tin: o.link, link: o.tout})),
-			)), 
-		'tin');
-		Object.keys(tmp).forEach(o => {
-			tmp[o] = tmp[o].unique().sort();
-		});
-		return tmp;
-	},
-*/	
+
 	_documents: (astree = false, filtered = false) => { 
 		if(filtered) {
 			let tmp = dbe._filterids();
@@ -424,7 +409,7 @@ const dbe = {
 		}
 	},
 
-	_taxonomies: (astree = false, filtered = false, unfolded = false) => {
+	_taxonomies: (astree = false, filtered = false) => {
 		let tax = d.store.tax; 
 		if(filtered) {
 			let tmp = dbe._filterids();
@@ -607,7 +592,7 @@ const dbe = {
 				.map(o => formatted ? Object.assign({}, o, String(o.value).hosts()): o);
 	},
 
-	_autogeolocation: (astree = true, filtered = false, formatted = false) => {
+	_autogeolocation: (astree = true, filtered = false) => {
 		let met = dbm.places(true, filtered, false, toolkit.randomstring());
 		let pox = dbm.points(true, filtered, false, toolkit.randomstring());
 		let poi = new Set(Object.keys(pox).map(o => Number(o)));
@@ -650,7 +635,7 @@ const dbe = {
 		...dbm.ages(false, filtered)
 	],
 	
-	tree: (filtered = false) => dbe.hashtable(dbe.list(), 'ID'),
+	tree: () => dbe.hashtable(dbe.list(), 'ID'),
 
 	makegeojson: (data, simple = false) => {
 		let geojson = {};
@@ -660,40 +645,35 @@ const dbe = {
 
 		for (let k = 0, len = data.length; k < len; k++) {
 			let rsize = rels[data[k].id || data[k].ID] ? rels[data[k].id || data[k].ID].length : 1;
-			//let rrange = maphelpers.clamprange(d.mapdataranges, rsize, 1, d.mapiconradius) / 2;
 			let rrange = maphelpers.clamprange(d.mapdataranges, rsize, 1, d.mapiconfeatures.size.micro);
-			/*
-			let rcolor = data[k].gender ? d.mapgendercolors
-				.find(o => c(o.name).uf() === data[k].gender.uf()).color : data[k].color ? data[k].color : null;
-			*/
 			let newFeature = {
-				"type": "Feature",
-				"geometry": {
-					"type": "Point",
-					"coordinates": simple ? 
+				type: 'Feature',
+				geometry: {
+					type: 'Point',
+					coordinates: simple ? 
 						[data[k].longitude, data[k].latitude] : 
 						[data[k].destination_lon, data[k].destination_lat]
 				},
-				"properties": {
-					"id": data[k].id || data[k].ID || null,
-					"title": data[k].title || null,
-					"color": data[k].color || null,
-					"shape": data[k].shape || null,
-					"radius": data[k].radius || null,
-					"origin_id": data[k].origin_id || null,
-					"origin_lat": data[k].origin_lat || null,
-					"origin_lon": data[k].origin_lon || null,
-					"destination_id": data[k].destination_id || null,
-					"destination_lat": data[k].destination_lat || null,
-					"destination_lon": data[k].destination_lon || null,
-					"latitude": data[k].latitude || null,
-					"longitude": data[k].longitude || null,
-					"rkey": data[k].rkey || null,
-					"year": data[k].year || null,
-					"size": rsize,
-					"range": rrange,
-					"gender": data[k].gender || null,
-					"ownership": data[k].ownership || null,
+				properties: {
+					id: data[k].id || data[k].ID || null,
+					title: data[k].title || null,
+					color: data[k].color || null,
+					shape: data[k].shape || null,
+					radius: data[k].radius || null,
+					origin_id: data[k].origin_id || null,
+					origin_lat: data[k].origin_lat || null,
+					origin_lon: data[k].origin_lon || null,
+					destination_id: data[k].destination_id || null,
+					destination_lat: data[k].destination_lat || null,
+					destination_lon: data[k].destination_lon || null,
+					latitude: data[k].latitude || null,
+					longitude: data[k].longitude || null,
+					rkey: data[k].rkey || null,
+					year: data[k].year || null,
+					size: rsize,
+					range: rrange,
+					gender: data[k].gender || null,
+					ownership: data[k].ownership || null,
 				},
 			};
 			geojson.features.push(newFeature);
@@ -760,8 +740,8 @@ const dbb = {
 		d.store.tax = dbe.hashtable(data.tax.filter(o => d.taxonomies.includes(o.rkey)), 'ID');
 
 		d.poslength = data.pos.length;
-		d.metlength = data.met.length;;
-		d.taxlength = data.tax.length;;
+		d.metlength = data.met.length;
+		d.taxlength = data.tax.length;
 
 		d.filterids = Object.keys(d.store.pos).map(o => Number(o));
 		d.filteruuid = filteruuid();
@@ -802,7 +782,7 @@ const dbm = {
 	autogeolocation: memoize(dbe._autogeolocation),
 	features: memoize(dbe._features),
 	list: memoize(dbe.list),
-}
+};
 
 // database stats functions
 const dbs = {
@@ -883,17 +863,6 @@ const dbq = {
 		d.schemaoutliers = [];
 		d.schemarelevance = [];
 		d.schemauuid = null;
-		/*		
-		d.relationscols = ['', ''];
-		d.relationsbound = '<';
-		d.relationsstrict = true;
-		d.relationsoutliersonly = false;
-		d.relationsresults = [];
-		d.relationsstats = [];
-		d.relationsoutliers = [];
-		d.relationsrelevance = [];
-		d.relationsuuid = null;
-		*/
 		d.cooccurrencessource = '';
 		d.cooccurrencestarget = '';
 		d.cooccurrencesroute = [];
@@ -906,9 +875,6 @@ const dbq = {
 		d.cooccurrencesuuid = null;
 
 		if(isVisible(byId('schema-listing'))) stats.schema();
-		/*
-		if(isVisible(byId('relations-listing'))) stats.relations();
-		*/
 		if(isVisible(byId('stats-charts'))) {
 			charts.chart();
 		}
@@ -951,8 +917,8 @@ const dbq = {
 		resolve(docs);
 	}),
 	filteraccounting: () => {
-		var tmp = new Set(dbe._filterids());
-		var obj = Object.values(d.store.pos).filter(o => tmp.has(o.ID)).countBy(['rkey']);
+		let tmp = new Set(dbe._filterids());
+		let obj = Object.values(d.store.pos).filter(o => tmp.has(o.ID)).countBy(['rkey']);
 		tmp = undefined;
 		return {
 			records: Object.keys(obj).map(o => ({name: o, value: obj[o].count})),
@@ -987,11 +953,11 @@ const dbq = {
 		i = arr = md = op = rk = undefined;
 		return {results: matches.unique()};
 	},
-	setfilter: (strictmode = false) => new Promise((resolve, reject) => {
+	setfilter: () => new Promise((resolve, reject) => {
 		try {
 			d.filtermatches = {};
 			d.post_types.filter(o => !['taxonomy', 'record'].includes(o.slug)).forEach(o => d.filtermatches[o.slug] = {});
-			let doc = dbm.documents().sortBy(['rkey', 'value']).map(o => o.ID);
+			//let doc = dbm.documents().sortBy(['rkey', 'value']).map(o => o.ID);
 			let trans = array => array.map(o => d.store.pos[o]);
 			let ptype = nid => d.store.pos[nid].rkey;
 			let simplify = obj => {
@@ -1227,7 +1193,7 @@ const dbq = {
 				pos = tim = relations = rel = undefined;
 				resolve({main: main, nodes: nodes, categories: cat});
 			} else {
-				pos = tim = relations = rel = nodes = main = cat = undefined;
+				pos = tim = relations = nodes = main = undefined;
 				reject(null);
 			}
 			selfstart = undefined;
@@ -1317,15 +1283,15 @@ const dbq = {
 				pos = rel = taxonomies = undefined;
 				resolve({nodes: nodes, taxonomies: taxes.unique()});
 			} else {
-				pos = rel = taxonomies = node = taxes = undefined;
+				pos = rel = taxonomies = taxes = undefined;
 				reject(null);
 			}
 		} else {
-			pos = rel = node = taxes = undefined;
+			pos = rel = taxes = undefined;
 			reject(null);
 		}
 	}),	
-	singlestats: (cid, row = 'key') => new Promise((resolve, reject) => {
+	singlestats: (cid) => new Promise(resolve => {
 		cid = parseInt(Number(cid), 10);
 		let rll = dbm.relations(true);
 		if(rll[cid]) {
@@ -1344,7 +1310,7 @@ const dbq = {
 			resolve([]);			
 		}
 	}),
-	singlemap: cid => new Promise((resolve, reject) => {
+	singlemap: cid => new Promise(resolve => {
 		cid = parseInt(Number(cid), 10);
 		let pos = d.store.pos[cid] || null;
 		let rels = dbm.relations(true)[cid] || null;
@@ -1560,32 +1526,7 @@ const dbq = {
 	globalnetwork: (ptype = '', rtype = '', relfield = '', bound = '>', singleid = null) => {
 		let sourcefield = bound === '>' ? 'ID' : 'RID';
 		let targetfield = bound === '>' ? 'RID' : 'ID';
-		/*
-		if(isBlank(ptype) || isBlank(rtype)) {
-			return {
-				nodes: [],
-				bounds: [], 
-				edges: [],
-				rkeys: [],
-				categories: []
-			};
-		}
-		*/
-		/*
-		let operation = (o, bo, pt, rt, rk, id) => 
-			dbhelper.filterexclude(d.store.pos[o.ID].value) === false && 
-			dbhelper.filterexclude(d.store.pos[o.RID].value) === false && 
-			o.bound === bo && 
-			!isBlank(pt) ? d.store.pos[o.ID].rkey === pt : true && 
-			!isBlank(rt) ? d.store.pos[o.RID].rkey === rt : true && 
-			(
-				id ? 
-				dbe._operation('li', d.store.pos[o.ID].value, id) || 
-					dbe._operation('li', d.store.pos[o.RID].value, id) : 
-				true
-			) && 
-			(!isBlank(rk) ? o.rkey === rk : true);
-		*/
+
 		let filterrel = () => {
 			let fil = new Set(dbe._filterids());
 			let rll = dbe._relations(false, false);
@@ -1606,7 +1547,7 @@ const dbq = {
 			let tmp = stages.rkey;
 			fil = rll = fre = stages = undefined;
 			return tmp;
-		}
+		};
 			
 		let res = filterrel();
 		let nodes = Object.entries([
@@ -1651,7 +1592,7 @@ const dbq = {
 		// if subset has bound as '>' link to next subset must have the form ID > RID
 		// if subset has bound as '<' link to next subset must have the form RID > RID
 		if(isBlank(d.cooccurrencessource) || isBlank(d.cooccurrencestarget)) {
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 			toolkit.timer('stats.cooccurrences');
 			toolkit.statustext();
 			return;
@@ -1666,7 +1607,6 @@ const dbq = {
 		let result = [];
 		let fset = new Set(dbe._filterids());
 		let isvalid = (a, b) => a.rkey === b.rkey && gtype(a.RID) === b.tin && gtype(a.ID) === b.tout;
-		let isinfilter = (a, b) => fset.has(a) || fset.has(b);
 		let gtype = nid => d.store.pos[nid].rkey;
 		d.cooccurrencesroute.forEach((o, i) => {
 			let tmp = relations.filter(f => isvalid(f, o)).map(f => {
@@ -1758,7 +1698,7 @@ const dbq = {
 						let tmp = [];
 						let types = d.appelements.map(n => n.name);
 						let sizes = res.split(',').map(o => Number(o));
-						let rmp = {}
+						let rmp = {};
 						types.forEach((o, i) => rmp[o] = sizes[i]);
 						d.stackedchartsremote = dbhelper.calculatescale(rmp);
 						tmp = types = sizes = rmp = undefined;
@@ -1814,8 +1754,8 @@ const dbhelper = {
 		names = counts = scale = total = sizes = undefined;
 		return out;
 	},
-	routeshow: (did, recalc = true) => {
-		screen.siteoverlay(true);
+	routeshow: did => {
+		gscreen.siteoverlay(true);
 		let legend = `${did.split('-')[0]}-legend`;
 		let rset = `${did.split('-')[0]}-routeset`;
 		sleep(50).then(() => {
@@ -1824,12 +1764,12 @@ const dbhelper = {
 				byId(legend).classList.add('hide');
 				byId(rset).classList.add('hide');
 				toolkit.msg(did, '');
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				legend = rset = undefined;
 				return;
 			}
 			dbhelper.routedraw(did);
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 			legend = undefined;
 		});
 	},
@@ -1847,7 +1787,7 @@ const dbhelper = {
 				if(o.showtin) {
 					tmp.push([
 						`<a class="button button-square button-xs button-${ctin} margin-right-xs" `,
-						`href="javascript:dbhelper.routeremove('${did}', ${i}, 'tin');">`,
+						`href="javascript:dbhelper.routeremove(${i}, 'tin');">`,
 						`${dbe.getnamefromslug(o.tin).toUpperCase()}`,
 						`</a>`,
 					].join(''));
@@ -1863,7 +1803,7 @@ const dbhelper = {
 			if(o.showtout) {
 				tmp.push([
 					`<a class="button button-square button-xs button-${ctout}${lastmargin}" `,
-					`href="javascript:dbhelper.routeremove('${did}', ${i}, 'tout');">`,
+					`href="javascript:dbhelper.routeremove(${i}, 'tout');">`,
 					`${dbe.getnamefromslug(o.tout).toUpperCase()}`,
 					`</a>`,
 				].join(''));
@@ -1882,7 +1822,7 @@ const dbhelper = {
 		toolkit.drawicons();
 		legend = rset1 = rset2 = tmp = undefined;
 	},
-	routeremove: (did, index, item) => {
+	routeremove: (index, item) => {
 		d.cooccurrencesroute[index]['show' + item] = false;
 		stats.cooccurrences(null, 1, null, '', 1, false, false);
 	},
@@ -1901,7 +1841,7 @@ const dbhelper = {
 				.map(o => `${ptype(o.ID)}|${o.rkey}|${ptype(o.RID)}`)
 				.unique()
 				.forEach(o => { g.addedge(v, o); });
-			rels = set = tmp = undefined
+			rels = set = tmp = undefined;
 		});
 		let source = d.cooccurrencessource;
 		let target = d.cooccurrencestarget;
@@ -1916,11 +1856,11 @@ const dbhelper = {
 				showtin: true,
 				showrkey: true,
 				showtout: true,
-			}
+			};
 		});
 		relations = ptype = g = keys = source = target = path = undefined;
 	},
-	routedescription: did => {
+	routedescription: () => {
 		if(isBlank(d.cooccurrencessource) || isBlank(d.cooccurrencestarget)) return '';
 		let tmp = [];
 		let tsource = d.cooccurrencessource.split('|');

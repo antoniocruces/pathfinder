@@ -1,18 +1,18 @@
 'use strict';
 
-/* global AppError, byId, c, charts, cfetch, cultures, d, dbe, echarts, fc, fetchtextasync, file, isBlank, isNumber, isVisible, k, l, maps, objectsize, sleep, stats */
+/* global AppError, byId, c, charts, cfetch, cultures, d, dbe, dbm, echarts, fc, fetchtextasync, file, gscreen, isBlank, isNil, isNumber, isString, isVisible, k, l, L, maps, objectsize, sleep, stats */
 /* exported toolkit */
 
 // toolkit functions
 const toolkit = {
 	goto: (pag, tab) => { 
-		if(screen.alert) toolkit.alertclose(); 
+		if(gscreen.alert) toolkit.alertclose(); 
 		window.location.hash = pag; 
 		if(tab) {
-			screen.siteoverlay(true);
+			gscreen.siteoverlay(true);
 			sleep(100).then(() => { 
 				toolkit.selecttab('tab', tab);
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 			});
 		}
 	},
@@ -39,7 +39,7 @@ const toolkit = {
 		}
 	},
 	copytoclipboard: cid => {
-		var range = document.createRange();
+		let range = document.createRange();
 		range.selectNode(document.getElementById(cid));
 		window.getSelection().removeAllRanges(); 
 		window.getSelection().addRange(range); 
@@ -150,7 +150,7 @@ const toolkit = {
 	showprogress: function(current, total, target = 'app-overlay-txt') {
 		let percent = Math.round((current / total) * 100);
 		if(byId('siteoverlaytext')) target = 'siteoverlaytext';
-		if(screen.overlay || screen.siteoverlayisset) {
+		if(gscreen.overlay || gscreen.siteoverlayisset) {
 			toolkit.msg(
 				target, 
 				`<span>${c`working`.uf()}:&nbsp;${percent}%</span>`
@@ -204,16 +204,16 @@ const toolkit = {
 		}
 	},
 	alertclose: function() {
-		if(screen.alert) {
-			screen.alert.remove();
-			screen.alert = undefined;
+		if(gscreen.alert) {
+			gscreen.alert.remove();
+			gscreen.alert = undefined;
 		}
 	},
 	modalclose: function() {
-		if(screen.modal) {
-			screen.modal.remove();
-			screen.modal = undefined;
-			if(screen.siteoverlayisset) screen.siteoverlay(false);
+		if(gscreen.modal) {
+			gscreen.modal.remove();
+			gscreen.modal = undefined;
+			if(gscreen.siteoverlayisset) gscreen.siteoverlay(false);
 		}
 	},
 	markdemo: did => {
@@ -260,8 +260,8 @@ listbox_move: (cid, direction = 'up') => {
 	if((sel + inc) < 0 || (sel + inc) > (lbx.options.length - 1)) return;
 	let selvalue = lbx.options[sel].value;
 	let seltext = lbx.options[sel].text;
-	lbx.options[sel].value = lbx.options[sel + inc].value
-	lbx.options[sel].text = lbx.options[sel + inc].text
+	lbx.options[sel].value = lbx.options[sel + inc].value;
+	lbx.options[sel].text = lbx.options[sel + inc].text;
 	lbx.options[sel + inc].value = selvalue;
 	lbx.options[sel + inc].text = seltext;
 	lbx.selectedIndex = sel + inc;
@@ -397,9 +397,6 @@ listbox_selectall: (cid, isselect) => {
 			elm = tab = undefined;
 		});
 		if(dbe.verifytables()) {
-			/*
-			if(isVisible(byId('data-listing'))) ui.datalist();
-			*/
 			if(isVisible(byId('schema-listing'))) stats.schema();
 			if(isVisible(byId('relations-listing'))) stats.relations();
 			if(isVisible(byId('stats-charts'))) {
@@ -607,9 +604,9 @@ listbox_selectall: (cid, isselect) => {
 	cpuspeed: () => {
 		performance.clearMarks();
 		performance.clearMeasures();
-		performance.mark("loop-s");	
+		performance.mark('loop-s');	
 		for (let i = 150000000; i > 0; i--) {} 
-		performance.mark("loop-e");
+		performance.mark('loop-e');
 		performance.measure('speed', 'loop-s', 'loop-e');
 		let measures = performance.getEntriesByName('speed');
 		console.log(measures[0].duration, window.hweval.iterations / measures[0].duration);
@@ -632,7 +629,7 @@ listbox_selectall: (cid, isselect) => {
 				let tmo = window.setTimeout(() => {
 					if (i < promises.length) {
 						let entry = promises[i];
-						let promise = typeof entry === "function" ? entry() : entry;
+						let promise = typeof entry === 'function' ? entry() : entry;
 						return promise.then(save).then(iterate).then(function () {
 							return window.setTimeout(loop, 0);
 						}).catch(function (e) {
@@ -662,10 +659,10 @@ listbox_selectall: (cid, isselect) => {
 	},
 	printfast: (divid, divtitle = null) => {
 		if(isBlank(divid)) {
-			screen.siteoverlay(true);
+			gscreen.siteoverlay(true);
 			byId('prn-qrcode').src = d.qrcodesrc + encodeURI(window.location.href);
 			sleep(300).then(() => {
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				window.print(); 
 			});
 			return;
@@ -736,9 +733,9 @@ listbox_selectall: (cid, isselect) => {
 	},
 	highlight: function(str, fragment) {
 		if(!isString(str)) return str;
-		let str_folded = str.na().toLowerCase().replace(/[<>]+/g, "");
-		let q_folded = fragment.na().toLowerCase().replace(/[<>]+/g, "");
-		let re = new RegExp(q_folded, "g");
+		let str_folded = str.na().toLowerCase().replace(/[<>]+/g, '');
+		let q_folded = fragment.na().toLowerCase().replace(/[<>]+/g, '');
+		let re = new RegExp(q_folded, 'g');
 		let hiliteHints = str_folded.replace(re, '<' + q_folded + '>');
 		let spos = 0;
 		let highlighted = '';
@@ -746,11 +743,9 @@ listbox_selectall: (cid, isselect) => {
 		for (let i = 0; i < hiliteHints.length; i++) {
 			let ch = str.charAt(spos);
 			let hg = hiliteHints.charAt(i);
-			if (hg === "<") {
-				//highlighted += '<b class="highlight">';
+			if (hg === '<') {
 				highlighted += '<mark class="no-padding-horizontal">';
 			} else if (hg === '>') {
-				//highlighted += '</b>';
 				highlighted += '</mark>';
 			} else {
 				spos += 1;
@@ -915,8 +910,10 @@ listbox_selectall: (cid, isselect) => {
 	},
 	hex2rgb: function(a) {
 		return [].map.call(a.replace('#', ''), function(a, b, c) {
+			a = undefined;
 			return c.slice(b, 2 + b);
 		}).filter(function(a, b) {
+			a = undefined;
 			return b % 2 === 0;
 		}).map(function(a) {
 			return ('0x' + a) * 1;
@@ -992,7 +989,6 @@ listbox_selectall: (cid, isselect) => {
 				`</div>`,
 			].join('');			
 		}
-		let isoverlayset = screen.siteoverlayisset ? true : false;
 		let cols = Object.keys(json[0]);
 		let smallclass = cols.length > 4 ? 'table-smaller' : '';
 		let headerrow = [];
@@ -1056,7 +1052,7 @@ listbox_selectall: (cid, isselect) => {
 						rows[i].classList.remove('is-row-visible');
 						rows[i].classList.add('hidden');
 					}
-					val = undefined
+					val = undefined;
 				}
 			} else {
 				for(let i = 0, len = rows.length; i < len; ++i) {
@@ -1132,7 +1128,7 @@ listbox_selectall: (cid, isselect) => {
 		let tit = toolkit.ddtodms(parseFloat(coo[0]), false) + ', ' + toolkit.ddtodms(parseFloat(coo[1]), true);
 		let pro = d.mapproviders.find(o => o.name === 'CartoDB Positron');
 		let src = d.reversegeocodesrc + '?format=json&lat=@&zoom=27&addressdetails=1';
-		cfetch(src.replace(new RegExp("@", "g"), coo.join('&lon=')))
+		cfetch(src.replace(new RegExp('@', 'g'), coo.join('&lon=')))
 		.then(ret => ret.json())
 		.then(ret => {
 			let modalcontent = [
@@ -1145,8 +1141,8 @@ listbox_selectall: (cid, isselect) => {
 				cancel: true,
 				canceltitle: c`close`.uf(),
 				extended: true,
-			}
-			screen.alert = screen.displayalert(features);
+			};
+			gscreen.alert = gscreen.displayalert(features);
 			let stmap = L.map('stmapid', {zoomControl: false}).setView(coo, 13);
 			
 			L.tileLayer.provider(pro.provider).addTo(stmap);
@@ -1160,7 +1156,7 @@ listbox_selectall: (cid, isselect) => {
 			modalcontent = features = undefined;
 			src = coo = tit = stmap = undefined;
 		})
-		.catch(err => {
+		.catch(() => {
 			let modalcontent = [
 				`<p>${tit}</p>`, 
 				`<div id="stmapid" style="width: 100%; height: 250px;"></div>`
@@ -1171,8 +1167,8 @@ listbox_selectall: (cid, isselect) => {
 				cancel: true,
 				canceltitle: c`close`.uf(),
 				extended: true,
-			}
-			screen.alert = screen.displayalert(features);
+			};
+			gscreen.alert = gscreen.displayalert(features);
 			let stmap = L.map('stmapid', {zoomControl: false}).setView(coo, 13);
 			
 			L.tileLayer.provider(pro.provider).addTo(stmap);
@@ -1246,7 +1242,7 @@ listbox_selectall: (cid, isselect) => {
 		text = text.na().toLowerCase();
 		let suggestions = [];
 		let results = [];
-		let pattern = text.split('').join(".*?");
+		let pattern = text.split('').join('.*?');
 		let re = new RegExp(pattern, 'i');
 		let match;
 	
@@ -1269,62 +1265,13 @@ listbox_selectall: (cid, isselect) => {
 		fetchtextasync(path).then(string => {
 			totaltext += string;
 			list.forEach(word => {
-				//if(!totaltext.includes('`' + word + '`') && !totaltext.includes('\'' + word + '\'')) {
 				if(!totaltext.includes('`' + word + '`')) {
-					results.push(word)
+					results.push(word);
 				}
 			});
 			results = results.unique();
-			file.save(results.join('\n'), 'res.txt')
+			file.save(results.join('\n'), 'res.txt');
 			list = path = totaltext = results = undefined;
-		});
-	},
-	countfunctions: () => {
-		let list = [];
-		let keys = [
-			'charts',
-			'chartshelper',
-			'dbe',
-			'dbx',
-			'dbb',
-			'dbm',
-			'dbs',
-			'dbq',
-			'dbhelper',
-			'screen',
-			'ajax',
-			'file',
-			'i18n',
-			'icons',
-			'info',
-			'mapengine',
-			'maps',
-			'maphelpers',
-			'mapops',
-			'pagescripts',
-			'pagescriptshelper',
-			'router',
-			'trade',
-			'ui',
-		];
-		keys.forEach(o => {
-			Object.keys(eval(o)).forEach(n => {
-				list.push(o + '.' + n);
-			});
-		});
-		let path = './assets/js/complete.js';
-		let results = [];
-		let totaltext = '';
-		fetchtextasync(path).then(string => {
-			totaltext += string;
-			list.forEach(word => {
-				if(!totaltext.includes(word)) {
-					results.push(word)
-				}
-			});
-			results = results.unique();
-			file.save(results.join('\n'), 'res.txt')
-			list = keys = path = totaltext = results = undefined;
 		});
 	},
 	showactivecollection: () => {
@@ -1389,21 +1336,15 @@ listbox_selectall: (cid, isselect) => {
 		currentcol = currentquery = undefined;
 		return out;
 	},
-	tagfield: (fid, lid, arr, ref, fnc = undefined, allowdups = false) => {
+	tagfield: (fid, lid, arr, ref, fnc = undefined) => {
 		let tagsinput = byId(fid);
 		let tagslist = byId(lid);
 		let tagsarr = arr;
 		let tagsref = ref;
 		let tagsfnc = fnc;
-		let tagsdup = allowdups;
 		
 		tagsinput.addEventListener('keyup', ({key, target}) => {
 			if (key === 'Enter' && target.value.trim() && target.dataset.field.trim()) {
-/*				
-				if(tagsarr.includes(target.dataset.field) && !tagsdup) {
-					throw new AppError(c`duplicate-value-not-allowed`);
-				} else {
-*/
 				if(!tagsref.includes(target.dataset.field)) {
 					alert(`${c`error`.uf()}: ${c`invalid-value`}.`);
 				} else {
@@ -1416,9 +1357,6 @@ listbox_selectall: (cid, isselect) => {
 					toolkit.drawicons();
 					elm = undefined;
 				}
-/*
-				}
-*/
 			} else {
 				if(target.value.trim() === '') {
 					if(byId(lid + '-trigger')) byId(lid + '-trigger').classList.add('disabled');
@@ -1462,10 +1400,10 @@ listbox_selectall: (cid, isselect) => {
 // EU cookies law compliance
 // Remotely based on Creare's 'Implied Consent' EU Cookie Law Banner v:2.4
 const eucookielaw = {
-	creatediv: (top = true) => {
+	creatediv: () => {
 		let url = 'assets/views/' + l.toLowerCase() + '/eucookies.html';
 		cfetch(url).then(res => res.text()).then(data => { 
-			screen.siteoverlay(true, data); 
+			gscreen.siteoverlay(true, data); 
 			toolkit.drawicons();
 			url = undefined;
 		});
@@ -1477,17 +1415,17 @@ const eucookielaw = {
 		if (days) {
 			date = new Date();
 			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); 
-			expires = "; expires=" + date.toGMTString(); 
+			expires = '; expires=' + date.toGMTString(); 
 		} else {
-			expires = "";
+			expires = '';
 		}
 		if(window.dropCookie) { 
-			document.cookie = name + "=" + value + expires + "; path=/"; 
+			document.cookie = name + '=' + value + expires + '; path=/'; 
 		}
 		expires = date = undefined;
 	},
 	checkcookie: name => {
-		let nameEQ = name + "=";
+		let nameEQ = name + '=';
 		let ca = document.cookie.split(';');
 		for(let i = 0, len = ca.length; i < len; i++) {
 			let c = ca[i];
@@ -1496,5 +1434,5 @@ const eucookielaw = {
 		}
 		return null;
 	},
-	eraseCookie: name => eucookielaw.createcookie(name, "", -1),
+	eraseCookie: name => eucookielaw.createcookie(name, '', -1),
 };

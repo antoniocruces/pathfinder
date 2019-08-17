@@ -1,6 +1,6 @@
 'use strict';
 
-/* global ajax, AppError, byId, c, cfetch, charts, d, dbe, dbq, echarts, file, ic, isBlank, isNil, isVisible, k, l, L, maps, pg, sleep, stats, toolkit, w */
+/* global ajax, AppError, AppWarning, byId, c, cfetch, charts, d, dbe, dbm, dbq, dbs, echarts, fc, file, gscreen, ic, isBlank, isNil, isNumber, isVisible, k, l, maps, PivotData, sleep, stats, toolkit */
 /* exported ui */
 
 // user interface
@@ -10,11 +10,11 @@ const ui = {
 		let otext = byId('siteoverlaytext');
 		oover = otext = undefined;
 		if(useoverlay) {
-			screen.siteoverlay(true);
+			gscreen.siteoverlay(true);
 		}
 		sleep(50).then(() => {
 			if(!dbe.verifytables()) {
-				if(useoverlay) screen.siteoverlay(false);
+				if(useoverlay) gscreen.siteoverlay(false);
 				throw new AppError(c`no-data`);
 			}
 			let paginate = (array, page_size, page_number) => {
@@ -32,6 +32,7 @@ const ui = {
 				};
 			};
 			let pageselector = (lastnumber, current) => {
+				current = undefined;
 				let selectlabel = document.createElement('label'); 
 				selectlabel.classList.add('select');
 				selectlabel.setAttribute('for', options.type + '-page-selector');
@@ -69,7 +70,7 @@ const ui = {
 				selectlabel.setAttribute('for', options.type + '-page-size');
 				let selectlist = document.createElement('select');
 				selectlist.id = options.type + '-page-size';
-				let array = Array.from(Array(10).keys()).map(i => 10 + i * 10);;
+				let array = Array.from(Array(10).keys()).map(i => 10 + i * 10);
 				for(let i = 0, len = array.length; i < len; i++) {
 					let option = document.createElement('option');
 					option.setAttribute('value', array[i]);
@@ -83,7 +84,7 @@ const ui = {
 				array = selectlist = undefined;
 				
 				return selectlabel;
-			}
+			};
 			let align = (typ, txt) => {
 				let statslist = [c`count`.uf(), 'Z', 'O', 'L', 'S', 'B', 'F', 'T'];
 				if(typ === 'th') {
@@ -193,9 +194,12 @@ const ui = {
 						`</li>`,
 						
 						`<li class="text-align-right">`,
-						`<input type="search" name="text-search" class="pull-right plain-search" `,
-						`id="${options.type + '-'}text-search" `,
-						`placeholder="${c`intro-to-search`}..." value="${options.searchtext}">`,
+						`<div class="input-group pull-right">`,
+						`<input id="${options.type + '-'}text-search" name="text-search" `,
+						`class="input-s pull-right plain-search" type="search" `,
+						`placeholder="${c`intro-to-search`}..." value="${options.searchtext}" />`,
+						`<button class="button button-s" type="submit">···</button>`,
+						`</div>`,
 						`</li>`,
 						
 						`</ul>`,
@@ -209,17 +213,10 @@ const ui = {
 						`</table>`,
 						`</div>`,
 					].join('');
-				}
+				};
 		
 				toolkit.cleardomelement(options.cid);
 
-				/*
-				toolkit.msg(
-					'relations-listing', 
-					`<p class="color-blue text-align-center vertical-center">${c`working`.uf()}</p>`,
-				);
-				*/
-				
 				let tmptbl = createTable([headings, ...subset]);
 
 				toolkit.msg(options.cid, '');
@@ -365,7 +362,7 @@ const ui = {
 					toolkit.msg(options.type + '-page-caption', options.caption);
 				}
 			}
-			if(useoverlay) screen.siteoverlay(false);
+			if(useoverlay) gscreen.siteoverlay(false);
 			
 			paginate = pageselector = pagesize = pagerange = pagedata = undefined;
 			align = makecelltext = undefined;
@@ -569,8 +566,8 @@ const ui = {
 	},
 	datalist: (cid = '', page = 1, row = '', text = '', srt = 1, xprt = false) => {
 		if(!dbe.verifytables()) return;
-		if(!screen.siteoverlayisset) {
-			screen.siteoverlay(true);
+		if(!gscreen.siteoverlayisset) {
+			gscreen.siteoverlay(true);
 		}
 		sleep(50).then(() => {
 			let posfilter;
@@ -606,8 +603,8 @@ const ui = {
 			
 			if(xprt) {
 				file.exportdatatocsv(sortedlist.filter(o => setresult.has(o.ID)));
-				if(screen.siteoverlayisset) {
-					screen.siteoverlay(false);
+				if(gscreen.siteoverlayisset) {
+					gscreen.siteoverlay(false);
 				}
 				return;
 			}
@@ -672,13 +669,13 @@ const ui = {
 					ui.datalist(cid, page, row, text, srt, true);
 				},
 			};
-			if(screen.siteoverlayisset) screen.siteoverlay(false);	
+			if(gscreen.siteoverlayisset) gscreen.siteoverlay(false);	
 			ui.maketable(opts, true);
 			opts = sortedlist = undefined;
 		});
 	},
 	singlerecord: (cid, trail, clearchain) => {
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		toolkit.timer('ui.singlerecord');
 		toolkit.statustext(true);
 		sleep(50).then(() => {
@@ -883,7 +880,7 @@ const ui = {
 			out.push('<div id="c-stab-five" class="tabcontent hide"></div>');
 			out.push('<div id="c-stab-six" class="tabcontent hide"></div>');
 			
-			if(screen.modal !== undefined) {
+			if(gscreen.modal !== undefined) {
 				toolkit.modalclose();
 			}
 			let icon = [
@@ -900,8 +897,8 @@ const ui = {
 				canceltitle: c`close`.uf(),
 				help: 'single',
 				icon: icon,
-			}
-			screen.modal = screen.displaymodal(features);
+			};
+			gscreen.modal = gscreen.displaymodal(features);
 			features = icon = undefined;
 
 			if(!d.maptransformations.single.maintainqueries) {
@@ -912,14 +909,14 @@ const ui = {
 
 			toolkit.statustext();
 			toolkit.timer('ui.singlerecord');
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 			prv = pos = tax = met = rel = tit = out = net = undefined;
 		});
 	},
 	filterscreen: (reset = false, xfid = false, defaultpanel = 'zero') => {		
-		if(!screen.siteoverlayisset) {
+		if(!gscreen.siteoverlayisset) {
 			toolkit.statustext(true);
-			screen.siteoverlay(true);
+			gscreen.siteoverlay(true);
 		}		
 		sleep(50).then(() => {
 			if(dbe.verifytables()) {
@@ -1139,8 +1136,8 @@ const ui = {
 							`</div>`,
 						].join(''),
 						cancel: false,
-					}
-					screen.modal = screen.displaymodal(features);
+					};
+					gscreen.modal = gscreen.displaymodal(features);
 					features = undefined;
 					
 					d.filter.forEach((o, ix) => {
@@ -1246,15 +1243,15 @@ const ui = {
 					toolkit.generictab(`xstab${tabs.tab}`, `xc-atab-${tabs.pad}`, 'xstabcontent', 'xstablinks');
 					tabs = undefined;
 					
-					if(screen.siteoverlayisset) {
+					if(gscreen.siteoverlayisset) {
 						toolkit.statustext();
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 					}
 					trm = tmp = out = url = makenode = makesubfilter = undefined;
 				}).catch(err => { 
-					if(screen.siteoverlayisset) {
+					if(gscreen.siteoverlayisset) {
 						toolkit.statustext();
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 					}
 					trm = tmp = out = url = makenode = makesubfilter = undefined;
 					throw new AppError(c`filter` + ': ' + err); 
@@ -1269,12 +1266,11 @@ const ui = {
 						action: '',
 						cancel: true,
 						canceltitle: c`close`.uf()
-					}
-					
-					screen.alert = screen.displayalert(features);
-					if(screen.siteoverlayisset) {
+					};
+					gscreen.alert = gscreen.displayalert(features);
+					if(gscreen.siteoverlayisset) {
 						toolkit.statustext();
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 					}
 					features = undefined;
 					url = undefined;
@@ -1318,7 +1314,7 @@ const ui = {
 			throw new AppError(c`filter-condition` + ': ' + c`invalid-value`); 
 		}
 		
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		sleep(50).then(() => {
 			dbq.search(d.filter[idx].operator,
 				d.filter[idx].modifier,
@@ -1339,18 +1335,18 @@ const ui = {
 				if(document.getElementById('flt-description')) {
 					toolkit.msg('flt-description', ui.describefilter());
 				}
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				idx = elm = nod = isvalidquery = ret = undefined;
 			})
 			.catch(err => { 
 				idx = elm = nod = isvalidquery = undefined;
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				throw new AppError(c`filter-condition` + ': ' + err); 
 			});
 		});
 	},
 	filtersearch: (val, met, immediate = false, defaulttab = 'zero') => {
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		sleep(50).then(() => {
 			let idx = 0;
 			if(!d.filter.length || immediate) {
@@ -1390,12 +1386,12 @@ const ui = {
 						toolkit.msg('search-description', ui.describefilter());
 					}
 				}
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				idx = ret = undefined;
 			})
 			.catch(err => { 
 				idx = undefined;
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				throw new AppError(c`filter-condition` + ': ' + err); 
 			});
 		});
@@ -1445,6 +1441,7 @@ const ui = {
 		src = trn = isvalid = undefined;
 	},
 	setfilter: (opr, activatetimer = true, cid = 'base') => {
+		activatetimer = undefined;
 		if(!dbq.readytosetfilter()) {
 			let url = 'assets/views/' + l.toLowerCase() + '/filternotready.html';
 			cfetch(url).then(txt => txt.text()).then(txt => { 
@@ -1453,17 +1450,17 @@ const ui = {
 			});
 			return;
 		}
-		if(!screen.siteoverlayisset) {
-			screen.siteoverlay(true);
+		if(!gscreen.siteoverlayisset) {
+			gscreen.siteoverlay(true);
 		}
 		sleep(50).then(() => {
 			dbq.setfilter(opr === '_strict')
-			.then(ret => {
+			.then(() => {
 				d.currentfilterlink = opr;
 				if(document.getElementById('filter-info-stats')) {
 					toolkit.statustext();
-					if(screen.siteoverlayisset) {
-						screen.siteoverlay(false);
+					if(gscreen.siteoverlayisset) {
+						gscreen.siteoverlay(false);
 					}
 					ui.filterscreen();
 				}
@@ -1471,7 +1468,6 @@ const ui = {
 				d.currentpages.list = 0;
 
 				if(isVisible(byId('schema-listing'))) stats.schema();
-				//if(isVisible(byId('relations-listing'))) stats.relations();
 				if(isVisible(byId('stats-charts'))) {
 					charts.chart();
 				}
@@ -1489,8 +1485,8 @@ const ui = {
 				toolkit.statustext();
 				toolkit.showactivecollection();
 				ui.datalist(d.currentpages.list);
-				if(screen.siteoverlayisset) {
-					screen.siteoverlay(false);
+				if(gscreen.siteoverlayisset) {
+					gscreen.siteoverlay(false);
 				}
 				if(!dbe._filterids().length) {
 					throw new AppWarning(c`no-data`.uf());
@@ -1498,8 +1494,8 @@ const ui = {
 			})
 			.catch(err => { 
 				toolkit.statustext();
-				if(screen.siteoverlayisset) {
-					screen.siteoverlay(false);
+				if(gscreen.siteoverlayisset) {
+					gscreen.siteoverlay(false);
 				}
 				ui.datalist(d.currentpages.list);
 				throw new AppError(c`filter` + ': ' + err); 
@@ -1546,7 +1542,7 @@ const ui = {
 		}
 	},
 	clearfilter: (showfilter = true) => {
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		toolkit.statustext(true);
 		toolkit.timer('ui.clearfilter');
 		sleep(50).then(() => {
@@ -1560,14 +1556,14 @@ const ui = {
 				}
 				toolkit.timer('ui.clearfilter');
 				toolkit.statustext(false);
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				if(showfilter) ui.filterscreen();
 				ui.datalist();
 			})
 			.catch(err => { 
 				toolkit.timer('ui.clearfilter');
 				toolkit.statustext(false);
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				throw new AppError(c`filter` + ': ' + err); 
 			});
 		});
@@ -1576,13 +1572,12 @@ const ui = {
 		d.filterrefine = null;
 		if(byId('base-map')) maps.datamap('base');
 		if(byId('schema-listing')) stats.schema();
-		//if(byId('relations-listing')) stats.relations();
 		if(byId('cooccurrences-listing')) stats.cooccurrences();
 		ui.datalist();
 		ui.filterscreen();
 		toolkit.statustext(false);
 		toolkit.timer('ui.clearfilterrefine');
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 	},
 	setfiltervalue: (fid, val) => {
 		let row = document.querySelector('[data-fid="' + fid + '"]');
@@ -1678,10 +1673,10 @@ const ui = {
 		});
 	}),
 	listvalues: fid => {
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		sleep(50).then(() => {
 			if(isNil(d.filter[fid].rkey) || d.filter[fid].rkey.toString() === '') {
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				throw new AppError(c`values-list` + ': ' + c`mandatory-field-empty` + ' [' + c`met` + ']');
 			}
 			dbq.listvalues(fid)
@@ -1703,7 +1698,7 @@ const ui = {
 				});
 				out.push(`</ol>`);
 				sleep(50).then(() => {
-					if(screen.alert !== undefined) {
+					if(gscreen.alert !== undefined) {
 						toolkit.alertclose();
 					}
 					let features = {
@@ -1713,23 +1708,23 @@ const ui = {
 						action: false,
 						cancel: true,
 						canceltitle: c`close`.uf()
-					}
-					screen.alert = screen.displayalert(features);
+					};
+					gscreen.alert = gscreen.displayalert(features);
 					features = undefined;
 		
 					ret = out = undefined;
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 				});
 			})
 			.catch(err => { 
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				throw new AppError(c`list-values` + ': ' + err); 
 			});
 		});
 	}, 
-	collectionselector: (dom, setoverlay = true) => {
-		if(!screen.siteoverlayisset) {
-			screen.siteoverlay(true);
+	collectionselector: dom => {
+		if(!gscreen.siteoverlayisset) {
+			gscreen.siteoverlay(true);
 		}
 		toolkit.statustext(true);
 		let makeselector = res => {
@@ -1772,21 +1767,21 @@ const ui = {
 					makeselector = undefined;
 				})
 				.catch(err => {
-					if(screen.siteoverlayisset) {
-						screen.siteoverlay(false);
+					if(gscreen.siteoverlayisset) {
+						gscreen.siteoverlay(false);
 					}
 					toolkit.statustext();
 					throw new AppError(c`collection-load` + ': ' + err);
 				});
 			}
-			if(screen.siteoverlayisset) {
-				screen.siteoverlay(false);
+			if(gscreen.siteoverlayisset) {
+				gscreen.siteoverlay(false);
 			}
 				toolkit.statustext();
 		})
 		.catch(err => {
-			if(screen.siteoverlayisset) {
-				screen.siteoverlay(false);
+			if(gscreen.siteoverlayisset) {
+				gscreen.siteoverlay(false);
 			}
 			toolkit.statustext();
 			makeselector = undefined;
@@ -1875,7 +1870,7 @@ const ui = {
 			${en.toLocaleString(l)} ${en === 1 ? c`relation` : c`relations`}.
 		`;
 		
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		sleep(50).then(() => {
 			dbq.singlenetwork()
 			.then(res => {
@@ -1899,7 +1894,7 @@ const ui = {
 	
 					let nbous = net.bounds;
 					if(!Array.isArray(nbous) || !nbous.length) {
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 						throw new AppError(c`charts` + ': ' + c`no-data`); 
 					}
 					let xbou = isBlank(bou) ? nbous[0] : bou;
@@ -1962,7 +1957,7 @@ const ui = {
 					let options = charts.graphoptions('netchart', ncats, nnods, elist, xctp, sid);
 					pchart.setOption(options);
 					pchart.hideLoading();
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 	
 					droptype = dropbound = txtdata = undefined;
 					res = cha = pchart = net = xctp = ncats = nbous = xbou = xid = sid = undefined; 
@@ -1971,12 +1966,12 @@ const ui = {
 					let out = [];					
 					out.push(`<p><span class="text-error">${c`no-results`.uf()}</span></p>`);
 					toolkit.msg('c-stab-three', out.join(''));
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 					droptype = dropbound = txtdata = res = undefined;
 				}
 			})
 			.catch(err => {
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				droptype = dropbound = txtdata = undefined;
 				throw new AppError(c`network` + ': ' + err);
 			});
@@ -1996,7 +1991,7 @@ const ui = {
 				`</label>`,
 			].join('');
 		};
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		sleep(50).then(() => {
 			dbq.singlestats(cid, row)
 			.then(res => {
@@ -2037,7 +2032,7 @@ const ui = {
 
 					if(xprt) {
 						file.exportdatatocsv(rows);
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 						return;
 					}
 					
@@ -2136,11 +2131,11 @@ const ui = {
 					toolkit.msg('c-stab-five', out.join(''));
 				}
 				droprows = out = undefined;
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 			})
 			.catch(err => {
 				droprows = undefined;
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				throw new AppError(c`stats` + ': ' + err);
 			});
 		});

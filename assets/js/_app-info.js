@@ -1,12 +1,12 @@
 'use strict';
 
-/* global ajax, AppError, c, cfetch, d, dbe, dbq, ic, k, l, sleep, toolkit, ui, w */
+/* global ajax, AppError, byId, c, charts, chartshelper, cfetch, d, dbe, dbq, echarts, fetchtextasync, gscreen, ic, k, l, sleep, toolkit, ui */
 /* exported info */
 
 // info operations
 const info = {
 	app: () => {
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		toolkit.timer('info.app');
 		toolkit.statustext(true);
 		sleep(50).then(() => {
@@ -63,7 +63,7 @@ const info = {
 					perfinfo.push('</ul>');
 					atim = dtim = asta = dsta = undefined;
 				}
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				toolkit.timer('info.app');
 				toolkit.statustext();
 
@@ -99,13 +99,13 @@ const info = {
 					action: false,
 					cancel: true,
 					canceltitle: c`close`.uf()
-				}
-				screen.alert = screen.displayalert(features);
+				};
+				gscreen.alert = gscreen.displayalert(features);
 				features = txt = undefined;
 				appinfo = perf = perfinfo = brinfo = appsize = undefined;
 			})
 			.catch(err => {
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				toolkit.timer('info.app');
 				toolkit.statustext();
 				throw new AppError(c`app-info` + ': ' + err);
@@ -128,8 +128,8 @@ const info = {
 					].join(''),
 					cancel: true,
 					canceltitle: c`close`.uf()
-				}
-				screen.alert = screen.displayalert(features);
+				};
+				gscreen.alert = gscreen.displayalert(features);
 				features = undefined;
 			})
 			.catch(err => { toolkit.msg('filter-info-stats', err); });
@@ -143,8 +143,8 @@ const info = {
 					action: false,
 					cancel: true,
 					canceltitle: c`close`.uf()
-				}
-				screen.alert = screen.displayalert(features);
+				};
+				gscreen.alert = gscreen.displayalert(features);
 				features = undefined;
 				url = undefined;
 			})
@@ -155,7 +155,7 @@ const info = {
 		}
 	},
 	export: () => {
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		let url = `./assets/views/${l}/export.html`;
 		cfetch(url).then(txt => txt.text()).then(txt => { 
 			let features = {
@@ -164,13 +164,13 @@ const info = {
 				cancel: true,
 				canceltitle: c`close`.uf(),
 				extended: true,
-			}
-			screen.alert = screen.displayalert(features);
-			screen.siteoverlay(false);
+			};
+			gscreen.alert = gscreen.displayalert(features);
+			gscreen.siteoverlay(false);
 			url = features = undefined;
 		})
 		.catch(err => { 
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 			url = undefined;
 			throw new AppError(c`export` + ': ' + err); 
 		});
@@ -235,7 +235,7 @@ const info = {
 	},
 	database: () => {
 		if(dbe.verifytables()) {
-			screen.siteoverlay(true);
+			gscreen.siteoverlay(true);
 			toolkit.timer('info.database');
 			toolkit.statustext(true);
 			sleep(50).then(() => {
@@ -318,18 +318,17 @@ const info = {
 							action: false,
 							cancel: true,
 							canceltitle: c`close`.uf()
-						}
-						screen.modal = screen.displaymodal(features);
+						};
+						gscreen.modal = gscreen.displaymodal(features);
 
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 						toolkit.timer('info.database');
 						toolkit.statustext();
 
 						features = undefined;
 						out = url = rec = res = undefined;
-
 					} else {
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 						toolkit.timer('info.database');
 						toolkit.statustext();
 						res = undefined;
@@ -337,7 +336,7 @@ const info = {
 					}
 				})
 				.catch(err => {
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 					toolkit.timer('info.database');
 					toolkit.statustext();
 					throw new AppError(c`database-info` + ': ' + err);
@@ -359,8 +358,8 @@ const info = {
 				cancel: true,
 				canceltitle: c`close`.uf(),
 				extended: true,
-			}
-			screen.alert = screen.displayalert(features);
+			};
+			gscreen.alert = gscreen.displayalert(features);
 			
 			dbq.sizechart(true).then(res => {
 				let route = d.cooccurrencesroute.map(o => d.chains.find(f => f.link === o.rkey));
@@ -427,7 +426,7 @@ const info = {
 								textStyle: {
 									fontSize: 12
 								},
-								formatter: "{c}"
+								formatter: '{c}'
 							}
 						},
 						itemStyle: {
@@ -438,7 +437,7 @@ const info = {
 						links: edges,
 						label: {
 							normal: {
-								position: "inside",
+								position: 'inside',
 								show: true,
 								textStyle: {
 									fontSize: 12
@@ -482,8 +481,8 @@ const info = {
 				cancel: true,
 				canceltitle: c`close`.uf(),
 				extended: true,
-			}
-			screen.alert = screen.displayalert(features);
+			};
+			gscreen.alert = gscreen.displayalert(features);
 			
 			dbq.dbinfo(true).then(res => {
 				let met = [];
@@ -515,7 +514,7 @@ const info = {
 					},
 					tooltip: {
 						trigger: 'item',
-						formatter: "{a} <br/>{b}:({d}%)"
+						formatter: '{a} <br/>{b}:({d}%)'
 					},
 					toolbox: chartshelper.toolbox({
 						orient: 'vertical', 
@@ -580,8 +579,8 @@ const info = {
 				cancel: true,
 				canceltitle: c`close`.uf(),
 				extended: true,
-			}
-			screen.alert = screen.displayalert(features);
+			};
+			gscreen.alert = gscreen.displayalert(features);
 			
 			dbq.filterinfo().then(res => {
 				let types = res;
@@ -613,25 +612,25 @@ const info = {
 						heato.push([heatc[i], heatc[j], 0]);
 					}
 				}
-				Object.keys(links).forEach((o, i) => {
+				Object.keys(links).forEach(o => {
 					let val = links[o];
 					if(val) {
 						let vin = val[c`<`];
 						let vout = val[c`>`];
 						if(vin) {
-							Object.keys(vin).sort().forEach((vo, vi) => {
+							Object.keys(vin).sort().forEach(vo => {
 								heati.find(f => f[0] === o && f[1] === vo)[2] = vin[vo];
 							});
 						}
 						if(vout) {
-							Object.keys(vout).sort().forEach((vo, vi) => {
+							Object.keys(vout).sort().forEach(vo => {
 								heato.find(f => f[0] === o && f[1] === vo)[2] = vout[vo];
 							});
 						}
-					};
+					}
 				});
 				
-				Object.keys(links).forEach((o, i) => {
+				Object.keys(links).forEach(o => {
 					nodes.push(
 						{
 							name: o,
@@ -697,7 +696,7 @@ const info = {
 								textStyle: {
 									fontSize: 12
 								},
-								formatter: "{c}"
+								formatter: '{c}'
 							}
 						},
 						itemStyle: {
@@ -708,7 +707,7 @@ const info = {
 						links: edges,
 						label: {
 							normal: {
-								position: "inside",
+								position: 'inside',
 								show: true,
 								textStyle: {
 									fontSize: 12
@@ -840,8 +839,8 @@ const info = {
 				cancel: true,
 				canceltitle: c`close`.uf(),
 				extended: true,
-			}
-			screen.alert = screen.displayalert(features);
+			};
+			gscreen.alert = gscreen.displayalert(features);
 			if(document.getElementsByClassName('shtablinks').length) {
 				let source = document.getElementsByClassName('shtablinks')[0];
 				let sourceid = source.id || null;
@@ -880,17 +879,16 @@ const info = {
 		let features = {
 			title: c`filter-info`.uf(),
 			content: `<div class="single-charts" id="filter-info-chart"></div>`,
-		}
+		};
 		let data = dbq.filteraccounting();
 		let options = charts.doughnutoptions(
 			data.records, 
 			data.filtered, 
 			c`records`, 
 			c`filtered`, 
-			c`records`.uf(),
 			'filter-info-chart'
 		);
-		screen.alert = screen.displayalert(features);
+		gscreen.alert = gscreen.displayalert(features);
 		let pchart = echarts.init(byId('filter-info-chart'));		
 		pchart.showLoading({text: c`working`});
 		pchart.setOption(options);
@@ -901,8 +899,8 @@ const info = {
 		let features = {
 			title: c`filter`.uf(),
 			content: ui.describefilter(),
-		}
-		screen.alert = screen.displayalert(features);
+		};
+		gscreen.alert = gscreen.displayalert(features);
 		features = undefined;
 	},
 	loader: () => {
@@ -915,8 +913,8 @@ const info = {
 				action: false,
 				cancel: true,
 				canceltitle: c`close`.uf()
-			}
-			screen.alert = screen.displayalert(features);
+			};
+			gscreen.alert = gscreen.displayalert(features);
 			features = undefined;
 			let xcolor = o => (o.iserror ? 'color-error' : o.isloaded ? 'color-success' : 'color-error');
 			let isok = o => xcolor(o) !== 'color-error';
@@ -950,8 +948,8 @@ const info = {
 				action: false,
 				cancel: true,
 				canceltitle: c`close`.uf()
-			}
-			screen.alert = screen.displayalert(features);
+			};
+			gscreen.alert = gscreen.displayalert(features);
 			features = undefined;
 			toolkit.msg('warning-navname', browser.sName);
 			toolkit.msg('warning-navver', browser.sVersion);
@@ -972,13 +970,12 @@ const info = {
 				action: false,
 				cancel: true,
 				canceltitle: c`close`.uf()
-			}
-			screen.alert = screen.displayalert(features);
+			};
+			gscreen.alert = gscreen.displayalert(features);
 
-			byId('theme-color').value = window.settings.themecolor,
-			byId('theme-bgcolor').value = window.settings.themebackgroundcolor,
-			features = undefined;
-			url = undefined;
+			byId('theme-color').value = window.settings.themecolor;
+			byId('theme-bgcolor').value = window.settings.themebackgroundcolor;
+			features = url = undefined;
 		})
 		.catch(err => { 
 			url = undefined;

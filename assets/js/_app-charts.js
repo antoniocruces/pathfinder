@@ -1,6 +1,6 @@
 'use strict';
 
-/* global AppError, autocomplete, byId, c, d, dbe, dbq, dbs, dl, echarts, fc, icons, isBlank, isNumber, l, sleep, times, toolkit */
+/* global AppError, autocomplete, arraymin, arraymax, byId, c, Circular, d, dbe, dbm, dbq, dbs, echarts, ecStat, fc, gscreen, icons, isBlank, k, l, plural, sleep, times, toolkit */
 /* eslint no-confusing-arrow: ["error", {"allowParens": true}] */
 /* eslint-env es6 */
 /* exported charts, chartshelper */
@@ -184,19 +184,18 @@ const charts = {
 		let xname = d.chartselectedname;
 		let xfilter = d.chartselectedfilter;
 		let xfacet = d.chartselectedfacet;
-		let xserie = d.chartselectedserie;
 		
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		toolkit.timer('charts.chart');
 		toolkit.statustext(true);
 
 		let instance = echarts.getInstanceByDom(byId('stats-charts'));
 		if(instance) instance.clear();
 		toolkit.cleardomelement('#stats-charts');
-		instance && instance.dispose();
+		if(instance) instance.dispose();
 		instance = undefined;
 
-		let pchart = echarts.init(byId('stats-charts'));		
+		let pchart = echarts.init(byId('stats-charts'), d.chartselectedtheme);		
 		pchart.showLoading({text: c`working`});
 		sleep(50).then(() => {
 			if(document.getElementById('stats-charts')) {
@@ -394,7 +393,7 @@ const charts = {
 						break;
 					case 'tbl':
 						if(!d[xname + 'results'].length) {
-							screen.siteoverlay(false);
+							gscreen.siteoverlay(false);
 							toolkit.timer('charts.chart');
 							toolkit.statustext();
 							pchart.hideLoading();
@@ -415,7 +414,7 @@ const charts = {
 						}
 						break;
 					default:
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 						toolkit.timer('charts.chart');
 						toolkit.statustext();
 						pchart.hideLoading();
@@ -597,7 +596,7 @@ const charts = {
 						
 						if(d.chartregression) {
 							let reg = chartshelper.regression(lst.map(o => o[3]), 'linear');
-							let stx = dbs.stats(reg.points.map(p => p[1]));
+							//let stx = dbs.stats(reg.points.map(p => p[1]));
 							let clr = lst[0][1];
 							ser = {
 								name: c(o) + ': ' + c`linear-regression`,
@@ -681,7 +680,7 @@ const charts = {
 					dataset = record = undefined;
 				}
 
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				toolkit.timer('charts.chart');
 				toolkit.statustext();
 				pchart.hideLoading();			
@@ -782,7 +781,7 @@ const charts = {
 			
 		if(!byId('stats-network')) return;
 		
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		toolkit.timer('charts.relations');
 		toolkit.statustext(true);
 
@@ -880,7 +879,7 @@ const charts = {
 						byId('stats-network').style.border = '0';
 				
 						sleep(100).then(() => {
-							screen.siteoverlay(true);
+							gscreen.siteoverlay(true);
 							let dataset = [];
 							let edg = [];
 							let nod = dbe.hashrecord(json.nodes, 'id');
@@ -939,7 +938,7 @@ const charts = {
 								oldtable.parentNode.replaceChild(newtable, oldtable);
 								thead = tbody = oldtable = newtable = undefined;
 															
-								screen.siteoverlay(false);
+								gscreen.siteoverlay(false);
 								d.networkresults = dataset;
 								dataset = nod = edg = undefined;
 								json = undefined;
@@ -985,7 +984,7 @@ const charts = {
 							if(!confirm(c`nodes-edges-warning`.uf())) {
 								toolkit.statustext();
 								toolkit.timer('charts.relations');
-								screen.siteoverlay(false);
+								gscreen.siteoverlay(false);
 								byId('stats-network').style.border = '0';
 								throw new AppError(c`relations` + ': ' + c`out-of-limits`); 
 							}
@@ -1001,7 +1000,7 @@ const charts = {
 						let graphtitle = `${c(ptype)} ${c(rtype)} ${c(relfield)}`.trim();
 	
 						byId('stats-network').style.height = '750px';					
-						pchart = echarts.init(byId('stats-network'));		
+						pchart = echarts.init(byId('stats-network'), d.chartselectedtheme);		
 						pchart.showLoading({text: c`working`});
 						byId('stats-network').classList.add('page-charts');
 						let options = charts.globalgraphoptions(json, graphtitle, 'stats-network', type);
@@ -1024,7 +1023,7 @@ const charts = {
 				);
 			}
 
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 			toolkit.timer('charts.relations');
 			toolkit.statustext();
 			if(!['table|none', 'tree|none'].includes(type)) {
@@ -1035,7 +1034,7 @@ const charts = {
 			droprelfields = dropbound = outoflimits = undefined;
 		});
 	},
-	doughnutoptions: (json, percent, jsonname, percentname, title, dom) => {
+	doughnutoptions: (json, percent, jsonname, percentname, dom) => {
 		let options = {
 			textStyle: {
 				fontFamily: 'Dosis'
@@ -1050,7 +1049,7 @@ const charts = {
 			}),
 			tooltip: {
 				trigger: 'item',
-				formatter: "{a} <br/>{b}: {c} ({d}%)"
+				formatter: '{a} <br/>{b}: {c} ({d}%)'
 			},
 			legend: {
 				orient: 'vertical',
@@ -1171,7 +1170,7 @@ const charts = {
 			},
 			series: series,
 		};
-		data = xdata = series = tmp = minvalue = maxvalue = undefined;
+		json = data = xdata = series = tmp = minvalue = maxvalue = undefined;
 		return options;
 	},
 	sunburstoptions: (json, title, dom) => {
@@ -1208,7 +1207,7 @@ const charts = {
 			},
 			series: series,
 		};
-		data = xdata = series = undefined;
+		json = data = xdata = series = undefined;
 		return options;
 	},
 	hierarchicaltreeoptions: (json, title, dom) => {
@@ -1216,7 +1215,8 @@ const charts = {
 		let series = [];
 		let xdata = {name: c`cooccurrences`.uf(), children: data};
 		echarts.util.each(xdata.children, function (datum, index) {
-			index % 2 === 0 && (datum.collapsed = true);
+			//index % 2 === 0 && (datum.collapsed = true);
+			if(index % 2 === 0) datum.collapsed = true;
 		});
 
 		series.push({
@@ -1271,7 +1271,7 @@ const charts = {
 			},
 			series: series,
 		};
-		data = xdata = series = undefined;
+		json = data = xdata = series = undefined;
 		return options;
 	},
 	radialtreeoptions: (json, title, dom) => {
@@ -1311,7 +1311,7 @@ const charts = {
 			},
 			series: series,
 		};
-		data = xdata = series = undefined;
+		json = data = xdata = series = undefined;
 		return options;
 	},
 	treemapoptions: (json, title, dom) => {
@@ -1419,10 +1419,10 @@ const charts = {
 			},
 			tooltip: {
 				formatter: function (info) {
-					var value = info.value;
-					var treePathInfo = info.treePathInfo;
-					var treePath = [];
-					for (var i = 1; i < treePathInfo.length; i++) {
+					let value = info.value;
+					let treePathInfo = info.treePathInfo;
+					let treePath = [];
+					for (let i = 1; i < treePathInfo.length; i++) {
 						treePath.push(treePathInfo[i].name);
 					}
 					return [
@@ -1555,7 +1555,7 @@ const charts = {
 				},
 				axisLabel: {
 					rotate: 50, 
-					formatter: function (value, index) {
+					formatter: function (value) {
 						return String(value).shorten(15);
 					}
 				},
@@ -2114,7 +2114,7 @@ const charts = {
 			],
 			series: series
 		};
-		series = maxyear = minyear = years = categories = colors = undefined;
+		tit = series = maxyear = minyear = years = categories = colors = undefined;
 		return options;
 	},
 	geolineoptions: (dom, dat, tit, pla = 'country') => {
@@ -2260,7 +2260,7 @@ const charts = {
 			],
 			series: series
 		};
-		series = places = categories = colors = undefined;
+		tit = series = places = categories = colors = undefined;
 		return options;
 	},
 	taxoscatteroptions: (dom, dat, tit, pla = 'rkey', mod = 'scatter') => {
@@ -2644,7 +2644,7 @@ const charts = {
 			}));
 		let bins = json.groupBy(['bin']);
 		tdata.forEach(o => {
-			var elm = bins[o.name];
+			let elm = bins[o.name];
 			if(elm) {
 				o.cmax = arraymax(elm.map(b => b.count));
 				o.cmin = arraymin(elm.map(b => b.count));
@@ -2653,6 +2653,7 @@ const charts = {
 			} else {
 				o.name = `${c`n-a`}`;
 			}
+			elm = undefined;
 		});
 		let lim = tdata.find(o => o.value > 0);
 		if(lim) {
@@ -2661,7 +2662,7 @@ const charts = {
 			tdata[0].cmin = 1;
 			tdata[0].ccount = ctotal - d.schemarelevance.map(o => o.count).sum();
 		} else {
-			tdata[0].name = `${c`from`} ${tdata[0].cmin} ${c`to`} ${tdata[0].cmax}`
+			tdata[0].name = `${c`from`} ${tdata[0].cmin} ${c`to`} ${tdata[0].cmax}`;
 			tdata[0].cmax = 1;
 			tdata[0].cmin = 1;
 			tdata[0].ccount = ctotal;
@@ -2688,7 +2689,7 @@ const charts = {
 			},
 			tooltip: {
 				trigger: 'item',
-				formatter: "{a}<br/>{b}: {c} ({d}%)"
+				formatter: '{a}<br/>{b}: {c} ({d}%)',
 			},
 			legend: {
 				x: 'center',
@@ -2741,11 +2742,13 @@ const charts = {
 		};
 		return options;
 	},
-	scatterrelevanceoptions: (json, cid, title, subtitle, dom) => {
+	scatterrelevanceoptions: (json, title, subtitle, dom) => {
 		let getsymbols = () => {
+			/*
 			let col = d[cid + 'cols'] ? 
 				d[cid + 'cols'][d[cid + 'cols'].length - 1] : 
 				d[cid + 'route'][d[cid + 'route'].length - 1].rkey;
+			*/
 			let ring = new Circular(d.chartsymbols);
 			let set = new Set(k.qualifiers);
 			let out = [];
@@ -2821,8 +2824,8 @@ const charts = {
 			}
 		});
 		
-		let minValue = Math.min(minRate, minRatio);
-		let maxValue = Math.max(maxRate, maxRatio);
+		//let minValue = Math.min(minRate, minRatio);
+		//let maxValue = Math.max(maxRate, maxRatio);
 		let xValue = 0,
 			yValue = 0;
 		data.json.forEach(item => {
@@ -2874,7 +2877,7 @@ const charts = {
 				showDelay: 0,
 				formatter: function(params) {
 					let str = '';
-					params.filter(o => !isBlank(o.name)).forEach((param, index) => {
+					params.filter(o => !isBlank(o.name)).forEach(param => {
 						str += [
 							`<p class="no-vertical-margin">`,
 							`<strong>${param.name}</strong>. `,
@@ -2970,7 +2973,7 @@ const charts = {
 							if (param.name === c `average`) {
 								return 'red';
 							} else {
-								return d.chartsymbolcolors[d.chartsymbols.indexOf(param.data.symbol)]
+								return d.chartsymbolcolors[d.chartsymbols.indexOf(param.data.symbol)];
 							}
 						},
 						borderColor: '#fff',
@@ -3086,7 +3089,7 @@ const charts = {
 						normal: {
 							show: true,
 							position: 'left',
-							formatter: (obj) => c`logarithmic-regression`,
+							formatter: () => c`logarithmic-regression`,
 							textStyle: {
 								color: '#007900',
 								fontSize: 10
@@ -3124,7 +3127,7 @@ const charts = {
 						normal: {
 							show: true,
 							position: 'left',
-							formatter: (obj) => c`polynomial-regression`,
+							formatter: () => c`polynomial-regression`,
 							textStyle: {
 								color: '#0074ad',
 								fontSize: 10
@@ -3144,10 +3147,10 @@ const charts = {
 	gaussianoptions: (gaussiandata, q1, q3, highlimit, median, dom) => {
 		let olines = [];
 		let alines = [
-			{name: c`median`, yaxis: q1, color: 'orange', type: 'solid'},
+			{name: c`median`, yaxis: median, color: 'orange', type: 'solid'},
 			{name: c`q1`, yaxis: q1, color: 'red', type: 'dotted'},
-			{name: c`q3`, yaxis: q1, color: 'green', type: 'dotted'},
-			{name: c`highlimit`, yaxis: q1, color: 'purple', type: 'dashed'},
+			{name: c`q3`, yaxis: q3, color: 'green', type: 'dotted'},
+			{name: c`highlimit`, yaxis: highlimit, color: 'purple', type: 'dashed'},
 		];
 		alines.forEach(o => olines.push({
 			symbol: 'none',
@@ -3239,7 +3242,7 @@ const charts = {
 					color: 'blue',
 					type: 'dotted'
 				}
-			})
+			});
 		});
 		olines = alines = gdata = cline = undefined;
 		return options;
@@ -3251,8 +3254,8 @@ const charts = {
 			cancel: true,
 			canceltitle: c`close`.uf(),
 			extended: true,
-		}
-		screen.alert = screen.displayalert(features);
+		};
+		gscreen.alert = gscreen.displayalert(features);
 
 		let filterbytext = (o, txt) => {
 			if(isBlank(txt)) return true;
@@ -3286,7 +3289,7 @@ const charts = {
 		`);
 		toolkit.msg('alert-content', out.join(''));
 		
-		let pchart = echarts.init(byId(isoption ? cid : cid + '-plot'));
+		let pchart = echarts.init(byId(isoption ? cid : cid + '-plot'), d.chartselectedtheme);
 		let rfields = Object.keys(res[0]);
 		pchart.setOption(
 			charts.gaussianoptions(
@@ -3304,8 +3307,8 @@ const charts = {
 	},
 	sizechart: (cid, ishome = true) => {
 		if(!cid) return;
-		let overlayactive = screen.siteoverlayisset;
-		if(!overlayactive) screen.siteoverlay(true);
+		let overlayactive = gscreen.siteoverlayisset;
+		if(!overlayactive) gscreen.siteoverlay(true);
 		sleep(50).then(() => {
 			dbq.sizechart(ishome).then(res => {
 				let prefix = ishome ? 'home-' : 'data-';
@@ -3380,7 +3383,7 @@ const charts = {
 				
 				toolkit.msg(cid, tmp.join(''));
 
-				if(!overlayactive) screen.siteoverlay(false);
+				if(!overlayactive) gscreen.siteoverlay(false);
 				
 				prefix = dmessage = dicon = dunit = res = tmp = overlayactive = undefined;
 			});
@@ -3505,6 +3508,28 @@ const chartshelper = {
 	regression: (data = [], type = 'linear') => !data.length ? 
 		null : 
 		ecStat.regression(type, data.map((o, i) => [i, o])),
+	chartthemeselector: (caller = 'stats-charts') => {
+		let url = `./assets/views/${l}/chartthemeselector.html`;
+		cfetch(url).then(txt => txt.text()).then(txt => { 
+			let pholder = '#f#';
+			let replace = caller === 'stats-charts' ? 'chart' : 'relations';
+			txt = txt.replace(new RegExp(pholder, 'g'), replace);
+			let features = {
+				progress: false,
+				title: c`chart-theme-selector`.uf(),
+				content: txt,
+				action: false,
+				cancel: true,
+				canceltitle: c`close`.uf()
+			};
+			gscreen.alert = gscreen.displayalert(features);
+			pholder = replace = features = url = undefined;
+		})
+		.catch(err => { 
+			url = undefined;
+			throw new AppError(c`chart-theme-selector` + ': ' + err); 
+		});
+	},
 	toolbox: (features = {
 		orient: 'vertical', 
 		mtype: false, 
@@ -3515,6 +3540,16 @@ const chartshelper = {
 	}) => ({
 		orient: features.orient,
 		feature: {
+			myTheme: {
+				show: true,
+				title: c`theme`,
+				icon: `path://${icons.charts.theme()}`,
+				iconStyle: {
+					color: d.chartselectedtheme === 'dark' ? '#fff' : '#000',
+					borderWidth: 0,
+				},
+				onclick: function() { chartshelper.chartthemeselector(features.dom); }
+			},
 			magicType: {
 				show: features.mtype, 
 				title: {
@@ -3522,19 +3557,33 @@ const chartshelper = {
 					bar: c`bar`,
 				},
 				icon: {
-					line: icons.charts.linecharticon(),
-					bar: icons.charts.barcharticon(),
+					line: `path://${icons.charts.linecharticon()}`,
+					bar: `path://${icons.charts.barcharticon()}`,
+				},
+				iconStyle: {
+					color: d.chartselectedtheme === 'dark' ? '#fff' : '#000',
+					borderWidth: 0,
 				},
 				type: ['line', 'bar'],
 			},
 			saveAsImage: {
 				show: features.save,
 				title: c`saveasimage`, 
-				icon: icons.charts.downloadicon(),
+				icon: `path://${icons.charts.downloadicon()}`,
+				iconStyle: {
+					color: d.chartselectedtheme === 'dark' ? '#fff' : '#000',
+					borderWidth: 0,
+				},
+				pixelRatio: 2,
 			},
 			/*
 			dataZoom: {
+				visible: false,
 				lang: [c`data-view`.uf(), c`turn-off`.uf(), c`refresh`.uf()],
+				iconStyle: {
+					color: d.chartselectedtheme === 'dark' ? '#fff' : '#000',
+					borderWidth: 0,
+				},
 			},
 			*/
 			dataView: {
@@ -3547,13 +3596,21 @@ const chartshelper = {
 				optionToContent: function(opt) { 
 					return chartshelper.makedatatable(opt); 
 				},
-				icon: icons.charts.tableicon(),
+				icon: `path://${icons.charts.tableicon()}`,
+				iconStyle: {
+					color: d.chartselectedtheme === 'dark' ? '#fff' : '#000',
+					borderWidth: 0,
+				},
 			},
 			myFullScreen: {
 				show: features.full && features.dom,
 				title: c`full-screen`,
-				icon: icons.charts.fullscreenicon(),
-				onclick: function() { chartshelper.fullscreen(features.dom); }
+				icon: `path://${icons.charts.fullscreenicon()}`,
+				iconStyle: {
+					color: d.chartselectedtheme === 'dark' ? '#fff' : '#000',
+					borderWidth: 0,
+				},
+				onclick: function() { chartshelper.fullscreen(features.dom); },
 			}
 		}
 	}),

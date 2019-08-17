@@ -1,6 +1,6 @@
 'use strict';
 
-/* global cfetch, loadstyles, pagescripts, removeAllEventListener, toolkit */
+/* global AppError, c, cfetch, loadstyles, pagescripts, removeAllEventListener, toolkit */
 /* exported router */
 
 // router
@@ -123,7 +123,7 @@ const router = {
 		telm = tatt = susp = undefined;
 	},
 	resourcestatus: function(operation, namespace, loadstatus, errorstatus, msg) {
-		if(window.settings.debugconsole === 1) console.log('RESOURCESTATUS - OPERATION: %s', operation)
+		if(window.settings.debugconsole === 1) console.log('RESOURCESTATUS - OPERATION: %s', operation);
 		let resource = window.resources.filter(o => o.namespace === namespace);
 		if(resource.length) {
 			resource.forEach(r => {

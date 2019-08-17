@@ -1,9 +1,9 @@
  'use strict';
 
-/* global arraymax, arraymin, byId, c, d, dbe, fc, isObject, l, toolkit */
+/* global arraymax, arraymin, c, d, dbe, dbm, fc, gscreen, isPrimitive, sleep, toolkit */
 /* eslint no-confusing-arrow: ["error", {"allowParens": true}] */
 /* eslint-env es6 */
-/* exported AppError, autocomplete, FastTable, pg, Record, Relative, Stats, w */
+/* exported AppError, AppWarning, autocomplete, autosearch, Circular, FastTable, Graph, graphToDAG, pg, Record, Relative, Stats, w */
 
 // custom record class
 class Record {
@@ -136,7 +136,7 @@ class AppError extends ExtendableError {
 				message: this.message,
 				stacktrace: this.stack
 			}
-		}
+		};
 	}
 }
 
@@ -153,7 +153,7 @@ class AppWarning extends ExtendableError {
 				message: this.message,
 				stacktrace: this.stack
 			}
-		}
+		};
 	}
 }
 
@@ -335,8 +335,8 @@ class Stats {
 		if (ptile > 1) ptile = 1;
 		arr = arr.sort();
 		let i = (arr.length * ptile) - 0.5;
-		if ((i | 0) === i) return arr[i];
-		let int_part = i | 0;
+		if ((i || 0) === i) return arr[i];
+		let int_part = i || 0;
 		let fract = i - int_part;
 		i = undefined;
 		return (1 - fract) * arr[int_part] + fract * arr[Math.min(int_part + 1, arr.length - 1)];
@@ -401,7 +401,7 @@ function autocomplete(input, array) {
 		a = b = val = undefined;
 	};
 	let keydownfunc = function(e) {
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		sleep(200).then(() => {
 			let x = document.getElementById(this.id + 'autocomplete-list');
 			if (x) x = x.getElementsByTagName('div');
@@ -418,7 +418,7 @@ function autocomplete(input, array) {
 				}
 			}
 			x = undefined;
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 		});
 	};
 	
@@ -524,7 +524,7 @@ class MapTree {
 			} else {
 				this.childBranches.delete(key);
 			}
-			key = keyObject = undefined;
+			key = undefined;
 		} else {
 			let childKey = arguments[0];
 			if (this.has(childKey)) {
@@ -539,7 +539,7 @@ class MapTree {
 
 // simplified graph
 class Graph {
-	constructor(props) {
+	constructor() {
 		this.neighbors = {};
 	}
 
@@ -567,7 +567,7 @@ class Graph {
 					visited: true,
 					steps: count
 				};
-				results['nodes'].push(node);
+				results.nodes.push(node);
 				if (this.neighbors[node]) {
 					if (this.neighbors[node].length) {
 						count++;
@@ -594,7 +594,7 @@ class Graph {
 
 		while (tail < queue.length) {
 			let u = queue[tail++];
-			if (!this.neighbors[u]) continue
+			if (!this.neighbors[u]) continue;
 
 			let neighbors = this.neighbors[u];
 			for (let i = 0, len = neighbors.length; i < len; ++i) {
@@ -877,7 +877,7 @@ function autosearch(settings) {
 			container.removeChild(container.firstChild);
 		}
 
-		let render = function(item, currentValue) {
+		let render = function(item) {
 			let itemElement = doc.createElement('div');
 			itemElement.textContent = item.label || '';
 			return itemElement;
@@ -885,7 +885,7 @@ function autosearch(settings) {
 		if (settings.render) {
 			render = settings.render;
 		}
-		let renderGroup = function(groupName, currentValue) {
+		let renderGroup = function(groupName) {
 			let groupDiv = doc.createElement('div');
 			groupDiv.textContent = groupName;
 			return groupDiv;
@@ -1060,18 +1060,16 @@ function autosearch(settings) {
 			if (keyCode === 27) {
 				clear();
 			} else {
-				if (!containerDisplayed || items.length < 1) {
-					return;
+				if (!containerDisplayed || items.length < 1) return;
+				if(keyCode === 38) {
+					selectPrev();
+				} else {
+					 selectNext();
 				}
-				keyCode === 38 ?
-					selectPrev() :
-					selectNext();
 				update();
 			}
 			ev.preventDefault();
-			if (containerIsDisplayed) {
-				ev.stopPropagation();
-			}
+			if (containerIsDisplayed) ev.stopPropagation();
 			return;
 		}
 		if (keyCode === 13 && selected) {
@@ -1485,63 +1483,59 @@ class Dag {
 }
 
 function graphToDAG(vertices, incoming, outgoing, getFrom, getTo) {
-	getFrom = getFrom || function(edge) { return edge[0]; }
-	getTo = getTo || function(edge) { return edge[1]; }
+	getFrom = getFrom || function(edge) { return edge[0]; };
+	getTo = getTo || function(edge) { return edge[1]; };
 
-	vertices = new Set(vertices)
-	const toFlip = new Set()
-	const lhs = new Set()
-	const rhs = new Set()
+	vertices = new Set(vertices);
+	const toFlip = new Set();
+	const lhs = new Set();
+	const rhs = new Set();
 
 	function removeSourceOrSink(vertices, incoming, into, getAttr) {
-		for (var vertex of vertices) {
-			var edges = incoming.get(vertex)
-			if (!edges) {
-				vertices.delete(vertex)
-				into.add(vertex)
-				continue
+		for(let vertex of vertices) {
+			let edges = incoming.get(vertex);
+			if(!edges) {
+				vertices.delete(vertex);
+				into.add(vertex);
+				continue;
 			}
-			var ok = false
-			for (var edge of edges) {
-				if (vertices.has(getAttr(edge))) {
-					ok = true
-					break
+			let ok = false;
+			for(let edge of edges) {
+				if(vertices.has(getAttr(edge))) {
+					ok = true;
+					break;
 				}
 			}
-			if (!ok) {
-				vertices.delete(vertex)
-				into.add(vertex)
-				continue
+			if(!ok) {
+				vertices.delete(vertex);
+				into.add(vertex);
+				continue;
 			}
 		}
 	}
 	
-	while (vertices.size) {
-		removeSourceOrSink(vertices, outgoing, rhs, getTo)
-		removeSourceOrSink(vertices, incoming, lhs, getFrom)
-		if (vertices.size) {
-			var max = -Infinity
-			var maxVertex = null
-			for (let vertex of vertices) {
-				var diff = outgoing.get(vertex).size - incoming.get(vertex).size
+	while(vertices.size) {
+		removeSourceOrSink(vertices, outgoing, rhs, getTo);
+		removeSourceOrSink(vertices, incoming, lhs, getFrom);
+		if(vertices.size) {
+			let max = -Infinity;
+			let maxVertex = null;
+			for(let vertex of vertices) {
+				let diff = outgoing.get(vertex).size - incoming.get(vertex).size;
 				if (diff > max) {
-					max = diff
-					maxVertex = vertex
+					max = diff;
+					maxVertex = vertex;
 				}
 			}
-			vertices.delete(maxVertex)
-			lhs.add(maxVertex)
+			vertices.delete(maxVertex);
+			lhs.add(maxVertex);
 		}
 	}
-	for (let vertex of lhs) {
-		for (let edge of outgoing.get(vertex)) {
-			if (rhs.has(getTo(edge))) {
-				toFlip.add(edge)
-			}
+	for(let vertex of lhs) {
+		for(let edge of outgoing.get(vertex)) {
+			if(rhs.has(getTo(edge))) toFlip.add(edge);
 		}
 	}
 
-	return toFlip
+	return toFlip;
 }
-
-

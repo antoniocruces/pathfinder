@@ -1,13 +1,13 @@
 'use strict';
 
-/* global _, AppError, arrayflatten, byId, c, charts, d, dbe, dbq, dl, dbs, echarts, FastTable, fc, isBlank, isObject, k, l, plural, sleep, sortobjectbykey, Stats, toolkit */
+/* global _, AppError, AppWarning, arraygroup, arraymax, arraymin, autocomplete, byId, c, charts, d, dbe, dbhelper, dbm, dbq, dl, dbs, echarts, fc, file, gscreen, isBlank, isNumber, isObject, joinobjects, k, l, objectunique, PivotData, removekey, sleep, Stats, toolkit, ui */
 /* exported stats */
 
 // stats functions
 const stats = {
 	schema: (cid = '', page = 1, row = '', text = '', srt = 1, xprt = false, calculate = false) => {
 		if(!dbe._filterids()) return;
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		toolkit.timer('stats.schema');
 		toolkit.statustext(true);
 
@@ -37,7 +37,7 @@ const stats = {
 					`placeholde="${c`query-selector-info`}"/>`,
 					`<a id="schema-query-trigger" `,
 					`class="button info button-square button-border disabled" `,
-					`href="javascript:byId('schema-input').dispatchEvent(new KeyboardEvent('keyup',{key:'Enter'}));" `,
+					`onclick="byId('schema-input').dispatchEvent(new KeyboardEvent('keyup',{key:'Enter'}));" `,
 					`data-tooltip="${c`add`}"`,
 					`>`,
 					`<svg width="24" height="24" viewBox="0 0 24 24" `,
@@ -141,7 +141,7 @@ const stats = {
 				toolkit.drawicons();
 				
 				if(d.schemacols.filter(o => !isBlank(o)).length < 1) {
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 					toolkit.timer('stats.schema');
 					toolkit.statustext();
 					toolkit.msg(
@@ -171,9 +171,8 @@ const stats = {
 						byId('schema-input'), 
 						[].concat(...k.keys.sort(toolkit.sortlocale).map(o => dbe._fieldname(o)))
 					);
-					return;	
-					
 					byId('schema-showhidepivot-wp').classList.add('hide');
+					return;	
 				}
 
 				let t0 = performance.now();
@@ -187,7 +186,7 @@ const stats = {
 					stats.descriptivestats('schema', d.schemaresults);
 					
 					sleep(50).then(() => {
-						var validrecord = (obj, txt) => Object.values(obj).filter(o => dbe._operation('li', o, txt)).length;
+						let validrecord = (obj, txt) => Object.values(obj).filter(o => dbe._operation('li', o, txt)).length;
 						let oonly = d.schemaoutliersonly;
 						let oresults = d.schemaresults.filter(o => !isBlank(text) ? validrecord(o, text) : true);
 						let fresults = oonly ? oresults.filter(o => d.schemaoutliers.includes(o.count)) : oresults;
@@ -204,7 +203,7 @@ const stats = {
 									
 						if(xprt) {
 							file.exportdatatocsv(stats.localstats(sortedlist));
-							screen.siteoverlay(false);
+							gscreen.siteoverlay(false);
 							toolkit.timer('stats.schema');
 							toolkit.statustext();
 							return;
@@ -322,12 +321,11 @@ const stats = {
 								stats.schema(cid, page, row, text, srt, true, false);
 							},
 						};
-						//ui.maketable(opts);
 
 						byId('schema-showhidepivot-wp').classList.remove('hide');
 
 						if(d.schemapivot.visible) {
-							screen.siteoverlay(true);
+							gscreen.siteoverlay(true);
 							sleep(50).then(() => {
 								let pvtable = ui.makepivottable(d.schemapivot.result, {
 									isShowCount: true,
@@ -342,7 +340,7 @@ const stats = {
 								byId('schema-listing').appendChild(pvtable);
 								toolkit.drawicons();
 								pvtable = undefined;
-								screen.siteoverlay(false);
+								gscreen.siteoverlay(false);
 							});
 						} else {
 							ui.maketable(opts);
@@ -380,7 +378,7 @@ const stats = {
 					window.storecurrentsize = toolkit.currentmemory();
 					toolkit.showmemory('app-memory');
 				} else {
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 					toolkit.timer('stats.schema');
 					toolkit.statustext();
 					toolkit.msg(
@@ -421,489 +419,15 @@ const stats = {
 					
 					return;
 				}
-			} else {
-				res = undefined;
+			//} else {
+			//	if(res) res = undefined;
 			}
 			
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 			toolkit.timer('stats.schema');
 			toolkit.statustext();
 		});
 	},
-	/*
-	relations: (cid = '', page = 1, row = '', text = '', srt = 1, xprt = false, calculate = false) => {
-		if(!dbe._filterids()) return;
-
-		let dropfields = cid => {
-			let out = [];
-			let col = d.relationscols[cid] ? d.relationscols[cid] : null;			
-			k.keys.sort(toolkit.sortlocale).forEach(o => { 
-				let nam = dbe._fieldname(o);
-				nam.forEach(n => {
-					out.push(`<option value="${n}"${col === n ? ' selected' : ''}>${fc(n)}</option>`);
-				});
-				nam = undefined; 
-			});
-			col = undefined;
-			return [
-				`<label class="select info" for="acc-col${cid}">`,
-				`<select `,
-				`id="acc-col${cid}" `,
-				`onchange="javascript:`,
-				`d.relationscols[${cid}]=this.options[this.selectedIndex].value;`,
-				`">`,
-				`<option value="" disabled selected hidden>${cid === 0 ? c`source` : c`target`}</option>`,
-				`${out.join('\n')}`,
-				`</select>`,
-				`</label>`,
-			].join('');
-		};
-		let dropbounds = () => {
-			let out = [];
-			out.push([
-				`<option value=""${d.relationsbound === '' ? ' selected' : ''}>`,
-				`${c`any-relationship`}`,
-				`</option>`,
-			].join(''));
-			['<', '>'].forEach(o => { 
-				out.push(`<option value="${o}"${d.relationsbound === o ? ' selected' : ''}>${c(o)}</option>`); 
-			});
-			return [
-				`<label class="select info" for="acc-bound">`,
-				`<select `,
-				`id="acc-bound" `,
-				`onchange="javascript:`,
-				`d.relationsbound=this.options[this.selectedIndex].value;`,
-				`">`,
-				`${out.join('\n')}`,
-				`</select>`,
-				`</label>`,
-			].join('');
-		};
-
-		screen.siteoverlay(true);
-		toolkit.timer('stats.links');
-		toolkit.statustext(true);
-		if(byId('app-overlay-txt')) toolkit.msg('app-overlay-txt', c`working`.uf() + '&hellip;');
-		
-		sleep(50).then(() => {			
-			if(byId('relations-listing')) {			
-				let sel = [];
-				let tgl = `javascript:toolkit.toggleelement('relations');`;
-				sel.push([
-					`<div class="group group-xs margin-bottom-s">`,
-					`<ul>`,
-					
-					`<li style="width:25%">`,
-					
-					`${dropfields(0)}`,
-
-					`</li>`,
-					`<li style="width:15%">`,
-					
-					`${dropbounds()}`,
-					
-					`</li>`,
-					`<li style="width:25%">`,
-					
-					`${dropfields(1)}`,
-
-					`</li>`,
-					`<li>`,
-										
-					`<div id="stats-relations-features" class="ddown">`,
-					`<a class="button info button-border" href="javascript:;">${c`filter`.uf()}</a>`,
-					`<div class="ddown-content padding-xs box-shadow-xxl background-white">`,
-					
-					`<p class="no-margin-bottom">`,
-					`<label class="control switch">`,
-					`<input type="checkbox"`, 
-					`id="a-chk1" name="account-und" `,
-					`onclick="javascript:`,
-					`d.relationsstrict=this.checked;`,
-					`"${d.relationsstrict ? ' checked' : ''}>`,
-					`<span class="control-indicator"></span>`,
-					`<span class="control-label">`,
-					`<a class="text-decoration-none" href="javascript:info.help('outliers');">`,
-					`${c`strict`}`,
-					`</a>`,
-					`</span>`,
-					`</label>`,
-					`</p>`,
-					
-					`<p class="no-margin-bottom">`,
-					`<label class="control switch">`,
-					`<input type="checkbox"`, 
-					`id="a-chk2" name="account-bln" `,
-					`onclick="javascript:`,
-					`d.relationsoutliersonly=this.checked;`,
-					`"${d.relationsoutliersonly ? ' checked' : ''}>`,
-					`<span class="control-indicator"></span>`,
-					`<span class="control-label">`,
-					`<a class="text-decoration-none" href="javascript:info.help('outliers');">`,
-					`${c`meaningful-only`}`,
-					`</a>`,
-					`</span>`,
-					`</label>`,
-					`</p>`,
-
-					`</div>`,					
-					`</div>`,					
-
-					`</li>`,
-					`<li>`,
-
-					`<a class="button info button-border" `,
-					`id="relations-showhidestats" href="${tgl}">${c`stats`.uf()}</a>`,
-					
-					`</li>`,
-					`<li>`,
-
-					`<a class="button info" `,
-					`href="javascript:stats.relations(`,
-					`null, 1, `,
-					`null, '', `,
-					`${srt}, false, true);"`,
-					`>`,
-					`${c`calculate`.uf()}`,
-					`</a>`,
-					
-					`</li>`,
-					`<li>`,
-					
-					`<p>`,
-					`${c`relations-date-warning`.uf()}`,
-					`<span id="relations-table-performance"></span>`,
-					`</p>`,
-
-					`</li>`,
-					
-					`</ul>`,
-					`</div>`,
-
-					`<div class="hide margin-vertical-l" id="relations-stats-info">`, 
-					`<p class="color-error text-align-center vertical-center">${c`no-data`.uf()}</p>`, 
-					`</div>`,
-				].join(''));
-				
-				toolkit.msg('relations-selectors', sel.join(''));
-				toolkit.drawicons();
-				
-				if(isBlank(d.relationscols[0])) d.relationscols[0] = byId('acc-col0').value;
-				if(isBlank(d.relationscols[1])) d.relationscols[1] = byId('acc-col1').value;
-				if(isBlank(d.relationsbound)) d.relationsbound = byId('acc-bound').value;
-
-				let t0 = performance.now();
-
-				let datapresent = d.relationsresults.length > 0;
-				
-				if(calculate || datapresent) {
-					if(!datapresent || calculate) {
-						let rel = dbm.relations(false, false);
-						let tre = dbe.hashrecord(stats.mutatedlist(d.relationscols, true, true), 'ID');
-						let mut = Object.values(tre).flatten();
-						
-						let idslist = rel.map(o => o.ID).unique();
-						let ridslist = rel.map(o => o.RID).unique();
-						
-						let col1set = new Set(mut.filter(o => o[d.relationscols[0]] !== undefined).map(o => o.ID));
-						let col2set = new Set(mut
-							.filter(o => o[d.relationscols[1].replace('rel|', '')] !== undefined)
-							.map(o => o.ID)
-						);
-						
-						let sel = rel.filter(o => 
-							(isBlank(d.relationsbound) ? true : o.bound === d.relationsbound) && 
-								col1set.has(o.ID) && 
-								col2set.has(o.RID)
-						);
-						let res = sel
-							.map(o => Object.assign({}, o, {field: tre[o.ID] ? tre[o.ID][d.relationscols[0]] : null}))
-							.map(o => Object.assign({}, o, {
-								relfield: tre[o.RID] ? tre[o.RID][d.relationscols[1].replace('rel|', '')] : null
-							}));
-						rel = tre = mut = idslist = ridslist = col1set = col2set = sel = undefined;
-
-						if(!res.length) {
-							screen.siteoverlay(false);
-							toolkit.timer('stats.links');
-							toolkit.statustext();
-							toolkit.msg(
-								'relations-listing', 
-								`<p class="color-error text-align-center vertical-center">${c`no-data`.uf()}</p>`,
-							);
-							d.relationsresults = [];
-							d.relationsstats = [];
-							d.relationsoutliers = [];
-							return;
-						}
-						let pcols = ['field', 'bound', 'relfield', 'rkey'];
-						let oarray = stats.calculate(res, pcols, d.relationsstrict)
-							.map(o => {
-								let obj = {};
-								obj[c`source` + ': ' + fc(d.relationscols[0])] = o.field;
-								obj.bound = o.bound;
-								obj.rkey = o.rkey;
-								obj[c`target` + ': ' + fc(d.relationscols[1])] = o.relfield;
-								obj.count = o.count;
-								return obj;
-							});
-							
-						let isempty = oarray.length < 1;
-						let istoolong = !isempty && oarray.length > window.settings.querylengthlimit;
-	
-						if(isempty) {
-							screen.siteoverlay(false);
-							toolkit.timer('stats.links');
-							toolkit.statustext();
-							toolkit.msg(
-								'relations-listing', 
-								`<p class="color-error text-align-center vertical-center">${c`no-data`.uf()}</p>`,
-							);
-							d.relationscols = ['', ''];
-							d.relationsbound = '<';
-							d.relationsresults = [];
-							d.relationsstats = [];
-							d.relationsoutliers = [];
-							res = pcols = oarray = undefined;
-							isempty = istoolong = undefined;
-							return;
-						} else if(istoolong) {
-							screen.siteoverlay(false);
-							toolkit.timer('stats.links');
-							toolkit.statustext();
-							toolkit.msg(
-								'relations-listing', 
-								`<p class="color-error text-align-center vertical-center">${c`no-data`.uf()}</p>`,
-							);
-							let len = oarray.length;
-							d.relationscols = ['', ''];
-							d.relationsbound = '<';
-							d.relationsresults = [];
-							d.relationsstats = [];
-							d.relationsoutliers = [];
-							res = pcols = oarray = undefined;
-							isempty = istoolong = undefined;
-							throw new AppError([
-								c`relations` + ': ',
-								c`out-of-limits` + '; ',
-								c`result-too-long`, 
-								`(`,
-								len.toLocaleString(l),
-								`/`,
-								window.settings.querylengthlimit.toLocaleString(l),
-								`)`
-							].join(''));
-						} else {
-							d.relationsresults = oarray;
-						}
-						dropfields = dropbounds = undefined;
-						res = sel = tgl = undefined;
-						isempty = istoolong = pcols = oarray = undefined;
-					}
-					if(d.relationsresults.length > 0) {
-						sleep(100).then(() => {
-							stats.descriptivestats('relations', d.relationsresults);
-							let validrecord = (obj, txt) => Object.values(obj).filter(o => dbe._operation('li', o, txt)).length;
-							let oonly = d.relationsoutliersonly;
-							let oresults = d.relationsresults.filter(o => !isBlank(text) ? validrecord(o, text) : true);
-							let fresults = oonly ? 
-								oresults.filter(o => d.relationsoutliers.includes(o.count)) : 
-								oresults;
-							
-							let rowsfields = Object.keys(fresults[0]);
-							let descending = srt < 0 ? '-' : ''; 
-							
-							let sortedlist = fresults
-								.sortBy([descending + rowsfields[Math.abs(srt) - 1]]);
-							
-							rowsfields = descending = validrecord = undefined;
-										
-							if(xprt) {
-								file.exportdatatocsv(stats.localstats(sortedlist));
-								screen.siteoverlay(false);
-								toolkit.timer('stats.relations');
-								toolkit.statustext();
-								return;
-							}
-
-							let lstats = ui.makestats(sortedlist.map(o => o.count));
-							let statstext = [
-								`${c`rows`.uf()}: <strong>${lstats.rows.toLocaleString(l)}</strong>. `,
-								`${c`sum`.uf()}: <strong>${lstats.total.toLocaleString(l)}</strong>. `,
-								`${c`average`.uf()}: <strong>${lstats.average.toLocaleString(l)}</strong>. `,
-								`${c`outliers`.uf()}: `, 
-								`<strong>x &isin; `,
-								`(&minus;&infin;,${lstats.lowlimit}) `,
-								`&cup; `,
-								`(${lstats.highlimit},&infin;) = `, 
-								`${lstats.meaningful.toLocaleString(l)} `,
-								`(${lstats.rowmeaning.toLocaleString(l)} ${c`rows`})</strong>. `,
-								`${c`chart`.uf()}: `, 
-								`<a href="javascript:charts.showplot('relations', false);">${c`sorted`}</a> `, 
-								`${c`or`}  `, 
-								`<a href="javascript:charts.showplot('relations', true);">${c`normalized`}</a>.`, 							
-							].join('');
-							lstats = undefined; 
-	
-							let opts = {
-								cid: 'relations-listing',
-								type: 'relations',
-								page: Number(page) || d.currentpages.relations,
-								items: stats.localstats(sortedlist), 
-								stats: statstext, 
-								searchtext: text,
-								pgfunction: 'stats.relations',
-								pgparams: {
-									cid: '',
-									row: '',
-									srt: srt,
-								},
-								generatorfn: function(obj) {
-									let cellcolor = toolkit.colorscale(obj.scale, window.settings.scalecolorbase, true);
-									let bgcolor = cellcolor.split(';')[0];
-									let focolor = cellcolor.split(';')[1];
-									let stars = window.settings.zscoreassstars === 1 ? 
-										toolkit.showstars(Number(obj.zscore)) : 
-										toolkit.shownumericlevel(Number(obj.zscore));
-									let formatnum = num => isNumber(num) ? num.toLocaleString(l) : num;
-									let xscale = isNaN(obj.scale) ? `<span data-format="square" class="square"></span>` : 
-										[
-											`<span data-format="square" class="empty-square" `,
-											`style="${bgcolor};${focolor}"></span>`
-										].join('');
-									cellcolor = undefined;
-
-									let statslist = ['count', 'zscore', 'outlier', 'level', 'scale'];
-									let isfield = nam => !statslist.includes(nam);
-									let out = {};
-									Object.keys(obj).forEach(o => {
-										if(isfield(o)) {
-											let xfld = isNumber(obj[o]) ? 
-												obj[o] : 
-												isBlank(text) ? fc(obj[o]) : toolkit.highlight(fc(obj[o]), text);
-											out[o] = [
-												`<a href="javascript:`,
-												`ui.filtersearch('${obj[o]}', '${o}', true);">`,
-												xfld, 
-												`</a>`,
-											].join('');
-											xfld = undefined;
-										} else {
-											switch(o) {
-												case 'zscore':
-													out.z = `<span data-format="square">${stars}</span>`;
-													break;
-												case 'level':
-												case 'outlier':
-													out[o.substr(0, 1)] = [
-														`<span data-format="square">`,
-														`${formatnum(obj[o])}</span>`
-													].join('');
-													break;
-												case 'scale':
-													out.s= `<span data-format="square">${xscale}</span>`;
-													break;
-												default: 
-													out[o] = obj[o];
-											}
-										}
-									});
-									cellcolor = bgcolor = focolor = isfield = stars = undefined;
-									statslist = formatnum = xscale = undefined;
-									return out;
-								},
-								selectorfn: function(sel) {
-									let nodata = !byId('relations-page-selector') || 
-										!byId('relations-page-range') || 
-										!byId('relations-page-size') || 
-										!byId('relations-page-current') || 
-										!byId('relations-pg3');
-									if(nodata) {
-										stats.relations(null, 1, null, byId('relations-text-search').value, srt, true);
-										nodata = undefined;
-									} else {
-										window.settings.listrowsperpage = Number(byId('relations-page-size').value);
-										let numpager = [
-											'relations-page-selector', 
-											'relations-page-range'
-										].includes(sel.target.id) ? 
-											Number(sel.target.value) : 
-											Number(byId('relations-page-selector').value);
-										stats.relations(null, numpager, null, byId('relations-text-search').value, srt, false);
-										toolkit.msg(
-											'relations-page-current', 
-											Number(byId('relations-pg3').dataset.value).toLocaleString(l)
-										);
-										numpager = nodata = undefined;
-									}
-								},
-								updatepagefn: function(sel) {
-									toolkit.msg('relations-page-current', Number(sel.target.value).toLocaleString(l));
-									byId('relations-pg3').dataset.value = Number(sel.target.value);
-								},
-								exportfn: function() {
-									stats.relations(cid, page, row, text, srt, true, false);
-								},
-							};
-							ui.maketable(opts);
-							screen.siteoverlay(false);
-							toolkit.timer('stats.relations');
-							toolkit.statustext();
-	
-							sel = tgl = undefined;
-							oonly = oresults = fresults = sortedlist = undefined;
-							datapresent = undefined;
-						});
-	
-						toolkit.msg(
-							'relations-table-performance', 
-							[
-								`. `,
-								`${((performance.now() - t0) / 1000).toLocaleString(l)}s, `, 
-								`${d.relationsresults.length.toLocaleString(l)} ${c`rows`}`
-							].join('')
-						);
-						t0 = undefined;
-						
-						byId('relations-listing').classList.remove('hide');
-						byId('relations-listing').classList.add('visible');
-						
-						window.storecurrentsize = toolkit.currentmemory();
-						toolkit.showmemory('app-memory');
-					}
-				} else {
-					screen.siteoverlay(false);
-					toolkit.timer('stats.relations');
-					toolkit.statustext();
-					toolkit.msg(
-						'relations-listing', 
-						`<p class="color-error text-align-center vertical-center">${c`no-data`.uf()}</p>`,
-					);
-					toolkit.msg(
-						'relations-stats-info', 
-						`<p class="color-error text-align-center vertical-center">${c`no-data`.uf()}</p>`,
-					);
-					
-					d.relationscols[0] = byId('acc-col0').value;
-					d.relationscols[1] = byId('acc-col1').value;
-					d.relationsbound = byId('acc-bound').value;
-
-					d.relationsresults = [];
-					d.relationsstats = [];
-					d.relationsoutliers = [];
-					dropfields = dropbounds = undefined;
-					sel = tgl = t0 = datapresent = undefined;
-					return;
-				}
-			}
-
-			screen.siteoverlay(false);
-			toolkit.timer('stats.relations');
-			toolkit.statustext();
-		});
-	},
-	*/
 	cooccurrences: (cid = '', page = 1, row = '', text = '', srt = 1, xprt = false, calculate = false) => {
 		if(!dbe._filterids()) return;
 
@@ -948,7 +472,7 @@ const stats = {
 
 		let dropmetas = () => {
 			let out = [];
-			let array = [].concat(...k.metadata.map(o => dbe._fieldname(o)))
+			let array = [].concat(...k.metadata.map(o => dbe._fieldname(o)));
 			let sorter = (a, b) => {
 				let stra = fc(String(a));
 				let strb = fc(String(b));
@@ -975,7 +499,7 @@ const stats = {
 		d.cooccurrencesoutliersonly = isBlank(d.cooccurrencesoutliersonly) ? 
 			false : d.cooccurrencesoutliersonly;
 		
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		toolkit.timer('stats.cooccurrences');
 		toolkit.statustext(true);
 		if(byId('app-overlay-txt')) toolkit.msg('app-overlay-txt', c`working`.uf() + '&hellip;');
@@ -1088,7 +612,7 @@ const stats = {
 			
 			if(calculate || d.cooccurrencesresults.length) {
 				if(isBlank(d.cooccurrencessource) || isBlank(d.cooccurrencestarget)) {
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 					toolkit.timer('stats.cooccurrences');
 					toolkit.statustext();
 					toolkit.msg(
@@ -1102,7 +626,7 @@ const stats = {
 				let object = stats.generatecooccurrences(calculate);
 				
 				if(object.length < 1) {
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 					toolkit.timer('stats.cooccurrences');
 					toolkit.statustext();
 					toolkit.msg(
@@ -1128,7 +652,7 @@ const stats = {
 				object = oarray = dstats = undefined;
 				
 				if(!d.cooccurrencesresults.length) {
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 					toolkit.timer('stats.cooccurrences');
 					toolkit.statustext();
 					toolkit.msg(
@@ -1146,7 +670,7 @@ const stats = {
 				} else {
 					sleep(100).then(() => {
 						stats.descriptivestats('cooccurrences', d.cooccurrencesresults);
-						var validrecord = (obj, txt) => Object.values(obj).filter(o => dbe._operation('li', o, txt)).length;
+						let validrecord = (obj, txt) => Object.values(obj).filter(o => dbe._operation('li', o, txt)).length;
 						let oonly = d.cooccurrencesoutliersonly;
 						let oresults = d.cooccurrencesresults.filter(o => 
 							!isBlank(text) ? validrecord(o, text) : true
@@ -1156,7 +680,7 @@ const stats = {
 							oresults;
 						
 						if(!fresults.length) {
-							screen.siteoverlay(false);
+							gscreen.siteoverlay(false);
 							toolkit.timer('stats.cooccurrences');
 							toolkit.statustext();
 							toolkit.msg(
@@ -1184,7 +708,7 @@ const stats = {
 									
 						if(xprt) {
 							file.exportdatatocsv(stats.localstats(sortedlist));
-							screen.siteoverlay(false);
+							gscreen.siteoverlay(false);
 							toolkit.timer('stats.relations');
 							toolkit.statustext();
 							return;
@@ -1232,7 +756,7 @@ const stats = {
 									toolkit.showstars(Number(obj.zscore)) : 
 									toolkit.shownumericlevel(Number(obj.zscore));
 								let formatnum = num => isNumber(num) ? num.toLocaleString(l) : num;
-								let formattit = (tit, nam) => {
+								let formattit = tit => {
 									let xfld = isNumber(tit) ? tit : 
 										isBlank(text) ? tit : toolkit.highlight(tit, text);
 									return xfld;
@@ -1330,7 +854,7 @@ const stats = {
 						};
 						tsource = ttarget = undefined;
 						ui.maketable(opts);
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 						toolkit.timer('stats.cooccurrences');
 						toolkit.statustext();
 					});
@@ -1351,7 +875,7 @@ const stats = {
 				}
 			}
 			
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 			toolkit.timer('stats.cooccurrences');
 			toolkit.statustext();
 		});
@@ -1465,8 +989,6 @@ const stats = {
 
 		let makerelevance = (arr = [], cols = []) => {
 			let dat = stats.localstats(arr);
-			let maxbin = arraymax(dat.map(o => o.bin || 0));
-			let firstcol = cols[0];
 			let lastcol = cols[cols.length - 1];
 			let cleanobj = obj => {
 				let blacklist = ['outlier', 'zscore', 'level', 'scale', 'count', 'bin', 'from', 'to'];
@@ -1493,7 +1015,7 @@ const stats = {
 				let i;
 				let l = fields.length;
 				fields = fields.map(function(o, i) {
-					if (o[0] === "-") {
+					if (o[0] === '-') {
 						dir[i] = -1;
 						o = o.substring(1);
 					} else {
@@ -1648,7 +1170,7 @@ const stats = {
 		let rschart = echarts.init(byId(cid + '-relevancescatter'), {width: '100%'});
 		options = charts.scatterrelevanceoptions(
 			rlv, 
-			cid,
+			/* cid, */
 			c`relevance`.uf(),
 			c`four-quarters-map`.uf(),
 			cid + '-relevancescatter'
@@ -1673,7 +1195,7 @@ const stats = {
 		'ID');
 		let tmf = res.map(o => rel[o.ID] ? {...rel[o.ID].related, ...o} : o);
 		
-		let tmw = grp(tmf)
+		let tmw = grp(tmf);
 		
 		let tmp = arraygroup(tmw, pcols, 'results', strict);
 
@@ -1684,7 +1206,7 @@ const stats = {
 		let tmp = arraygroup(res, pcols, 'results', strict);
 		return tmp.map(o => removekey(Object.assign({}, o, {count: o.results.length || 0}), 'results'));
 	},
-	mutatedlist: (cols, filtered = false, strict = true) => {
+	mutatedlist: (cols, filtered = false) => {
 		let prepare = obj => {
 			let rkey = obj.rkey;
 			let blacklist = new Set(['rtype', 'rkey', 'value']);
@@ -1722,7 +1244,7 @@ const stats = {
 		prepare = group = lis = mut = nor = undefined;
 		return joi;
 	},
-	unfolfedlist: (cols, filtered = false, strict = true) => {
+	unfolfedlist: cols => {
 		let prepare = obj => {
 			let rkey = obj.rkey;
 			let blacklist = new Set(['rtype']);
@@ -1743,7 +1265,7 @@ const stats = {
 			});
 			mandatory = undefined;
 			return out;
-		}
+		};
 		let flatten = (object, separator = '|') => {
 			let isvalid = value => {
 				if(!value) return false;
@@ -1751,16 +1273,16 @@ const stats = {
 				let isobject = Object.prototype.toString.call(value) === '[object Object]';
 				let haskeys  = !!Object.keys(value).length;
 				return !isarray && isobject && haskeys;
-			}
+			};
 			let walker = (child, path = []) => {
-				return Object.assign({}, ...Object.keys(child).map(key => isvalid(child[key])
-					? walker(child[key], path.concat([key]))
-					: { [path.concat([key]).join(separator)] : child[key] })
+				return Object.assign({}, ...Object.keys(child).map(key => isvalid(child[key]) ? 
+					walker(child[key], path.concat([key])) : 
+					{ [path.concat([key]).join(separator)] : child[key] })
 				);
-			}
+			};
 			return Object.assign({}, walker(object));
 		};
-		function jointables(left, right, lkey, rkey) {
+		let jointables = (left, right, lkey, rkey) => {
 			rkey = rkey || lkey;
 			
 			let lookup = {};
@@ -1774,8 +1296,7 @@ const stats = {
 			});
 			
 			return result.filter(o => o !== undefined);
-		}
-
+		};
 		let fields = cols.map(o => ({
 			field: o.split('|')[0], 
 			facet: o.split('|')[1],
@@ -1793,7 +1314,7 @@ const stats = {
 			let relations = dbm.relations(true);
 			let ages = dbm.ages(false);
 			
-			fields.forEach((f, i) => {
+			fields.forEach(f => {
 				f.result = objectunique([].concat(
 					dbe._mutate(Object.values(d.store.pos).flatten().filter(o => o.rkey === f.field)), 
 					dbe._mutate(Object.values(d.store.met).flatten().filter(o => o.rkey === f.field)),  
@@ -1802,7 +1323,7 @@ const stats = {
 				).filter(o => setfil.has(o.ID)).map(o => prepare(o)).map(o => clearobj(o)));
 			});
 		
-			fields.forEach((f, i) => {
+			fields.forEach(f => {
 				let out = [];
 				if(f.isrel) {
 					f.result.forEach(o => {
@@ -1823,10 +1344,9 @@ const stats = {
 				if(i === 0) {
 					matches = f.result.slice();
 				} else {
-					var tbld = dbe.hashtable(f.result, 'ID');
-					var tbli = dbe.hashtable(f.result, 'RID');
+					let tbld = dbe.hashtable(f.result, 'ID');
 					matches.forEach(o => {
-						var tmp = tbld[o.RID];
+						let tmp = tbld[o.RID];
 						if(tmp) {
 							tmp.forEach(r => out.push(Object.assign({}, o, r)));
 						} else {
@@ -1850,7 +1370,7 @@ const stats = {
 			});
 		}
 
-		prepare = clearobj = flatten = jointables = fields = setfil = undefined;
+		prepare = clearobj = flatten = fields = jointables = setfil = matches = undefined;
 		return result;
 	},
 	localstats: arr => {
@@ -1859,7 +1379,7 @@ const stats = {
 		let outlier = obj => stats.outliers.includes(obj.count || obj) ? 
 			c`yes` : 
 			c`no` ;
-		let zscoreratio = (obj, thr) => thr ? thr.zscoreratio.toFixed(5) : -1;
+		let zscoreratio = thr => thr ? thr.zscoreratio.toFixed(5) : -1;
 		let slevel = obj => (obj.count || obj) < stats.mean ? 
 			`&darr;` : 
 			obj.count > stats.mean ? 
@@ -1867,7 +1387,7 @@ const stats = {
 				`&#8597;`;
 		let tmp = arr.map(o => Object.assign({}, o, {
 			outlier: outlier(o),
-			zscore: zscoreratio(o, throwput(o)),
+			zscore: zscoreratio(throwput(o)),
 			level: slevel(o),
 			scale: ((o.count || o) - stats.min) / (stats.max - stats.min),
 		}));
@@ -1967,6 +1487,7 @@ const stats = {
 			rowAttrs: d.schemapivot.rows,
 			colAttrs: d.schemapivot.cols,
 			aggregator: function(argument) {
+				argument = undefined;
 				return {
 					data: [],
 					push: function(record) {
@@ -1994,9 +1515,11 @@ const stats = {
 	},
 	showpivotalert: () => {
 		if(!d.schemacols.length) {
+			d.schemapivot.visible = false;
 			throw new AppError(c`insufficient-data-warning`);
 		}
 		if(d.schemacols.length < 2) {
+			d.schemapivot.visible = false;
 			throw new AppError(c`insufficient-data-warning`);
 		}
 		
@@ -2074,13 +1597,13 @@ const stats = {
 				`d.schemapivot.cols=Array.from(byId('pivot-b').options).map(o => o.value);`,
 				`d.schemapivot.visible=true;`,
 				`stats.generatepivotdata();`,
-				`if(screen.alert){screen.alert.remove();screen.alert=undefined;}`,
+				`if(gscreen.alert){gscreen.alert.remove();gscreen.alert=undefined;}`,
 				`">${c`calculate`.uf()}</a>`,
 			].join(''),
 			cancel: true,
 			canceltitle: c`close`.uf()
-		}
-		screen.alert = screen.displayalert(features);
+		};
+		gscreen.alert = gscreen.displayalert(features);
 		toolkit.drawicons();
 		features = res = hidden = undefined;
 	},

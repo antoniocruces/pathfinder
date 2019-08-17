@@ -1,6 +1,6 @@
 'use strict';
 
-/* global ajax, AppError, byId, c, cfetch, d, dbe, i18n, icons, info, isloaded, l, sleep, toolkit, ui, wait */
+/* global ajax, AppError, byId, c, charts, d, dbe, gscreen, i18n, icons, info, isBlank, isloaded, l, sleep, toolkit, ui, wait */
 /* exported pagescripts */
 
 // pagescripts functions
@@ -92,11 +92,11 @@ const pagescripts = {
 			if(res.sta !== 200) {
 				byId('data-a-server').classList.remove('button-secondary');
 				byId('data-a-server').classList.add('disabled');
-				byId('data-a-server').classList.add('button-error')
+				byId('data-a-server').classList.add('button-error');
 			} else {
 				byId('data-a-server').classList.remove('button-error');
 				byId('data-a-server').classList.remove('disabled');
-				byId('data-a-server').classList.add('button-secondary')
+				byId('data-a-server').classList.add('button-secondary');
 			}
 			ms = status = scolor = undefined;
 
@@ -106,7 +106,7 @@ const pagescripts = {
 		ajax.networkinfo(window.servers.dataserver, true).then(res => renderstatus(res)).catch(err => renderstatus(err));
 		if(isactive) {
 			if(setoverlay) {
-				if(!screen.siteoverlayisset) screen.siteoverlay(true);
+				if(!gscreen.siteoverlayisset) gscreen.siteoverlay(true);
 				toolkit.statustext(true);
 			}
 			if(starttimer) toolkit.timer('pagescripts.data');
@@ -126,7 +126,7 @@ const pagescripts = {
 					let recs = Object.keys(d.store.pos).length || 0;
 					byId('panel').querySelectorAll('.panelelement').forEach(o => {
 						o.classList.remove('hide');
-					})
+					});
 					
 					toolkit.msg(
 						'data-s-datastatus', 
@@ -153,7 +153,7 @@ const pagescripts = {
 
 					ui.datalist('', d.currentpages.list);
 
-					if(screen.siteoverlayisset) screen.siteoverlay(false);
+					if(gscreen.siteoverlayisset) gscreen.siteoverlay(false);
 					
 					if(setoverlay) {
 						toolkit.statustext();
@@ -206,9 +206,9 @@ const pagescripts = {
 			let video = document.querySelector('#videoplayer');
 			let source = document.querySelectorAll('#videoplayer source');
 			video.removeAttribute('poster');
-			source[0].src = window.servers.videoserver + filename + ".mp4";
-			source[1].src = window.servers.videoserver + filename + ".webm";
-			source[1].src = window.servers.videoserver + filename + ".ogv";
+			source[0].src = window.servers.videoserver + filename + '.mp4';
+			source[1].src = window.servers.videoserver + filename + '.webm';
+			source[1].src = window.servers.videoserver + filename + '.ogv';
 			video.load();
 			video.play(); 
 			videotarget = filename = video = source = undefined;   

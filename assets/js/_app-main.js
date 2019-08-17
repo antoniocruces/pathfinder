@@ -1,10 +1,11 @@
 'use strict';
 
-/* global AppError, ajax, c, charts, chartshelper, cultures, d, dbb, dbe, dbm, dbq, dbs, eucookielaw, file, i18n, icons, info, k, l, maps, objectsize, pagescripts, removeAllEventListener, router, stats, times, toolkit, trade, ui, uihelper */
+/* global AppError, AppWarning, ajax, byId, c, charts, chartshelper, cultures, d, dbb, dbe, dbhelper, dbm, dbq, dbs, eucookielaw, existsasync, file, i18n, gscreen, icons, info, k, l, mapengine, maphelpers, mapops, maps, objectsize, pagescripts, pagescriptshelper, removeAllEventListener, router, stats, times, toolkit, trade, ui */
 
 // error catching
 
 window.onerror = function(msg, url, line, col, error) {
+	msg = undefined;
 	let title = [
 		window.version.appname, 
 		[window.version.version, window.version.subversion, window.version.release].join('.'),
@@ -61,8 +62,8 @@ window.onerror = function(msg, url, line, col, error) {
 					action: false,
 					cancel: true,
 					canceltitle: c`close`.uf()
-				}
-				screen.alert = screen.displayalert(features);
+				};
+				gscreen.alert = gscreen.displayalert(features);
 				features = undefined;
 			} else {
 				detail = detail
@@ -142,42 +143,42 @@ window.onload = function() {
 	// routing
 	Object.assign(router.options, {
 		routes: {
-			"#home": () => {
+			'#home': () => {
 				router.renderpage('footer', '#footer');
 				router.renderpage('home', 'main', ['echarts', 'L']);
 				router.renderpage('sidehome', '#side');
 			},
-			"#starting": () => {
+			'#starting': () => {
 				router.renderpage('footer', '#footer');
 				router.renderpage('starting', 'main', ['L']);
 				router.renderpage('sidedocuments', '#side');
 			},
-			"#legal": () => {
+			'#legal': () => {
 				router.renderpage('footer', '#footer');
 				router.renderpage('legal', 'main', ['L']);
 				router.renderpage('sidelegal', '#side');
 			},
-			"#documents": () => {
+			'#documents': () => {
 				router.renderpage('footer', '#footer');
 				router.renderpage('documents', 'main', ['L']);
 				router.renderpage('sidedocuments', '#side');
 			},
-			"#projects": () => {
+			'#projects': () => {
 				router.renderpage('footer', '#footer');
 				router.renderpage('projects', 'main', ['L']);
 				router.renderpage('sidedocuments', '#side');
 			},
-			"#institutions": () => {
+			'#institutions': () => {
 				router.renderpage('footer', '#footer');
 				router.renderpage('institutions', 'main', ['L']);
 				router.renderpage('sidedocuments', '#side');
 			},
-			"#settings": () => {
+			'#settings': () => {
 				router.renderpage('footer', '#footer');
 				router.renderpage('settings', 'main', ['L']);
 				router.renderpage('sidesettings', '#side');
 			},
-			"#data": () => {
+			'#data': () => {
 				router.renderpage('footer', '#footer');
 				router.renderpage('data', 'main', ['_', 'dl', 'echarts', 'L']);
 				router.renderpage('sidedata', '#side');
@@ -198,9 +199,9 @@ window.onload = function() {
 			// HW Speed evaluation
 			performance.clearMarks();
 			performance.clearMeasures();
-			performance.mark("loop-s");	
-			for (let i = window.estimative.ops; i > 0; i--) {} 
-			performance.mark("loop-e");
+			performance.mark('loop-s');	
+			for(let i = window.estimative.ops; i > 0; i--) {} 
+			performance.mark('loop-e');
 			performance.measure('speed', 'loop-s', 'loop-e');
 			let measures = performance.getEntriesByName('speed');
 			window.estimative.opstime = measures[0].duration;
@@ -211,7 +212,7 @@ window.onload = function() {
 				let toggle = byId('toggle');
 				let body = document.getElementsByTagName('body')[0];
 				toggle.addEventListener('click', function() {
-					toolkit.showsidebar(true)
+					toolkit.showsidebar(true);
 					if (body.classList.contains('open')) {
 						body.classList.remove('open');
 					} else {
@@ -264,54 +265,50 @@ window.addEventListener('unload', function () {
 	window.setSelected = undefined;
 	window.selectItem = undefined;
 	
-	Number.prototype.toroman = undefined;
-	Number.prototype.ages = undefined;
-	Number.prototype.clamp = undefined;
-	Number.prototype.between = undefined;
-	Date.prototype.dates = undefined;
-	String.prototype.slugify = undefined;
-	String.prototype.relations = undefined;
-	String.prototype.places = undefined;
-	String.prototype.dateparts = undefined;
-	String.prototype.hosts = undefined;
-	String.prototype.points = undefined;
-	String.prototype.isvalidyear = undefined;
-	String.prototype.string = undefined;
-	String.prototype.uf = undefined;
-	String.prototype.na = undefined;
-	String.prototype.shorten = undefined;
-	String.prototype.abbrev = undefined;
-	String.prototype.getposttype = undefined;
-	String.prototype.getrkeytype = undefined;
-	String.prototype.b64encode = undefined;
-	String.prototype.b64decode = undefined;
-	String.prototype.gettabletype = undefined;
-	Array.prototype.groupBy = undefined;
-	Array.prototype.groupByMultiple = undefined;
-	Array.prototype.countBy = undefined;
-	Array.prototype.countByMultiple = undefined;
-	Array.prototype.count = undefined;
-	Array.prototype.sortBy = undefined;
-	Array.prototype.unique = undefined;
-	Array.prototype.uniqueby = undefined;
-	Array.prototype.flatten = undefined;
-	Array.range = undefined;
-	Array.prototype.gaussiansort = undefined;
-	Array.prototype.quantile = undefined;
-	Array.prototype._intersection = undefined;
-	Array.prototype._difference = undefined;
-	Array.prototype._union = undefined;
-	Array.prototype.sum = undefined;
-	Array.prototype.avg = undefined;
-	Array.prototype.sortlocale = undefined;
-	Array.prototype.scalebetween = undefined;
-	Array.prototype.remove = undefined;
-	if (!String.prototype.startsWith) String.prototype.startsWith = undefined;
-	if (!String.prototype.endsWith) String.prototype.endsWith = undefined;
-
-	Object.prototype.vfilter = undefined;
-	
-	Set.intersection = undefined;
+	delete Number.prototype.toroman;
+	delete Number.prototype.ages;
+	delete Number.prototype.clamp;
+	delete Number.prototype.between;
+	delete Date.prototype.dates;
+	delete String.prototype.slugify;
+	delete String.prototype.relations;
+	delete String.prototype.places;
+	delete String.prototype.dateparts;
+	delete String.prototype.hosts;
+	delete String.prototype.points;
+	delete String.prototype.isvalidyear;
+	delete String.prototype.string;
+	delete String.prototype.uf;
+	delete String.prototype.na;
+	delete String.prototype.shorten;
+	delete String.prototype.abbrev;
+	delete String.prototype.getposttype;
+	delete String.prototype.getrkeytype;
+	delete String.prototype.b64encode;
+	delete String.prototype.b64decode;
+	delete String.prototype.gettabletype;
+	delete Array.prototype.groupBy;
+	delete Array.prototype.groupByMultiple;
+	delete Array.prototype.countBy;
+	delete Array.prototype.countByMultiple;
+	delete Array.prototype.count;
+	delete Array.prototype.sortBy;
+	delete Array.prototype.unique;
+	delete Array.prototype.uniqueby;
+	delete Array.prototype.flatten;
+	delete Array.prototype.range;
+	delete Array.prototype.gaussiansort;
+	delete Array.prototype.quantile;
+	delete Array.prototype._intersection;
+	delete Array.prototype._difference;
+	delete Array.prototype._union;
+	delete Array.prototype.sum;
+	delete Array.prototype.avg;
+	delete Array.prototype.sortlocale;
+	delete Array.prototype.scalebetween;
+	delete Array.prototype.remove;	
+	delete Object.prototype.filterbyvalue;
+	delete Set.intersection;
 	
 	router.stop();
 
@@ -327,6 +324,7 @@ window.addEventListener('unload', function () {
 	Object.entries(dbhelper).forEach(o => { o = undefined; });
 	Object.entries(ajax).forEach(o => { o = undefined; });
 	Object.entries(file).forEach(o => { o = undefined; });
+	Object.entries(gscreen).forEach(o => { o = undefined; });
 	Object.entries(i18n).forEach(o => { o = undefined; });
 	Object.entries(icons).forEach(o => { o = undefined; });
 	Object.entries(info).forEach(o => { o = undefined; });
@@ -345,9 +343,7 @@ window.addEventListener('unload', function () {
 	Object.entries(eucookielaw).forEach(o => { o = undefined; });
 	Object.entries(trade).forEach(o => { o = undefined; });
 	Object.entries(ui).forEach(o => { o = undefined; });
-
-	Object.entries(screen).forEach(o => { o = undefined; });
-
+	
 	let _events = ['click', 'mousedown', 'mouseup', 'focus', 'change', 'blur', 'select', 'keyup', 'copy'];
 	_events.forEach(o => {
 		removeAllEventListener(o);
@@ -367,18 +363,7 @@ window.addEventListener('unload', function () {
 			window.clearInterval(d.maptransformations[cid].timerange.repeater);
 		}
 	});
-	
-	Record = undefined;
-	Relative = undefined;
-	ExtendableError = undefined;
-	AppError = undefined;
-	AppWarning = undefined;
-	Circular = undefined;
-	Stats = undefined;
-	MapTree = undefined;
-	Graph = undefined;
-	PivotData = undefined;
-	
+
 	_events = undefined;
 	
 	console.clear();

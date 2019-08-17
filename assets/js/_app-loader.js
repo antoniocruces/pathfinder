@@ -7,7 +7,7 @@ let s = {
 			let script = document.createElement('script');
 			script.type = 'text/javascript';
 			script.id = 'js_' + url.split('/')[url.split('/').length - 1].split('.')[0];
-			script.src = url; // + '?v=' + document.querySelector("meta[name='csrf-version']").getAttribute("content");
+			script.src = url;
 			script.charset = 'utf8';
 			script.async = false;
 			script.removeEventListener('load', () => resolve(script), false);

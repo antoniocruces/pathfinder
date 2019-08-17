@@ -129,7 +129,7 @@ const cultures =
 		'facet': 'faceta', 
 		'more-info': 'más información',
 		'matches': 'coincidencias', 
-		'change-theme': 'cambiar tema',
+		'theme': 'tema',
 		'recalculate': 'recalcular',
 		'route': 'ruta',
 		'route-graph': 'grafo de ruta',
@@ -142,7 +142,6 @@ const cultures =
 		'reset': 'inicializar',
 		
 		'unusual': 'infrecuente',
-		'meaningful': 'significativo',
 		'relevant': 'relevante',
 		'irrelevant': 'irrelevante',
 		'four-quarters-map': 'mapa de cuadrantes',
@@ -302,6 +301,8 @@ const cultures =
 		'point': 'punto',
 		'flow': 'flujo',
 		'center': 'centrar',
+		
+		'chart-theme-selector': 'selector de tema para gráficos',
 		
 		'distance': 'distancia',
 		'bearing': 'rumbo',
@@ -599,7 +600,6 @@ const cultures =
 		'tax': 'taxonomía', 
 		'rel': 'relación', 
 		
-		'filter-stats-by-record-type': 'estadística de filtro por tipo de registro',
 		'filter-condition': 'condición de filtro',
 		'condition': 'condición',
 		'add-condition': 'añadir condición',
@@ -702,8 +702,6 @@ const cultures =
 		'end_weekdayname': 'fecha de finalización: día de la semana',
 
 		'town': 'localidad',
-		'region': 'región',
-		'country': 'país',
 		'host': 'dominio',
 		'years': 'años',
 		'yearsbin': 'grupo de edad',
@@ -974,7 +972,7 @@ const cultures =
 		'facet': 'facet', 
 		'more-info': 'more info',
 		'matches': 'matches',
-		'change-theme': 'change theme',
+		'theme': 'theme',
 		'recalculate': 'recalculate',
 		'route': 'route',
 		'route-graph': 'route graph',
@@ -987,7 +985,6 @@ const cultures =
 		'reset': 'reset',
 
 		'unusual': 'unusual',
-		'meaningful': 'meaningful',
 		'relevant': 'relevant',
 		'irrelevant': 'irrelevant',
 		'four-quarters-map': 'four quarters map',
@@ -1146,6 +1143,8 @@ const cultures =
 		'point': 'point',
 		'flow': 'flow',
 		'center': 'center',
+		
+		'chart-theme-selector': 'charts theme selector',
 		
 		'distance': 'distance',
 		'bearing': 'bearing',
@@ -1443,7 +1442,6 @@ const cultures =
 		'tax': 'taxonomy', 
 		'rel': 'relation', 
 		
-		'filter-stats-by-record-type': 'filter stats by record type',
 		'filter-condition': 'filter condition',
 		'condition': 'condition',
 		'add-condition': 'add condition',
@@ -1546,8 +1544,6 @@ const cultures =
 		'end_weekdayname': 'end date: weekday',
 
 		'town': 'town',
-		'region': 'region',
-		'country': 'country',
 		'host': 'domain',
 		'years': 'years',
 		'yearsbin': 'age group',

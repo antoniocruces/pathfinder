@@ -1,6 +1,6 @@
 'use strict';
 
-/* global AppError, c, d3, dbe, dbq, L, sleep, toolkit */
+/* global AppError, AppWarning, arraymin, arraymax, autosearch, byId, c, Circular, d, dbe, dbm, dbq, domtoimage, fetchtextasync, fetchasync, file, gscreen, isBlank, isNumber, isNumeric, l, L, OverlappingMarkerSpiderfier, sleep, toolkit, turf */
 
 /* exported maps */
 
@@ -8,8 +8,8 @@
 const mapengine = {
 	drawmap: (cid = 'base') => {
 		// BE CAREFUL: Modified leaflet-src.js, v1.3.1, line 5780.
-		// ORIGINAL: var first = e.touches ? e.touches[0] : e;
-		// MODIFIED: var first = e.touches.length ? e.touches[0] : e;
+		// ORIGINAL: let first = e.touches ? e.touches[0] : e;
+		// MODIFIED: let first = e.touches.length ? e.touches[0] : e;
 		// "e.touches" is ever an array, so original value is ever true, too
 		
 		if (!window.L || !L.GeoJSON) throw new AppError(c`invalid-map-library`);
@@ -65,7 +65,7 @@ const mapengine = {
 		);
 		
 		//dragend, zoomend 
-		d.map[cid].addEventListener('moveend', function(ev) {
+		d.map[cid].addEventListener('moveend', function() {
 			let query = L.Util.getParamString({
 				lat: d.map[cid].getCenter().lat.toFixed(6),
 				lon: d.map[cid].getCenter().lng.toFixed(6),
@@ -115,20 +115,20 @@ const mapengine = {
 					`${cid}-map-currentaddress`,
 					`${c`no-address-available`}`
 				);
-				query = coordinates = undefined;
+				err = query = coordinates = undefined;
 			});
 		});
 
 		['infopanel', 'datepanel'].forEach(o => {
 			d.maplayers[cid][o] = L.control();
-			d.maplayers[cid][o].onAdd = function(map) {
+			d.maplayers[cid][o].onAdd = function() {
 				let dp = o === 'datepanel';
 				this._div = L.DomUtil.create('div', o);
 				if(dp) {
 					this._div.classList.add('font-weight-bold');
 					this._div.classList.add('color-grey-700');
 					this._div.classList.add('max-width-xs');
-					this._div.style.opacity = .8;
+					this._div.style.opacity = 0.8;
 					this.update();
 				} else {
 					this._div.classList.add('box-shadow-xxl');
@@ -136,7 +136,7 @@ const mapengine = {
 					this._div.classList.add('background-white');
 					this._div.classList.add('color-grey');
 					this._div.classList.add('max-width-xs');
-					this._div.style.opacity = .8;
+					this._div.style.opacity = 0.8;
 					this.update();
 				}
 				dp = undefined;
@@ -167,7 +167,7 @@ const mapengine = {
 	drawselectors: (cid = 'base') => {
 		let dropbasemap = () => {
 			let out = [];
-			let lname = `${c`working`}&hellip;`; 
+			//let lname = `${c`working`}&hellip;`; 
 			d.mapproviders.sortBy(['name']).forEach(g => {
 				out.push([
 					`<tr class="no-padding">`,
@@ -496,17 +496,16 @@ const mapengine = {
 			`</div>`,
 		].join(''));
 		
-		screen.siteoverlay(false);
+		gscreen.siteoverlay(false);
 
 		return out.join('\n');
 	},
-	slidetimerange: (cid = 'base', value) => {
+	slidetimerange: (cid = 'base', value = null) => {
 		byId(`${cid}-timerange-slider`).disabled = !d.maptransformations[cid].timerange.slideractive;
 		d.maptransformations[cid].timerange.sliderpos = parseInt(value, 10);
 		d.maptransformations[cid].timerange.min = d.maptransformations[cid].timerange.sliderpos;
 		d.maptransformations[cid].timerange.max = d.maptransformations[cid].timerange.sliderpos;
 		mapengine.activatetimerangeselector(cid);
-		//mapops.drawlayers(cid);
 	},
 	timerangerepeater: (cid = 'base') => {
 		d.maptransformations[cid].timerange.repeateractive = !d.maptransformations[cid].timerange.repeateractive;
@@ -574,7 +573,6 @@ const mapengine = {
 			byId(`${cid}-timerange-slider`).value = d.maptransformations[cid].timerange.sliderpos;
 			byId(`${cid}-timerange-slider-label`).innerHTML = d.maptransformations[cid].timerange.sliderpos;
 		}
-		//mapops.drawlayers(cid);
 	},
 	showtimerangeselector: (cid = 'base') => {
 		let res = [
@@ -659,20 +657,20 @@ const mapengine = {
 				`d.maptransformations['${cid}'].timerange.max=byId('${cid}-timerange-max').value;`,
 				`d.maptransformations['${cid}'].timerange.min=byId('${cid}-timerange-min').value;`,
 				`mapops.drawlayers('${cid}');`,
-				`if(screen.alert){screen.alert.remove();screen.alert=undefined;}`,
+				`if(gscreen.alert){gscreen.alert.remove();gscreen.alert=undefined;}`,
 				`">${c`activate`.uf()}</a>`,
 				
 				`<a id="${cid}-timerange-activate" `,
 				`class="button button-warning margin-right-s" `,
 				`href="javascript:`,
 				`mapengine.resettimerange('${cid}');`,
-				`if(screen.alert){screen.alert.remove();screen.alert=undefined;}`,
+				`if(gscreen.alert){gscreen.alert.remove();gscreen.alert=undefined;}`,
 				`">${c`reset`.uf()}</a>`,
 			].join(''),
 			cancel: true,
 			canceltitle: c`close`.uf()
-		}
-		screen.alert = screen.displayalert(features);
+		};
+		gscreen.alert = gscreen.displayalert(features);
 		features = undefined;
 		mapengine.activatetimerangeselector(cid);
 	},
@@ -689,18 +687,18 @@ const mapengine = {
 		d.maptransformations[cid].timerange.sliderpos = d.maptransformations[cid].timerange.totalmin;
 		d.maptransformations[cid].timerange.slideractive = false;
 		
-		byId(`${cid}-timerange-slider-activate`).checked = false,
+		byId(`${cid}-timerange-slider-activate`).checked = false;
 
 		byId(`${cid}-timerange-label`).innerHTML = [
 			`${d.maptransformations[cid].timerange.min}`,
-			`${c`to`}`,
+			c`to`,
 			`${d.maptransformations[cid].timerange.max}`,
 		].join(' ');
 		
 		byId(`${cid}-timerange-slider`).value = d.maptransformations[cid].timerange.min;
 		mapops.drawlayers(cid);
 	},
-	drawlegend: (cid = 'single', keys) => {
+	drawlegend: (cid = 'single', keys = null) => {
 		if(!keys) return;
 		let out = [];
 		out.push([
@@ -770,7 +768,7 @@ const maps = {
 		if (!window.L || !L.GeoJSON) throw new AppError(c`invalid-map-library`);
 		toolkit.timer('maps.basemap');
 		toolkit.statustext(true);
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		sleep(50).then(() => {
 			if(!d.maptransformations.base.maintainqueries) {
 				d.mapsearch.base.text = null;
@@ -785,30 +783,25 @@ const maps = {
 			
 			toolkit.timer('maps.basemap');
 			toolkit.statustext();
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 			
 			maps.datamap(cid);
 
 			return;
 		});
 	},
-	singlemap: (nid, typ = '') => {
+	singlemap: nid => {
 		if (!window.L || !L.GeoJSON) throw new AppError(c`invalid-map-library`);
 		if(!nid || nid === undefined) throw new AppError(c`mandatory-field-empty`);
 		toolkit.timer('maps.singlemap');
 		toolkit.statustext(true);
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		sleep(50).then(() => {
 			dbq.singlemap(nid)
 			.then(res => {
-				let isvalidflowpoint = f => (
-					f.origin_id && f.origin_lat && f.origin_lon && 
-					f.destination_id && f.destination_lat && f.destination_lon
-				);
 				let mai = res.main.length ? dbe.makegeojson(res.main) : null;
 				let rel = dbe.makegeojson(res.related);
 				let nei = dbe.makegeojson(res.neighbourhood);
-				let flo = dbe.makegeojson([...res.related, ...res.neighbourhood].filter(o => isvalidflowpoint(o)));
 	
 				let mic = mai.features.map(o => o.properties).countBy(['rkey']);
 				let ric = rel.features.map(o => o.properties).countBy(['rkey']);
@@ -850,24 +843,24 @@ const maps = {
 				
 				toolkit.timer('maps.singlemap');
 				toolkit.statustext(false);
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 			})
 			.catch(err => {
 				toolkit.timer('maps.singlemap');
 				toolkit.statustext(false);
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				throw new AppError(c`maps` + ': ' + err);
 			});
 		});
 	},
-	datamap: (cid = 'base', nid = undefined, refined = undefined) => {
+	datamap: (cid = 'base', nid = undefined) => {
 		if(!dbe.verifytables()) {
 			mapops.drawlayers(cid);
 			return;
 		}
 		toolkit.timer('maps.datamap');
 		toolkit.statustext(true);
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 			
 		sleep(50).then(() => {
 			let searchrels = xid => {
@@ -885,7 +878,7 @@ const maps = {
 				searchrels = undefined;
 				toolkit.timer('maps.datamap');
 				toolkit.statustext();
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				mapops.drawlayers(cid);
 				return;
 			}
@@ -893,7 +886,7 @@ const maps = {
 				searchrels = undefined;
 				toolkit.timer('maps.datamap');
 				toolkit.statustext();
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				mapops.drawlayers(cid);
 				return;
 			}
@@ -901,7 +894,7 @@ const maps = {
 				searchrels = undefined;
 				toolkit.timer('maps.datamap');
 				toolkit.statustext();
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				mapops.drawlayers(cid);
 				return;
 			}
@@ -929,11 +922,11 @@ const maps = {
 						range: o.properties.range,
 					}))
 					.find(o => o.value === nid);
-				screen.siteoverlay(true);
+				gscreen.siteoverlay(true);
 				mapops.findpoint(item, byId(`${cid}-mapdata-search`), 'single');
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				mapops.drawlayers(cid);
-				item === undefined;
+				item = undefined;
 			} else {
 				let mic = d.mapdata.features.map(o => o.properties).countBy(['rkey']);
 				let leg = {
@@ -947,9 +940,9 @@ const maps = {
 
 				autosearch({
 					onSelect: (item, inputfield) => {
-						screen.siteoverlay(true);
+						gscreen.siteoverlay(true);
 						mapops.findpoint(item, inputfield, 'base');
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 						mapops.drawlayers(cid);
 					},
 					input: byId(`${cid}-mapdata-search`),
@@ -976,12 +969,12 @@ const maps = {
 						callback(suggestions);
 					},
 					render: (item, value) => {
-						let allowedChars = new RegExp(/^[a-zA-Z\s]+$/)
+						let allowedChars = new RegExp(/^[a-zA-Z\s]+$/);
 						let charsAllowed = value => allowedChars.test(value);
 						let itemElement = document.createElement('div');
 						if (charsAllowed(value)) {
-							var regex = new RegExp(value, 'gi');
-							var inner = item.label.replace(regex, match => `<strong>${match}</strong>`);
+							let regex = new RegExp(value, 'gi');
+							let inner = item.label.replace(regex, match => `<strong>${match}</strong>`);
 							itemElement.innerHTML = inner;
 						} else {
 							itemElement.textContent = item.label;
@@ -1005,7 +998,7 @@ const maps = {
 
 			toolkit.timer('maps.datamap');
 			toolkit.statustext();
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 		});
 	},	
 };
@@ -1026,8 +1019,8 @@ const maphelpers = {
 		
 			onAdd: function(map) {
 				this._map = map;
-				var container = byId(this.options.domid + '-leaflet-zoomfs'); 
-				var link = L.DomUtil.create('a', '', container);
+				let container = byId(this.options.domid + '-leaflet-zoomfs'); 
+				let link = L.DomUtil.create('a', '', container);
 				link.href = `javascript:maphelpers.printmap('${this.options.domid}', '${this.options.maptitle}');`;
 				link.style.textAlign = 'center';
 				link.style.fontSize = '22px';
@@ -1059,8 +1052,8 @@ const maphelpers = {
 		
 			onAdd: function(map) {
 				this._map = map;
-				var container = byId(this.options.domid + '-leaflet-zoomfs'); 
-				var link = L.DomUtil.create('a', '', container);
+				let container = byId(this.options.domid + '-leaflet-zoomfs'); 
+				let link = L.DomUtil.create('a', '', container);
 				link.href = `javascript:maphelpers.downloadmap('${this.options.domid}', '${this.options.maptitle}');`;
 				link.style.textAlign = 'center';
 				link.style.fontSize = '22px';
@@ -1092,8 +1085,8 @@ const maphelpers = {
 		
 			onAdd: function(map) {
 				this._map = map;
-				var container = byId(this.options.domid + '-leaflet-zoomfs');
-				var link = this._link = L.DomUtil.create('a', '', container);
+				let container = byId(this.options.domid + '-leaflet-zoomfs');
+				let link = this._link = L.DomUtil.create('a', '', container);
 				link.href = '#';
 				link.style.textAlign = 'center';
 				link.style.fontSize = '22px';
@@ -1103,7 +1096,7 @@ const maphelpers = {
 				link.classList.add('leaflet-button-search');
 				link.title = this.options.title;
 		
-				var stop = L.DomEvent.stopPropagation;
+				let stop = L.DomEvent.stopPropagation;
 				L.DomEvent
 					.on(link, 'click', stop)
 					.on(link, 'mousedown', stop)
@@ -1112,14 +1105,14 @@ const maphelpers = {
 					.on(link, 'click', this._toggle, this);
 		
 		
-				var form = this._form = document.createElement('form');
+				let form = this._form = document.createElement('form');
 				form.style.display = 'none';
 				form.style.position = 'absolute';
 				form.style.left = '36px';
 				form.style.height = '30px';
 				form.style.top = '0px';
 				form.style.zIndex = -10;
-				var input = this._input = document.createElement('input');
+				let input = this._input = document.createElement('input');
 				input.style.width = '200px';
 				form.appendChild(input);
 				L.DomEvent.on(form, 'submit', function() {
@@ -1149,7 +1142,7 @@ const maphelpers = {
 		
 			_nominatimCallback: function(results) {
 				if (results && results.length > 0) {
-					var bbox = results[0].boundingbox;
+					let bbox = results[0].boundingbox;
 					this._map.fitBounds(L.latLngBounds([
 						[bbox[0], bbox[2]],
 						[bbox[1], bbox[3]]
@@ -1161,9 +1154,9 @@ const maphelpers = {
 			_callbackId: 0,
 		
 			_doSearch: function(query) {
-				var callback = '_l_osmgeocoder_' + this._callbackId++;
+				let callback = '_l_osmgeocoder_' + this._callbackId++;
 				window[callback] = L.Util.bind(this._nominatimCallback, this);
-				var queryParams = {
+				let queryParams = {
 					q: query,
 					format: 'json',
 					limit: 1,
@@ -1173,8 +1166,8 @@ const maphelpers = {
 					queryParams.email = this.options.email;
 				if (this._map.getBounds())
 					queryParams.viewbox = this._map.getBounds().toBBoxString();
-				var url = 'https://nominatim.openstreetmap.org/search' + L.Util.getParamString(queryParams);
-				var script = document.createElement('script');
+				let url = 'https://nominatim.openstreetmap.org/search' + L.Util.getParamString(queryParams);
+				let script = document.createElement('script');
 				script.type = 'text/javascript';
 				script.src = url;
 				document.getElementsByTagName('head')[0].appendChild(script);
@@ -1197,7 +1190,7 @@ const maphelpers = {
 			options: {
 				domid: 'base',
 				position: 'topleft',
-				className: "leaflet-zoom-box-icon",
+				className: 'leaflet-zoom-box-icon',
 				modal: false,
 				title: c`zoom-to-area`.uf(),
 				crossHairTitle: c`crosshair`.uf(),
@@ -1217,7 +1210,6 @@ const maphelpers = {
 				this._link.style.backgroundColor = '#fff';
 				this._link.innerHTML = '';
 				this._link.classList.add('leaflet-button-zoombox');
-				this._link.href = "javascript:;";
 
 				this._crosshair = L.DomUtil.create('a', this.options.className, this._container);
 				this._crosshair.title = this.options.crossHairTitle;
@@ -1226,7 +1218,6 @@ const maphelpers = {
 				this._crosshair.style.color = '#000';
 				this._crosshair.style.backgroundColor = '#fff';
 				this._crosshair.innerHTML = ''; 
-				this._crosshair.href = "javascript:;";
 				this._crosshair.classList.add('leaflet-button-crosshair');
 
 				this._zoomHomeButton = L.DomUtil.create('a', this.options.className + '-home', this._container);
@@ -1237,9 +1228,8 @@ const maphelpers = {
 				this._zoomHomeButton.style.backgroundColor = '#fff';
 				this._zoomHomeButton.innerHTML = '';
 				this._zoomHomeButton.classList.add('leaflet-button-homebutton');
-				this._zoomHomeButton.href = "javascript:;";
 				
-				var _origMouseDown = map.boxZoom._onMouseDown;
+				let _origMouseDown = map.boxZoom._onMouseDown;
 				map.boxZoom._onMouseDown = function(e) {
 					if (e.button > 1) return; 
 					_origMouseDown.call(map.boxZoom, {
@@ -1251,7 +1241,7 @@ const maphelpers = {
 				};
 		
 				map.on('zoomend', function() {
-					if (map.getZoom() == map.getMaxZoom()) {
+					if (map.getZoom() === map.getMaxZoom()) {
 						L.DomUtil.addClass(this._link, 'leaflet-disabled');
 					} else {
 						L.DomUtil.removeClass(this._link, 'leaflet-disabled');
@@ -1267,7 +1257,7 @@ const maphelpers = {
 					.on(this._link, 'mousedown', L.DomEvent.stopPropagation)
 					.on(this._link, 'click', function() {
 						this._active = !this._active;
-						if (this._active && map.getZoom() != map.getMaxZoom()) {
+						if (this._active && map.getZoom() !== map.getMaxZoom()) {
 							this.activate();
 						} else {
 							this.deactivate();
@@ -1316,7 +1306,7 @@ const maphelpers = {
 				L.DomUtil.removeClass(this._map.getContainer(), 'mapcrosshairs');
 				this._chactive = false;
 			},
-			_zoomHome: function(e) {
+			_zoomHome: function() {
 				this._map.setView(this.options.homeCoordinates, this.options.homeZoom);
 			},
 		});
@@ -1334,7 +1324,7 @@ const maphelpers = {
 			options: {
 				style: {
 					color: '#333',
-					weight: .2
+					weight: 0.2
 				},
 				interval: 20,
 			},
@@ -1359,7 +1349,7 @@ const maphelpers = {
 						}));
 					}
 				}
-				for (var lat = 0; lat <= 90; lat = lat + this.options.interval) {
+				for (let lat = 0; lat <= 90; lat = lat + this.options.interval) {
 					features.push(this._getFeature(this._getParallel(lat), {
 						name: (lat) ? lat.toString() + 'N' : '0',
 						coordinates: [lat, -180],
@@ -1386,7 +1376,7 @@ const maphelpers = {
 			},
 			_getParallel: function(lat) {
 				let coords = [];
-				for (var lng = -180; lng <= 180; lng++) {
+				for (let lng = -180; lng <= 180; lng++) {
 					coords.push([this._lngFix(lng), lat]);
 				}
 				return coords;
@@ -1416,7 +1406,7 @@ const maphelpers = {
 		Leaflet Watermark
 		*/
 		L.Control.Watermark = L.Control.extend({
-			onAdd: function(map) {
+			onAdd: function() {
 				let hrf = L.DomUtil.create('a');
 				hrf.href = 'javascript:info.app();';
 				let img = L.DomUtil.create('img');
@@ -1425,12 +1415,12 @@ const maphelpers = {
 				hrf.appendChild(img);
 				return hrf;
 			},
-			onRemove: function(map) {}
+			onRemove: function() {}
 		});
 		
 		L.control.watermark = function(opts) {
 			return new L.Control.Watermark(opts);
-		}
+		};
 				
 		/*
 		Leaflet full screen
@@ -1442,7 +1432,7 @@ const maphelpers = {
 				domid: 'base',
 			},
 			onAdd: function (map) {
-				var zoomName = 'leaflet-control-zoom',
+				let zoomName = 'leaflet-control-zoom',
 					barName = 'leaflet-bar',
 					partName = barName + '-part',
 					container = L.DomUtil.create('div', zoomName + ' ' + barName);
@@ -1482,7 +1472,7 @@ const maphelpers = {
 				this._map.invalidateSize();
 			},
 			_enterFullScreen: function() {
-				var container = this._map._container;
+				let container = this._map._container;
 				container.style.position = 'fixed';
 				container.style.left = 0;
 				container.style.top = 0;
@@ -1494,11 +1484,11 @@ const maphelpers = {
 				this._map.fire('enterFullscreen');
 			},
 			_exitFullScreen: function() {
-				var container = this._map._container;
+				let container = this._map._container;
 				L.DomUtil.removeClass(container, 'leaflet-fullscreen');
 				this._isFullscreen = false;
 				container.removeAttribute('style');
-				var position = L.DomUtil.getStyle(container, 'position');
+				let position = L.DomUtil.getStyle(container, 'position');
 				if (position !== 'absolute' && position !== 'relative') {
 					container.style.position = 'relative';
 				}
@@ -1525,16 +1515,16 @@ const maphelpers = {
 		
 				this._drawnLayers[layer._leaflet_id] = layer;
 		
-				var rot = Math.PI / 2 * 3;
-				var x = p.x;
-				var y = p.y;
-				var step = Math.PI / 5;
-				var orad = r;
-				var irad = orad / 2;
+				let rot = Math.PI / 2 * 3;
+				let x = p.x;
+				let y = p.y;
+				let step = Math.PI / 5;
+				let orad = r;
+				let irad = orad / 2;
 				
 				ctx.beginPath();
-				ctx.moveTo(p.x, p.y - orad)
-				for(var i = 0; i < 5; i++) {
+				ctx.moveTo(p.x, p.y - orad);
+				for(let i = 0; i < 5; i++) {
 					x = p.x + Math.cos(rot) * orad;
 					y = p.y + Math.sin(rot) * orad;
 					ctx.lineTo(x, y);
@@ -1553,7 +1543,7 @@ const maphelpers = {
 				if (!this._drawing || layer._empty()) { return; }
 				let p = layer._point;
 				let ctx = this._ctx;
-				let r = Math.max(Math.round(layer._radius * .7), 1);
+				let r = Math.max(Math.round(layer._radius * 0.7), 1);
 		
 				this._drawnLayers[layer._leaflet_id] = layer;
 				
@@ -1647,12 +1637,12 @@ const maphelpers = {
 				let r = Math.max(Math.round(layer._radius), 1);
 
 				let getstyle = (segment, total) => {
-					var hslToRgb = function(h, s, l) {
-						var r, g, b;
-						if (s == 0) {
+					let hslToRgb = function(h, s, l) {
+						let r, g, b;
+						if (s === 0) {
 							r = g = b = l;
 						} else {
-							var hue2rgb = function(p, q, t) {
+							let hue2rgb = function(p, q, t) {
 								if (t < 0) t += 1;
 								if (t > 1) t -= 1;
 								if (t < 1 / 6) return p + (q - p) * 6 * t;
@@ -1661,8 +1651,8 @@ const maphelpers = {
 								return p;
 							};
 				
-							var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-							var p = 2 * l - q;
+							let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+							let p = 2 * l - q;
 							r = hue2rgb(p, q, h + 1 / 3);
 							g = hue2rgb(p, q, h);
 							b = hue2rgb(p, q, h - 1 / 3);
@@ -1671,10 +1661,10 @@ const maphelpers = {
 						return Math.round(r * 255) + ',' + Math.round(g * 255) + ',' + Math.round(b * 255);
 					};
 				
-					var angle = 360 / (total * 2.5);
-					var offset = (segment % 2) * total;
-					var hue = (angle * (offset + (segment - (segment % 2)))) / 360;
-					var rgb = hslToRgb(hue, 0.7, 0.5);
+					let angle = 360 / (total * 2.5);
+					let offset = (segment % 2) * total;
+					let hue = (angle * (offset + (segment - (segment % 2)))) / 360;
+					let rgb = hslToRgb(hue, 0.7, 0.5);
 					return {
 						fillStyle: 'rgba(' + rgb + ',.5)',
 						strokeStyle: 'rgba(' + rgb + ',.7)',
@@ -1682,31 +1672,33 @@ const maphelpers = {
 					};
 				};
 				let applystyle = (ctx, props) => {
-					for (var i in props) {
-						ctx[i] = props[i];
+					for (let i in props) {
+						if(props.hasOwhProperty(i)) {
+							ctx[i] = props[i];
+						}
 					}
 				};
 				
 				this._drawnLayers[layer._leaflet_id] = layer;
 
-				var size = L.point([r, r]);
-				var center = size.divideBy(2);
+				let size = L.point([r, r]);
+				let center = size.divideBy(2);
 				
 				ctx.clearRect(0, 0, size.x, size.y);
 
-				var data = layer.options.data;				
-				var valueField = layer.options.valueField;
-				var total = data.map(o => o[valueField]).sum();
-				var x = center.x;
-				var y = center.y;
+				let data = layer.options.data;				
+				let valueField = layer.options.valueField;
+				let total = data.map(o => o[valueField]).sum();
+				let x = center.x;
+				let y = center.y;
 				
 				if (total) {
-					var radius = Math.min(x, y);
-					var fraction = Math.PI / total * 2;
-					var startAngle = -Math.PI / 2;
-					var stopAngle;
-					var style;
-					for (var i = 0, l = data.length; i < l; i++) {
+					let radius = Math.min(x, y);
+					let fraction = Math.PI / total * 2;
+					let startAngle = -Math.PI / 2;
+					let stopAngle;
+					let style;
+					for (let i = 0, l = data.length; i < l; i++) {
 						ctx.beginPath();
 						style = data[i].style || getstyle(i, l);
 						applystyle(ctx, style);
@@ -1885,7 +1877,7 @@ const maphelpers = {
 		oout = undefined;
 		return out.join('\n');
 	},
-	makepanelinfo: (cid = 'base', info = {markercolor: '', title: '', msg: '', area: 0, action: ''}) => {
+	makepanelinfo: (info = {markercolor: '', title: '', msg: '', area: 0, action: ''}) => {
 		let taction = !isBlank(info.action) ? [
 		`<p class="font-size-xs">`,
 		`<a class="text-decoration-none font-weight-bold" `,
@@ -1913,7 +1905,7 @@ const maphelpers = {
 		].join('\n');
 	},
 	centermarker: (lat, lng, cid = 'base') => d.map[cid].fitBounds(L.latLngBounds([new L.latLng(lat, lng)])),
-	downloadmap: (cid = 'base', caption = '') => {
+	downloadmap: (cid = 'base') => {
 		let mapcontainer = d.map[cid].getContainer();
 		domtoimage.toBlob(mapcontainer, {
 			width: mapcontainer.getBoundingClientRect().width,
@@ -1926,13 +1918,13 @@ const maphelpers = {
 				dataurl, 
 				window.version.appname + '_' + (Math.random().toString(36).substring(7)) + '.png',
 				'image/png'
-			)
+			);
 		})
 		.catch(function(error) {
-			throw new Apperror(error);
+			throw new AppError(error);
 		});
 	},
-	clamprange: (ref = [], val, bias = 1, multiplier = 10) => {
+	clamprange: (ref = [], val = null, bias = 1, multiplier = 10) => {
 		let out = bias * multiplier;
 		if(!ref.length) out = bias * multiplier;
 		ref.forEach((o, i) => {
@@ -1942,6 +1934,7 @@ const maphelpers = {
 		return out;
 	},
 	graphicscale: (array = [], title = '', subtitle = '', bias = 1, multiplier = 10) => {
+		title = subtitle = undefined;
 		let genders = dbm.genders();
 		let ownership = dbm.ownership();
 		let baselist = mapops.uniquelist(
@@ -1998,7 +1991,7 @@ const mapops = {
 		let bounds = new L.LatLngBounds();
 		d.map[cid].eachLayer(o => {
 			if(o instanceof L.FeatureGroup) {
-				if(o instanceof L.CircleMarker) bounds.extend(o.getBounds())
+				if(o instanceof L.CircleMarker) bounds.extend(o.getBounds());
 			}
 		});
 		if(bounds.isValid()) d.map[cid].fitBounds(bounds);
@@ -2078,10 +2071,10 @@ const mapops = {
 	},
 	drawlayers: (cid = 'base') => {
 		if(!d.map[cid]) return;
-		d.map[cid].eachLayer(function (layer) {
+		d.map[cid].eachLayer(layer => {
 			try {
 				d.map[cid].removeLayer(layer);
-			} catch {}
+			} catch(err) {}
 		});
 
 		if(d.maplayers[cid].data.kmeans.source) {
@@ -2096,7 +2089,7 @@ const mapops = {
 			if(d.maplayers[cid].data.kmeans.source.legend) {
 				d.maplayers[cid].data.kmeans.source.legend.remove();	
 			}
-		};
+		}
 		d.maplayers[cid].data.kmeans.source = {
 			panel: null,
 			legend: null,
@@ -2184,7 +2177,7 @@ const mapops = {
 			d.maplayers[cid].legend = L.control({
 				position: 'bottomleft'
 			});
-			d.maplayers[cid].legend.onAdd = function(map) {
+			d.maplayers[cid].legend.onAdd = function() {
 				let div = L.DomUtil.create('div', 'leaflet-linfo leaflet-linfo-legend');
 				this._div = div;
 				div.innerHTML = maphelpers.graphicscale(
@@ -2296,16 +2289,19 @@ const mapops = {
 		if(!d.map[cid]) return;
 
 		if(group === 'base') {
-			Object.keys(d.maplayers[cid].base)
-				.forEach(o => d.maplayers[cid].base[o].visible = d.maplayers[cid].base[o].name === layer);
+			Object.keys(d.maplayers[cid].base).forEach(o => {
+				d.maplayers[cid].base[o].visible = d.maplayers[cid].base[o].name === layer;
+			});
 		} else {
 			d.maplayers[cid][group][layer].visible = !d.maplayers[cid][group][layer].visible;
 		}
 		mapops.drawlayers(cid);
 	},
 	togglesublayer: (layer, lstatus = false, cid = 'base') => {
+		console.log(layer, lstatus)
 		if(!layer) return;
 		if(lstatus) {
+			console.log(d.maplayers[cid].data.kmeans.source.layers[layer].layer)
 			d.maplayers[cid].data.kmeans.source.layers[layer].layer.addTo(d.map[cid]);
 		} else {
 			d.map[cid].removeLayer(d.maplayers[cid].data.kmeans.source.layers[layer].layer);
@@ -2313,7 +2309,8 @@ const mapops = {
 		mapops.sendoverlaystoback(cid);
 	},
 	qgraticules: (name, cid = 'base') => d.map[cid].addLayer(L.graticule({
-		onEachFeature: (feature, layer) => {
+		onEachFeature: feature => {
+			name = undefined;
 			L.marker(feature.properties.coordinates, {
 				interactive: false,
 				clickable: false,
@@ -2329,14 +2326,13 @@ const mapops = {
 	qoverlays: (name, cid = 'base') => {
 		if(!name) return;
 		if(!d.mapgeojsonlayers.map(o => o.name).includes(name)) return;
-		screen.siteoverlay(true);
-		let tmptext = byId(`${cid}-map-overlays`).innerHTML;
+		gscreen.siteoverlay(true);
 		byId(`${cid}-map-overlays`).classList.add('spinner');
 		sleep(50).then(() => {
 			fetchasync(`./assets/data/geojson/${name}.json`).then(res => {
 				let nindex = 0;
 				let tmplay = L.geoJSON(res, {
-					style: function(feature) {
+					style: function() {
 						return {
 							color: res.css.properties.color,
 							opacity: res.css.properties.opacity,
@@ -2370,8 +2366,8 @@ const mapops = {
 							}
 						});
 						let action = Object.keys(d.mapdata).length ? `'${name}',${nindex},'${cid}'` : '';
-						layer.on('click', function(e) {
-							d.maplayers[cid].infopanel.update(maphelpers.makepanelinfo(cid, {
+						layer.on('click', function() {
+							d.maplayers[cid].infopanel.update(maphelpers.makepanelinfo({
 								markercolor: d.mapgeojsonlayers.find(o => o.name === name).fillColor,
 								title: c(name).uf(),
 								msg: tmp.join('. '),
@@ -2388,12 +2384,12 @@ const mapops = {
 		
 				mapops.sendoverlaystoback(cid);
 				
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				byId(`${cid}-map-overlays`).classList.remove('spinner');
 				tmplay = undefined;
 			})
 			.catch(err => {
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				byId(`${cid}-map-overlays`).classList.remove('spinner');
 				throw new AppError(c`map-overlay` + ': ' + err);				
 			});
@@ -2401,7 +2397,7 @@ const mapops = {
 	},
 	qdata: (name, cid = 'base') => {
 		if(!name) return;
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		byId(`${cid}-map-overlays`).classList.add('spinner');
 		sleep(50).then(() => {
 			if(name === 'clusters') {
@@ -2432,7 +2428,7 @@ const mapops = {
 				
 				tmplay = null;
 				
-				function removePolygon() {
+				let removePolygon = () => {
 					if (shownLayer) {
 						shownLayer.setOpacity(1);
 						shownLayer = null;
@@ -2441,7 +2437,7 @@ const mapops = {
 						if(d.map[cid]) d.map[cid].removeLayer(polygon);
 						polygon = null;
 					}
-				}
+				};
 			
 				cluster.on('clustermouseover', function (a) {
 					removePolygon();
@@ -2456,10 +2452,10 @@ const mapops = {
 
 				cluster = tmplay = shownLayer = undefined;
 				mapops.fitbounds(cid);
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				byId(`${cid}-map-overlays`).classList.remove('spinner');
 			} else if(name === 'located') {
-				function dstyle(feature) {
+				let dstyle = feature => {
 					return {
 						fillColor: feature.properties.color,
 						fill: true,
@@ -2469,8 +2465,8 @@ const mapops = {
 						weight: 1,
 						radius: feature.properties.radius,
 				    };
-				}
-				function highlightstyle(feature) {
+				};
+				let highlightstyle = feature => {
 					return {
 						fillColor: feature.properties.color,
 						fill: true,
@@ -2480,18 +2476,18 @@ const mapops = {
 						weight: 1,
 						radius: feature.properties.radius * 1.2,
 				    };
-				}
-				function highlightdot(e) {
+				};
+				let highlightdot = e => {
 					let layer = e.target;
 					let dotstylehighlight = highlightstyle(layer.feature);
 					layer.setStyle(dotstylehighlight);
 					if (!L.Browser.ie && !L.Browser.opera) {
 						layer.bringToFront();
 					}
-				}
-				function resetdothighlight(e) {
+				};
+				let resetdothighlight = e => {
 					e.target.setStyle(dstyle(e.target.feature));
-				}
+				};
 				let tmpdata = {
 					type: 'FeatureCollection', 
 					features: d.mapdata.features.filter(o => mapops.filtermapdata(cid, o))
@@ -2499,10 +2495,9 @@ const mapops = {
 
 				let tmplay = L.geoJSON(tmpdata, {
 					pointToLayer: (feature, latlng) => {
-						return new L[`${feature.properties.shape}Marker`](latlng, dstyle(feature))
+						return new L[`${feature.properties.shape}Marker`](latlng, dstyle(feature));
 					},
 					onEachFeature: function (feature, layer) {
-						
 						layer.on({
 							mouseover: highlightdot,
 							mouseout: resetdothighlight
@@ -2516,10 +2511,10 @@ const mapops = {
 				tmplay = null;
 				
 				mapops.fitbounds(cid);
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				byId(`${cid}-map-overlays`).classList.remove('spinner');
 			} else if(name === 'graduated') {
-				function dstyle(feature) {
+				let dstyle = feature => {
 					return {
 						fillColor: feature.properties.color,
 						fill: true,
@@ -2529,8 +2524,8 @@ const mapops = {
 						weight: 1,
 						radius: feature.properties.range,
 				    };
-				}
-				function highlightstyle(feature) {
+				};
+				let highlightstyle = feature => {
 					return {
 						fillColor: feature.properties.color,
 						fill: true,
@@ -2540,18 +2535,18 @@ const mapops = {
 						weight: 1,
 						radius: feature.properties.range * 1.2,
 				    };
-				}
-				function highlightdot(e) {
+				};
+				let highlightdot = e => {
 					let layer = e.target;
 					let dotstylehighlight = highlightstyle(layer.feature);
 					layer.setStyle(dotstylehighlight);
 					if (!L.Browser.ie && !L.Browser.opera) {
 						layer.bringToFront();
 					}
-				}
-				function resetdothighlight(e) {
+				};
+				let resetdothighlight = e => {
 					e.target.setStyle(dstyle(e.target.feature));
-				}
+				};
 				let tmpdata = {
 					type: 'FeatureCollection', 
 					features: d.mapdata.features.filter(o => mapops.filtermapdata(cid, o))
@@ -2559,7 +2554,7 @@ const mapops = {
 
 				let tmplay = L.geoJSON(tmpdata, {
 					pointToLayer: (feature, latlng) => {
-						return new L[`${feature.properties.shape}Marker`](latlng, dstyle(feature))
+						return new L[`${feature.properties.shape}Marker`](latlng, dstyle(feature));
 					},
 					onEachFeature: function (feature, layer) {
 						layer.on({
@@ -2574,10 +2569,10 @@ const mapops = {
 				tmplay = null;
 				
 				mapops.fitbounds(cid);
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				byId(`${cid}-map-overlays`).classList.remove('spinner');
 			} else if(name === 'kmeans') {
-				fetchasync(`./assets/data/geojson/world_basic.json`).then(res => {
+				fetchasync(`./assets/data/geojson/world_admin0.json`).then(res => {
 					let points = turf.featureCollection(d.mapdata.features.filter(o => mapops.filtermapdata(cid, o)));
 					let cluster = turf.clustersKmeans(points, {
 						numberOfClusters: 50,
@@ -2590,7 +2585,7 @@ const mapops = {
 
 					Object.keys(groups).forEach(rk => {
 						let total = Object.values(groups[rk]).map(o => o.length).sum();
-						Object.keys(groups[rk]).forEach((cl, i) => {
+						Object.keys(groups[rk]).forEach(cl => {
 							let obj = {
 								name: rk,
 								value: groups[rk][cl].length,
@@ -2609,7 +2604,7 @@ const mapops = {
 						let basecolor = basearray[0].color;
 						let total = Object.values(basearray).map(o => o.value).sum();
 						let tmpovl = L.geoJSON(res, {
-							style: function(feature) {
+							style: function() {
 								let obj = {
 									color: basecolor,
 									opacity: 1,
@@ -2622,7 +2617,6 @@ const mapops = {
 							onEachFeature: function (feature, layer) {
 								let values = [];
 								basearray.forEach(f => {
-									let tmplayer = layer.toGeoJSON()
 									if(turf.booleanPointInPolygon(f.point, turf.feature(feature.geometry))) {
 										values.push(f.value);
 									}
@@ -2646,7 +2640,7 @@ const mapops = {
 							layer: tmpovl,
 						};
 
-						let basegeojson = basearray.map((m, i) => {
+						let basegeojson = basearray.map(m => {
 							let rsize = d.mapiconfeatures.size.big * toolkit.getnumberinrange(m.value, d.mapchoroplethranges);
 							return {
 								type: 'Feature',
@@ -2707,7 +2701,7 @@ const mapops = {
 						if(d.maplayers[cid].data.kmeans.source.legend) {
 							d.maplayers[cid].data.kmeans.source.legend.remove();	
 						}
-					};
+					}
 					d.maplayers[cid].data.kmeans.source = {
 						panel: null,
 						legend: null,
@@ -2715,12 +2709,12 @@ const mapops = {
 					};
 					
 					d.maplayers[cid].data.kmeans.source.panel = L.control();
-					d.maplayers[cid].data.kmeans.source.panel.onAdd = function (map) {
+					d.maplayers[cid].data.kmeans.source.panel.onAdd = function() {
 						this._div = L.DomUtil.create('div', 'leaflet-linfo leaflet-linfo-panel'); 
 						this.update();
 						return this._div;
 					};
-					d.maplayers[cid].data.kmeans.source.panel.update = function (props) {
+					d.maplayers[cid].data.kmeans.source.panel.update = function() {
 						this._div.innerHTML = [
 							Object.keys(d.maplayers[cid].data.kmeans.source.layers).map(o => {
 								return [
@@ -2740,7 +2734,7 @@ const mapops = {
 					d.maplayers[cid].data.kmeans.source.panel.addTo(d.map[cid]);
 					
 					d.maplayers[cid].data.kmeans.source.legend = L.control({position: 'bottomright'});
-					d.maplayers[cid].data.kmeans.source.legend.onAdd = function (map) {
+					d.maplayers[cid].data.kmeans.source.legend.onAdd = function() {
 						let div = L.DomUtil.create('div', 'leaflet-linfo leaflet-linfo-legend');
 						let grades = d.mapchoroplethranges;
 						let labels = [];
@@ -2762,15 +2756,13 @@ const mapops = {
 					
 					points = cluster = groups = result = layers = undefined;
 					mapops.fitbounds(cid);
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 					byId(`${cid}-map-overlays`).classList.remove('spinner');
 				});
-			} else if(name === 'timeline') {
-				//${cid}-map-time-range-wrapper				
 			} else {
 				let tmpleg = d.maptransformations[cid].legend;
 				let tmpkys = Object.keys(tmpleg).filter(o => tmpleg[o]);
-				tmpkys.forEach(k => {
+				tmpkys.forEach(() => {
 					let hlayer = L.heatLayer(d.mapdata.features
 						.filter(o => mapops.filtermapdata(cid, o))
 						.filter(o => o.geometry.coordinates[1] && o.geometry.coordinates[0])
@@ -2789,7 +2781,7 @@ const mapops = {
 					hlayer = undefined;
 				});
 				mapops.fitbounds(cid);
-				screen.siteoverlay(false);
+				gscreen.siteoverlay(false);
 				byId(`${cid}-map-overlays`).classList.remove('spinner');
 			}
 			
@@ -2851,14 +2843,6 @@ const mapops = {
 			let radius = Number(d.maptransformations[cid].buffer) / 1000;
 			let buffer = turf.buffer(point, radius, {units: 'kilometers'});
 			let pip = turf.pointsWithinPolygon(points, buffer);
-			let out = {
-				type: 'FeatureCollection',
-				features: pip.features.filter(o => {
-					if(!o.geometry.coordinates.length === 2) return false;
-					if(!isNumeric(o.geometry.coordinates[0]) || !isNumeric(o.geometry.coordinates[1])) return false;
-				}),
-			}
-			
 			points = point = radius = buffer = undefined;
 			return pip;
 		}
@@ -3010,7 +2994,7 @@ const mapops = {
 							animationDuration: 5000,
 							pathDisplayMode: 'all',
 							wrapAroundCanvas: true,
-							style: (feature, latlng) => {
+							style: feature => {
 								if (feature.properties.isOrigin) {
 									return {
 										color: dbe.getcolorfromslug(feature.properties.rkey),
@@ -3111,7 +3095,7 @@ const mapops = {
 							animationDuration: 5000,
 							pathDisplayMode: 'all',
 							wrapAroundCanvas: true,
-							style: (feature, latlng) => {
+							style: feature => {
 								if (feature.properties.isOrigin) {
 									return {
 										color: dbe.getcolorfromslug(feature.properties.rkey),
@@ -3251,28 +3235,29 @@ const mapops = {
 			});
 		}
 		if(d.maptransformations[cid].tin) {
-			function vstyle(feature) {
+			let vstyle = () => {
 				return {
 					fillColor: '#e07859', 
-					fillOpacity: .1,  
+					fillOpacity: 0.1,  
 					weight: 2,
-					opacity: .4,
+					opacity: 0.4,
 					color: '#ffffff',
 					dashArray: '3'
 				};
-			}
-			function vfeatures(feature, layer) {
+			};
+			let vfeatures = (feature, layer) => {
 				let tmpname = cname;
-				layer.on('click', function (e) { 
+				feature = undefined;
+				layer.on('click', function() { 
 					d.maplayers[cid].queries[tmpname].layer.setStyle(vstyle);
 					layer.setStyle(vhighlight);
 				}); 
-			}
+			};
 			let vhighlight = {
 				fillColor: 'yellow',
 				weight: 2,
-				opacity: .5,
-				fillOpacity: .2
+				opacity: 0.5,
+				fillOpacity: 0.2
 			};
 			byId(`${cid}-map-queries`).classList.add('spinner');
 			cname = `${c`tin`.uf()}. ${bname}`;
@@ -3294,28 +3279,29 @@ const mapops = {
 			rpoints = tmplay = vstyle = vfeatures = undefined;
 		}
 		if(d.maptransformations[cid].convex) {
-			function vstyle(feature) {
+			let vstyle = () => {
 				return {
 					fillColor: '#85d1d4', 
-					fillOpacity: .1,  
+					fillOpacity: 0.1,  
 					weight: 2,
-					opacity: .4,
+					opacity: 0.4,
 					color: '#ffffff',
 					dashArray: '3'
 				};
-			}
-			function vfeatures(feature, layer) {
+			};
+			let vfeatures = (feature, layer) => {
+				feature = undefined;
 				let tmpname = cname;
-				layer.on('click', function (e) { 
+				layer.on('click', function() { 
 					d.maplayers[cid].queries[tmpname].layer.setStyle(vstyle);
 					layer.setStyle(vhighlight);
 				}); 
-			}
+			};
 			let vhighlight = {
 				fillColor: 'yellow',
 				weight: 2,
-				opacity: .5,
-				fillOpacity: .2
+				opacity: 0.5,
+				fillOpacity: 0.2
 			};
 			byId(`${cid}-map-queries`).classList.add('spinner');
 			cname = `${c`convex`.uf()}. ${bname}`;
@@ -3334,36 +3320,37 @@ const mapops = {
 			
 			d.map[cid].addLayer(d.maplayers[cid].queries[cname].layer);
 			byId(`${cid}-map-queries`).classList.remove('spinner');
-			rpoints = tmplay = undefined;
+			rpoints = tmplay = vstyle = vfeatures = undefined;
 		}
 		if(d.maptransformations[cid].envelope) {
-			function vstyle(feature) {
+			let vstyle = () => {
 				return {
 					fillColor: 'pink', 
-					fillOpacity: .1,  
+					fillOpacity: 0.1,  
 					weight: 2,
-					opacity: .4,
+					opacity: 0.4,
 					color: '#ffffff',
 					dashArray: '3'
 				};
-			}
-			function vfeatures(feature, layer) {
+			};
+			let vfeatures = (feature, layer) => {
+				feature = undefined;
 				let tmpname = cname;
-				layer.on('click', function (e) { 
+				layer.on('click', function() { 
 					d.maplayers[cid].queries[tmpname].layer.setStyle(vstyle);
 					layer.setStyle(vhighlight);
 				}); 
-			}
+			};
 			let vhighlight = {
 				fillColor: 'purple',
 				weight: 2,
-				opacity: .5,
-				fillOpacity: .2
+				opacity: 0.5,
+				fillOpacity: 0.2
 			};
 			byId(`${cid}-map-queries`).classList.add('spinner');
 			cname = `${c`envelope`.uf()}. ${bname}`;
 			
-			let rpoints = getpointsinbuffer(item.latitude, item.longitude)
+			let rpoints = getpointsinbuffer(item.latitude, item.longitude);
 			let tmplay = turf.envelope(rpoints);
 
 			d.maplayers[cid].queries[cname] = {
@@ -3377,31 +3364,32 @@ const mapops = {
 			
 			d.map[cid].addLayer(d.maplayers[cid].queries[cname].layer);
 			byId(`${cid}-map-queries`).classList.remove('spinner');
-			rpoints = tmplay = undefined;
+			rpoints = tmplay = vstyle = vfeatures = undefined;
 		}
 		if(d.maptransformations[cid].voronoi) {
-			function vstyle(feature) {
+			let vstyle = () => {
 				return {
 					fillColor: 'CornflowerBlue', 
-					fillOpacity: .1,
+					fillOpacity: 0.1,
 					weight: 2,
-					opacity: .5,
+					opacity: 0.5,
 					color: 'DarkBlue',
 					dashArray: '1 4'
 				};
-			}
-			function vfeatures(feature, layer) {
+			};
+			let vfeatures = (feature, layer) => {
+				feature = undefined;
 				let tmpname = cname;
-				layer.on('click', function (e) { 
+				layer.on('click', function() { 
 					d.maplayers[cid].queries[tmpname].layer.setStyle(vstyle);
 					layer.setStyle(vhighlight);
 				}); 
-			}
+			};
 			let vhighlight = {
 				fillColor: 'red',
 				weight: 2,
-				opacity: .5,
-				fillOpacity: .2
+				opacity: 0.5,
+				fillOpacity: 0.2
 			};
 			byId(`${cid}-map-queries`).classList.add('spinner');
 			cname = `${c`voronoi`.uf()}. ${bname}`;
@@ -3421,14 +3409,14 @@ const mapops = {
 				d.map[cid].addLayer(d.maplayers[cid].queries[cname].layer);
 				byId(`${cid}-map-queries`).classList.remove('spinner');
 				points = voronoi = undefined;
-				bname = tname = cname = undefined;
+				bname = tname = cname = vstyle = vfeatures = vhighlight = undefined;
 			} catch(error) {
 				byId(`${cid}-map-queries`).classList.remove('spinner');
 				points = undefined;
-				bname = tname = cname = undefined;
-				screen.siteoverlay(false);
+				bname = tname = cname = vstyle = vfeatures = vhighlight = undefined;
+				gscreen.siteoverlay(false);
 				throw new AppWarning(c`unsuccessful-operation`.uf() + ': ' + error);
-			};
+			}
 		}
 		
 		mapops.fitbounds(cid);
@@ -3515,11 +3503,11 @@ const mapops = {
 			opacity: d.mapopacity[o.index],
 		}));
 	},
-	makemapdata: (cid = 'base') => {
+	makemapdata: () => {
 		d.mapdata = mapops.generatebasepoints(true);
 	},
 	exportqueries: (cid = 'base') => {
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		sleep(50).then(() => {
 			let out = [];
 			out.push([
@@ -3548,10 +3536,10 @@ const mapops = {
 				}
 			});
 			file.exportdatatocsv(out);
-			screen.siteoverlay(false);
+			gscreen.siteoverlay(false);
 		});
 	},
-	filtermapdata: (cid = 'base', elm) => {
+	filtermapdata: (cid = 'base', elm = null) => {
 		if(!elm.hasOwnProperty('properties')) return false;
 		let kr = d.maptransformations[cid].legend;
 		let isvalid = kr[elm.properties.rkey];
@@ -3563,12 +3551,12 @@ const mapops = {
 		if(tr.min === 0 && tr.max === 0) return true;
 		return elm.properties.year >= tr.min && elm.properties.year <= tr.max;
 	},
-	exportintersections: (cid = 'base', lname, lindex) => {
+	exportintersections: (cid = 'base', lname = null, lindex = null) => {
 		if(!dbe.verifytables()) throw new AppError(c`no-data`);
 		if(!lname || !lindex) throw new AppError(c`mandatory-field-empty`);
 		if(!d.mapdata) throw new AppError(c`no-data`);
 		if(!d.mapdata.features.length) throw new AppError(c`no-data`);
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		toolkit.timer('maps.exportintersections');
 		toolkit.statustext(true);
 		sleep(50).then(() => {
@@ -3579,9 +3567,8 @@ const mapops = {
 				let points = turf.featureCollection(d.mapdata.features.filter(o => mapops.filtermapdata(cid, o)));
 				let nindex = 0;
 				let tmplay = L.geoJSON(res, {
-					onEachFeature: function (feature, layer) {
+					onEachFeature: function(feature) {
 						if(nindex === lindex) {
-							let bounds = layer.getBounds();
 							let fvalue = [];
 							ffields.forEach(o => fvalue.push(feature.properties[o]));
 							let fcollection = turf.featureCollection([feature]);
@@ -3608,16 +3595,16 @@ const mapops = {
 					points = ffields = ffieldnames = matches = tmplay = undefined;
 					toolkit.timer('maps.exportintersections');
 					toolkit.statustext(false);
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 					throw new AppWarning(`${c`no-data`}`);
 				} else {
 					file.exportdatatocsv(matches);
 					points = ffields = ffieldnames = matches = tmplay = undefined;
 					toolkit.timer('maps.exportintersections');
 					toolkit.statustext(false);
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 				}
-			})
+			});
 		});
 	},
 	refinefilter: (lname, lindex, cid = 'base') => {
@@ -3625,7 +3612,7 @@ const mapops = {
 		if(!lname || !lindex) throw new AppError(c`mandatory-field-empty`);
 		if(!d.mapdata) throw new AppError(c`no-data`);
 		if(!d.mapdata.features.length) throw new AppError(c`no-data`);
-		screen.siteoverlay(true);
+		gscreen.siteoverlay(true);
 		toolkit.timer('maps.refineindex');
 		toolkit.statustext(true);
 		sleep(50).then(() => {
@@ -3637,9 +3624,8 @@ const mapops = {
 					let points = turf.featureCollection(bpoints.features);
 					let nindex = 0;
 					let tmplay = L.geoJSON(res, {
-						onEachFeature: function (feature, layer) {
+						onEachFeature: function(feature) {
 							if(nindex === lindex) {
-								let bounds = layer.getBounds();
 								let fvalue = [];
 								ffields.forEach(o => fvalue.push(feature.properties[o]));
 								let fcollection = turf.featureCollection([feature]);
@@ -3660,7 +3646,7 @@ const mapops = {
 						points = ffields = matches = tmplay = undefined;
 						toolkit.timer('maps.refineindex');
 						toolkit.statustext(false);
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 						d.filterrefine = null;
 						throw new AppWarning(`${c`no-data`}`);
 					} else {
@@ -3669,16 +3655,16 @@ const mapops = {
 						points = ffields = matches = tmplay = undefined;						
 						toolkit.timer('maps.refineindex');
 						toolkit.statustext(false);
-						screen.siteoverlay(false);
+						gscreen.siteoverlay(false);
 					}			
 				} else {
 					toolkit.timer('maps.refineindex');
 					toolkit.statustext(false);
-					screen.siteoverlay(false);
+					gscreen.siteoverlay(false);
 					d.filterrefine = null;
 					throw new AppWarning(`${c`no-data`}`);
 				}
-			})
+			});
 		});
 	},
-}
+};
