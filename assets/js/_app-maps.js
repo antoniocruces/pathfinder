@@ -313,6 +313,17 @@ const mapengine = {
 				`</p>`,
 
 				`<p class="no-margin-bottom">`,
+				`<label class="control switch">`,
+				`<input type="checkbox"`, 
+				`id="${cid}-map-maintainqueries" name="${cid}-map-sametyperels" `,
+				`onclick="javascript:maphelpers.settransformations('sametyperels', this.checked, '${cid}');"`,
+				`${d.maptransformations[cid].sametyperels ? ' checked' : ''}>`,
+				`<span class="control-indicator"></span>`,
+				`<span class="control-label">${c`same-type-relations-only`}</span>`,
+				`</label>`,
+				`</p>`,
+
+				`<p class="no-margin-bottom">`,
 				`<label class="control checkbox">`,
 				`<input type="checkbox"`, 
 				`id="${cid}-map-related" name="${cid}-map-related" `,
@@ -2951,7 +2962,14 @@ const mapops = {
 					f.origin_id && f.origin_lat && f.origin_lon && 
 					f.destination_id && f.destination_lat && f.destination_lon
 				);
-				let flo = dbe.makegeojson(res[tmpname].filter(o => isvalidflowpoint(o)));
+				let baserkey = res.main[0].rkey;
+				let sameonly = d.maptransformations[cid].sametyperels;
+				let flo = dbe.makegeojson(
+					res[tmpname]
+						.filter(o => sameonly ? o.rkey === baserkey : true)
+						.filter(o => isvalidflowpoint(o))
+				);
+				baserkey = sameonly = undefined;
 				let main = res.main[0] || {
 					id: null,
 					lat: null,
@@ -3052,7 +3070,22 @@ const mapops = {
 					f.origin_id && f.origin_lat && f.origin_lon && 
 					f.destination_id && f.destination_lat && f.destination_lon
 				);
-				let flo = dbe.makegeojson(res[tmpname].filter(o => isvalidflowpoint(o)));
+				let baserkey = res.main[0].rkey;
+				let sameonly = d.maptransformations[cid].sametyperels;
+				console.log(res[tmpname]
+						.filter(o => sameonly ? o.rkey === baserkey : true)
+						.filter(o => isvalidflowpoint(o))
+				)
+				console.log(res[tmpname]
+						.filter(o => isvalidflowpoint(o))
+				)
+				let flo = dbe.makegeojson(
+					res[tmpname]
+						.filter(o => sameonly ? o.rkey === baserkey : true)
+						.filter(o => isvalidflowpoint(o))
+				);
+				baserkey = sameonly = undefined;
+				//let flo = dbe.makegeojson(res[tmpname].filter(o => isvalidflowpoint(o)));
 
 				let main = res.main[0] || {
 					id: null,
@@ -3153,7 +3186,17 @@ const mapops = {
 					f.origin_id && f.origin_lat && f.origin_lon && 
 					f.destination_id && f.destination_lat && f.destination_lon
 				);
-				let flo = dbe.makegeojson(res.related.filter(o => isvalidflowpoint(o)));
+
+				let baserkey = res.main[0].rkey;
+				let sameonly = d.maptransformations[cid].sametyperels;
+				let flo = dbe.makegeojson(
+					res.related
+						.filter(o => sameonly ? o.rkey === baserkey : true)
+						.filter(o => isvalidflowpoint(o))
+				);
+				baserkey = sameonly = undefined;
+				//let flo = dbe.makegeojson(res.related.filter(o => isvalidflowpoint(o)));
+				
 				let main = res.main[0] || {
 					id: null,
 					lat: null,
@@ -3198,7 +3241,17 @@ const mapops = {
 					f.origin_id && f.origin_lat && f.origin_lon && 
 					f.destination_id && f.destination_lat && f.destination_lon
 				);
-				let flo = dbe.makegeojson(res.neighbourhood.filter(o => isvalidflowpoint(o)));
+				
+				let baserkey = res.main[0].rkey;
+				let sameonly = d.maptransformations[cid].sametyperels;
+				let flo = dbe.makegeojson(
+					res.neighbourhood
+						.filter(o => sameonly ? o.rkey === baserkey : true)
+						.filter(o => isvalidflowpoint(o))
+				);
+				baserkey = sameonly = undefined;
+				//let flo = dbe.makegeojson(res.neighbourhood.filter(o => isvalidflowpoint(o)));
+				
 				let main = res.main[0] || {
 					id: null,
 					lat: null,

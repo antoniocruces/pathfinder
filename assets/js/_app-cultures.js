@@ -140,6 +140,8 @@ const cultures =
 		'activate': 'activar',
 		'separate-by-semicolon': 'separar por ;',
 		'reset': 'inicializar',
+		'current': 'actual', 
+		'leap': 'paso',
 		
 		'unusual': 'infrecuente',
 		'relevant': 'relevante',
@@ -350,7 +352,8 @@ const cultures =
 		'time-lapse': 'lapso temporal',
 		'time-slider': 'selector temporal',
 		'cartography': 'cartografía',
-		
+		'same-type-relations-only': 'sólo homólogos',
+				
 		'density': 'densidad',
 		'density-related': 'densidad de relaciones directas',
 		'density-neighbourhood': 'densidad de relaciones indirectas',
@@ -786,6 +789,7 @@ const cultures =
 		'_cp__boo_artwork_author': 'autor de obras de arte',
 		'_cp__boo_catalog_type': 'tipo de catálogo',
 		'_cp__boo_coordinates': 'coordenadas',
+		'_cp__boo_illustrator': 'ilustrador',
 		'_cp__boo_paper_author': 'actor autor',
 		'_cp__boo_paper_editor': 'actor editor',
 		'_cp__boo_publishing_date': 'fecha de publicación',
@@ -983,6 +987,8 @@ const cultures =
 		'activate': 'activate',
 		'separate-by-semicolon': 'separate by ;',
 		'reset': 'reset',
+		'current': 'current', 
+		'leap': 'leap',
 
 		'unusual': 'unusual',
 		'relevant': 'relevant',
@@ -1192,6 +1198,7 @@ const cultures =
 		'time-lapse': 'time lapse',
 		'time-slider': 'time slider',
 		'cartography': 'cartography',
+		'same-type-relations-only': 'counterpart only',
 		
 		'density': 'density',
 		'density-related': 'direct relations density',

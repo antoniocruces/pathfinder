@@ -16,7 +16,7 @@ const dbe = {
 			ge: (a, b) => a >= b,
 			lt: (a, b) => a < b,
 			le: (a, b) => a <= b,
-			li: (a, b) => dbe._normalize(a).includes(dbe._normalize(b)),
+			li: (a, b) => dbe._roundtrip(a, b),
 			nl: (a, b) => !dbe._operation('li', a, b),
 			bt: (a, b) => dbe._operation('ge', a, dbe._divide(b, 0)) && dbe._operation('le', a, dbe._divide(b, 1)),
 			nu: a => isBlank(a),
@@ -25,6 +25,15 @@ const dbe = {
 		return operators[operation](a, b);
 	},
 
+	_roundtrip: (a, b) => {
+		let arr = b.split(window.settings.roundtripsep);
+		let res = false;
+		arr.forEach(val => {
+			if(dbe._normalize(a).includes(dbe._normalize(val))) res = true;
+		});
+		return res;
+	},
+	
 	_finder: {
 		both: (a, b, id = 'ID') => a.filter(
 			(set => xa => true === set.has(xa[id]))(new Set(b.map(xb => xb[id])))
@@ -53,7 +62,7 @@ const dbe = {
 		if(d.uris.includes(key)) return String(val).hosts(key);
 		if(d.points.includes(key)) return String(val).points(key);
 		if(d.relatives.includes(key)) return String(val).relations(key);
-		if(d.ages.includes(key)) return Number(val).ages(key).value; //return val;
+		if(d.ages.includes(key)) return Number(val).ages(key).value; 
 		if(d.genders.includes(key)) return String(val).gender(key);
 		return String(val).string(key);
 	},

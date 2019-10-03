@@ -1,151 +1,91 @@
 {
 	"es": [
 		{
-			"title": "Picasso en España",
-			"name": "20180714001",
-			"date": "2018-07-14",
-			"description": "Exposiciones de Picasso en España",
+			"title": "España 2010-2016",
+			"name": "20190913000",
+			"date": "2019-09-13",
+			"description": "Proyecto Exhibitium. Ecosistema expositivo español 2010-2016",
 			"active": 0,
+			"operation": "_relaxed",
 			"query": [
-				{
-					"value": "ruiz picasso",
-					"rkey": "person",
-					"operator": "li",
-					"modifier": "",
-					"results": []
-				},
 				{
 					"value": "españa",
-					"rkey": "_cp__exh_exhibition_town",
-					"operator": "li",
-					"modifier": "country",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_artwork_author",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				}
-			]
-		},
-		{
-			"title": "Picasso en Andalucía",
-			"name": "20180714002",
-			"date": "2018-07-14",
-			"description": "Exposiciones de Picasso en Andalucía",
-			"active": 0,
-			"query": [
-				{
-					"value": "ruiz picasso",
-					"rkey": "person",
+					"rkey": "_cp__exh_exhibition_country",
 					"operator": "li",
 					"modifier": "",
 					"results": []
 				},
 				{
-					"value": "andalucia",
-					"rkey": "_cp__exh_exhibition_town",
-					"operator": "li",
-					"modifier": "region",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_artwork_author",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				}
-			]
-		},
-		{
-			"title": "Picasso fuera de España",
-			"name": "20180714003",
-			"date": "2018-07-14",
-			"description": "Exposiciones de Picasso fuera de España",
-			"active": 0,
-			"query": [
-				{
-					"value": "ruiz picasso",
-					"rkey": "person",
-					"operator": "li",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "españa",
-					"rkey": "_cp__exh_exhibition_town",
-					"operator": "nl",
-					"modifier": "country",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_artwork_author",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				}
-			]
-		},
-		{
-			"title": "Andalucía 2010-2017. Exposiciones",
-			"name": "20180714004",
-			"date": "2018-07-14",
-			"description": "Andalucía 2010-2017. Solo exposiciones",
-			"active": 0,
-			"query": [
-				{
-					"value": "andalucia",
-					"rkey": "_cp__exh_exhibition_town",
-					"operator": "li",
-					"modifier": "region",
-					"results": []
-				},
-				{
-					"value": "2010/2017",
+					"value": "2010/2016",
 					"rkey": "_cp__exh_exhibition_start_date",
 					"operator": "bt",
 					"modifier": "year",
 					"results": []
 				}
-			]
+			],
+			"filtersubfilter": {
+				"artwork": true,
+				"book": true,
+				"company": true,
+				"entity": true,
+				"exhibition": true,
+				"person": true
+			},
+			"filtersublinks": []
 		},
 		{
-			"title": "Andalucía 2010-2017. Relaciones",
-			"name": "20180714004",
-			"date": "2018-07-14",
-			"description": "Andalucía 2010-2017. Exposiciones y relaciones",
+			"title": "Andalucía 2000-2018",
+			"name": "20190913000",
+			"date": "2019-09-13",
+			"description": "Proyecto Exhibitium. Ecosistema expositivo español 2010-2016",
 			"active": 0,
+			"operation": "_relaxed",
 			"query": [
 				{
-					"value": "andalucia",
-					"rkey": "_cp__exh_exhibition_town",
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_country",
 					"operator": "li",
-					"modifier": "region",
+					"modifier": "",
 					"results": []
 				},
 				{
-					"value": "2010/2017",
+					"value": "2010/2016",
 					"rkey": "_cp__exh_exhibition_start_date",
 					"operator": "bt",
 					"modifier": "year",
 					"results": []
-				},
+				}
+			],
+			"filtersubfilter": {
+				"artwork": true,
+				"book": true,
+				"company": true,
+				"entity": true,
+				"exhibition": true,
+				"person": true
+			},
+			"filtersublinks": []
+		},
+		{
+			"title": "España 2010-2016",
+			"name": "20190913000",
+			"date": "2019-04-25",
+			"description": "Proyecto Exhibitium. Ecosistema expositivo español 2010-2016",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
 				{
-					"value": "",
-					"rkey": "_cp__exh_art_collector",
-					"operator": "nn",
+					"value": "Pablo Ruiz Picasso",
+					"rkey": "_cp__boo_artwork_author",
+					"operator": "li",
 					"modifier": "",
 					"results": []
 				},
 				{
-					"value": "",
-					"rkey": "_cp__exh_artwork_author",
-					"operator": "nn",
-					"modifier": "",
+					"value": "1881/2018",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
 					"results": []
 				},
 				{
@@ -156,197 +96,85 @@
 					"results": []
 				},
 				{
-					"value": "",
-					"rkey": "_cp__exh_curator",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_funding_entity",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_info_source",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_museography",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_parent_exhibition",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_source_entity",
-					"operator": "nn",
+					"value": "6664: Pablo Ruiz Picasso",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "li",
 					"modifier": "",
 					"results": []
 				}
+			],
+			"filtersubfilter": {
+				"artwork": true,
+				"book": true,
+				"company": false,
+				"entity": true,
+				"exhibition": false,
+				"person": true
+			},
+			"filtersublinks": [
+				"_cp__exh_artwork_author",
+				"_cp__exh_curator",
+				"_cp__exh_catalog",
+				"_cp__exh_art_collector",
+				"_cp__exh_supporter_entity",
+				"_cp__art_artwork_author"
 			]
+		},
+		{
+			"title": "España 2010-2016",
+			"name": "20190913000",
+			"date": "2019-04-25",
+			"description": "Proyecto Exhibitium. Ecosistema expositivo español 2010-2016",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "2000/2018",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				}
+			],
+			"filtersubfilter": {
+				"artwork": true,
+				"book": true,
+				"company": true,
+				"entity": true,
+				"exhibition": true,
+				"person": true
+			},
+			"filtersublinks": []
 		}
 	],
 	"en": [
 		{
-			"title": "Picasso in Spain",
-			"name": "20180714001",
-			"date": "2018-07-14",
-			"description": "Picasso exhibitions in Spain",
+			"title": "Picasso 1881-2018",
+			"name": "20190425000",
+			"date": "2019-04-25",
+			"description": "Picasso exhibitions between 1881 and 2018",
 			"active": 0,
+			"operation": "_relaxed",
 			"query": [
 				{
-					"value": "ruiz picasso",
-					"rkey": "person",
+					"value": "Pablo Ruiz Picasso",
+					"rkey": "_cp__boo_artwork_author",
 					"operator": "li",
 					"modifier": "",
 					"results": []
 				},
 				{
-					"value": "españa",
-					"rkey": "_cp__exh_exhibition_town",
-					"operator": "li",
-					"modifier": "country",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_artwork_author",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				}
-			]
-		},
-		{
-			"title": "Picasso in Andalusia",
-			"name": "20180714002",
-			"date": "2018-07-14",
-			"description": "Picasso exhibitions in Andalusia",
-			"active": 0,
-			"query": [
-				{
-					"value": "ruiz picasso",
-					"rkey": "person",
-					"operator": "li",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "andalucia",
-					"rkey": "_cp__exh_exhibition_town",
-					"operator": "li",
-					"modifier": "region",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_artwork_author",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				}
-			]
-		},
-		{
-			"title": "Picasso out of Spain",
-			"name": "20180714003",
-			"date": "2018-07-14",
-			"description": "Picasso exhibitions out of Spain",
-			"active": 0,
-			"query": [
-				{
-					"value": "ruiz picasso",
-					"rkey": "person",
-					"operator": "li",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "españa",
-					"rkey": "_cp__exh_exhibition_town",
-					"operator": "nl",
-					"modifier": "country",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_artwork_author",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				}
-			]
-		},
-		{
-			"title": "Andalusia 2010-2017. Exhibitions",
-			"name": "20180714004",
-			"date": "2018-07-14",
-			"description": "Andalusia 2010-2017. Exhibitions only",
-			"active": 0,
-			"query": [
-				{
-					"value": "andalucia",
-					"rkey": "_cp__exh_exhibition_town",
-					"operator": "li",
-					"modifier": "region",
-					"results": []
-				},
-				{
-					"value": "2010/2017",
+					"value": "1881/2018",
 					"rkey": "_cp__exh_exhibition_start_date",
 					"operator": "bt",
 					"modifier": "year",
-					"results": []
-				}
-			]
-		},
-		{
-			"title": "Andalucía 2010-2017. Relations",
-			"name": "20180714004",
-			"date": "2018-07-14",
-			"description": "Andalucía 2010-2017. Exhibitions & relations",
-			"active": 0,
-			"query": [
-				{
-					"value": "andalucia",
-					"rkey": "_cp__exh_exhibition_town",
-					"operator": "li",
-					"modifier": "region",
-					"results": []
-				},
-				{
-					"value": "2010/2017",
-					"rkey": "_cp__exh_exhibition_start_date",
-					"operator": "bt",
-					"modifier": "year",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_art_collector",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_artwork_author",
-					"operator": "nn",
-					"modifier": "",
 					"results": []
 				},
 				{
@@ -357,48 +185,62 @@
 					"results": []
 				},
 				{
-					"value": "",
-					"rkey": "_cp__exh_curator",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_funding_entity",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_info_source",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_museography",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_parent_exhibition",
-					"operator": "nn",
-					"modifier": "",
-					"results": []
-				},
-				{
-					"value": "",
-					"rkey": "_cp__exh_source_entity",
-					"operator": "nn",
+					"value": "6664: Pablo Ruiz Picasso",
+					"rkey": "_cp__exh_artwork_author",
+					"operator": "li",
 					"modifier": "",
 					"results": []
 				}
+			],
+			"filtersubfilter": {
+				"artwork": true,
+				"book": true,
+				"company": false,
+				"entity": true,
+				"exhibition": false,
+				"person": true
+			},
+			"filtersublinks": [
+				"_cp__exh_artwork_author",
+				"_cp__exh_curator",
+				"_cp__exh_catalog",
+				"_cp__exh_art_collector",
+				"_cp__exh_supporter_entity",
+				"_cp__art_artwork_author"
 			]
+		},
+		{
+			"title": "Andalucía 2000-2018",
+			"name": "20190425001",
+			"date": "2019-04-25",
+			"description": "Andalucía exhibitions between 2000 and 2018",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "",
+					"results": []
+				},
+				{
+					"value": "2000/2018",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				}
+			],
+			"filtersubfilter": {
+				"artwork": true,
+				"book": true,
+				"company": true,
+				"entity": true,
+				"exhibition": true,
+				"person": true
+			},
+			"filtersublinks": []
 		}
 	]
 }

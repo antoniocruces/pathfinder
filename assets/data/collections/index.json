@@ -1,10 +1,94 @@
 {
 	"es": [
 		{
-			"title": "Picasso 1881-2018",
-			"name": "20190425000",
+			"title": "España 2010-2016",
+			"name": "20190913000",
+			"date": "2019-09-13",
+			"description": "Proyecto Exhibitium. Ecosistema expositivo español 2010-2016",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "2010/2016",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				}
+			],
+			"filtersubfilter": {
+				"artwork": true,
+				"book": true,
+				"company": true,
+				"entity": true,
+				"exhibition": false,
+				"person": true
+			},
+			"filtersublinks": [
+				"_cp__boo_artwork_author",
+				"_cp__boo_artwork",
+				"_cp__exh_artwork_author",
+				"_cp__exh_curator",
+				"_cp__exh_catalog",
+				"_cp__exh_art_collector",
+				"_cp__exh_supporter_entity",
+				"_cp__exh_funding_entity"
+			]
+		},
+		{
+			"title": "Andalucía 2000-2018",
+			"name": "20190913001",
+			"date": "2019-09-13",
+			"description": "Proyecto ANDALEX. Ecosistema expositivo andaluz 2008-2018",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "2008/2018",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				}
+			],
+			"filtersubfilter": {
+				"artwork": true,
+				"book": true,
+				"company": true,
+				"entity": true,
+				"exhibition": false,
+				"person": true
+			},
+			"filtersublinks": [
+				"_cp__boo_artwork_author",
+				"_cp__boo_artwork",
+				"_cp__exh_artwork_author",
+				"_cp__exh_curator",
+				"_cp__exh_catalog",
+				"_cp__exh_art_collector",
+				"_cp__exh_supporter_entity",
+				"_cp__exh_funding_entity"
+			]
+		},
+		{
+			"title": "Picasso 1900-2018",
+			"name": "20190913002",
 			"date": "2019-04-25",
-			"description": "Exposiciones de Picasso entre 1881 y 2018",
+			"description": "Picasso a escala global. Ecosistema expositivo 1900-2018",
 			"active": 0,
 			"operation": "_relaxed",
 			"query": [
@@ -16,7 +100,7 @@
 					"results": []
 				},
 				{
-					"value": "1881/2018",
+					"value": "1900/2018",
 					"rkey": "_cp__exh_exhibition_start_date",
 					"operator": "bt",
 					"modifier": "year",
@@ -55,22 +139,22 @@
 			]
 		},
 		{
-			"title": "Andalucía 2000-2018",
-			"name": "20190425001",
-			"date": "2019-04-25",
-			"description": "Exposiciones en Andalucía entre 2000 y 2018",
+			"title": "Arte español 1850-1939",
+			"name": "20190913003",
+			"date": "2019-09-13",
+			"description": "Arte español. Ecosistema expositivo 1850-1939",
 			"active": 0,
 			"operation": "_relaxed",
 			"query": [
 				{
-					"value": "andalucia",
+					"value": "españa|estados unidos",
 					"rkey": "_cp__exh_exhibition_town",
 					"operator": "li",
-					"modifier": "",
+					"modifier": "country",
 					"results": []
 				},
 				{
-					"value": "2000/2018",
+					"value": "1850/1939",
 					"rkey": "_cp__exh_exhibition_start_date",
 					"operator": "bt",
 					"modifier": "year",
@@ -80,20 +164,113 @@
 			"filtersubfilter": {
 				"artwork": true,
 				"book": true,
-				"company": true,
+				"company": false,
 				"entity": true,
-				"exhibition": true,
+				"exhibition": false,
 				"person": true
 			},
-			"filtersublinks": []
+			"filtersublinks": [
+				"_cp__boo_artwork_author",
+				"_cp__boo_artwork",
+				"_cp__exh_artwork_author",
+				"_cp__exh_curator",
+				"_cp__exh_catalog",
+				"_cp__exh_art_collector",
+				"_cp__exh_supporter_entity",
+				"_cp__exh_funding_entity"
+			]
 		}
 	],
 	"en": [
 		{
-			"title": "Picasso 1881-2018",
-			"name": "20190425000",
+			"title": "Spain 2010-2016",
+			"name": "20190913000",
+			"date": "2019-09-13",
+			"description": "Exhibitium Project. Spanish exhibition ecosystem 2010-2016",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "españa",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "country",
+					"results": []
+				},
+				{
+					"value": "2010/2016",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				}
+			],
+			"filtersubfilter": {
+				"artwork": true,
+				"book": true,
+				"company": true,
+				"entity": true,
+				"exhibition": false,
+				"person": true
+			},
+			"filtersublinks": [
+				"_cp__boo_artwork_author",
+				"_cp__boo_artwork",
+				"_cp__exh_artwork_author",
+				"_cp__exh_curator",
+				"_cp__exh_catalog",
+				"_cp__exh_art_collector",
+				"_cp__exh_supporter_entity",
+				"_cp__exh_funding_entity"
+			]
+		},
+		{
+			"title": "Andalucía 2000-2018",
+			"name": "20190913001",
+			"date": "2019-09-13",
+			"description": "ANDALEX Project. Andalusian exhibition ecosystem 2008-2018",
+			"active": 0,
+			"operation": "_relaxed",
+			"query": [
+				{
+					"value": "andalucia",
+					"rkey": "_cp__exh_exhibition_town",
+					"operator": "li",
+					"modifier": "region",
+					"results": []
+				},
+				{
+					"value": "2008/2018",
+					"rkey": "_cp__exh_exhibition_start_date",
+					"operator": "bt",
+					"modifier": "year",
+					"results": []
+				}
+			],
+			"filtersubfilter": {
+				"artwork": true,
+				"book": true,
+				"company": true,
+				"entity": true,
+				"exhibition": false,
+				"person": true
+			},
+			"filtersublinks": [
+				"_cp__boo_artwork_author",
+				"_cp__boo_artwork",
+				"_cp__exh_artwork_author",
+				"_cp__exh_curator",
+				"_cp__exh_catalog",
+				"_cp__exh_art_collector",
+				"_cp__exh_supporter_entity",
+				"_cp__exh_funding_entity"
+			]
+		},
+		{
+			"title": "Picasso 1900-2018",
+			"name": "20190913002",
 			"date": "2019-04-25",
-			"description": "Picasso exhibitions between 1881 and 2018",
+			"description": "Picasso worldwide. Exhibition Ecosystem 1900-2018",
 			"active": 0,
 			"operation": "_relaxed",
 			"query": [
@@ -105,7 +282,7 @@
 					"results": []
 				},
 				{
-					"value": "1881/2018",
+					"value": "1900/2018",
 					"rkey": "_cp__exh_exhibition_start_date",
 					"operator": "bt",
 					"modifier": "year",
@@ -144,22 +321,22 @@
 			]
 		},
 		{
-			"title": "Andalucía 2000-2018",
-			"name": "20190425001",
-			"date": "2019-04-25",
-			"description": "Andalucía exhibitions between 2000 and 2018",
+			"title": "Spanish Art 1850-1939",
+			"name": "20190913003",
+			"date": "2019-09-13",
+			"description": "Spanish Art. Exhibition Ecosystem 1850-1939",
 			"active": 0,
 			"operation": "_relaxed",
 			"query": [
 				{
-					"value": "andalucia",
+					"value": "españa|estados unidos",
 					"rkey": "_cp__exh_exhibition_town",
 					"operator": "li",
-					"modifier": "",
+					"modifier": "country",
 					"results": []
 				},
 				{
-					"value": "2000/2018",
+					"value": "1850/1939",
 					"rkey": "_cp__exh_exhibition_start_date",
 					"operator": "bt",
 					"modifier": "year",
@@ -169,12 +346,21 @@
 			"filtersubfilter": {
 				"artwork": true,
 				"book": true,
-				"company": true,
+				"company": false,
 				"entity": true,
-				"exhibition": true,
+				"exhibition": false,
 				"person": true
 			},
-			"filtersublinks": []
+			"filtersublinks": [
+				"_cp__boo_artwork_author",
+				"_cp__boo_artwork",
+				"_cp__exh_artwork_author",
+				"_cp__exh_curator",
+				"_cp__exh_catalog",
+				"_cp__exh_art_collector",
+				"_cp__exh_supporter_entity",
+				"_cp__exh_funding_entity"
+			]
 		}
 	]
 }

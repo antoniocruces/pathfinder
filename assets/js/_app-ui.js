@@ -91,7 +91,7 @@ const ui = {
 					return `text-align-center${statslist.includes(txt) ? ' color-info' : ''}`;
 				} else {
 					return isNumber(txt) ? 'text-align-right' : 
-						txt.includes('"empty-square"') || txt.includes('"square"') ? 'text-align-center' : 'text-align-left';
+						String(txt).includes('"empty-square"') || String(txt).includes('"square"') ? 'text-align-center' : 'text-align-left';
 				}
 			};
 			let makecelltext = (typ, txt, pag = 1, cll = null, opt = null) => {

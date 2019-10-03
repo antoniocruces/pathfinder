@@ -1,23 +1,25 @@
 {
-  "short_name": "PF",
+  "short_name": "PATHFINDER",
   "name": "PATHFINDER: discovering new knowledge",
   "icons": [
     {
-      "src": "assets/img/app/launcher-icon-1x.png",
+      "src": "./assets/img/xicons/android-48x48.png",
       "type": "image/png",
       "sizes": "48x48"
     },
     {
-      "src": "assets/img/app/launcher-icon-2x.png",
+      "src": "./assets/img/xicons/android-96x196.png",
       "type": "image/png",
       "sizes": "96x96"
     },
     {
-      "src": "assets/img/app/launcher-icon-4x.png",
+      "src": "./assets/img/xicons/android-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     }
   ],
   "start_url": "index.html#home",
-  "display": "fullscreen"
+  "scope": "./",
+  "background_color": "#ffee00",
+  "display": "standalone"
 }

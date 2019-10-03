@@ -1,0 +1,11 @@
+FID: 0 (_cp__exh_curator rtitle) = exhibition/person	E	P	RID	ID
+FID: 1 (_cp__peo_age isalive) = person/exhibition	P	E	ID	ID
+FID: 2 (_cp__peo_age yearsbin) = person/exhibition	P	E	ID	ID
+FID: 3 (_cp__peo_gender gender) = person/exhibition	P	E	RID	ID
+FID: 4 (_cp__exh_artwork_author rtitle) = exhibition/person	E	P	ID	ID
+FID: 5 (_cp__peo_age isalive) = person/exhibition	P	E	ID	ID
+FID: 6 (_cp__peo_age yearsbin) = person/exhibition	P	E	ID	ID
+FID: 7 (_cp__peo_gender gender) = person/exhibition	P	E	ID	RID
+FID: 8 (exhibition string) = exhibition/person	E	P	ID	ID
+FID: 9 (_cp__exh_exhibition_access string) = exhibition/person	E	P	ID	ID
+FID: 10 (tax_artwork_type string) = exhibition/person	E	P		

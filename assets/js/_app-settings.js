@@ -26,6 +26,8 @@ window.settings = {
 	mapbasedefault: 3,
 	mapanimation: 3000,
 	
+	roundtripsep: '|',
+	
 	hmaplow: '#00ffff',
 	hmapmedium: '#ffff00',
 	hmaphigh: '#ff0000',
@@ -733,6 +735,7 @@ const d = {
 			tin: false,
 			buffer: 0,
 			maintainqueries: false,
+			sametyperels: false,
 			timerange: {
 				totalmin: 0, 
 				totalmax: 0, 

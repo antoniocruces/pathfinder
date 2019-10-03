@@ -178,7 +178,7 @@ const stats = {
 				let t0 = performance.now();
 				if(d.schemaresults.length < 1 || calculate) {
 					let pcols = d.schemacols.filter(o => !isBlank(o));
-					d.schemaresults = stats.unfolfedlist(pcols, true, true); 
+					d.schemaresults = stats.unfoldedlist(pcols, 'schema-table-performance'); 
 					pcols = undefined;
 				}
 				
@@ -569,14 +569,6 @@ const stats = {
 				`</div>	`,
 				`</li>`,
 				
-				/*
-				`</ul>`,
-				`</div>`,
-				
-				`<div id="cooccurrences-routeset" class="hide margin-top-s">`,
-				`<div class="group group-xs">`,
-				`<ul>`,
-				*/
 				`<li id="cooccurrences-routeset1" class="hide">`,
 				`<a class="button button-info button-border" `,
 				`href="javascript:stats.cooccurrences(null, 1, null, '', 1, false, true);">`,
@@ -923,6 +915,15 @@ const stats = {
 			let outlierspercent = (~~outliers / (arr.length || 1)) * 100;
 			
 			tmp = undefined;
+			/* 
+				Because:
+				Maximum entropy is achieved when all signals are equally likely.
+				No ability to guess; maximum surprise.
+				Hmax = lg N
+				Minimum entropy occurs when one symbol is certain and the others are impossible.
+				No uncertainty; no surprise
+				Hmin = 0				
+			*/
 			let maxresentropy = Math.log2(dresults.results.length);
 			let homogeneity = entropy / maxresentropy;
 			return `
@@ -936,9 +937,10 @@ const stats = {
 				${c`mode`.uf()}: <strong>${mode}</strong>. 
 				${c`meanabsolutedeviation`.uf()}: <strong>${mad}</strong>. 
 				${c`range`.uf()}: <strong>${mode} (${maxmin})</strong>
-				${c`entropy`.uf()}: <strong>${entropy.toLocaleString(l)}/${maxresentropy.toLocaleString(l)}</strong>. 
-				${c`homogeneity`.uf()}: <strong>${((1 - homogeneity) * 100).toLocaleString(l)}%, 
-				${homogeneity >= 0.5 ? c`low` : c`high`}</strong>. 
+				${c`entropy`.uf()} (${c`current`}/${c`max`}): 
+				<strong>${entropy.toLocaleString(l)}/${maxresentropy.toLocaleString(l)}</strong>. 
+				${c`homogeneity`.uf()}: <strong>${(homogeneity * 100).toLocaleString(l)}%, 
+				${homogeneity >= 0.5 ? c`high` : c`low`}</strong>. 
 				${c`meaningful-values`.uf()}: 
 				<strong>${outliers.toLocaleString(l)} (${outlierspercent.toLocaleString(l)}%)</strong>. 
 				${c`median`.uf()}: <strong>${dresults.median ? dresults.median.toLocaleString(l) : ''}</strong>. 
@@ -1170,7 +1172,6 @@ const stats = {
 		let rschart = echarts.init(byId(cid + '-relevancescatter'), {width: '100%'});
 		options = charts.scatterrelevanceoptions(
 			rlv, 
-			/* cid, */
 			c`relevance`.uf(),
 			c`four-quarters-map`.uf(),
 			cid + '-relevancescatter'
@@ -1244,16 +1245,25 @@ const stats = {
 		prepare = group = lis = mut = nor = undefined;
 		return joi;
 	},
-	unfolfedlist: cols => {
-		let prepare = obj => {
+	unfoldedlist: (cols, cid = 'schema-table-performance') => {
+		let prepare = (obj, isrel, facet) => {
 			let rkey = obj.rkey;
 			let blacklist = new Set(['rtype']);
 			let out = {};
 			Object.keys(obj)
 				.filter(o => !blacklist.has(o))
-				.forEach(o => out[o === 'ID' ? o : rkey + '|' + o] = obj[o]);
-			out.RID = out.ID;
-			out.bound = '?';
+				.forEach(o => {
+					let key = o === 'ID' ? `${o}` : `${rkey}|${o}`;
+					let hasfacet = key.includes('|');
+					if(hasfacet) {
+						if(key.includes(`|${facet}`)) out[key] = obj[o];
+					} else {
+						out[key] = obj[o];
+					}
+				});
+			out.ID = isrel ? obj.rid : out.ID;
+			out.RID = obj.ID;
+			
 			rkey = blacklist = undefined;
 			return out;
 		};
@@ -1264,6 +1274,19 @@ const stats = {
 				if(mandatory.concat(cols).includes(o)) out[o] = obj[o];
 			});
 			mandatory = undefined;
+			return out;
+		};
+		let normalize = (obj, num) => {
+			let out = {};
+			Object.keys(obj).forEach(o => out[`${num}|${o}`] = obj[o]);
+			return out;
+		};
+		let sanitize = obj => {
+			let blacklist = ['ID', 'RID'];
+			let whitelist = Object.keys(obj).filter(o => !blacklist.includes(o.split('|')[1]));
+			let out = {};
+			whitelist.forEach(o => out[o] = obj[o]);
+			blacklist = whitelist = undefined;
 			return out;
 		};
 		let flatten = (object, separator = '|') => {
@@ -1282,97 +1305,115 @@ const stats = {
 			};
 			return Object.assign({}, walker(object));
 		};
-		let jointables = (left, right, lkey, rkey) => {
-			rkey = rkey || lkey;
-			
-			let lookup = {};
-			let result = [];
-			
-			left.forEach(cr => lookup[cr[lkey]] = cr);
-			right.forEach(cr => {
-				let jr = _.clone(lookup[cr[rkey]]); 
-				_.extend(jr, cr); 
-				result.push(jr);
-			});
-			
-			return result.filter(o => o !== undefined);
-		};
-		let fields = cols.map(o => ({
+		
+		let fields = cols.map((o, i) => ({
+			fid: i,
 			field: o.split('|')[0], 
 			facet: o.split('|')[1],
 			isrel: d.relatives.includes(o.split('|')[0]),
-			relations: [],
+			ispos: d.record_types.includes(o.split('|')[0]),
+			istax: d.taxonomies.includes(o.split('|')[0]),
 			result: [],
-			matches: [],
 		}));
-
-		let result = [];
-		let matches = [];
-		let setfil = new Set(dbe._filterids());
-
-		if(cols.length) {
-			let relations = dbm.relations(true);
-			let ages = dbm.ages(false);
 			
-			fields.forEach(f => {
-				f.result = objectunique([].concat(
-					dbe._mutate(Object.values(d.store.pos).flatten().filter(o => o.rkey === f.field)), 
-					dbe._mutate(Object.values(d.store.met).flatten().filter(o => o.rkey === f.field)),  
-					dbe._mutate(Object.values(d.store.tax).flatten().filter(o => o.rkey === f.field)),
-					dbe._mutate(ages.filter(o => o.rkey === f.field))
-				).filter(o => setfil.has(o.ID)).map(o => prepare(o)).map(o => clearobj(o)));
-			});
+		let result = [];
 		
-			fields.forEach(f => {
-				let out = [];
-				if(f.isrel) {
-					f.result.forEach(o => {
-						(relations[o.ID] || [])
-							.filter(r => r.rkey === f.field)
-							.forEach(r => {
-								out.push(Object.assign({}, o, {ID: r.ID, RID: r.RID}));
-								out.push(Object.assign({}, o, {ID: r.RID, RID: r.ID}));
-							});
-					});
-					out.forEach(o => f.result.push(o));
-				}
-				out = undefined;
-			});
-		
-			fields.forEach((f, i) => {
-				let out = [];
-				if(i === 0) {
-					matches = f.result.slice();
-				} else {
-					let tbld = dbe.hashtable(f.result, 'ID');
-					matches.forEach(o => {
-						let tmp = tbld[o.RID];
-						if(tmp) {
-							tmp.forEach(r => out.push(Object.assign({}, o, r)));
+		if(cols.length) {
+			let list = [];
+			let setfil = new Set();
+			let ages = [];
+			let queue = {
+				leap0: () => {
+					setfil = new Set(dbe._filterids());
+					ages = dbm.ages(false);
+				},
+				leap1: () => { 
+					list = [].concat(
+						dbe._mutate(Object.values(d.store.pos).flatten()), 
+						dbe._mutate(Object.values(d.store.met).flatten()),  
+						dbe._mutate(Object.values(d.store.tax).flatten()),
+						dbe._mutate(ages).flatten()
+					).filter(o => setfil.has(o.ID));
+				},
+				leap2: () => {
+					fields.forEach(f => {
+						let tmp = list.filter(o => o.rkey === f.field).map(o => prepare(o, f.isrel, f.facet));
+						let ids = dbe.hashtable(tmp, 'ID');
+						let rids = dbe.hashtable(tmp, 'RID');
+						if(f.fid === 0) {
+							f.result = tmp.slice();
 						} else {
-							if(!d.schemastrict) out.push(o);
+							let prev = fields[f.fid - 1].result;
+							let previsrel = fields[f.fid - 1].isrel;
+							prev.forEach(o => {
+								let cids = f.ispos ? 
+									objectunique([].concat(ids[o.RID] || [])) : 
+									objectunique([].concat(rids[o.ID] || [], rids[o.RID] || []));
+								cids.forEach(r => {
+									if(f.ispos) {
+										f.result.push(r);
+									} else {
+										f.result.push(Object.assign({}, r, {RID: o.RID}));
+									}
+								});
+							});
 						}
 					});
-					matches = out.slice();
-				}
-				out = undefined;
+				},
+				leap3: () => {
+					fields.forEach(f => {
+						if(f.fid === 0) {
+							result = f.result.map(o => normalize(o, f.fid));
+						} else {
+							let last = f.fid - 1;
+							let tmp = [];
+							result.forEach(o => {
+								let iset = new Set([o[`${last}|ID`]]);
+								let rset = new Set([o[`${last}|RID`]]);
+								if(f.ispos) {
+									objectunique(f.result.filter(r => rset.has(r.RID)))
+										.forEach(r => tmp.push(Object.assign({}, o, normalize(r, f.fid))));
+								} else {
+									objectunique(f.result.filter(r => rset.has(r.RID)))
+										.filter(r => !f.isrel ? iset.has(r.ID) : true)
+										.forEach(r => tmp.push(Object.assign({}, o, normalize(r, f.fid))));
+								}
+								iset = rset = undefined;
+							});
+							result = objectunique(tmp.slice());
+							last = tmp = undefined;
+						}
+					});
+				},
+				leap4: () => {
+					setfil = ages = list = undefined;
+				},
+			};
+			Object.keys(queue).forEach((o, i) => {
+				queue[o].call();
 			});
+		}
 		
-			matches = objectunique(matches);
-			
-			result = Object.entries(flatten(matches.countByMultiple(cols))).map(o => {
+		result = result.map(o => sanitize(o));
+		
+		let out = [];
+		if(result.length) {
+			let outcols = Object.keys(result[0]);
+			out = Object.entries(flatten(result.countByMultiple(outcols))).map(o => {
 				let obj = {};
 				let values = o[0].split('|');
-				cols.forEach((k, i) => obj[k] = c(values[i]));
+				outcols.forEach((k, i) => obj[k] = c(values[i]));
 				obj.count = o[1];
 				values = undefined;
 				return obj;
 			});
 		}
-
-		prepare = clearobj = flatten = fields = jointables = setfil = matches = undefined;
-		return result;
-	},
+		
+		prepare = clearobj = normalize = undefined;
+		flatten = fields = undefined;
+		
+		return out;
+	},	
 	localstats: arr => {
 		let stats = dbs.stats(arr.map(o => o.count || o));
 		let throwput = obj => stats.zscoresmap[obj.count || obj];
@@ -1523,7 +1564,7 @@ const stats = {
 			throw new AppError(c`insufficient-data-warning`);
 		}
 		
-		if(!d.schemapivot.cols.length) d.schemapivot.rows = d.schemacols.slice();
+		if(!d.schemapivot.cols.length) d.schemapivot.rows = d.schemacols.map((o, i) => `${i}|${o}`).slice();
 		
 		let hidden = (d.schemapivot.cols.length && d.schemapivot.cols.length <= d.schemacols.length) ? '' : ' hide';
 		let res = [

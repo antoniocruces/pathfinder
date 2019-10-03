@@ -79,9 +79,10 @@ Object.defineProperty(String.prototype, 'relations', {
 	writable: true,
     value: function(key) {
 		let arr = this.split(': ').map(e => e.toString().trim());
+		let tit = (d.store.pos[Number(arr[0])] || {value: null}).value; 
 		return {
 			rid: Number(arr[0]) || null,
-			rtitle: String(arr[1]) || null,
+			rtitle: tit, /* String(arr[1]) || null, */
 			string: this,
 			rkey: key || null,
 			skey: key !== undefined ? c(key) : null
