@@ -338,6 +338,7 @@ const stats = {
 
 								toolkit.cleardomelement('#schema-listing');
 								byId('schema-listing').appendChild(pvtable);
+
 								toolkit.drawicons();
 								pvtable = undefined;
 								gscreen.siteoverlay(false);
@@ -419,8 +420,6 @@ const stats = {
 					
 					return;
 				}
-			//} else {
-			//	if(res) res = undefined;
 			}
 			
 			gscreen.siteoverlay(false);
@@ -1261,7 +1260,7 @@ const stats = {
 						out[key] = obj[o];
 					}
 				});
-			out.ID = isrel ? obj.rid : out.ID;
+			out.ID = isrel && obj.hasOwnProperty('rid') ? obj.rid : out.ID;
 			out.RID = obj.ID;
 			
 			rkey = blacklist = undefined;
@@ -1305,100 +1304,101 @@ const stats = {
 			};
 			return Object.assign({}, walker(object));
 		};
+		let adjustfield = (obj, field, facet) => {
+			let flist = [].concat(d.relatives, d.record_types).map(o => `${o}|${facet}`);
+			let out = {};
+			Object.keys(obj).forEach(k => {
+				if(!flist.includes(k)) {
+					out[k] = obj[k];
+				} else {
+					if(k === `${field}|${facet}`) out[k] = obj[k];
+				}
+			});
+			flist = undefined;
+			return out;
+		};
 		
 		let fields = cols.map((o, i) => ({
 			fid: i,
 			field: o.split('|')[0], 
 			facet: o.split('|')[1],
-			isrel: d.relatives.includes(o.split('|')[0]),
+			isrel: d.relatives.includes(o.split('|')[0]) || i === 0,
 			ispos: d.record_types.includes(o.split('|')[0]),
-			istax: d.taxonomies.includes(o.split('|')[0]),
 			result: [],
 		}));
 			
+		let tree = {};
 		let result = [];
 		
 		if(cols.length) {
 			let list = [];
 			let setfil = new Set();
 			let ages = [];
-			let queue = {
-				leap0: () => {
-					setfil = new Set(dbe._filterids());
-					ages = dbm.ages(false);
-				},
-				leap1: () => { 
-					list = [].concat(
-						dbe._mutate(Object.values(d.store.pos).flatten()), 
-						dbe._mutate(Object.values(d.store.met).flatten()),  
-						dbe._mutate(Object.values(d.store.tax).flatten()),
-						dbe._mutate(ages).flatten()
-					).filter(o => setfil.has(o.ID));
-				},
-				leap2: () => {
-					fields.forEach(f => {
-						let tmp = list.filter(o => o.rkey === f.field).map(o => prepare(o, f.isrel, f.facet));
-						let ids = dbe.hashtable(tmp, 'ID');
-						let rids = dbe.hashtable(tmp, 'RID');
-						if(f.fid === 0) {
-							f.result = tmp.slice();
-						} else {
-							let prev = fields[f.fid - 1].result;
-							let previsrel = fields[f.fid - 1].isrel;
-							prev.forEach(o => {
-								let cids = f.ispos ? 
-									objectunique([].concat(ids[o.RID] || [])) : 
-									objectunique([].concat(rids[o.ID] || [], rids[o.RID] || []));
-								cids.forEach(r => {
-									if(f.ispos) {
-										f.result.push(r);
-									} else {
-										f.result.push(Object.assign({}, r, {RID: o.RID}));
-									}
-								});
-							});
-						}
+			let keys = new Set(fields.map(o => o.field));
+			
+			setfil = new Set(dbe._filterids());
+			ages = dbm.ages(false);
+
+			list = objectunique([].concat(
+				dbe._mutate(Object.values(d.store.pos).flatten()), 
+				dbe._mutate(Object.values(d.store.met).flatten()),  
+				dbe._mutate(Object.values(d.store.tax).flatten()),
+				dbe._mutate(ages).flatten()
+			).filter(o => setfil.has(o.ID)).filter(o => keys.has(o.rkey)));
+
+			fields.forEach(f => {
+				f.result = list
+					.filter(o => o.rkey === f.field)
+					.map(o => prepare(o, f.isrel, f.facet));
+				f.result.forEach(o => {
+					let obj = tree[o.ID] || {};
+					tree[o.ID] = Object.assign({}, obj, removekey(o, 'RID'));
+					obj = undefined;
+				});	
+			});		
+
+			fields.filter((f, i) => f.isrel || f.ispos).forEach((f, i) => {
+				if(i === 0) {
+					f.result.forEach(o => {
+						let idt = adjustfield(tree[o.ID], f.field, f.facet);
+						result.push(normalize(Object.assign({}, {RID: o.RID}, idt), i));
+						idt = undefined;
 					});
-				},
-				leap3: () => {
-					fields.forEach(f => {
-						if(f.fid === 0) {
-							result = f.result.map(o => normalize(o, f.fid));
-						} else {
-							let last = f.fid - 1;
-							let tmp = [];
-							result.forEach(o => {
-								let iset = new Set([o[`${last}|ID`]]);
-								let rset = new Set([o[`${last}|RID`]]);
-								if(f.ispos) {
-									objectunique(f.result.filter(r => rset.has(r.RID)))
-										.forEach(r => tmp.push(Object.assign({}, o, normalize(r, f.fid))));
-								} else {
-									objectunique(f.result.filter(r => rset.has(r.RID)))
-										.filter(r => !f.isrel ? iset.has(r.ID) : true)
-										.forEach(r => tmp.push(Object.assign({}, o, normalize(r, f.fid))));
-								}
-								iset = rset = undefined;
+	 			} else {
+					if(result.length) {
+						let last = Math.max.apply(null, Object.keys(result[0]).map(o => Number(o.split('|')[0])));
+						let pid = `${last}|ID`;
+						let prid = `${last}|RID`;
+						let tmp = [];
+						//result.filter(o => o[pid] !== o[prid]).forEach(o => {
+						result.forEach(o => {
+							f.result.filter(r => r.RID === o[prid]).forEach(r => {
+								let idt = adjustfield(tree[r.ID], f.field, f.facet);
+								let idr = Object.assign({}, o, normalize(Object.assign({}, {RID: r.RID}, idt), i));
+								tmp.push(idr);
+								idt = idr = undefined;
 							});
-							result = objectunique(tmp.slice());
-							last = tmp = undefined;
-						}
-					});
-				},
-				leap4: () => {
-					setfil = ages = list = undefined;
-				},
-			};
-			Object.keys(queue).forEach((o, i) => {
-				queue[o].call();
-			});
+						});
+						result = tmp.slice();
+						pid = prid = tmp = undefined;
+					}
+				}
+			});		
+			
+			setfil = ages = list = keys = undefined;
 		}
-		
+	
 		result = result.map(o => sanitize(o));
 		
 		let out = [];
 		if(result.length) {
-			let outcols = Object.keys(result[0]);
+			let outcols = [];
+			let count = -1;
+			fields.forEach(f => {
+				if(f.isrel || f.ispos) count++;
+				outcols.push(`${count}|${f.field}|${f.facet}`);
+			});
+			
 			out = Object.entries(flatten(result.countByMultiple(outcols))).map(o => {
 				let obj = {};
 				let values = o[0].split('|');
@@ -1407,12 +1407,14 @@ const stats = {
 				values = undefined;
 				return obj;
 			});
+			outcols = count = undefined;
 		}
+	
+		prepare = clearobj = normalize = sanitize = undefined;
+		flatten = adjustfield = undefined;
+		result = fields = tree = undefined;
 		
-		prepare = clearobj = normalize = undefined;
-		flatten = fields = undefined;
-		
-		return out;
+		return out
 	},	
 	localstats: arr => {
 		let stats = dbs.stats(arr.map(o => o.count || o));
@@ -1564,7 +1566,19 @@ const stats = {
 			throw new AppError(c`insufficient-data-warning`);
 		}
 		
-		if(!d.schemapivot.cols.length) d.schemapivot.rows = d.schemacols.map((o, i) => `${i}|${o}`).slice();
+		if(!d.schemapivot.cols.length) {
+			let outcols = [];
+			let count = -1;
+			d.schemacols.forEach((o, i) => {
+				let field = o.split('|')[0];
+				let facet = o.split('|')[1];
+				if(d.relatives.includes(field) || d.record_types.includes(field) || i === 0) count++;
+				outcols.push(`${count}|${field}|${facet}`);
+				field = facet = undefined;
+			});
+			d.schemapivot.rows = outcols.slice();
+			outcols = count = undefined;
+		}
 		
 		let hidden = (d.schemapivot.cols.length && d.schemapivot.cols.length <= d.schemacols.length) ? '' : ' hide';
 		let res = [
@@ -1647,5 +1661,31 @@ const stats = {
 		gscreen.alert = gscreen.displayalert(features);
 		toolkit.drawicons();
 		features = res = hidden = undefined;
+	},
+	tableheatmap: (col, target) => {
+		let cleanformat = str => parseFloat(str.replace(/([%,$,\,,.])+/g,''));
+		let columntoarray = (col, target) => document.querySelector(`#${target} td:nth-child(${col})`)
+			.map(o => cleanformat(o.text));
+		let maxposition = (columndata) => Array.inArray(Math.max.apply(Math, columndata), columndata);
+		let generate_opacities = (columndata, max) => {
+			let opacities = [];
+			let increment = max / (columndata.length);
+			for(let i = columndata.length; i >= 1; i--) {
+				opacities.push(i * increment / 100);
+			}
+			increment = undefined;
+			return opacities;
+		}
+	
+		let columndata = columntoarray(col, target);
+		let opacities = generate_opacities(columndata, 50);
+		let row_count = columndata.length; 
+		
+		for (let i = 1; i <= row_count; i++) {    
+			document.querySelector(`#${target} tr:nth-child(${maxposition(columndata)+1}) td:nth-child(${col})`)
+				.style.background =`rgba(0,0,255,${opacities[0]})`;
+			columndata[maxposition(columndata)] = null;
+			opacities.splice(0, 1);
+		}
 	},
 };

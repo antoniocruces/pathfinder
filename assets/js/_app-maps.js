@@ -2309,10 +2309,8 @@ const mapops = {
 		mapops.drawlayers(cid);
 	},
 	togglesublayer: (layer, lstatus = false, cid = 'base') => {
-		console.log(layer, lstatus)
 		if(!layer) return;
 		if(lstatus) {
-			console.log(d.maplayers[cid].data.kmeans.source.layers[layer].layer)
 			d.maplayers[cid].data.kmeans.source.layers[layer].layer.addTo(d.map[cid]);
 		} else {
 			d.map[cid].removeLayer(d.maplayers[cid].data.kmeans.source.layers[layer].layer);
@@ -2940,7 +2938,7 @@ const mapops = {
 				title: `${c`buffer`.uf()} (${met}). ${tname}`,
 				data: {
 					mainid: item.value,
-					ids: new Set(points.features.map(o => o.properties.id))
+					data: points.features.map(o => ({rid: o.properties.id, relkey: undefined}))
 				},
 				visible: true,
 				source: null,
@@ -2969,7 +2967,6 @@ const mapops = {
 						.filter(o => sameonly ? o.rkey === baserkey : true)
 						.filter(o => isvalidflowpoint(o))
 				);
-				baserkey = sameonly = undefined;
 				let main = res.main[0] || {
 					id: null,
 					lat: null,
@@ -2978,10 +2975,19 @@ const mapops = {
 					color: null,
 					title: null,
 				};
+				let fdt = res[tmpname]
+					.filter(o => sameonly ? o.rkey === baserkey : true)
+					.filter(o => isvalidflowpoint(o))
+					.map(o => ({rid: o.id, relkey: o.relkey}));
+				baserkey = sameonly = undefined;
 				
 				d.maplayers[cid].queries[`${c(tmpname).uf()}. ${bname}`] = {
 					name: `${c(tmpname).uf()}. ${bname}`,
 					title: `${c(tmpname).uf()}. ${tname}`,
+					data: {
+						mainid: main.id,
+						data: fdt
+					},
 					visible: true,
 					source: null,
 					isflowlayer: true,
@@ -3055,7 +3061,7 @@ const mapops = {
 						}
 					),
 				};
-				pid = isvalidflowpoint = flo = tmpname = main = undefined;
+				pid = isvalidflowpoint = flo = fdt = tmpname = main = undefined;
 				byId(`${cid}-map-queries`).classList.remove('spinner');
 				mapops.drawlayers(cid);
 			});
@@ -3072,21 +3078,11 @@ const mapops = {
 				);
 				let baserkey = res.main[0].rkey;
 				let sameonly = d.maptransformations[cid].sametyperels;
-				console.log(res[tmpname]
-						.filter(o => sameonly ? o.rkey === baserkey : true)
-						.filter(o => isvalidflowpoint(o))
-				)
-				console.log(res[tmpname]
-						.filter(o => isvalidflowpoint(o))
-				)
 				let flo = dbe.makegeojson(
 					res[tmpname]
 						.filter(o => sameonly ? o.rkey === baserkey : true)
 						.filter(o => isvalidflowpoint(o))
 				);
-				baserkey = sameonly = undefined;
-				//let flo = dbe.makegeojson(res[tmpname].filter(o => isvalidflowpoint(o)));
-
 				let main = res.main[0] || {
 					id: null,
 					lat: null,
@@ -3095,9 +3091,19 @@ const mapops = {
 					color: null,
 					title: null,
 				};
+				let fdt = res[tmpname]
+					.filter(o => sameonly ? o.rkey === baserkey : true)
+					.filter(o => isvalidflowpoint(o))
+					.map(o => ({rid: o.id, relkey: o.relkey}));
+				baserkey = sameonly = undefined;
+
 				d.maplayers[cid].queries[`${c(tmpname).uf()}. ${bname}`] = {
 					name: `${c(tmpname).uf()}. ${bname}`,
 					title: `${c(tmpname).uf()}. ${tname}`,
+					data: {
+						mainid: main.id, 
+						data: fdt
+					},
 					visible: true,
 					source: null,
 					isflowlayer: true,
@@ -3171,7 +3177,7 @@ const mapops = {
 					),
 				};
 
-				pid = isvalidflowpoint = flo = tmpname = main = undefined;
+				pid = isvalidflowpoint = flo = fdt = tmpname = main = undefined;
 				byId(`${cid}-map-queries`).classList.remove('spinner');
 				mapops.drawlayers(cid);
 			});
@@ -3189,14 +3195,6 @@ const mapops = {
 
 				let baserkey = res.main[0].rkey;
 				let sameonly = d.maptransformations[cid].sametyperels;
-				let flo = dbe.makegeojson(
-					res.related
-						.filter(o => sameonly ? o.rkey === baserkey : true)
-						.filter(o => isvalidflowpoint(o))
-				);
-				baserkey = sameonly = undefined;
-				//let flo = dbe.makegeojson(res.related.filter(o => isvalidflowpoint(o)));
-				
 				let main = res.main[0] || {
 					id: null,
 					lat: null,
@@ -3205,9 +3203,24 @@ const mapops = {
 					color: null,
 					title: null,
 				};
+				let flo = dbe.makegeojson(
+					res.related
+						.filter(o => sameonly ? o.rkey === baserkey : true)
+						.filter(o => isvalidflowpoint(o))
+				);				
+				let fdt = res[tmpname]
+					.filter(o => sameonly ? o.rkey === baserkey : true)
+					.filter(o => isvalidflowpoint(o))
+					.map(o => ({rid: o.id, relkey: o.relkey}));
+				baserkey = sameonly = undefined;
+
 				d.maplayers[cid].queries[`${c(tmpname).uf()}. ${bname}`] = {
 					name: `${c(tmpname).uf()}. ${bname}`,
 					title: `${c(tmpname).uf()}. ${tname}`,
+					data: {
+						mainid: main.id, 
+						data: fdt
+					},
 					visible: true,
 					source: null,
 					isflowlayer: false,
@@ -3249,8 +3262,11 @@ const mapops = {
 						.filter(o => sameonly ? o.rkey === baserkey : true)
 						.filter(o => isvalidflowpoint(o))
 				);
+				let fdt = res[tmpname]
+					.filter(o => sameonly ? o.rkey === baserkey : true)
+					.filter(o => isvalidflowpoint(o))
+					.map(o => ({rid: o.id, relkey: o.relkey}));
 				baserkey = sameonly = undefined;
-				//let flo = dbe.makegeojson(res.neighbourhood.filter(o => isvalidflowpoint(o)));
 				
 				let main = res.main[0] || {
 					id: null,
@@ -3264,6 +3280,10 @@ const mapops = {
 				d.maplayers[cid].queries[`${c(tmpname).uf()}. ${bname}`] = {
 					name: `${c(tmpname).uf()}. ${bname}`,
 					title: `${c(tmpname).uf()}. ${tname}`,
+					data: {
+						mainid: main.id, 
+						data: fdt
+					},
 					visible: true,
 					source: null,
 					isflowlayer: false,
@@ -3321,6 +3341,10 @@ const mapops = {
 			d.maplayers[cid].queries[cname] = {
 				name: cname,
 				title: `${c`tin`.uf()}. ${tname}`,
+				data: {
+					mainid: item.value,
+					data: rpoints.features.map(r => ({rid: r.properties.id, relkey: undefined}))
+				},
 				visible: true,
 				source: null,
 				isflowlayer: false,
@@ -3365,6 +3389,10 @@ const mapops = {
 			d.maplayers[cid].queries[cname] = {
 				name: cname,
 				title: `${c`convex`.uf()}. ${tname}`,
+				data: {
+					mainid: item.value,
+					data: rpoints.features.map(r => ({rid: r.properties.id, relkey: undefined}))
+				},
 				visible: true,
 				source: null,
 				isflowlayer: false,
@@ -3409,6 +3437,10 @@ const mapops = {
 			d.maplayers[cid].queries[cname] = {
 				name: cname,
 				title: `${c`envelope`.uf()}. ${tname}`,
+				data: {
+					mainid: item.value,
+					data: rpoints.features.map(r => ({rid: r.properties.id, relkey: undefined}))
+				},
 				visible: true,
 				source: null,
 				isflowlayer: false,
@@ -3453,6 +3485,10 @@ const mapops = {
 				let voronoi = turf.voronoi(points);			
 				d.maplayers[cid].queries[cname] = {
 					name: cname,
+					data: {
+						mainid: item.value,
+						data: points.features.map(r => ({rid: r.properties.id, relkey: undefined}))
+					},
 					title: `${c`voronoi`.uf()}. ${tname}`,
 					visible: true,
 					source: null,
@@ -3567,29 +3603,31 @@ const mapops = {
 				'query_name',
 				'main_id',
 				'main_title',
+				'relation',
 				'related_id',
 				'related_rkey',
 				'rrelated_title'
 			]);
 			Object.keys(d.maplayers[cid].queries).forEach(q => {
 				if(d.maplayers[cid].queries[q].data) {
-					let dat = d.maplayers[cid].queries[q].data;
-					let main = d.store.pos[dat.mainid];
-					let result = Object.values(d.store.pos).filter(o => dat.ids.has(o.ID));
-					result.forEach(r => {
+					let main = d.store.pos[d.maplayers[cid].queries[q].data.mainid] || {ID: null, value: null};
+					d.maplayers[cid].queries[q].data.data.forEach(r => {
 						out.push([
 							q,
 							main.ID,
 							toolkit.titleformat(main.value),
-							r.ID,
-							c(r.rkey),
-							toolkit.titleformat(r.value)
+							c(r.relkey),
+							r.rid,
+							c(d.store.pos[r.rid].rkey),
+							toolkit.titleformat(d.store.pos[r.rid].value)
 						]);
 					});
+					main = undefined;
 				}
 			});
 			file.exportdatatocsv(out);
 			gscreen.siteoverlay(false);
+			out = undefined;
 		});
 	},
 	filtermapdata: (cid = 'base', elm = null) => {

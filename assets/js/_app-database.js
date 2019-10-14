@@ -1346,13 +1346,13 @@ const dbq = {
 			}
 			if(Array.isArray(rels) && rels.length > 0) {
 				let rel = rels
-					.map(o => ({origin: cid, destination: o.RID}))
+					.map(o => ({origin: cid, relkey: o.rkey, destination: o.RID}))
 					.uniqueby('destination');
 				let nei = rels
 					.filter(o => dbe.getposbyid(o.ID) && dbe.getposbyid(o.RID))
 					.map(o => rls[o.RID])
 					.flatten()
-					.map(o => ({origin: o.ID, destination: o.RID}))
+					.map(o => ({origin: o.ID, relkey: o.rkey, destination: o.RID}))
 					.uniqueby('destination');
 				let poi = dbm.points();
 				
@@ -1379,7 +1379,8 @@ const dbq = {
 							destination_id: rel[i].destination,
 							destination_lat: destination_point.latitude,
 							destination_lon: destination_point.longitude,
-							rkey: rkey
+							rkey: rkey,
+							relkey: rel[i].relkey
 						});
 						origin_point = destination_point = color = title = rkey = undefined;
 					}
@@ -1407,7 +1408,8 @@ const dbq = {
 							destination_id: nei[i].destination,
 							destination_lat: destination_point.latitude,
 							destination_lon: destination_point.longitude,
-							rkey: rkey
+							rkey: rkey,
+							relkey: nei[i].relkey
 						});
 						origin_point = destination_point = color = title = rkey = undefined;
 					}
